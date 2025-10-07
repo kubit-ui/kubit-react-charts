@@ -1,0 +1,191 @@
+import { Children, type FC, type ReactElement, useEffect, useMemo, useState } from 'react';
+
+import { SvgContainer } from '@/components/svgContainer/svgContainer';
+import { buildViewBox } from '@/components/svgContainer/utils/buildViewBox/buildViewBox';
+import { DefaultCanvasConfig } from '@/types/canvas.type';
+import { ErrorType } from '@/types/errors.type';
+import { getCanvasDimensions } from '@/utils/getCanvasDimensions/getCanvasDimensions';
+import { getChildrenAttr } from '@/utils/getChildrenAttr/getChildrenAttr';
+import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
+import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
+
+import { buildLineContextValue } from './context/buildLineContextValue';
+import { LineChartContext } from './context/lineChartContext';
+import { LineChartXAxis } from './fragments/lineChartXAxis';
+import { LineChartYAxis } from './fragments/lineChartYAxis';
+import { useHover } from './hook/useHover';
+import type { LineChartProps } from './lineChart.type';
+
+/**
+ * Renders a line chart component.
+ *
+ * @component
+ * @example
+ * ```
+ * <LineChart
+ *   caption="Line Chart"
+ *   canvasConfig={DefaultCanvasConfig}
+ *   dataTestId="line-chart"
+ *   width="100%"
+ *   height="70%"
+ *   data={chartData}
+ * >
+ *  {chartChildren}
+ * </LineChart>
+ * ```
+ *
+ * @param props - `LineChartProps` include:
+ * - `width`: The width of the chart (default is '100%').
+ * - `height`: The height of the chart (default is '100%').
+ * - `data`: The data for the chart.
+ * - `xKey`: The key for the x-axis data.
+ * - `canvasConfig`: The configuration for the chart canvas (default is `DefaultCanvasConfig`).
+ * - `dataTestId`: The data test ID for the chart (default is 'line-chart').
+ * - `caption`: The caption for the chart (default is 'Line chart').
+ *
+ * @returns The rendered LineChart component.
+ */
+export const LineChartStructure: FC<LineChartProps> = ({
+  ariaHidden,
+  ariaLabel,
+  canvasConfig = DefaultCanvasConfig,
+  caption,
+  children,
+  classNames,
+  data,
+  dataTestId = 'line-chart',
+  getPathArea,
+  height = '100%',
+  onErrors,
+  role,
+  tabIndex,
+  width = '100%',
+  xKey,
+  ...props
+}): ReactElement => {
+  const { extraSpace: canvasExtraSpace, height: canvasHeight, width: canvasWidth } = canvasConfig;
+
+  const [childrenYKeys, setChildrenYKey] = useState<string>('');
+  const [parsedCanvas, setParsedCanvas] = useState<{
+    width: number;
+    height: number;
+  }>({
+    height: 0,
+    width: 0,
+  });
+
+  const parsedCanvasExtraSpace = canvasExtraSpace
+    ? parseStringToNumberPx(canvasExtraSpace)
+    : undefined;
+
+  const viewBox = buildViewBox(parsedCanvas.width, parsedCanvas.height, parsedCanvasExtraSpace);
+
+  // Set the default axis for the chart
+  const defaultAxis = [
+    <LineChartXAxis key="default-x-axis" />,
+    <LineChartYAxis key="default-y-axis" />,
+  ];
+  const arrayChildren = (Children.toArray(children) || []) as JSX.Element[];
+  const chidrenWithDefaultAxis = defaultAxis.concat(arrayChildren);
+
+  const maxValue = Math.max(parsedCanvas.width, parsedCanvas.height, parsedCanvasExtraSpace ?? 0);
+  const ajustedX = isNaN(parsedCanvas.width / maxValue) ? 0 : parsedCanvas.width / maxValue;
+  const ajustedY = isNaN(parsedCanvas.height / maxValue) ? 0 : parsedCanvas.height / maxValue;
+
+  // watch the Y childs keys
+  getChildrenAttr({
+    attrName: 'dataKey',
+    children: chidrenWithDefaultAxis,
+    originalValue: childrenYKeys,
+    updateValue: setChildrenYKey,
+  });
+
+  // Create a fingerprint of the data to avoid unnecessary contextValue updates
+  const dataFingerprint = getDataFingerprint(data);
+  // Build the context value
+  const contextValue = useMemo(() => {
+    return buildLineContextValue({
+      ajustedX,
+      ajustedY,
+      canvasHeight: parsedCanvas.height,
+      canvasWidth: parsedCanvas.width,
+      children: chidrenWithDefaultAxis,
+      data,
+      viewBox,
+      xKey,
+    });
+  }, [parsedCanvas.width, parsedCanvas.height, dataFingerprint, xKey, childrenYKeys]);
+
+  useEffect(() => {
+    if (contextValue.error && onErrors) {
+      onErrors({
+        [ErrorType.GENERIC]: contextValue.error,
+      });
+    }
+  }, [contextValue.error, onErrors]);
+
+  const { svgRef, xCursor, yCursor } = useHover({
+    canvasHeight: parsedCanvas.height,
+    canvasWidth: parsedCanvas.width,
+  });
+
+  useEffect(() => {
+    const svgElement = document.querySelector<SVGSVGElement>('[data-kbt-svg]');
+    if (!svgElement) {
+      return;
+    }
+    const { parsedCanvasHeight, parsedCanvasWidth } = getCanvasDimensions({
+      canvasHeight,
+      canvasWidth,
+      svgElement,
+    });
+
+    setParsedCanvas({
+      height: parsedCanvasHeight,
+      width: parsedCanvasWidth,
+    });
+  }, [canvasWidth, canvasHeight]);
+
+  useEffect(() => {
+    getPathArea?.({
+      x1: contextValue.extraSpaceLeftX,
+      x2: parsedCanvas.width - contextValue.extraSpaceRightX,
+      y1: contextValue.extraSpaceTopY,
+      y2: parsedCanvas.height - contextValue.extraSpaceBottomY,
+    });
+  }, [parsedCanvas.width, parsedCanvas.height]);
+
+  return (
+    <SvgContainer
+      ref={svgRef}
+      ariaHidden={ariaHidden}
+      ariaLabel={ariaLabel}
+      caption={caption}
+      className={classNames}
+      data-kbt-svg={true}
+      dataTestId={dataTestId}
+      height={height}
+      role={role}
+      tabIndex={tabIndex}
+      viewBox={viewBox}
+      width={width}
+      {...props}
+    >
+      <LineChartContext.Provider
+        value={{
+          ...contextValue,
+          canvasExtraSpace: parsedCanvasExtraSpace,
+          canvasHeight: parsedCanvas.height,
+          canvasWidth: parsedCanvas.width,
+          data,
+          dataTestId,
+          xCursor,
+          xKey,
+          yCursor,
+        }}
+      >
+        {children}
+      </LineChartContext.Provider>
+    </SvgContainer>
+  );
+};

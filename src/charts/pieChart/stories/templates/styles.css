@@ -1,0 +1,39 @@
+@keyframes opacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.custom-animation {
+  transform-origin: center;
+  &:focus {
+    outline: none;
+    animation: opacity 1s forwards;
+    stroke: blue;
+    stroke-width: 1px;
+  }
+  &:hover {
+    cursor: pointer;
+    animation: opacity 1s forwards;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pie-chart-styles {
+  animation: fadeIn 2s ease-in-out;
+}
+
+.center-half-chart > g {
+  transform: translate(0, -25%);
+}

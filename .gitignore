@@ -1,0 +1,9 @@
+node_modules
+dist
+yarn.lock
+__reports__
+bundle
+.DS_Store
+.vscode
+.idea
+*.log

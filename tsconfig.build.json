@@ -1,0 +1,53 @@
+{
+  "exclude": [
+    "src/**/*.test.*",
+    "src/**/__mocks__",
+    "src/**/__fixtures__",
+    "src/**/__tests__",
+    "src/**/__stories__",
+    "src/**/storybook",
+    "dist",
+    "vitest.config.ts",
+    "vitest.setup.ts",
+    "vite.config.mts",
+    "viteStorybook.config.mts",
+    "src/**/*.stories.ts",
+    "src/**/*.stories.tsx"
+  ],
+  "compilerOptions": {
+    "noEmit": false,
+    "sourceMap": false,
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["DOM", "ES2020", "ES2021", "ES2022"],
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "outDir": "./dist/esm",
+    "rootDir": "./src",
+    "strict": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "useUnknownInCatchVariables": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "preserveSymlinks": true,
+    "jsx": "react-jsx",
+    "composite": false,
+    "types": ["vite/client", "vitest/globals"],
+    "typeRoots": ["src/lib/types", "node_modules/@types"],
+    "removeComments": false,
+    "baseUrl": "./src",
+    "erasableSyntaxOnly": true,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}

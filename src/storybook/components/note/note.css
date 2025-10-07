@@ -1,0 +1,108 @@
+/* Base styles for the note container */
+.kbt-note-container {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid var(--kbt-note-border-color, #0066cc);
+  background-color: var(--kbt-note-bg, #f0f8ff);
+  transition: grid-template-rows 0.3s ease-in-out;
+}
+
+/* Collapsed state */
+.kbt-note-container.kbt-note-collapsed {
+  grid-template-rows: auto 0fr;
+}
+
+/* Header container for title and toggle button */
+.kbt-note-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Heading styles */
+.kbt-note-heading {
+  display: block;
+  flex: 1;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--kbt-note-heading-color, #0066cc);
+}
+
+/* Toggle button styles */
+.kbt-note-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 3px;
+  background-color: transparent;
+  color: var(--kbt-note-heading-color, #0066cc);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.kbt-note-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.kbt-note-toggle:focus {
+  outline: 2px solid var(--kbt-note-heading-color, #0066cc);
+  outline-offset: 1px;
+}
+
+/* Toggle icon styles */
+.kbt-note-toggle-icon {
+  font-size: 10px;
+  transition: transform 0.3s ease;
+  transform: rotate(180deg);
+}
+
+.kbt-note-toggle-icon-collapsed {
+  transform: rotate(0deg);
+}
+
+/* Content container for collapsible content */
+.kbt-note-content {
+  overflow: hidden;
+}
+
+/* Text styles */
+.kbt-note-text {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Semantic style modifiers */
+.kbt-note-information {
+  --kbt-note-bg: #f1f8ff;
+  --kbt-note-border-color: #0366d6;
+  --kbt-note-heading-color: #0366d6;
+}
+
+.kbt-note-success {
+  --kbt-note-bg: #f0fff4;
+  --kbt-note-border-color: #22863a;
+  --kbt-note-heading-color: #22863a;
+}
+
+.kbt-note-warning {
+  --kbt-note-bg: #fffbe6;
+  --kbt-note-border-color: #ffb800;
+  --kbt-note-heading-color: #b38600;
+}
+
+.kbt-note-dormant {
+  --kbt-note-bg: #fff0f0;
+  --kbt-note-border-color: #d73a49;
+  --kbt-note-heading-color: #d73a49;
+}

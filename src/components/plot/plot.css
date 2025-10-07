@@ -1,0 +1,12 @@
+.plot {
+  outline: none;
+  /* Removes the browser's default outline */
+}
+
+/* Keep classes for compatibility with existing customizations via CSS */
+.plot-focus-outer,
+.plot-focus-inner {
+  /* Basic styles that are not overridden by properties */
+  pointer-events: none;
+  /* So they don't intercept events */
+}

@@ -1,0 +1,29 @@
+.path {
+  &:focus {
+    outline: none;
+  }
+}
+
+/* Just for Node storybook example */
+.node-focus-border {
+  outline: none;
+
+  &:focus-visible {
+    outline-style: solid;
+    outline-offset: 2px;
+    outline-width: 2px;
+    outline-color: #2C71DB;
+  }
+}
+
+/* For Line Chart Nodes */
+.node-path-focus-border {
+  outline: none;
+
+  &:focus-visible {
+    outline-style: solid;
+    outline-offset: 1px;
+    outline-width: 1px;
+    outline-color: #2C71DB;
+  }
+}
