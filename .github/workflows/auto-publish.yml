@@ -14,13 +14,13 @@ name: Auto Publish to NPM
 #      - repo (Full control of private repositories)
 #      - workflow (Update GitHub Action workflows)
 #    - OR use Fine-grained PAT with "Contents: write" and "Pull requests: write"
-#    - If main branch is protected, ensure the token can bypass pull request requirements
+#    - If cms branch is protected, ensure the token can bypass pull request requirements
 
 on:
   pull_request:
     types: [closed]
     branches:
-      - main
+      - cms
       - master
 
 permissions:
@@ -312,12 +312,12 @@ jobs:
 
           if [ -n "${{ secrets.RELEASE_TOKEN }}" ]; then
             echo "Using RELEASE_TOKEN to bypass branch protection"
-            git push origin main
+            git push origin cms
             git push origin --tags
-            echo "Changes and tags pushed successfully to main"
+            echo "Changes and tags pushed successfully to cms"
           else
             echo "Using GITHUB_TOKEN - attempting push (may fail on protected branches)"
-            if git push origin main && git push origin --tags; then
+            if git push origin cms && git push origin --tags; then
               echo "Changes and tags pushed successfully"
             else
               echo "Push failed - likely due to branch protection rules"
