@@ -12,7 +12,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/React-18.3.1-blue?logo=react" alt="React version" />
   <img src="https://img.shields.io/badge/TypeScript-5.9.2-blue?logo=typescript" alt="TypeScript version" />
-  <img src="https://img.shields.io/badge/license-ISC-green" alt="License" />
+  <img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License" />
 </p>
 
 ---
@@ -322,7 +322,7 @@ yarn test-storybook
 yarn eslint --fix
 ```
 
-## Contributing Guidelines
+## Contributing
 
 ### Code Standards
 
@@ -333,18 +333,7 @@ yarn eslint --fix
 
 ### Contribution Workflow
 
-1. Create a feature branch from `main`
-2. Develop following project conventions
-3. Write tests for new features
-4. Run `yarn test` to verify
-5. Create Pull Request
-
-### Conventions
-
-- **Commits**: Use conventional commits
-- **Components**: Follow existing composition pattern
-- **Tests**: One test file per component
-- **Stories**: Document all use cases
+See our [CONTRIBUTING](./CONTRIBUTING.md) for coding conventions, commit message guidelines, and pull request processes.
 
 ### Component Development Guidelines
 
