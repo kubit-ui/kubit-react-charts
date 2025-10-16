@@ -31,13 +31,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'yarn'
-          cache-dependency-path: yarn.lock
+          registry-url: 'https://registry.npmjs.org'
 
-      - name: Setup Yarn
+      - name: Setup Yarn and dependencies
         run: |
           corepack enable
-          yarn install --frozen-lockfile
+          yarn --version
+
+          # Check if yarn.lock exists and install accordingly
+          if [ -f "yarn.lock" ]; then
+            echo "yarn.lock found - installing with frozen lockfile"
+            yarn install --frozen-lockfile --prefer-offline
+          else
+            echo "No yarn.lock found - running fresh install"
+            yarn install
+            echo "Dependencies installed and lockfile generated"
+          fi
 
       - name: Validate Branch Naming
         id: branch-validation
