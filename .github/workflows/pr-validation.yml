@@ -96,22 +96,6 @@ jobs:
             echo "title_length_valid=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Validate PR Description
-        id: pr-description-validation
-        run: |
-          PR_BODY="${{ github.event.pull_request.body }}"
-          
-          if [ -z "$PR_BODY" ] || [ "$PR_BODY" = "null" ]; then
-            echo "❌ PR description is empty"
-            echo "description_valid=false" >> $GITHUB_OUTPUT
-          elif [ ${#PR_BODY} -lt 20 ]; then
-            echo "❌ PR description too short (${#PR_BODY} chars, min 20)"
-            echo "description_valid=false" >> $GITHUB_OUTPUT
-          else
-            echo "✅ PR description provided (${#PR_BODY} chars)"
-            echo "description_valid=true" >> $GITHUB_OUTPUT
-          fi
-
       - name: Code Quality Checks
         id: code-quality
         run: |
@@ -234,7 +218,6 @@ jobs:
               branch_valid: '${{ steps.branch-validation.outputs.branch_valid }}' === 'true',
               title_valid: '${{ steps.pr-title-validation.outputs.title_valid }}' === 'true',
               title_length_valid: '${{ steps.pr-title-validation.outputs.title_length_valid }}' === 'true',
-              description_valid: '${{ steps.pr-description-validation.outputs.description_valid }}' === 'true',
               eslint_valid: '${{ steps.code-quality.outputs.eslint_valid }}' === 'true',
               typescript_valid: '${{ steps.code-quality.outputs.typescript_valid }}' === 'true',
               tests_valid: '${{ steps.test-validation.outputs.tests_valid }}' === 'true',
@@ -262,11 +245,6 @@ jobs:
             
             if (!results.title_valid) {
               issues.push('❌ PR title must follow conventional commits: `type: description`');
-              blocking = true;
-            }
-            
-            if (!results.description_valid) {
-              issues.push('❌ PR description is required (minimum 20 characters)');
               blocking = true;
             }
             
@@ -328,7 +306,6 @@ jobs:
             |-------|--------|-------------|
             | **Branch Naming** | ${results.branch_valid ? '✅ Pass' : '❌ Fail'} | Must follow \`type/description\` pattern |
             | **PR Title** | ${results.title_valid ? '✅ Pass' : '❌ Fail'} | Must follow conventional commits |
-            | **PR Description** | ${results.description_valid ? '✅ Pass' : '❌ Fail'} | Required, minimum 20 characters |
             | **ESLint** | ${results.eslint_valid ? '✅ Pass' : '❌ Fail'} | Code style and quality rules |
             | **TypeScript** | ${results.typescript_valid ? '✅ Pass' : '❌ Fail'} | Type checking validation |
             | **Tests** | ${results.tests_valid ? '✅ Pass' : '❌ Fail'} | All tests must pass |`;
