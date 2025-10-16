@@ -336,18 +336,6 @@ jobs:
 
             ---
 
-            ### 📋 Coding Standards Checklist
-
-            - [ ] Code follows TypeScript best practices
-            - [ ] No \`any\` types used (prefer specific types)
-            - [ ] Single quotes used consistently
-            - [ ] \`const\` used by default, \`let\` only when reassigning
-            - [ ] No unused variables or imports
-            - [ ] Proper error handling implemented
-            - [ ] JSDoc comments for public APIs
-            - [ ] Tests added/updated for changes
-            - [ ] No deep relative imports (\`../../../\`)
-
             ### 🎯 Next Steps
 
             ${blocking ? 
