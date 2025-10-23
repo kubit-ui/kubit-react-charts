@@ -123,7 +123,7 @@
     "storybook:axe": "yarn build && axe-storybook --build-dir bundle",
     "createAssetsFiles": "node ./scripts/createAssetsFiles.js",
     "prettier": "prettier 'src/**/*.ts' --write",
-    "test": "yarn run eslint --fix && yarn tsc && yarn vitest-report",
+    "test": "yarn run eslint --fix && yarn tsc && yarn vitest --coverage.enabled=true --silent --run",
     "test-storybook": "test-storybook",
     "vitest": "vitest",
     "vitest-report": "vitest --ui --coverage.enabled=true",
