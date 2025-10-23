@@ -45,6 +45,8 @@
 
 # For Library Users
 
+> 💡 **Cross-platform**: Kubit Charts is also available for [Android](https://github.com/kubit-ui/kubit-android-charts) and [iOS](https://github.com/kubit-ui/kubit-ios-charts) platforms, enabling consistent chart experiences across all your applications.
+
 ## Features
 
 **Composable**: Modular architecture where each chart is composed of specialized elements  
