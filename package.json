@@ -7,7 +7,7 @@
   "unpkg": "dist/kubit-ui-web-react-charts.umd.js",
   "jsdelivr": "dist/kubit-ui-web-react-charts.umd.js",
   "types": "dist/types/index.d.ts",
-  "description": "A comprehensive React chart library built by Kubit - Modern, customizable, and accessible data visualization components for web applications",
+  "description": "Modern React chart library with TypeScript support - Create beautiful, interactive, and accessible data visualizations with ease. Features bar charts, line charts, pie charts, and more!",
   "keywords": [
     "react",
     "charts",
@@ -20,7 +20,23 @@
     "accessible",
     "customizable",
     "responsive",
-    "storybook"
+    "storybook",
+    "bar-chart",
+    "line-chart",
+    "pie-chart",
+    "svg",
+    "interactive",
+    "dashboard",
+    "analytics",
+    "open-source",
+    "modern",
+    "lightweight",
+    "tree-shakable",
+    "react18",
+    "hooks",
+    "visualization",
+    "plotting",
+    "business-intelligence"
   ],
   "exports": {
     ".": {
@@ -88,7 +104,6 @@
     "!dist/**/**/stories"
   ],
   "scripts": {
-    "jest": "jest",
     "test:ci": "yarn test",
     "eslint": "eslint src",
     "custom-start": "echo -e '\n▐█µ   ╓▓█▀             ▐█         j█▌   ╓▄   \n▐█▌,▄██─    ▓▌     ▓▌  ▐█▄▄▓▓█▓▄   ▓▌ @▓██▓▓▓\n▐██▀└╙██    █▌     █▌  ▐█─    └█▌  █▌   ██   \n▐█▌    ▀█▌  ██▄▄▄▄▀█▌  ▐██▄╓,▄██`  █▌   ╙█▄▄▄'",
@@ -108,7 +123,7 @@
     "storybook:axe": "yarn build && axe-storybook --build-dir bundle",
     "createAssetsFiles": "node ./scripts/createAssetsFiles.js",
     "prettier": "prettier 'src/**/*.ts' --write",
-    "test": "yarn run eslint --fix && yarn tsc && yarn vitest-report",
+    "test": "yarn run eslint --fix && yarn tsc && yarn vitest --coverage.enabled=true --silent --run",
     "test-storybook": "test-storybook",
     "vitest": "vitest",
     "vitest-report": "vitest --ui --coverage.enabled=true",
@@ -130,18 +145,20 @@
     "url": "https://www.kubit-lab.com",
     "email": "kubit.lab.dev@gmail.com"
   },
+  "maintainers": [
+    {
+      "name": "Kubit Development Team",
+      "email": "kubit.lab.dev@gmail.com",
+      "url": "https://www.kubit-lab.com"
+    }
+  ],
   "contributors": [
     {
       "name": "Kubit Development Team",
       "url": "https://www.kubit-lab.com"
     }
   ],
-  "license": "ISC",
-  "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=7.0.0",
-    "yarn": ">=1.22.0"
-  },
+  "license": "Apache-2.0",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

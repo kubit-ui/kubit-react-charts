@@ -481,7 +481,7 @@ export const LineChartWithErrorHandling: Story = {
                   triggers an <code>INVALID_X_TICK</code> error due to insufficient data for X-axis
                   coordinate calculations.
                 </p>
-                <h4>� Continuous Improvement:</h4>
+                <h4> Continuous Improvement:</h4>
                 <p>
                   Our error detection system is continuously evolving to catch more edge cases. We
                   welcome reports of unhandled errors that result in exceptions or broken component

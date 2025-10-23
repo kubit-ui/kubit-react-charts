@@ -40,4 +40,4 @@ By following these best practices, you can help protect your application and its
 
 ## Contact
 
-If you have any questions or concerns regarding the security of this project, please contact us [kubit@opendigitalservices.com](mailto:kubit@opendigitalservices.com).
+If you have any questions or concerns regarding the security of this project, please contact us [kubit.lab.dev@gmail.com](mailto:kubit.lab.dev@gmail.com).

@@ -383,4 +383,6 @@ jobs:
             // Set status check
             if (blocking) {
               core.setFailed('PR validation failed - please fix the issues above');
+            } else {
+              core.info('✅ All PR validation checks passed - ready for review!');
             }
