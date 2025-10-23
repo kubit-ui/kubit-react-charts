@@ -1,7 +1,12 @@
 # Kubit React Charts
 
 <p align="center">
-  <img src="./assets/readme_logo.png" alt="Kubito" width="120" height="120" />
+  <a href="https://kubit-ui.com">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/kubit-ui/kubit-react-charts/raw/cms/assets/readme_logo.png">
+      <img src="hhttps://github.com/kubit-ui/kubit-react-charts/raw/cms/assets/readme_logo.png" width="70%">
+    </picture>
+  </a>
 </p>
 
 <p align="center">
@@ -10,6 +15,7 @@
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/npm/v/@kubit-ui-web/react-charts" alt="Version" />
   <img src="https://img.shields.io/badge/React-18.3.1-blue?logo=react" alt="React version" />
   <img src="https://img.shields.io/badge/TypeScript-5.9.2-blue?logo=typescript" alt="TypeScript version" />
   <img src="https://img.shields.io/badge/license-Apache%202.0-blue" alt="License" />
@@ -84,26 +90,24 @@ yarn add react react-dom
 
 ```typescript
 // Import complete charts
-import { BarChart, LineChart, PieChart } from "@kubit-ui-web/react-charts";
-
+import { BarChart, LineChart, PieChart } from '@kubit-ui-web/react-charts';
 // Import specific components
-import { Plot, Path, Node } from "@kubit-ui-web/react-charts/components";
-
+import { Node, Path, Plot } from '@kubit-ui-web/react-charts/components';
 // Import types
-import type { ChartData, BarOrientation } from "@kubit-ui-web/react-charts/types";
+import type { BarOrientation, ChartData } from '@kubit-ui-web/react-charts/types';
 ```
 
 ### LineChart Example
 
 ```tsx
-import React from "react";
-import { LineChart } from "@kubit-ui-web/react-charts";
+import { LineChart } from '@kubit-ui-web/react-charts';
+import React from 'react';
 
 const data = [
-  { year: "2020", sales: 100, profit: 20 },
-  { year: "2021", sales: 150, profit: 35 },
-  { year: "2022", sales: 180, profit: 45 },
-  { year: "2023", sales: 200, profit: 60 },
+  { year: '2020', sales: 100, profit: 20 },
+  { year: '2021', sales: 150, profit: 35 },
+  { year: '2022', sales: 180, profit: 45 },
+  { year: '2023', sales: 200, profit: 60 },
 ];
 
 function MyLineChart() {
@@ -112,7 +116,7 @@ function MyLineChart() {
       <LineChart.Path dataKey="sales" stroke="#0078D4" strokeWidth={2} />
       <LineChart.Path dataKey="profit" stroke="#FF6B35" strokeWidth={2} />
       <LineChart.XAxis position="BOTTOM" showTickLines />
-      <LineChart.YAxis position="LEFT" valueFormatter={(val) => `$${val}k`} />
+      <LineChart.YAxis position="LEFT" valueFormatter={val => `$${val}k`} />
     </LineChart>
   );
 }
@@ -121,14 +125,14 @@ function MyLineChart() {
 ### BarChart Example
 
 ```tsx
-import React from "react";
-import { BarChart, BarOrientation } from "@kubit-ui-web/react-charts";
+import { BarChart, BarOrientation } from '@kubit-ui-web/react-charts';
+import React from 'react';
 
 const data = [
-  { category: "A", value: 30 },
-  { category: "B", value: 45 },
-  { category: "C", value: 25 },
-  { category: "D", value: 60 },
+  { category: 'A', value: 30 },
+  { category: 'B', value: 45 },
+  { category: 'C', value: 25 },
+  { category: 'D', value: 60 },
 ];
 
 function MyBarChart() {
@@ -146,7 +150,7 @@ function MyBarChart() {
         dataIdx={0}
         barConfig={{
           barWidth: 40,
-          singleConfig: [{ color: "#0078D4", coverage: 100 }],
+          singleConfig: [{ color: '#0078D4', coverage: 100 }],
         }}
       />
       <BarChart.XAxis position="BOTTOM" />
@@ -348,10 +352,10 @@ Please refer to our [development instructions](./.github/copilot-instructions.md
 
 ## License
 
-This project is licensed under the ISC License.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICENSE) file for details.
 
 ---
 
 <p align="center">
-  Made with ❤️ by the <strong>Kubit</strong> team <img src="./assets/kubito.png" alt="Kubito" width="15" height="15" />
+  Made with ❤️ by the <strong>Kubit</strong> team <img src="https://github.com/kubit-ui/kubit-react-charts/raw/cms/assets/kubito.png" alt="Kubito" width="15" height="15" />
 </p>
