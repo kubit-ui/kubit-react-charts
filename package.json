@@ -12,15 +12,13 @@
     "react",
     "charts",
     "graphs",
-    "data-visualization",
     "typescript",
     "kubit",
-    "ui-components",
-    "web-charts",
+    "components",
+    "visualization",
     "accessible",
     "customizable",
-    "responsive",
-    "storybook"
+    "responsive"
   ],
   "exports": {
     ".": {
