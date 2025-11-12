@@ -8,4 +8,15 @@ beforeAll(() => {
   HTMLCanvasElement.prototype.getContext = function () {
     return null;
   };
+
+  // Mock ResizeObserver - simple implementation
+  if (typeof global.ResizeObserver === 'undefined') {
+    // @ts-ignore
+    global.ResizeObserver = class ResizeObserver {
+      constructor(callback: any) {}
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    };
+  }
 });

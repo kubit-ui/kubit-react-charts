@@ -4,11 +4,16 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ZoomArea } from '../zoomArea';
 
-const ResizeObserverMock = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-}));
+class ResizeObserverMock {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(_callback: any) {
+    // Mock constructor
+  }
+
+  disconnect = vi.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
+}
 
 beforeEach(() => {
   vi.stubGlobal('ResizeObserver', ResizeObserverMock);
