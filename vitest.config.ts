@@ -56,6 +56,14 @@ export default defineConfig({
     environment: 'jsdom', // Use jsdom for browser-like tests
     globals: true,
     include: ['**/__tests__/**/*.test.{js,ts,jsx,tsx}'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**', // Exclude all dist directories from testing
+      '**/build/**',
+      '**/coverage/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
+    ],
     outputFile: {
       html: '__reports__/report.html',
     },
