@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-11-12
+
+### Updated
+
+- **Testing Mocks**: Refactored `ResizeObserver` mock implementation in `zoomArea.test.js` to use a class-based approach for better clarity and maintainability.
+- **Hexagon & Pentagon Tests**: Updated imports in `hexagon.test.tsx` and `pentagon.test.tsx` to ensure proper mocking and testing of shape point calculations.
+- **Vitest Imports**: Standardized Vitest imports across test files for consistency.
+- **Storybook**: versions updated to latest compatible versions for improved documentation experience.
+
 ## [1.0.0] - 2025-10-23
 
 🎉 **Official Release** - First stable version of Kubit React Charts library with comprehensive charting components and full TypeScript support.
