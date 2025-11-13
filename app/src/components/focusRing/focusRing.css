@@ -1,0 +1,25 @@
+/**
+ * FocusRing Component Styles
+ * 
+ * Basic styles for the focus ring component elements.
+ * Most styling is handled through SVG attributes, but this provides
+ * any necessary CSS classes for consistency.
+ */
+
+.focus-ring-outer {
+    /* Ensure focus rings don't interfere with pointer events */
+    pointer-events: none;
+}
+
+.focus-ring-inner {
+    /* Ensure focus rings don't interfere with pointer events */
+    pointer-events: none;
+}
+
+/* 
+ * Focus ring container - if needed for grouping
+ */
+.focus-ring-container {
+    /* Ensure focus ring group doesn't interfere with interactions */
+    pointer-events: none;
+}

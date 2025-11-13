@@ -1,11 +1,7 @@
-import { type ForwardedRef, forwardRef } from 'react';
+import { type ForwardedRef, forwardRef, useState } from 'react';
 
-import { useFocus } from '@/hooks/useFocus/useFocus';
+import { FocusRing } from '@/components/focusRing/focusRing';
 import { useHover } from '@/hooks/useHover/useHover';
-import {
-  calculateFocusOutline,
-  getFocusConfig,
-} from '@/utils/calculateFocusOutline/calculateFocusOutline';
 
 import { Circle } from './components/circle/circle';
 import { Square } from './components/square/square';
@@ -49,8 +45,8 @@ const PlotComponent = <T = string,>(
   }: PlotProps<T>,
   ref: ForwardedRef<SVGElement>
 ) => {
-  const { handleBlur, handleFocus, isFocused } = useFocus(onFocus, onBlur);
   const { handleMouseEnter, handleMouseLeave, isHovered } = useHover(onMouseEnter, onMouseLeave);
+  const [isFocused, setIsFocused] = useState(false);
 
   // Extract properties from hoverConfig with default values
   const {
@@ -61,23 +57,10 @@ const PlotComponent = <T = string,>(
     strokeWidth: hoverStrokeWidth = 0,
   } = hoverConfig || {};
 
-  // Extract properties from focusConfig with default values
-  const resolvedFocusConfig = getFocusConfig(focusConfig);
-
-  // Calculate focus outline dimensions using the utility
+  // Calculate size in pixels for FocusRing
   const sizeInPixels = typeof size === 'number' ? size : PLOT_SIZE_MAP[size];
-  const focusOutline = calculateFocusOutline({
-    elementHeight: sizeInPixels,
-    elementPosition: position,
-    elementStrokeWidth: strokeWidth,
-    elementType: 'rectangle',
-    elementWidth: sizeInPixels,
-    gap: resolvedFocusConfig.gap,
-    innerStrokeWidth: resolvedFocusConfig.innerStrokeWidth,
-    outlineStrokeWidth: resolvedFocusConfig.outlineStrokeWidth,
-  });
 
-  // Properties for the main plot shape - no hover styles applied to the main component
+  // Properties for the main plot shape - focus handlers managed by FocusRing
   const plotShapeProps = {
     ...props,
     ['aria-label']: label,
@@ -86,9 +69,7 @@ const PlotComponent = <T = string,>(
     fill, // Maintains original fill color
     fillOpacity, // Maintains original opacity
     id,
-    onBlur: handleBlur,
     onClick,
-    onFocus: handleFocus,
     onKeyDown,
     onMouseEnter: handleMouseEnter,
     onMouseLeave: handleMouseLeave,
@@ -97,7 +78,7 @@ const PlotComponent = <T = string,>(
     role: 'button',
     size: sizeInPixels,
     stroke, // Maintains original stroke color
-    strokeWidth: hasHoverEffect && isHovered && !isFocused ? 0 : strokeWidth,
+    strokeWidth: hasHoverEffect && isHovered ? 0 : strokeWidth, // Removed isFocused dependency
     tabIndex,
   };
 
@@ -119,37 +100,19 @@ const PlotComponent = <T = string,>(
         />
       )}
 
-      {isFocused && focusOutline.type === 'rectangle' && (
-        <g>
-          {/* Outer outline */}
-          <rect
-            className="plot-focus-outer"
-            data-testid={`${dataTestId}-focus-outer`}
-            fill="none"
-            height={focusOutline.outer.height}
-            stroke={resolvedFocusConfig.outlineColor}
-            strokeWidth={resolvedFocusConfig.outlineStrokeWidth}
-            width={focusOutline.outer.width}
-            x={focusOutline.outer.x}
-            y={focusOutline.outer.y}
-          />
-
-          {/* Inner outline */}
-          <rect
-            className="plot-focus-inner"
-            data-testid={`${dataTestId}-focus-inner`}
-            fill="none"
-            height={focusOutline.inner.height}
-            stroke={resolvedFocusConfig.innerColor}
-            strokeWidth={resolvedFocusConfig.innerStrokeWidth}
-            width={focusOutline.inner.width}
-            x={focusOutline.inner.x}
-            y={focusOutline.inner.y}
-          />
-        </g>
-      )}
-      {/* Main plot component - maintains its original appearance even when focused */}
-      <PlotShape ref={ref} {...plotShapeProps} />
+      {/* Main plot component wrapped with FocusRing */}
+      <FocusRing
+        dataTestId={dataTestId}
+        elementPosition={position}
+        elementSize={sizeInPixels}
+        elementStrokeWidth={strokeWidth}
+        focusConfig={focusConfig}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        onFocusChange={setIsFocused}
+      >
+        <PlotShape ref={ref} {...plotShapeProps} />
+      </FocusRing>
     </>
   );
 };
