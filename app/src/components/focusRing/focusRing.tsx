@@ -1,5 +1,6 @@
 import { cloneElement, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 
+import { useFocus } from '@/hooks/useFocus/useFocus';
 import {
   calculateFocusOutline,
   getFocusConfig,
@@ -8,12 +9,7 @@ import {
 import './focusRing.css';
 import type { FocusRingProps, FocusRingRendererProps } from './focusRing.types';
 import { composeRefs } from './utils/composeRefs';
-import {
-  type ElementInfo,
-  detectElementBounds,
-  detectElementInfo,
-  detectWithFallback,
-} from './utils/detectElementInfo';
+import { type ElementInfo, detectElementInfo, detectWithFallback } from './utils/detectElementInfo';
 
 /**
  * Internal component that renders the actual focus ring elements
@@ -62,160 +58,106 @@ const FocusRingRenderer: React.FC<FocusRingRendererProps> = ({
 /**
  * FocusRing component that wraps SVG elements and automatically handles focus ring rendering.
  *
- * **Controlled & Decorative Component**: This component is purely decorative and does not
- * manage focus state internally. The parent component must control the `isFocused` prop.
- *
- * **Two Modes of Operation:**
- *
- * 1. **Inline Mode (children)**: Wraps the element and renders the focus ring inline.
- *    Best for simple cases where z-order is not a concern.
- *
- * 2. **Separate Mode (targetRef)**: Only renders the focus ring, not the element.
- *    Allows precise control over z-order (e.g., ring on top of other elements).
- *
- * Features:
- * - **Complete Automatic Detection**: Supports rect, circle, ellipse, path, polygon, line, and text elements
- * - **Zero Configuration**: No manual props required - just provide isFocused state
- * - **Controlled Component**: Parent manages focus state via isFocused prop
- * - **Strict Validation**: Won't render focus ring for invalid/undetectable elements
- * - **DOM Fallback**: Uses getBBox() when props detection fails
- * - **Performance Optimized**: Smart memoization and path caching
- * - **Flexible Z-Order**: Choose inline or separate rendering
+ * Internal component with zero-configuration automatic element detection.
+ * Analyzes SVG element properties to determine appropriate focus ring dimensions
+ * and positioning without requiring any manual props.
  *
  * @example
- * // Mode 1: Inline (children)
- * const [isFocused, setIsFocused] = useState(false);
- * <FocusRing isFocused={isFocused}>
- *   <rect
- *     onFocus={() => setIsFocused(true)}
- *     onBlur={() => setIsFocused(false)}
- *   />
+ * ```tsx
+ * // Plug-and-play usage - automatically detects all element types
+ * <FocusRing>
+ *   <rect x={34} y={34} width={32} height={32} fill="blue" />
  * </FocusRing>
  *
- * @example
- * // Mode 2: Separate (targetRef)
- * const rectRef = useRef<SVGRectElement>(null);
- * const [isFocused, setIsFocused] = useState(false);
- * <>
- *   <rect
- *     ref={rectRef}
- *     onFocus={() => setIsFocused(true)}
- *     onBlur={() => setIsFocused(false)}
- *   />
- *   <FocusRing targetRef={rectRef} isFocused={isFocused} />
- * </>
+ * <FocusRing>
+ *   <circle cx={50} cy={50} r={20} fill="red" />
+ * </FocusRing>
+ *
+ * <FocusRing focusConfig={{ outlineColor: 'blue' }}>
+ *   <polygon points="50,5 95,40 5,40" fill="green" />
+ * </FocusRing>
+ * ```
  */
 const FocusRingComponent = forwardRef<SVGElement, FocusRingProps>(
   (
-    { children, dataTestId = 'focus-ring', disabled = false, focusConfig, isFocused, targetRef },
+    {
+      children,
+      dataTestId = 'focus-ring',
+      disabled = false,
+      focusConfig,
+      onBlur,
+      onFocus,
+      onFocusChange,
+    },
     ref
   ) => {
-    // Validation: need either children OR targetRef (not both, not neither)
-    const hasChildren = !!children;
-    const hasTargetRef = !!targetRef;
-
-    if (!hasChildren && !hasTargetRef) {
-      // Silent fail - no warning needed
+    // Early validation: ensure we have a valid React element
+    if (!children || typeof children !== 'object' || !('type' in children)) {
       return null;
     }
 
-    if (hasChildren && hasTargetRef) {
-      // Silent fail - use children mode when both are provided
-    }
+    // Use the existing focus hook to manage focus state
+    const { handleBlur, handleFocus, isFocused } = useFocus();
 
-    // Determine which mode we're in
-    const useExternalRef = !hasChildren && hasTargetRef;
-
-    // Early validation for children mode
-    if (hasChildren && (typeof children !== 'object' || !('type' in children))) {
-      // Silent fail - invalid children
-      return null;
-    }
-
-    // Internal ref for DOM-based detection (used for both modes)
-    const internalRef = useRef<SVGElement>(null);
+    // Internal ref for DOM-based detection
+    const elementRef = useRef<SVGElement>(null);
     const [domDetectedInfo, setDomDetectedInfo] = useState<ElementInfo | null>(null);
 
-    // Use the appropriate ref: targetRef for external mode, internalRef for children mode
-    const elementRef = useExternalRef ? targetRef : internalRef;
-
-    // Detect element properties automatically from props (children mode)
+    // Detect element properties automatically
+    // Optimized memoization: only re-calculate if relevant props change
     const detectedInfo = useMemo(() => {
-      if (!hasChildren || !children) {
-        return null;
-      }
       return detectElementInfo(children);
     }, [
-      hasChildren,
-      children,
-      // Only re-detect if relevant props change
-      children?.type,
-      children?.props.x,
-      children?.props.y,
-      children?.props.width,
-      children?.props.height,
-      children?.props.cx,
-      children?.props.cy,
-      children?.props.r,
-      children?.props.rx,
-      children?.props.ry,
-      children?.props.d,
-      children?.props.points,
-      children?.props.x1,
-      children?.props.y1,
-      children?.props.x2,
-      children?.props.y2,
-      children?.props.strokeWidth,
-      children?.props['stroke-width'],
-      children?.props.fontSize,
-      children?.props['font-size'],
+      // Only include props that affect detection
+      children.type,
+      children.props.x,
+      children.props.y,
+      children.props.width,
+      children.props.height,
+      children.props.cx,
+      children.props.cy,
+      children.props.r,
+      children.props.rx,
+      children.props.ry,
+      children.props.d,
+      children.props.points,
+      children.props.x1,
+      children.props.y1,
+      children.props.x2,
+      children.props.y2,
+      children.props.strokeWidth,
+      children.props['stroke-width'],
+      children.props.fontSize,
+      children.props['font-size'],
     ]);
 
-    // DOM-based detection for targetRef mode or fallback for children mode
+    // DOM-based fallback detection when props detection fails
     useEffect(() => {
-      // For targetRef mode, always use DOM detection
-      if (useExternalRef && elementRef?.current) {
-        const domInfo = detectElementBounds(elementRef.current);
-        if (domInfo?.isValid) {
-          setDomDetectedInfo(domInfo);
-        }
+      if (detectedInfo.isValid || !elementRef.current) {
         return;
       }
 
-      // For children mode, use DOM fallback only if props detection failed
-      if (hasChildren && !detectedInfo?.isValid && elementRef?.current && children) {
-        const domInfo = detectWithFallback(children, elementRef.current);
-        if (domInfo?.isValid) {
-          setDomDetectedInfo(domInfo);
-        }
+      const domInfo = detectWithFallback(children, elementRef.current);
+      if (domInfo?.isValid) {
+        setDomDetectedInfo(domInfo);
       }
-    }, [useExternalRef, hasChildren, children, detectedInfo, elementRef, isFocused]);
+    }, [children, detectedInfo.isValid]);
 
-    // Determine final element info (props detection or DOM fallback)
+    // Combine refs for both internal and external use
+    const combinedRef = useMemo(() => composeRefs(ref, elementRef), [ref]);
+
+    // Use automatic detection with DOM fallback
+    // Return null if no valid information is available (strict behavior)
     const finalElementInfo = useMemo(() => {
-      // For targetRef mode, always use DOM detection
-      if (useExternalRef) {
-        if (!domDetectedInfo?.isValid) {
-          return null;
-        }
+      // Use props detection first, then DOM detection fallback
+      const sourceInfo = detectedInfo.isValid ? detectedInfo : domDetectedInfo || detectedInfo;
 
-        return {
-          elementHeight: domDetectedInfo.elementHeight || domDetectedInfo.elementSize || 24,
-          elementPosition: domDetectedInfo.elementPosition || { x: 0, y: 0 },
-          elementSize: domDetectedInfo.elementSize || 24,
-          elementStrokeWidth: domDetectedInfo.elementStrokeWidth ?? 0,
-          elementType: domDetectedInfo.elementType || 'rectangle',
-          elementWidth: domDetectedInfo.elementWidth || domDetectedInfo.elementSize || 24,
-        };
-      }
-
-      // For children mode, prefer props detection, fallback to DOM
-      const sourceInfo = detectedInfo?.isValid ? detectedInfo : domDetectedInfo || detectedInfo;
-
-      if (!sourceInfo?.isValid) {
+      // If no valid detection, return null (component won't render focus ring)
+      if (!sourceInfo.isValid) {
         return null;
       }
 
+      // Return the detected info directly
       return {
         elementHeight: sourceInfo.elementHeight || sourceInfo.elementSize || 24,
         elementPosition: sourceInfo.elementPosition || { x: 0, y: 0 },
@@ -224,9 +166,10 @@ const FocusRingComponent = forwardRef<SVGElement, FocusRingProps>(
         elementType: sourceInfo.elementType || 'rectangle',
         elementWidth: sourceInfo.elementWidth || sourceInfo.elementSize || 24,
       };
-    }, [useExternalRef, detectedInfo, domDetectedInfo]);
+    }, [detectedInfo, domDetectedInfo]);
 
     // Calculate focus outline dimensions using existing utility
+    // Only calculate if we have valid element info
     const focusOutline = useMemo(() => {
       if (!finalElementInfo) {
         return null;
@@ -238,7 +181,7 @@ const FocusRingComponent = forwardRef<SVGElement, FocusRingProps>(
         elementHeight: finalElementInfo.elementHeight,
         elementPosition: finalElementInfo.elementPosition,
         elementStrokeWidth: finalElementInfo.elementStrokeWidth,
-        elementType: 'rectangle',
+        elementType: 'rectangle', // Keep as rectangle for now (will be extended in Phase 2B)
         elementWidth: finalElementInfo.elementWidth,
         gap: resolvedFocusConfig.gap,
         innerStrokeWidth: resolvedFocusConfig.innerStrokeWidth,
@@ -249,67 +192,68 @@ const FocusRingComponent = forwardRef<SVGElement, FocusRingProps>(
     // Get resolved focus configuration with defaults
     const resolvedFocusConfig = useMemo(() => getFocusConfig(focusConfig), [focusConfig]);
 
-    // MODO 1: children (render inline)
-    if (hasChildren && children) {
-      // Combine refs for both internal and external use
-      const combinedRef = useMemo(() => composeRefs(ref, internalRef), [ref]);
+    // Clone children and add focus/blur handlers
+    const wrappedChildren = cloneElement(children, {
+      onBlur: (event: React.FocusEvent<SVGElement>) => {
+        // Call original onBlur if it exists from props
+        onBlur?.(event);
+        // Call children's original onBlur if it exists
+        children.props.onBlur?.(event);
+        // Handle blur state change
+        handleBlur(event);
+        // Call callback if provided
+        onFocusChange?.(false);
+      },
+      onFocus: (event: React.FocusEvent<SVGElement>) => {
+        // Call original onFocus if it exists from props
+        onFocus?.(event);
+        // Call children's original onFocus if it exists
+        children.props.onFocus?.(event);
+        // Handle focus state change
+        handleFocus(event);
+        // Call callback if provided
+        onFocusChange?.(true);
+      },
+      ref: combinedRef,
+    });
 
-      // Clone children and add ref (but NOT event handlers - parent manages those)
-      const wrappedChildren = cloneElement(children, {
-        ref: combinedRef,
-      });
+    return (
+      <>
+        {/* Render the wrapped children */}
+        {wrappedChildren}
 
-      return (
-        <>
-          {/* Render the wrapped children */}
-          {wrappedChildren}
-
-          {/* Render focus ring when focused, not disabled, and we have valid element info */}
-          {isFocused && !disabled && focusOutline && (
-            <FocusRingRenderer
-              dataTestId={dataTestId}
-              focusConfig={resolvedFocusConfig}
-              outline={focusOutline}
-            />
-          )}
-        </>
-      );
-    }
-
-    // MODO 2: targetRef (render only focus ring)
-    return isFocused && !disabled && focusOutline ? (
-      <FocusRingRenderer
-        dataTestId={dataTestId}
-        focusConfig={resolvedFocusConfig}
-        outline={focusOutline}
-      />
-    ) : null;
+        {/* Render focus ring when focused, not disabled, and we have valid element info */}
+        {isFocused && !disabled && focusOutline && (
+          <FocusRingRenderer
+            dataTestId={dataTestId}
+            focusConfig={resolvedFocusConfig}
+            outline={focusOutline}
+          />
+        )}
+      </>
+    );
   }
 );
 
 FocusRingComponent.displayName = 'FocusRing';
 
 /**
- * FocusRing - Controlled, purely decorative component for rendering focus rings around SVG elements.
+ * FocusRing component that wraps SVG elements and automatically handles focus ring rendering.
  *
- * **Key Characteristics:**
- * - **Controlled Component**: Parent manages `isFocused` state
- * - **Purely Decorative**: Does not intercept or manage events
- * - **Two Modes**: Inline (children) or Separate (targetRef) rendering
- * - **Zero Configuration**: Automatic element detection
- * - **Strict Validation**: Won't render for invalid elements
+ * **Simplified Internal Component**: Zero-configuration automatic element detection that
+ * analyzes SVG element properties to determine appropriate focus ring dimensions and
+ * positioning without requiring any manual configuration.
+ *
+ * Features:
+ * - **Complete Automatic Detection**: Supports rect, circle, ellipse, path, polygon, line, and text elements
+ * - **Zero Configuration**: No manual props required - just wrap your SVG element
+ * - **Strict Validation**: Won't render focus ring for invalid/undetectable elements
  * - **DOM Fallback**: Uses getBBox() when props detection fails
+ * - **Performance Optimized**: Smart memoization and path caching
+ * - **Event Preservation**: Preserves all original event handlers on wrapped children
+ * - **Flexible Styling**: Supports custom focus configuration via focusConfig prop
  *
- * **Mode 1: Inline (children)**
- * - Wraps the element and renders focus ring inline
- * - Best for simple cases where z-order is not a concern
- *
- * **Mode 2: Separate (targetRef)**
- * - Only renders the focus ring, not the element
- * - Allows precise control over z-order
- * - Element must be rendered separately by parent
- *
- * @param props - FocusRingProps
- * @returns JSX element with focus ring or null
+ * @param props - Simplified FocusRingProps (no manual element props)
+ * @returns JSX element with automatic focus ring functionality or null if element invalid
  */
 export const FocusRing = FocusRingComponent;

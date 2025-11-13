@@ -1,7 +1,6 @@
-import { type ForwardedRef, forwardRef } from 'react';
+import { type ForwardedRef, forwardRef, useState } from 'react';
 
 import { FocusRing } from '@/components/focusRing/focusRing';
-import { useFocus } from '@/hooks/useFocus/useFocus';
 import { useHover } from '@/hooks/useHover/useHover';
 
 import { Circle } from './components/circle/circle';
@@ -47,7 +46,7 @@ const PlotComponent = <T = string,>(
   ref: ForwardedRef<SVGElement>
 ) => {
   const { handleMouseEnter, handleMouseLeave, isHovered } = useHover(onMouseEnter, onMouseLeave);
-  const { handleBlur, handleFocus, isFocused } = useFocus(onFocus, onBlur);
+  const [isFocused, setIsFocused] = useState(false);
 
   // Extract properties from hoverConfig with default values
   const {
@@ -70,8 +69,6 @@ const PlotComponent = <T = string,>(
     fill, // Maintains original fill color
     fillOpacity, // Maintains original opacity
     id,
-    onBlur: handleBlur,
-    onFocus: handleFocus,
     onClick,
     onKeyDown,
     onMouseEnter: handleMouseEnter,
@@ -103,8 +100,14 @@ const PlotComponent = <T = string,>(
         />
       )}
 
-      {/* Main plot component wrapped with FocusRing */}
-      <FocusRing dataTestId={dataTestId} focusConfig={focusConfig} isFocused={isFocused}>
+      {/* Main plot component wrapped with FocusRing - uses automatic detection */}
+      <FocusRing
+        dataTestId={dataTestId}
+        focusConfig={focusConfig}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        onFocusChange={setIsFocused}
+      >
         <PlotShape ref={ref} {...plotShapeProps} />
       </FocusRing>
     </>

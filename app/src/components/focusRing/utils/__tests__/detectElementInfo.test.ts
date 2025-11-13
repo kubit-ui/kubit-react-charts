@@ -1,6 +1,6 @@
 import { createElement } from 'react';
 
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { detectElementBounds, detectElementInfo, detectWithFallback } from '../detectElementInfo';
 
@@ -589,10 +589,9 @@ describe('detectElementInfo', () => {
 
       const result = detectWithFallback(element);
 
-      expect(result).not.toBeNull();
-      expect(result?.isValid).toBe(true);
-      expect(result?.elementType).toBe('rectangle');
-      expect(result?.originalElementType).toBe('rect');
+      expect(result.isValid).toBe(true);
+      expect(result.elementType).toBe('rectangle');
+      expect(result.originalElementType).toBe('rect');
     });
 
     it('falls back to DOM detection when props detection fails', () => {
@@ -615,12 +614,11 @@ describe('detectElementInfo', () => {
 
       const result = detectWithFallback(element, mockDomElement);
 
-      expect(result).not.toBeNull();
-      expect(result?.isValid).toBe(true);
-      expect(result?.elementType).toBe('rectangle');
-      expect(result?.originalElementType).toBe('rect');
-      expect(result?.elementWidth).toBe(40);
-      expect(result?.elementHeight).toBe(30);
+      expect(result.isValid).toBe(true);
+      expect(result.elementType).toBe('rectangle');
+      expect(result.originalElementType).toBe('rect');
+      expect(result.elementWidth).toBe(40);
+      expect(result.elementHeight).toBe(30);
     });
 
     it('returns null when no valid information can be detected', () => {
