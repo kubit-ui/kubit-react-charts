@@ -4,6 +4,7 @@ import type { TickData } from '@/components/tick/tick.types';
 import type { BarChartContextType } from '../../barChart.type';
 
 export const CONTEXT: BarChartContextType = {
+  addError: undefined,
   barChildrenCount: 3,
   canvasExtraSpace: 0,
   canvasHeight: 500,

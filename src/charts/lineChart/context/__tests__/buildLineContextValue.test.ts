@@ -69,8 +69,8 @@ describe('buildLineContextValue', () => {
       { position: 0, value: '30' },
     ]);
     (getPoints as Mock).mockReturnValue([0]);
-    (getXCoordinates as Mock).mockReturnValue([0, 100, 200]);
-    (getYCoordinates as Mock).mockReturnValue([0, 50, 100]);
+    (getXCoordinates as Mock).mockReturnValue({ x1: 0, x2: 100, y1: 10, y2: 190 });
+    (getYCoordinates as Mock).mockReturnValue({ x1: 10, x2: 390, y1: 0, y2: 50 });
   });
 
   it('should build the context with right values', () => {
@@ -95,7 +95,7 @@ describe('buildLineContextValue', () => {
       securityXSpace: 5,
       securityYSpace: 5,
       xAxisCoordinates: {
-        coordinates: [0, 100, 200],
+        coordinates: { x1: 0, x2: 100, y1: 10, y2: 190 },
         tickValues: [
           { position: 0, value: '1' },
           { position: 400, value: '2' },
@@ -104,7 +104,7 @@ describe('buildLineContextValue', () => {
       },
       xAxisText: 'X Axis',
       yAxisCoordinates: {
-        coordinates: [0, 50, 100],
+        coordinates: { x1: 10, x2: 390, y1: 0, y2: 50 },
         tickValues: [
           { position: 500, value: '10' },
           { position: 250, value: '20' },

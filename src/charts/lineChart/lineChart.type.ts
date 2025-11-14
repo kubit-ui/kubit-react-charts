@@ -6,7 +6,7 @@ import type { LineProps } from '@/components/line/line.types';
 import type { NodePathProps, PathProps, StyleProps } from '@/components/path/path.types';
 import type { TickData } from '@/components/tick/tick.types';
 import type { CanvasConfig } from '@/types/canvas.type';
-import type { ChartError, ChartErrorCollection } from '@/types/errors.type';
+import type { ChartError, ChartErrorCollection, ErrorType } from '@/types/errors.type';
 import type { Positions } from '@/types/position.enum';
 import type { ValueFormatter } from '@/types/valueFormatter.type';
 
@@ -67,6 +67,7 @@ export type LineChartContextType = Omit<LineChartExtraSpacings, OmitLineProps> &
   xCursor: number;
   yCursor: number;
   error?: ChartError;
+  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => void;
 };
 
 export interface LineChartProps {

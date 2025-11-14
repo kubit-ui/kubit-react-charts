@@ -1,6 +1,7 @@
 import type { TickData } from '@/components/tick/tick.types';
 
 export const CONTEXT = {
+  addError: undefined,
   canvasExtraSpace: 0,
   canvasHeight: 500,
   canvasWidth: 500,

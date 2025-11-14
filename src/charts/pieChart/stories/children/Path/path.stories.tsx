@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import type { PathProps } from '@/components/path/path.types';
 import { Note } from '@/storybook/components/note/note';

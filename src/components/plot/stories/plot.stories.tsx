@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Fragment } from 'react/jsx-runtime';
 
 import { XAxis } from '@/components/axisChart/xAxis/xAxis';

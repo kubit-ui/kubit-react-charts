@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { BarOrientation } from '@/components/bar/bar.type';
 import { Note } from '@/storybook/components/note/note';

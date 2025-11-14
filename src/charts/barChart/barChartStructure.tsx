@@ -3,6 +3,8 @@ import { Children, useMemo } from 'react';
 import { SvgContainer } from '@/components/svgContainer/svgContainer';
 import { buildViewBox } from '@/components/svgContainer/utils/buildViewBox/buildViewBox';
 import { DefaultCanvasConfig } from '@/types/canvas.type';
+import type { ChartError, ErrorType } from '@/types/errors.type';
+import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
 import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
 import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
 
@@ -22,6 +24,7 @@ export const BarChartStructure: React.FC<BarChartProps> = ({
   dataTestId,
   gapBetweenBars = 0,
   height = '100%',
+  onErrors,
   orientation,
   pKey,
   role,
@@ -54,11 +57,21 @@ export const BarChartStructure: React.FC<BarChartProps> = ({
   const maxValue = Math.max(parsedCanvasWidth, parsedCanvasHeight, parsedCanvasExtraSpace ?? 0);
   const ajustedX = parsedCanvasWidth / maxValue;
   const ajustedY = parsedCanvasHeight / maxValue;
+
+  const errorAccumulator = useMemo(() => createErrorAccumulator(onErrors), [onErrors]);
+
   // Create a fingerprint of the data to avoid unnecessary contextValue updates
   const dataFingerprint = getDataFingerprint(data);
+
   // Build the context value
   const contextValue = useMemo(() => {
+    // Clear previous errors before building new context
+    errorAccumulator.clearErrors();
+
     return buildBarContextValue({
+      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => {
+        errorAccumulator.addError(errorType, error);
+      },
       ajustedX,
       ajustedY,
       canvasHeight: parsedCanvasHeight,
@@ -70,7 +83,7 @@ export const BarChartStructure: React.FC<BarChartProps> = ({
       pKey,
       viewBox,
     });
-  }, [canvasHeight, canvasWidth, dataFingerprint, pKey, orientation]);
+  }, [canvasHeight, canvasWidth, dataFingerprint, pKey, orientation, errorAccumulator.addError]);
 
   return (
     <SvgContainer

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { type Mock, vi } from 'vitest';
+import type { Mock } from 'vitest';
 
 import type { NodeProps } from '@/components/node/node.types';
 import { calculateShapePoints } from '@/components/node/utils/calculateShapePoints/calculateShapePoints';

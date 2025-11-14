@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 
 import { Line } from '@/components/line/line';
@@ -452,44 +452,38 @@ export const LineChartWithErrorHandling: Story = {
         <>
           <Note
             collapsible={true}
-            defaultCollapsed={false}
-            heading="🚨 Error Handling in LineChart"
+            defaultCollapsed={true}
+            heading="Error Handling in LineChart"
             text={[
               <div key="error-handling-explanation">
                 <p>
-                  The <strong>LineChart</strong> includes a robust error handling system that
-                  automatically detects issues during data processing and rendering, enabling
-                  resilient interfaces.
+                  The <strong>LineChart</strong> includes a comprehensive error accumulator that
+                  detects and reports validation issues across all its subcomponents in real-time.
                 </p>
                 <h4>🎯 Key Features:</h4>
                 <ul>
                   <li>
-                    <strong>Automatic Detection:</strong> Validates data and coordinate calculations
+                    <strong>Component Validation:</strong> Each fragment (Path, Axes, Separator,
+                    Projection) validates its configuration and data
                   </li>
                   <li>
-                    <strong>Error Callback:</strong> Use <code>onErrors</code> prop to handle errors
-                    gracefully
+                    <strong>Error Accumulation:</strong> Multiple errors are collected and reported
+                    together via the <code>onErrors</code> callback
                   </li>
                   <li>
-                    <strong>Graceful Fallback:</strong> Provides default values to maintain
-                    component stability
+                    <strong>Developer Control:</strong> You decide how to handle errors - display
+                    them, log them, or provide fallback UI
                   </li>
                 </ul>
-                <h4>⚠️ This Example:</h4>
+                <h4>⚠️ Interactive Example:</h4>
                 <p>
-                  Uses a single data point (<code>[{"{ year: '2023', cats: 20 }"}]</code>) which
-                  triggers an <code>INVALID_X_TICK</code> error due to insufficient data for X-axis
-                  coordinate calculations.
-                </p>
-                <h4> Continuous Improvement:</h4>
-                <p>
-                  Our error detection system is continuously evolving to catch more edge cases. We
-                  welcome reports of unhandled errors that result in exceptions or broken component
-                  displays, as they help us improve the robustness of the chart library.
+                  This example demonstrates multiple error types simultaneously: insufficient data,
+                  invalid configurations, and coordinate validation failures. The error panel shows
+                  real-time detection and categorization.
                 </p>
               </div>,
             ]}
-            variant="warning"
+            variant="information"
           />
           <Story />
         </>
@@ -499,50 +493,7 @@ export const LineChartWithErrorHandling: Story = {
   parameters: {
     docs: {
       source: {
-        code: `
-        const [errorInfo, setErrorInfo] = useState<{
-      hasErrors: boolean;
-      errors: ChartErrorCollection;
-    }>({
-      hasErrors: false,
-      errors: {},
-    });
-
-    // Problematic data, just one entry to trigger an error
-    const PROBLEMATIC_DATA = [{ year: '2023', cats: 20 }];
-
-    const handleChartError = useCallback((errors: ChartErrorCollection) => {
-      setErrorInfo({
-        hasErrors: true,
-        errors,
-      });
-    }, []);
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '600px' }}>
-        {/* Content based on error state */}
-        {errorInfo.hasErrors ? '⚠️ Detected Error' : '✅ No errors detected'}
-
-        {/* Chart */}
-        <LineChart data={PROBLEMATIC_DATA} xKey="year" onErrors={handleChartError}>
-          <LineChart.Path dataKey="cats" stroke="#0078D4" strokeWidth="0.3" tabIndex={0} />
-          <LineChart.XAxis
-            ariaLabel="XAxis"
-            position={Positions.BOTTOM}
-            showTickLines={false}
-            stroke="black"
-            strokeWidth="0.1"
-          />
-          <LineChart.YAxis
-            ariaLabel="YAxis"
-            position={Positions.LEFT}
-            showTickLines={false}
-            stroke="black"
-            strokeWidth="0.1"
-          />
-        </LineChart>
-      </div>
-    );`,
+        code: 'See withErrorHandling.tsx template for complete implementation',
       },
     },
   },
