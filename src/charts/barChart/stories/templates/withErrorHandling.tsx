@@ -3,17 +3,26 @@ import { useCallback, useState } from 'react';
 import { type ChartErrorCollection, normalizeToArray } from '@/types/errors.type';
 import { Positions } from '@/types/position.enum';
 
-import { LineChart } from '../../lineChart';
+import { BarChart, type BarChartIDataPoint } from '../../barChart';
 
-// Problematic data, just one entry to trigger an error
-const PROBLEMATIC_DATA = [{ cats: 20, year: '2023' }];
+// Problematic data to trigger validation errors
+const PROBLEMATIC_DATA: BarChartIDataPoint[] = [
+  { dogs: 150, revenue: -100, year: '2020' }, // Negative value
+  { cats: 'invalid' as unknown as number, dogs: 250, year: '2021' }, // Invalid type
+  { cats: 200, dogs: 300, year: '2022' }, // For testing non-existent dataKey
+];
+
+const barConfig = {
+  barWidth: 50,
+  singleConfig: [{ color: 'pink', coverage: 100 }],
+};
 
 interface ErrorInfoState {
-  hasErrors: boolean;
   errors: ChartErrorCollection;
+  hasErrors: boolean;
 }
 
-export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
+export const BarChartWithErrorHandlingWithHooks = (): JSX.Element => {
   const [errorInfo, setErrorInfo] = useState<ErrorInfoState>({
     errors: {},
     hasErrors: false,
@@ -34,6 +43,7 @@ export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
         flexDirection: 'column',
         gap: '16px',
         height: '600px',
+        padding: '20px',
       }}
     >
       {/* Error panel */}
@@ -121,7 +131,6 @@ export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
           <></>
         )}
       </div>
-
       {/* Chart area with explanatory message when errors prevent rendering */}
       <div
         style={{
@@ -144,7 +153,7 @@ export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>📊❌</div>
             <h3 style={{ color: '#6c757d', margin: '0 0 12px 0' }}>
-              Line Chart Cannot Render Due to Multiple Errors
+              Bar Chart Cannot Render Due to Multiple Errors
             </h3>
             <p style={{ color: '#6c757d', fontSize: '13px', margin: '0' }}>
               Review the error panel above to see detailed diagnostics for each component.
@@ -153,44 +162,51 @@ export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
         ) : (
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>📊✅</div>
-            <h3 style={{ color: '#28a745', margin: '0' }}>Chart would render here</h3>
+            <h3 style={{ color: '#28a745', margin: '0' }}>Chart would render</h3>
             <p style={{ color: '#6c757d', fontSize: '13px', margin: '8px 0 0 0' }}>
               No errors detected - chart rendering successfully
             </p>
           </div>
         )}
       </div>
-
-      {/* Hidden LineChart for error detection only */}
+      {/* Hidden BarChart for error detection */}
       <div style={{ display: 'none' }}>
-        <LineChart data={PROBLEMATIC_DATA} xKey="year" onErrors={handleChartError}>
-          <LineChart.Path dataKey="cats" stroke="#0078D4" strokeWidth="0.3" tabIndex={0} />
-          <LineChart.Path dataKey="invalidKey" stroke="#FF6B6B" strokeWidth="0.3" tabIndex={0} />
-          <LineChart.XAxis
-            ariaLabel="XAxis"
+        <BarChart
+          data={PROBLEMATIC_DATA}
+          orientation="VERTICAL"
+          pKey="year"
+          onErrors={handleChartError}
+        >
+          {/* Data points with negative values */}
+          <BarChart.Path barConfig={barConfig} dataIdx={0} dataKey="revenue" order={0} />
+          {/* Data point with NaN value */}
+          <BarChart.Path barConfig={barConfig} dataIdx={1} dataKey="cats" order={1} />
+          <BarChart.XAxis
+            key="x"
+            ariaLabel="Year"
             position={Positions.BOTTOM}
-            showTickLines={false}
+            showTickLines={true}
             stroke="black"
             strokeWidth="0.1"
+            tickText={{ fontSize: 1, textAnchor: 'middle' }}
             tickValues={{
               custom: { values: ['2023'] }, // Only 1 value to trigger insufficient data error
             }}
           />
-          <LineChart.YAxis
-            ariaLabel="YAxis"
+          <BarChart.YAxis
+            key="y"
+            ariaLabel="Rabbits"
             position={Positions.LEFT}
-            showTickLines={false}
+            showTickLines={true}
             stroke="black"
             strokeWidth="0.1"
+            tickText={{ fontSize: 1, textAnchor: 'middle' }}
             tickValues={{
               numeric: { max: 20, min: 20, step: 1 }, // min = max configuration to trigger error
             }}
           />
-          <LineChart.Separator
-            areaSeparator={{ fill: 'rgba(255,0,0,0.1)' }}
-            xBreakAxis="2025" // Invalid break axis - outside data range
-          />
-        </LineChart>
+          <BarChart.Separator areaSeparator={{ fill: 'rgba(255,0,0,0.1)' }} xBreakAxis="2025" />
+        </BarChart>
       </div>
     </div>
   );

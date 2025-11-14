@@ -3,7 +3,8 @@ import { Children, type FC, type ReactElement, useEffect, useMemo, useState } fr
 import { SvgContainer } from '@/components/svgContainer/svgContainer';
 import { buildViewBox } from '@/components/svgContainer/utils/buildViewBox/buildViewBox';
 import { DefaultCanvasConfig } from '@/types/canvas.type';
-import { ErrorType } from '@/types/errors.type';
+import type { ChartError, ErrorType } from '@/types/errors.type';
+import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
 import { getCanvasDimensions } from '@/utils/getCanvasDimensions/getCanvasDimensions';
 import { getChildrenAttr } from '@/utils/getChildrenAttr/getChildrenAttr';
 import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
@@ -100,11 +101,17 @@ export const LineChartStructure: FC<LineChartProps> = ({
     updateValue: setChildrenYKey,
   });
 
-  // Create a fingerprint of the data to avoid unnecessary contextValue updates
+  const errorAccumulator = useMemo(() => createErrorAccumulator(onErrors), [onErrors]);
+
   const dataFingerprint = getDataFingerprint(data);
-  // Build the context value
   const contextValue = useMemo(() => {
+    // Clear previous errors before building new context
+    errorAccumulator.clearErrors();
+
     return buildLineContextValue({
+      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => {
+        errorAccumulator.addError(errorType, error);
+      },
       ajustedX,
       ajustedY,
       canvasHeight: parsedCanvas.height,
@@ -114,15 +121,14 @@ export const LineChartStructure: FC<LineChartProps> = ({
       viewBox,
       xKey,
     });
-  }, [parsedCanvas.width, parsedCanvas.height, dataFingerprint, xKey, childrenYKeys]);
-
-  useEffect(() => {
-    if (contextValue.error && onErrors) {
-      onErrors({
-        [ErrorType.GENERIC]: contextValue.error,
-      });
-    }
-  }, [contextValue.error, onErrors]);
+  }, [
+    parsedCanvas.width,
+    parsedCanvas.height,
+    dataFingerprint,
+    xKey,
+    childrenYKeys,
+    errorAccumulator.addError,
+  ]);
 
   const { svgRef, xCursor, yCursor } = useHover({
     canvasHeight: parsedCanvas.height,

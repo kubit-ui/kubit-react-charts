@@ -1,5 +1,13 @@
-import { type FC, type ReactElement, useContext } from 'react';
+import { type FC, type ReactElement, useContext, useEffect } from 'react';
 
+import {
+  BuildError,
+  buildError,
+  buildSeparatorXBreakAxisError,
+  buildSeparatorXOutOfRangeError,
+  buildSeparatorYBreakAxisError,
+  buildSeparatorYOutOfRangeError,
+} from '@/utils/buildErrors/buildErrors';
 import { getPoints } from '@/utils/getPoints/getPoints';
 
 import { LineChartContext } from '../context/lineChartContext';
@@ -13,8 +21,53 @@ export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
   xBreakAxis,
   yBreakAxis,
 }): ReactElement => {
-  const { crossXAxis, crossYAxis, xAxisCoordinates, yAxisCoordinates } =
+  const { addError, crossXAxis, crossYAxis, xAxisCoordinates, yAxisCoordinates } =
     useContext(LineChartContext);
+
+  // Separator error validations
+  useEffect(() => {
+    // xBreakAxis validation
+    if (xBreakAxis !== undefined) {
+      const xValues = xAxisCoordinates.tickValues.map(tick => tick.value);
+      const xBreakNumeric = typeof xBreakAxis === 'string' ? parseFloat(xBreakAxis) : xBreakAxis;
+
+      if (isNaN(xBreakNumeric)) {
+        addError?.('LINE_CHART_SEPARATOR_ERROR', {
+          error: buildSeparatorXBreakAxisError(xBreakAxis),
+        });
+      } else {
+        const minX = Math.min(...xValues.map(v => (typeof v === 'string' ? parseFloat(v) : v)));
+        const maxX = Math.max(...xValues.map(v => (typeof v === 'string' ? parseFloat(v) : v)));
+
+        if (xBreakNumeric < minX || xBreakNumeric > maxX) {
+          addError?.('LINE_CHART_SEPARATOR_ERROR', {
+            error: buildSeparatorXOutOfRangeError(xBreakNumeric, minX, maxX),
+          });
+        }
+      }
+    }
+
+    // yBreakAxis validation
+    if (yBreakAxis !== undefined) {
+      const yValues = yAxisCoordinates.tickValues.map(tick => tick.value);
+      const yBreakNumeric = typeof yBreakAxis === 'string' ? parseFloat(yBreakAxis) : yBreakAxis;
+
+      if (isNaN(yBreakNumeric)) {
+        addError?.('LINE_CHART_SEPARATOR_ERROR', {
+          error: buildSeparatorYBreakAxisError(yBreakAxis),
+        });
+      } else {
+        const minY = Math.min(...yValues.map(v => (typeof v === 'string' ? parseFloat(v) : v)));
+        const maxY = Math.max(...yValues.map(v => (typeof v === 'string' ? parseFloat(v) : v)));
+
+        if (yBreakNumeric < minY || yBreakNumeric > maxY) {
+          addError?.('LINE_CHART_SEPARATOR_ERROR', {
+            error: buildSeparatorYOutOfRangeError(yBreakNumeric, minY, maxY),
+          });
+        }
+      }
+    }
+  }, [xBreakAxis, yBreakAxis, xAxisCoordinates.tickValues, yAxisCoordinates.tickValues, addError]);
 
   if (!topSeparator && !rightSeparator && !areaSeparator) {
     return <></>;
@@ -29,6 +82,15 @@ export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
   const xEnd = customXEnd ?? autoXEnd;
   const yStart = yAxisCoordinates.coordinates.y2;
   const yEnd = customYEnd ?? autoYEnd;
+
+  // Separator positioning validation
+  useEffect(() => {
+    if (xStart === xEnd && yStart === yEnd) {
+      addError?.('LINE_CHART_SEPARATOR_ERROR', {
+        error: buildError(BuildError.LINE_CHART_SEPARATOR_INVALID_COORDINATES),
+      });
+    }
+  }, [xStart, xEnd, yStart, yEnd, addError]);
 
   const squarePath = `M${xStart} ${yStart} H ${xEnd} V ${yEnd} H ${xStart} Z`;
   const lineTop = `M${xStart} ${yEnd} H ${xEnd}`;

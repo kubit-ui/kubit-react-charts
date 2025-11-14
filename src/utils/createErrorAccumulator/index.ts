@@ -1,0 +1,1 @@
+export { createErrorAccumulator } from './createErrorAccumulator';

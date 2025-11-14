@@ -11,6 +11,11 @@ export const getBarDataValues = (data: BarChartTickValuesAxisProps): string[] | 
   }
   if (data.numeric) {
     const { max, min = 0, step } = data.numeric;
+    // Verify if the step is larger or equal than the range
+    const range = Math.abs(max - min);
+    if (step >= range || step <= 0) {
+      return [min.toString()];
+    }
     const stepper: string[] = [];
     for (let i = min; i <= max; i += step) {
       stepper.push(i.toString());

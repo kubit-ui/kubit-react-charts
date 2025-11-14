@@ -6,6 +6,7 @@ import type { BarChartStyles, BarOrientation } from '@/components/bar/bar.type';
 import type { PathProps, StyleProps } from '@/components/path/path.types';
 import type { TickData } from '@/components/tick/tick.types';
 import type { CanvasConfig } from '@/types/canvas.type';
+import type { ChartError, ChartErrorCollection, ErrorType } from '@/types/errors.type';
 import type { Positions } from '@/types/position.enum';
 
 export type BarChartChildrenType = ReactNode | ReactElement<PathProps | XAxisProps | YAxisProps>;
@@ -65,6 +66,8 @@ export type BarChartContextType = Omit<BarChartExtraSpacings, OmitLineProps> & {
   barChildrenCount: number;
   gapBetweenBars?: number;
   orientation: (typeof BarOrientation)[keyof typeof BarOrientation];
+  error?: ChartError;
+  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => void;
 };
 
 export interface BarChartProps {
@@ -89,6 +92,7 @@ export interface BarChartProps {
   onBlur?: (event: React.FocusEvent<SVGElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<SVGSVGElement>) => void;
   onKeyUp?: (event: React.KeyboardEvent<SVGSVGElement>) => void;
+  onErrors?: (errors: ChartErrorCollection) => void;
 }
 
 export interface BarChartTickNumeric {

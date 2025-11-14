@@ -3,6 +3,7 @@ import { type FC, type ReactElement, useContext, useEffect, useRef } from 'react
 import { Line } from '@/components/line/line';
 import { Node } from '@/components/node/node';
 import { Path } from '@/components/path/path';
+import { BuildError, buildDataKeyNotFoundError, buildError } from '@/utils/buildErrors/buildErrors';
 import { getPoints } from '@/utils/getPoints/getPoints';
 import { pickCustomAttributes } from '@/utils/pickCustomAttributes/pickCustomAttributes';
 
@@ -31,7 +32,46 @@ export const LineChartPath: FC<LineChartPathProps> = ({
   ...props
 }): ReactElement => {
   // recovery the context values
-  const { xAxisCoordinates, yAxisCoordinates, ...context } = useContext(LineChartContext);
+  const { addError, xAxisCoordinates, yAxisCoordinates, ...context } = useContext(LineChartContext);
+
+  // Path error validations
+  useEffect(() => {
+    // Invalid dataKey validation
+    if (!props.dataKey || typeof props.dataKey !== 'string') {
+      addError?.('LINE_CHART_PATH_ERROR', {
+        error: buildError(BuildError.LINE_CHART_PATH_INVALID_DATAKEY),
+      });
+      return;
+    }
+
+    // Check if dataKey exists in dataset
+    if (
+      context.data.length > 0 &&
+      !Object.prototype.hasOwnProperty.call(context.data[0], props.dataKey)
+    ) {
+      addError?.('LINE_CHART_PATH_ERROR', {
+        error: buildDataKeyNotFoundError(props.dataKey),
+      });
+      return;
+    }
+
+    // Curved path calculation errors
+    if (curved && context.data.length < 2) {
+      addError?.('LINE_CHART_PATH_ERROR', {
+        error: buildError(BuildError.LINE_CHART_PATH_INSUFFICIENT_POINTS),
+      });
+      return;
+    }
+
+    // Path rendering errors - validate coordinates
+    const yData = getAxisData(context.data, props.dataKey);
+    if (yData.length > 0 && yData.every(val => val === null || val === undefined)) {
+      addError?.('LINE_CHART_PATH_ERROR', {
+        error: buildError(BuildError.LINE_CHART_PATH_ALL_VALUES_NULL),
+      });
+    }
+  }, [props.dataKey, curved, context.data, addError]);
+
   // the node indicator logic
   const { indicatorRef, pathRef } = useIndicator(context.xCursor, !!indicatorConfig);
   const showIndicator = !!indicatorConfig && context.xCursor !== -Infinity;

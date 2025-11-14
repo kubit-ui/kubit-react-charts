@@ -8,6 +8,7 @@
   border-left: 4px solid var(--kbt-note-border-color, #0066cc);
   background-color: var(--kbt-note-bg, #f0f8ff);
   transition: grid-template-rows 0.3s ease-in-out;
+  font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Collapsed state */
@@ -18,7 +19,7 @@
 /* Header container for title and toggle button */
 .kbt-note-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
@@ -27,10 +28,15 @@
 .kbt-note-heading {
   display: block;
   flex: 1;
-  margin-bottom: 6px;
+  margin: 0;
   font-size: 14px;
   font-weight: bold;
   color: var(--kbt-note-heading-color, #0066cc);
+}
+
+/* Add margin only when expanded */
+.kbt-note-container:not(.kbt-note-collapsed) .kbt-note-heading {
+  margin-bottom: 6px;
 }
 
 /* Toggle button styles */
