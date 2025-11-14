@@ -5,6 +5,70 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-11-14
+
+### Added
+
+#### Error Management System
+
+- **Centralized Error Accumulator**: Implemented a higher-order function with closures for centralized error handling across chart components
+  - Creates isolated error state per chart instance using `Map<string, ChartError[]>`
+  - Provides `addError`, `getAccumulatedErrors`, and `clearErrors` functions
+  - State maintained in closure (not React state) to avoid unnecessary re-renders
+  - Supports multiple internal components reporting errors centrally
+
+#### Chart Component Enhancements
+
+- **LineChart Error Integration**:
+  - Modified `buildLineContextValue` to include error accumulator functions
+  - Updated `LineChartContextType` with new error handling methods
+  - Child components can now report errors via context
+  - Replaced existing `useEffect` error handling with accumulated error reporting
+
+- **BarChart Error Integration**:
+  - Modified `buildBarContextValues` to include error accumulator functions
+  - Updated `BarChartContextType` with new error handling methods
+  - Consistent implementation with LineChart for unified error management
+  - Maintains backward compatibility with existing `onErrors` callbacks
+
+#### Utility Functions
+
+- **Error Validation System**:
+  - Chart-specific error builders for LineChart and BarChart in `src/utils/buildErrors/charts/`
+  - Comprehensive error messages for different error scenarios
+  - Type-safe error definitions and validation
+  - Centralized chart defaults in `src/charts/constants/chartDefaults.ts`
+
+#### Developer Experience
+
+- **Enhanced Testing**:
+  - Added comprehensive test suites for `createErrorAccumulator` utility
+  - Added test cases for LineChart and BarChart error integration
+  - Updated existing error handling tests to cover new functionality
+  - All error accumulator test cases passing
+
+- **Documentation & Stories**:
+  - Added Storybook stories demonstrating error handling
+  - JSDoc comments for all public error handling APIs
+  - Self-documenting code with clear variable/function names
+  - Enhanced TypeScript type definitions
+
+### Technical Details
+
+- **Compound Components Pattern**: Foundation for scalable error management across all chart components with multiple internal components (XAxis, YAxis, Path, Separator, etc.) reporting errors centrally
+- **Performance Optimized**: Closure-based state management prevents React re-renders while maintaining full compatibility
+- **Backward Compatible**: 100% compatibility with existing `onErrors` callback implementations
+- **Independent Instances**: Each chart instance maintains its own isolated error accumulator
+
+### Testing
+
+- ✅ Unit tests for error accumulator utility
+- ✅ Integration tests for LineChart error handling
+- ✅ Integration tests for BarChart error handling
+- ✅ Existing error callback compatibility tests
+- ✅ Performance validation (no unnecessary re-renders)
+- ✅ ESLint and code quality checks passing
+
 ## [1.1.0] - 2025-11-12
 
 ### Updated
