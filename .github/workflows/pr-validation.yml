@@ -53,7 +53,7 @@ jobs:
         run: |
           BRANCH_NAME="${{ github.head_ref }}"
           echo "Branch name: $BRANCH_NAME"
-          
+
           # Check branch naming pattern
           if [[ "$BRANCH_NAME" =~ ^(feat|feature|fix|bugfix|break|breaking|hotfix|chore|docs|style|refactor|test)/[a-zA-Z0-9._-]+$ ]]; then
             echo "✅ Branch name follows conventions: $BRANCH_NAME"
@@ -77,7 +77,7 @@ jobs:
         run: |
           PR_TITLE="${{ github.event.pull_request.title }}"
           echo "PR Title: $PR_TITLE"
-          
+
           # Check conventional commit format
           if [[ "$PR_TITLE" =~ ^(feat|fix|docs|style|refactor|test|chore|break)(\(.+\))?!?:\ .+ ]]; then
             echo "✅ PR title follows conventional commits"
@@ -86,7 +86,7 @@ jobs:
             echo "❌ PR title should follow conventional commits format"
             echo "title_valid=false" >> $GITHUB_OUTPUT
           fi
-          
+
           # Check title length
           if [ ${#PR_TITLE} -le 72 ]; then
             echo "✅ PR title length appropriate (${#PR_TITLE} chars)"
@@ -100,22 +100,17 @@ jobs:
         id: code-quality
         run: |
           echo "Running code quality checks..."
-          
-          # ESLint
-          if yarn run --help | grep -q "lint"; then
-            echo "Running ESLint..."
-            if yarn lint; then
-              echo "✅ ESLint passed"
-              echo "eslint_valid=true" >> $GITHUB_OUTPUT
-            else
-              echo "❌ ESLint failed"
-              echo "eslint_valid=false" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "⚠️ No lint script found"
+
+          # ESLint - using specific command
+          echo "Running ESLint on src directory..."
+          if yarn run eslint src; then
+            echo "✅ ESLint passed"
             echo "eslint_valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ ESLint failed"
+            echo "eslint_valid=false" >> $GITHUB_OUTPUT
           fi
-          
+
           # TypeScript type checking
           if yarn run --help | grep -q "type-check"; then
             echo "Running TypeScript checks..."
@@ -135,34 +130,29 @@ jobs:
         id: test-validation
         continue-on-error: true
         run: |
-          echo "Running tests..."
-          
-          if yarn run --help | grep -q "test"; then
-            if yarn test; then
-              echo "✅ Tests passed"
-              echo "tests_valid=true" >> $GITHUB_OUTPUT
-            else
-              echo "❌ Tests failed"
-              echo "tests_valid=false" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "⚠️ No test script found"
+          echo "Running tests with Vitest..."
+
+          if yarn run vitest --run; then
+            echo "✅ Tests passed"
             echo "tests_valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Tests failed"
+            echo "tests_valid=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Check File Changes
         id: file-validation
         run: |
           echo "Analyzing changed files..."
-          
+
           # Get changed files
           CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}..HEAD)
           echo "Changed files:"
           echo "$CHANGED_FILES"
-          
+
           # Check for TypeScript/JavaScript files
           TS_JS_FILES=$(echo "$CHANGED_FILES" | grep -E '\.(ts|tsx|js|jsx)$' || true)
-          
+
           if [ -n "$TS_JS_FILES" ]; then
             echo "✅ Code files detected, full validation required"
             echo "code_changes=true" >> $GITHUB_OUTPUT
@@ -195,7 +185,7 @@ jobs:
         id: docs-validation
         run: |
           CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}..HEAD)
-          
+
           # Check if README or docs were updated for new features
           if echo "$CHANGED_FILES" | grep -E 'src/.*\.(ts|tsx)$' && [[ "${{ github.head_ref }}" =~ ^(feat|feature)/ ]]; then
             if echo "$CHANGED_FILES" | grep -E '(README|\.md)$'; then
@@ -233,7 +223,7 @@ jobs:
 
             let status = '✅ **PASSED**';
             let blocking = false;
-            
+
             const issues = [];
             const warnings = [];
 
@@ -242,22 +232,22 @@ jobs:
               issues.push('❌ Branch name must follow pattern: `type/description` (feat/, fix/, docs/, etc.)');
               blocking = true;
             }
-            
+
             if (!results.title_valid) {
               issues.push('❌ PR title must follow conventional commits: `type: description`');
               blocking = true;
             }
-            
+
             if (!results.eslint_valid) {
               issues.push('❌ ESLint validation failed - fix linting errors');
               blocking = true;
             }
-            
+
             if (!results.typescript_valid) {
               issues.push('❌ TypeScript validation failed - fix type errors');
               blocking = true;
             }
-            
+
             if (!results.tests_valid) {
               issues.push('❌ Tests are failing - ensure all tests pass');
               blocking = true;
@@ -280,7 +270,7 @@ jobs:
             if (!results.title_length_valid) {
               warnings.push('⚠️ PR title is longer than 72 characters');
             }
-            
+
             if (!results.docs_updated && branchName.startsWith('feat')) {
               warnings.push('⚠️ Consider updating documentation for new features');
             }
@@ -345,11 +335,11 @@ jobs:
 
             ${expectedVersion ? `
             ### 📦 Expected Release Impact
-            
+
             Based on branch name \`${branchName}\`, this PR will trigger a **${expectedVersion}** version bump when merged.` : ''}
 
             ---
-            
+
             *This validation runs automatically on every PR. Questions? Check our [Contributing Guidelines](./CONTRIBUTING.md)*`;
 
             // Post comment
