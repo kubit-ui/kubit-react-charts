@@ -1,3 +1,4 @@
+import { safeDocument, safeGetComputedStyle } from '../ssr/ssr';
 import { Unit } from '@/types/unit.enum';
 
 /**
@@ -78,13 +79,25 @@ const calculatePercentage = (
 
 /**
  * Calculates the rem value based on the root font size.
+ * SSR-safe: Returns default 16px if not in browser environment.
  *
  * @param {number} value - The value in rem to be converted to pixels.
  * @returns {number} The calculated pixel value.
  */
 const calculateRem = (value: number) => {
-  const remValue = parseFloat(getComputedStyle(document.documentElement).fontSize);
-  return value * remValue;
+  const doc = safeDocument();
+  if (!doc) {
+    // SSR fallback: Default browser font size is typically 16px
+    return value * 16;
+  }
+
+  const style = safeGetComputedStyle(doc.documentElement);
+  if (!style) {
+    return value * 16;
+  }
+
+  const remValue = parseFloat(style.fontSize);
+  return value * (remValue || 16); // Fallback to 16 if fontSize is invalid
 };
 
 interface GetCanvasDimensionsProps {

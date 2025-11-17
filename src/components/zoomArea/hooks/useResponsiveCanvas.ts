@@ -4,6 +4,7 @@ import { buildViewBox } from '@/components/svgContainer/utils/buildViewBox/build
 import type { CanvasConfig } from '@/types/canvas.type';
 import { getCanvasDimensions } from '@/utils/getCanvasDimensions/getCanvasDimensions';
 import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
+import { isBrowser, safeQuerySelector } from '@/utils/ssr/ssr';
 
 /**
  * Universal responsive canvas hook for chart components.
@@ -106,8 +107,13 @@ export const useResponsiveCanvas = ({
 
   // Set up responsive dimensions with ResizeObserver
   useEffect(() => {
+    // SSR-safe: Skip effect if not in browser
+    if (!isBrowser()) {
+      return;
+    }
+
     // Find the SVG element for this specific component instance
-    const svgElement = document.querySelector<SVGSVGElement>(`[data-testid="${dataTestId}"]`);
+    const svgElement = safeQuerySelector<SVGSVGElement>(`[data-testid="${dataTestId}"]`);
     if (!svgElement) {
       return;
     }

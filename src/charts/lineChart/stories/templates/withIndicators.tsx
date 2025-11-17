@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 import { NodeType } from '@/components/node/node.types';
 import { Positions } from '@/types/position.enum';
+import { logger } from '@/utils/logger/logger';
 
 import { LineChart } from '../../lineChart';
 
@@ -16,12 +16,12 @@ const handleOnClick = (
     | undefined
 ) => {
   if (data?.index !== undefined && data?.dataKey && data?.xKey) {
-    console.log(
-      `${data?.dataKey}: ${data?.dataValue[data?.index][data?.dataKey]} - ${data?.xKey}: ${data?.dataValue[data?.index][data?.xKey]}`
+    logger.debug(
+      `Data point clicked: ${data.dataKey}: ${data.dataValue[data.index][data.dataKey]} - ${data.xKey}: ${data.dataValue[data.index][data.xKey]}`
     );
     return;
   }
-  console.log('No data found');
+  logger.warn('No data found for clicked point');
 };
 
 const nodeBasisProps = {

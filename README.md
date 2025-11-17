@@ -55,6 +55,9 @@
 **Customizable**: Flexible styling and granular configurations  
 **Responsive**: Adaptable to different screen sizes  
 **TypeScript**: Fully typed for better developer experience  
+**SSR Ready**: Complete Server-Side Rendering support for Next.js, Remix, Gatsby, and more  
+**Error Handling**: Advanced centralized error management system with detailed debugging  
+**Production Safe**: Built-in logging system that's automatically optimized for production builds  
 **Tested**: Complete coverage with Vitest and Testing Library
 
 ## Installation
@@ -86,6 +89,22 @@ yarn add react react-dom
 - React: ^18.3.1
 - React DOM: ^18.3.1
 
+### Tree-Shaking Support
+
+The library supports granular imports for optimal bundle size:
+
+```typescript
+// Import specific charts only
+import { BarChart } from '@kubit-ui-web/react-charts/charts/barChart';
+import { LineChart } from '@kubit-ui-web/react-charts/charts/lineChart';
+// Import specific components only
+import { Node } from '@kubit-ui-web/react-charts/components/node';
+import { Path } from '@kubit-ui-web/react-charts/components/path';
+// Import specific utilities only
+import { logger } from '@kubit-ui-web/react-charts/utils/logger';
+import { isBrowser } from '@kubit-ui-web/react-charts/utils/ssr';
+```
+
 ## Quick Start
 
 ### Importing Components
@@ -97,6 +116,9 @@ import { BarChart, LineChart, PieChart } from '@kubit-ui-web/react-charts';
 import { Node, Path, Plot } from '@kubit-ui-web/react-charts/components';
 // Import types
 import type { BarOrientation, ChartData } from '@kubit-ui-web/react-charts/types';
+// Import utilities
+import { configureLogger, logger } from '@kubit-ui-web/react-charts/utils';
+import { createSVGElement, isBrowser, safeWindow } from '@kubit-ui-web/react-charts/utils';
 ```
 
 ### LineChart Example
@@ -162,6 +184,67 @@ function MyBarChart() {
 }
 ```
 
+### Error Handling Example
+
+```tsx
+import { LineChart } from '@kubit-ui-web/react-charts';
+import type { ChartErrorCollection } from '@kubit-ui-web/react-charts/types';
+import React from 'react';
+
+function ChartWithErrorHandling() {
+  const handleErrors = (errors: ChartErrorCollection) => {
+    // Centralized error handling
+    console.warn('Chart errors:', errors);
+    // Display user-friendly messages or retry logic
+  };
+
+  return (
+    <LineChart data={data} xKey="year" onErrors={handleErrors} width="100%" height="400px">
+      <LineChart.Path dataKey="sales" stroke="#0078D4" />
+      <LineChart.XAxis position="BOTTOM" />
+      <LineChart.YAxis position="LEFT" />
+    </LineChart>
+  );
+}
+```
+
+### SSR (Server-Side Rendering) Support
+
+```tsx
+import { LineChart, isBrowser, safeWindow } from '@kubit-ui-web/react-charts';
+import React from 'react';
+
+function SSRCompatibleChart() {
+  // Safe browser API access
+  const windowWidth = isBrowser() ? safeWindow()?.innerWidth || 800 : 800;
+
+  return (
+    <LineChart data={data} xKey="year" width={windowWidth} height="400px">
+      <LineChart.Path dataKey="sales" stroke="#0078D4" />
+    </LineChart>
+  );
+}
+```
+
+### Logger Configuration
+
+```tsx
+import { configureLogger, logger } from '@kubit-ui-web/react-charts';
+
+// Configure logger for development
+configureLogger({
+  enabled: true,
+  minLevel: 'debug',
+  prefix: '[MyApp Charts]',
+});
+
+// Use logger in your components
+function MyComponent() {
+  logger.info('Chart rendering started');
+  // Chart implementation
+}
+```
+
 ## Available Components
 
 ### Main Charts
@@ -189,6 +272,19 @@ function MyBarChart() {
 | -------------- | ---------------------------------------- |
 | **`useFocus`** | Focus state management for accessibility |
 | **`useHover`** | Hover detection with callbacks           |
+
+### Utility Functions
+
+| Utility                      | Description                                        |
+| ---------------------------- | -------------------------------------------------- |
+| **`logger`**                 | Production-safe logging with configurable levels   |
+| **`configureLogger`**        | Logger configuration for development/debugging     |
+| **`isBrowser`**              | Environment detection for browser vs SSR           |
+| **`isServer`**               | Check if running in server-side environment        |
+| **`safeWindow`**             | Safe access to window object in SSR environments   |
+| **`safeDocument`**           | Safe access to document object in SSR environments |
+| **`createSVGElement`**       | SSR-compatible SVG element creation                |
+| **`createErrorAccumulator`** | Advanced error management for chart components     |
 
 ## API Reference
 
