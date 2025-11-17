@@ -1,3 +1,4 @@
+import { logger } from '../logger/logger';
 import type { GradientStop } from './cssGradientToSvg.types';
 
 /**
@@ -42,9 +43,7 @@ export const cssGradientToSVG = (cssGradient: string, id = 'gradientePath'): JSX
       x1 = '100%';
       break;
     default:
-      // eslint-disable-next-line no-console
-      console.error('Unsupported angle');
-       
+      logger.warn(`Unsupported gradient angle: ${angle}°. Supported angles are 90, 180, 270.`);
       return <></>; // Return an empty fragment for unsupported angles
   }
 

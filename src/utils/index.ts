@@ -3,6 +3,8 @@ export * from './buildTickValues/buildTickValues';
 export * from './classNames/classNames';
 export * from './cssGradientToSvg/cssGradientToSvg';
 export * from './cursorNear/isNear';
+export * from './logger';
 export * from './shadowSvg/shadowSvg';
 export * from './shadowSvg/shadowSvg.types';
+export * from './ssr';
 export * from './textBound/textBound';

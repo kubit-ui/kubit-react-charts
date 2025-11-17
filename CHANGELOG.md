@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2025-11-17
+
+### Added
+
+#### Logger System
+
+- **Centralized Logging Utility**: New logging system with configurable log levels (debug, info, warn, error)
+  - Production-safe logging (automatically disabled in production builds)
+  - Configurable logger with customizable prefix and minimum log level
+  - SSR-compatible environment detection using globalThis
+  - Tree-shakable implementation optimized for build tools
+
+#### SSR (Server-Side Rendering) Support
+
+- **Complete SSR Compatibility**: New utilities for server-side rendering support
+  - Safe browser API access utilities (`safeWindow`, `safeDocument`, `safeQuerySelector`)
+  - Environment detection functions (`isBrowser`, `isServer`)
+  - Safe execution wrappers with fallback support (`safeExecute`, `safeExecuteWithFallback`)
+  - SVG creation utilities compatible with server environments (`createSVGElement`)
+  - Safe `getComputedStyle` access for server-side rendering (`safeGetComputedStyle`)
+
 ## [1.2.0] - 2025-11-14
 
 ### Added
