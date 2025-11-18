@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2025-11-18
+
+### Added
+
+#### CI/CD Enhancements
+
+- **Chromatic Visual Regression Testing Integration**: Automated visual regression testing in CI/CD pipeline
+  - Added Chromatic build and publish steps to auto-publish GitHub Actions workflow
+  - Integrated visual testing with automatic change acceptance during releases
+  - Enhanced release process to include Storybook visual regression validation
+  - Ensures design system consistency and catches visual regressions before production
+
+### Changed
+
+#### Security & Configuration
+
+- **Environment Variable Security**: Improved token management and security practices
+  - Replaced hardcoded Chromatic project token with environment variable (`$CHROMATIC_PROJECT_TOKEN`)
+  - Enhanced GitHub Actions workflow to use secrets for sensitive tokens
+  - Updated workflow documentation with comprehensive secret configuration guide
+  - Improved error handling and notifications for missing or invalid tokens
+
+#### Developer Experience
+
+- **Enhanced Release Notifications**: Improved CI/CD feedback and status reporting
+  - Updated success notifications to include Chromatic publication status
+  - Enhanced error notifications with Chromatic-specific troubleshooting guidance
+  - Added comprehensive secret configuration documentation
+  - Improved workflow status visibility for visual regression testing
+
+### Infrastructure
+
+- **GitHub Actions Workflow Updates**: Enhanced automated release pipeline
+  - Added Storybook build step specifically for Chromatic integration
+  - Implemented automatic visual regression testing during releases
+  - Enhanced workflow resilience with proper error handling for Chromatic steps
+  - Updated release process documentation with new requirements
+
 ## [1.3.0] - 2025-11-17
 
 ### Added

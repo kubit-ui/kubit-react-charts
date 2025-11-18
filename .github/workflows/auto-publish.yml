@@ -1,6 +1,6 @@
 name: Auto Publish to NPM
 
-# This workflow requires two secrets to be configured in the repository:
+# This workflow requires three secrets to be configured in the repository:
 #
 # 1. NPM_TOKEN: An NPM automation token for publishing packages
 #    - Go to npmjs.com → Profile → Access Tokens → Generate New Token
@@ -14,6 +14,11 @@ name: Auto Publish to NPM
 #      - workflow (Update GitHub Action workflows)
 #    - OR use Fine-grained PAT with "Contents: write" and "Pull requests: write"
 #    - If cms branch is protected, ensure the token can bypass pull request requirements
+#
+# 3. CHROMATIC_PROJECT_TOKEN: A Chromatic project token for visual regression testing
+#    - Go to chromatic.com → Your Project → Manage → Configure
+#    - Generate a new project token
+#    - Ensure it has permissions to publish builds and stories
 
 on:
   pull_request:
@@ -141,6 +146,20 @@ jobs:
             echo "No build output found"
             exit 1
           fi
+
+      - name: Build Storybook for Chromatic
+        if: steps.validate-branch.outputs.should_publish == 'true'
+        run: |
+          echo "Building Storybook for Chromatic..."
+          yarn build-storybook
+
+      - name: Publish to Chromatic
+        if: steps.validate-branch.outputs.should_publish == 'true'
+        run: |
+          echo "Publishing to Chromatic..."
+          yarn chromatic --exit-zero-on-changes --auto-accept-changes
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
       - name: Configure Git
         if: steps.validate-branch.outputs.should_publish == 'true'
@@ -388,6 +407,8 @@ jobs:
             - [x] Quality checks passed
             - [x] Tests passed  
             - [x] Build successful
+            - [x] Storybook built for Chromatic
+            - [x] Published to Chromatic
             - [x] Published to NPM
             - [x] GitHub release created
             - [x] Repository tagged
@@ -426,6 +447,10 @@ jobs:
                - Type: Personal Access Token with bypass permissions
                - Permissions: "Contents: write", "Pull requests: write"
                - Special: "Bypass pull request requirements" if needed
+
+            3. **CHROMATIC_PROJECT_TOKEN**:
+               - Type: Project token from chromatic.com
+               - Scope: Access to publish builds and visual regression tests
 
             ### 📞 Next Steps
             1. **NPM Issues**: Verify NPM_TOKEN is an automation token
