@@ -110,7 +110,8 @@
     "vitest": "vitest",
     "vitest-report": "vitest --ui --coverage.enabled=true",
     "vitest:watch": "vitest - watch",
-    "dist:all": "yarn run vite build"
+    "dist:all": "yarn run vite build",
+    "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
   },
   "repository": {
     "type": "git",
@@ -158,6 +159,7 @@
     "@storybook/addon-a11y": "10.0.7",
     "@storybook/addon-coverage": "3.0.0",
     "@storybook/addon-designs": "11.0.1",
+    "@storybook/addon-docs": "10.0.7",
     "@storybook/addon-links": "10.0.7",
     "@storybook/addon-themes": "10.0.7",
     "@storybook/react-vite": "10.0.7",
@@ -177,6 +179,7 @@
     "@vitest/coverage-v8": "^4.0.9",
     "@vitest/ui": "^4.0.9",
     "add": "^2.0.6",
+    "chromatic": "^13.3.3",
     "cpy-cli": "^6.0.0",
     "eslint": "^9.39.1",
     "eslint-config-kubit": "1.2.0",
@@ -211,8 +214,7 @@
     "vitest": "^4.0.9",
     "vitest-axe": "^0.1.0",
     "yarn": "^1.22.22",
-    "yarn-deduplicate": "^6.0.2",
-    "@storybook/addon-docs": "10.0.7"
+    "yarn-deduplicate": "^6.0.2"
   },
   "dependencies": {
     "react": "18.3.1",
