@@ -39,13 +39,18 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
   const xData = dataItem?.[xKey];
   const yData = dataItem?.[yKey];
 
+  // Extract values for stable dependencies
+  const firstDataItem = context.data[0];
+  const hasDataKey = firstDataItem
+    ? Object.prototype.hasOwnProperty.call(firstDataItem, dataKey)
+    : false;
+  const hasData = context.data.length > 0;
+  const numericYData = Number(yData);
+
   // Path error validations - only validates the data for this specific bar
   useEffect(() => {
     // Validate dataKey exists in dataset
-    if (
-      context.data.length > 0 &&
-      !Object.prototype.hasOwnProperty.call(context.data[0], dataKey)
-    ) {
+    if (hasData && !hasDataKey) {
       addError?.('BAR_CHART_PATH_ERROR', {
         error: buildDataKeyNotFoundError(dataKey),
       });
@@ -53,8 +58,7 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
     }
 
     // Validate bar value is numeric
-    const numericValue = Number(yData);
-    if (isNaN(numericValue)) {
+    if (isNaN(numericYData)) {
       addError?.('BAR_CHART_PATH_ERROR', {
         error: buildBarValueError(yData, dataKey),
       });
@@ -62,12 +66,12 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
     }
 
     // Validate negative values
-    if (numericValue < 0) {
+    if (numericYData < 0) {
       addError?.('BAR_CHART_PATH_ERROR', {
-        error: buildBarNegativeValueError(numericValue, dataKey),
+        error: buildBarNegativeValueError(numericYData, dataKey),
       });
     }
-  }, [addError, context.data, dataKey, yData]);
+  }, [dataKey, hasData, hasDataKey, numericYData, yData]);
 
   const xPoint = getPoints(xTickValues, [String(xData)], true)[0];
   const yPoint = getPoints(yTickValues, [String(yData)])[0];

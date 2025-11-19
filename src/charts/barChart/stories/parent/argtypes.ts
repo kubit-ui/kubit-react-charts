@@ -64,6 +64,15 @@ export const argtypes = (): ArgTypes<BarChartProps> => {
         type: { summary: 'string | number' },
       },
     },
+    onErrors: {
+      action: 'error-occurred',
+      description:
+        'Callback function triggered when errors are detected in the chart. Receives a collection of validation errors from chart components (context, paths, axes, separators). Use this to handle data validation errors, display error messages, or provide fallback UI.',
+      table: {
+        category: CATEGORY_CONTROL.FUNCTIONS,
+        type: { summary: '(errors: ChartErrorCollection) => void' },
+      },
+    },
     orientation: {
       control: 'select',
       description: 'Orientation of the bars (horizontal or vertical).',

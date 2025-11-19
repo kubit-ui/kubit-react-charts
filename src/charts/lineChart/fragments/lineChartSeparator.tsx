@@ -24,14 +24,31 @@ export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
   const { addError, crossXAxis, crossYAxis, xAxisCoordinates, yAxisCoordinates } =
     useContext(LineChartContext);
 
+  // Extract tick values for stable dependencies
+  const xTickValues = xAxisCoordinates.tickValues;
+  const yTickValues = yAxisCoordinates.tickValues;
+
+  // Pre-calculate numeric values for dependencies
+  const xBreakNumeric =
+    xBreakAxis !== undefined
+      ? typeof xBreakAxis === 'string'
+        ? parseFloat(xBreakAxis)
+        : xBreakAxis
+      : undefined;
+  const yBreakNumeric =
+    yBreakAxis !== undefined
+      ? typeof yBreakAxis === 'string'
+        ? parseFloat(yBreakAxis)
+        : yBreakAxis
+      : undefined;
+
   // Separator error validations
   useEffect(() => {
     // xBreakAxis validation
     if (xBreakAxis !== undefined) {
-      const xValues = xAxisCoordinates.tickValues.map(tick => tick.value);
-      const xBreakNumeric = typeof xBreakAxis === 'string' ? parseFloat(xBreakAxis) : xBreakAxis;
+      const xValues = xTickValues.map(tick => tick.value);
 
-      if (isNaN(xBreakNumeric)) {
+      if (xBreakNumeric === undefined || isNaN(xBreakNumeric)) {
         addError?.('LINE_CHART_SEPARATOR_ERROR', {
           error: buildSeparatorXBreakAxisError(xBreakAxis),
         });
@@ -49,10 +66,9 @@ export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
 
     // yBreakAxis validation
     if (yBreakAxis !== undefined) {
-      const yValues = yAxisCoordinates.tickValues.map(tick => tick.value);
-      const yBreakNumeric = typeof yBreakAxis === 'string' ? parseFloat(yBreakAxis) : yBreakAxis;
+      const yValues = yTickValues.map(tick => tick.value);
 
-      if (isNaN(yBreakNumeric)) {
+      if (yBreakNumeric === undefined || isNaN(yBreakNumeric)) {
         addError?.('LINE_CHART_SEPARATOR_ERROR', {
           error: buildSeparatorYBreakAxisError(yBreakAxis),
         });
@@ -67,7 +83,7 @@ export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
         }
       }
     }
-  }, [xBreakAxis, yBreakAxis, xAxisCoordinates.tickValues, yAxisCoordinates.tickValues, addError]);
+  }, [xBreakAxis, xBreakNumeric, xTickValues, yBreakAxis, yBreakNumeric, yTickValues]);
 
   if (!topSeparator && !rightSeparator && !areaSeparator) {
     return <></>;
@@ -90,7 +106,7 @@ export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
         error: buildError(BuildError.LINE_CHART_SEPARATOR_INVALID_COORDINATES),
       });
     }
-  }, [xStart, xEnd, yStart, yEnd, addError]);
+  }, [xStart, xEnd, yStart, yEnd]);
 
   const squarePath = `M${xStart} ${yStart} H ${xEnd} V ${yEnd} H ${xStart} Z`;
   const lineTop = `M${xStart} ${yEnd} H ${xEnd}`;

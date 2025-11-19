@@ -10,6 +10,7 @@ import { HALF_CHART_TEMPLATE } from './templates/halfChart';
 import { MULTIPLE_TEMPLATE } from './templates/multiple';
 import { SINGLE_TEMPLATE } from './templates/onlyOneValue';
 import './templates/styles.css';
+import { PieChartWithErrorHandlingWithHooks } from './templates/withErrorHandling';
 
 const meta = {
   argTypes: argtypes(),
@@ -260,7 +261,7 @@ export const HalfChart: Story = {
                     padding: '12px',
                   }}
                 >
-                  {`<PieChart 
+                  {`<PieChart
   halfChart={true}
   canvasConfig={{ extraSpace: 0, height: 100, width: 200 }}
   data={data}
@@ -284,4 +285,55 @@ export const HalfChart: Story = {
       );
     },
   ],
+};
+
+export const PieChartWithErrorHandling: Story = {
+  args: {
+    data: {},
+  },
+  decorators: [
+    (Story: React.ComponentType): JSX.Element => {
+      return (
+        <>
+          <Note
+            collapsible={true}
+            defaultCollapsed={true}
+            heading="Error Handling in PieChart"
+            text={[
+              <div key="error-handling-explanation">
+                <p>
+                  The <strong>PieChart</strong> includes a comprehensive error accumulator that
+                  detects and reports validation issues across all its subcomponents in real-time.
+                </p>
+                <h4>🎯 Key Features:</h4>
+                <ul>
+                  <li>
+                    <strong>Component Validation:</strong> Each fragment (Path, Segment) validates
+                    its configuration and data
+                  </li>
+                  <li>
+                    <strong>Error Accumulation:</strong> Multiple errors are collected and reported
+                    together via the <code>onErrors</code> callback
+                  </li>
+                  <li>
+                    <strong>Developer Control:</strong> You decide how to handle errors - display
+                    them, log them, or provide fallback UI
+                  </li>
+                </ul>
+                <h4>⚠️ Interactive Example:</h4>
+                <p>
+                  This example demonstrates multiple error types simultaneously: invalid data keys,
+                  missing names, negative values, and zero total values. The error panel shows
+                  real-time detection and categorization.
+                </p>
+              </div>,
+            ]}
+            variant="information"
+          />
+          <Story />
+        </>
+      );
+    },
+  ],
+  render: () => <PieChartWithErrorHandlingWithHooks />,
 };

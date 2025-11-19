@@ -1,10 +1,12 @@
 import { BarChartErrors, BarChartErrorsRecord } from './constants/errors/barChartErrors';
 import { LineChartErrors, LineChartErrorsRecord } from './constants/errors/lineChartErrors';
+import { PieChartErrors, PieChartErrorsRecord } from './constants/errors/pieChartErrors';
 
 export const BuildError = {
   INVALID_X_TICK: 'INVALID_X_TICK',
   ...BarChartErrors,
   ...LineChartErrors,
+  ...PieChartErrors,
 } as const;
 
 const INVALID_X_TICK_ERROR = '[getXTicks] Invalid X tick values calculated';
@@ -12,6 +14,7 @@ const INVALID_X_TICK_ERROR = '[getXTicks] Invalid X tick values calculated';
 export const ErrorsRecord: Record<(typeof BuildError)[keyof typeof BuildError], Error> = {
   ...BarChartErrorsRecord,
   ...LineChartErrorsRecord,
+  ...PieChartErrorsRecord,
   INVALID_X_TICK: new Error(INVALID_X_TICK_ERROR),
 };
 
@@ -63,3 +66,16 @@ export {
   buildBarDataKeyNotFoundError,
   buildBarDistributionError,
 } from './charts/buildBarChartErrors';
+
+// Re-export pie chart error builders
+export {
+  buildSegmentValueError,
+  buildSegmentNegativeValueError,
+  buildPieDataKeyNotFoundError,
+  buildEmptyDataArrayError,
+  buildInvalidTotalError,
+  buildInvalidGroupError,
+  buildInvalidRadiusError,
+  buildInvalidInnerRadiusError,
+  buildInnerRadiusOutOfRangeError,
+} from './charts/buildPieChartErrors';

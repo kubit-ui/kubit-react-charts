@@ -82,3 +82,25 @@ export const LINE_CHART_FALLBACK_DATA = {
   /** Second Y value for line chart fallback data */
   FALLBACK_Y_SECOND: 1,
 } as const;
+
+/**
+ * Pie Chart specific default configuration values
+ */
+export const PIE_CHART_DEFAULTS = {
+  /** Default radius percentage when not specified */
+  DEFAULT_RADIUS_PERCENTAGE: 50,
+  /** Minimum number of segments required for a valid pie chart */
+  MIN_SEGMENTS: 1,
+} as const;
+
+/**
+ * Pie Chart specific fallback data points used when pie chart data is invalid or empty
+ */
+export const PIE_CHART_FALLBACK_DATA = {
+  /** Generic data key for fallback data */
+  FALLBACK_DATA_KEY: 'fallbackSegments',
+  /** Default segment name for fallback data */
+  FALLBACK_SEGMENT_NAME: 'fallback',
+  /** Default segment value for fallback data */
+  FALLBACK_SEGMENT_VALUE: 100,
+} as const;
