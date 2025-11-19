@@ -199,7 +199,7 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
       {/* Selection area focus ring - rendered above handlers for correct z-order */}
       <FocusRing
         dataTestId="selection-area-focus"
-        focusConfig={{ ...resolvedFocusConfig, variant: 'bounding-box' }}
+        focusConfig={resolvedFocusConfig}
         isFocused={isFocused(ZoomAreaElements.SELECTION_AREA)}
         targetRef={selectionAreaRef}
       />

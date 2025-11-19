@@ -8,8 +8,6 @@ import {
 import './focusRing.css';
 import type { FocusRingProps, FocusRingRendererProps } from './focusRing.types';
 import { composeRefs } from './utils/composeRefs';
-import { createFocusRingLayers } from './utils/createFocusRingLayers';
-import { createFocusRingLayersFromDOM } from './utils/createFocusRingLayersFromDOM';
 import {
   type ElementInfo,
   detectElementBounds,
@@ -18,93 +16,95 @@ import {
 } from './utils/detectElementInfo';
 
 /**
- * Internal component that renders the actual focus ring elements.
- * Supports both adaptive (Clone & Scale) and bounding-box strategies.
+ * Internal component that renders the actual focus ring elements
  */
 const FocusRingRenderer: React.FC<FocusRingRendererProps> = ({
   dataTestId,
-  element,
   focusConfig,
-  layers,
   outline,
 }) => {
-  // Strategy 1a: Adaptive mode with element (Clone & Scale from React element)
-  if (element && focusConfig.variant === 'adaptive') {
-    const computedLayers = createFocusRingLayers(element, focusConfig);
-
-    if (!computedLayers || !computedLayers.canRender) {
-      return null; // Element not supported
-    }
-
-    return (
-      <g className="focus-ring-container" pointerEvents="none">
-        {/* Outer ring with data-testid */}
-        {cloneElement(computedLayers.outerRing, {
-          'data-testid': `${dataTestId}-focus-outer`,
-        })}
-
-        {/* Inner ring with data-testid */}
-        {cloneElement(computedLayers.innerRing, {
-          'data-testid': `${dataTestId}-focus-inner`,
-        })}
-      </g>
-    );
+  // For the basic version, we always render rectangles
+  if (outline.type !== 'rectangle') {
+    return null;
   }
 
-  // Strategy 1b: Adaptive mode with pre-computed layers (from DOM in targetRef mode)
-  if (layers && focusConfig.variant === 'adaptive' && layers.canRender) {
-    return (
-      <g className="focus-ring-container" pointerEvents="none">
-        {/* Outer ring with data-testid */}
-        {cloneElement(layers.outerRing, {
-          'data-testid': `${dataTestId}-focus-outer`,
-        })}
+  return (
+    <g className="focus-ring-container" pointerEvents="none">
+      {/* Outer focus ring */}
+      <rect
+        className="focus-ring-outer"
+        data-testid={`${dataTestId}-focus-outer`}
+        fill="none"
+        height={outline.outer.height}
+        stroke={focusConfig.outlineColor}
+        strokeWidth={focusConfig.outlineStrokeWidth}
+        width={outline.outer.width}
+        x={outline.outer.x}
+        y={outline.outer.y}
+      />
 
-        {/* Inner ring with data-testid */}
-        {cloneElement(layers.innerRing, {
-          'data-testid': `${dataTestId}-focus-inner`,
-        })}
-      </g>
-    );
-  }
-
-  // Strategy 2: Bounding-box mode with outline (legacy calculateFocusOutline)
-  if (outline && outline.type === 'rectangle') {
-    return (
-      <g className="focus-ring-container" pointerEvents="none">
-        {/* Outer focus ring */}
-        <rect
-          className="focus-ring-outer"
-          data-testid={`${dataTestId}-focus-outer`}
-          fill="none"
-          height={outline.outer.height}
-          stroke={focusConfig.outlineColor}
-          strokeWidth={focusConfig.outlineStrokeWidth}
-          width={outline.outer.width}
-          x={outline.outer.x}
-          y={outline.outer.y}
-        />
-
-        {/* Inner focus ring */}
-        <rect
-          className="focus-ring-inner"
-          data-testid={`${dataTestId}-focus-inner`}
-          fill="none"
-          height={outline.inner.height}
-          stroke={focusConfig.innerColor}
-          strokeWidth={focusConfig.innerStrokeWidth}
-          width={outline.inner.width}
-          x={outline.inner.x}
-          y={outline.inner.y}
-        />
-      </g>
-    );
-  }
-
-  // No valid rendering strategy
-  return null;
+      {/* Inner focus ring */}
+      <rect
+        className="focus-ring-inner"
+        data-testid={`${dataTestId}-focus-inner`}
+        fill="none"
+        height={outline.inner.height}
+        stroke={focusConfig.innerColor}
+        strokeWidth={focusConfig.innerStrokeWidth}
+        width={outline.inner.width}
+        x={outline.inner.x}
+        y={outline.inner.y}
+      />
+    </g>
+  );
 };
 
+/**
+ * FocusRing component that wraps SVG elements and automatically handles focus ring rendering.
+ *
+ * **Controlled & Decorative Component**: This component is purely decorative and does not
+ * manage focus state internally. The parent component must control the `isFocused` prop.
+ *
+ * **Two Modes of Operation:**
+ *
+ * 1. **Inline Mode (children)**: Wraps the element and renders the focus ring inline.
+ *    Best for simple cases where z-order is not a concern.
+ *
+ * 2. **Separate Mode (targetRef)**: Only renders the focus ring, not the element.
+ *    Allows precise control over z-order (e.g., ring on top of other elements).
+ *
+ * Features:
+ * - **Complete Automatic Detection**: Supports rect, circle, ellipse, path, polygon, line, and text elements
+ * - **Zero Configuration**: No manual props required - just provide isFocused state
+ * - **Controlled Component**: Parent manages focus state via isFocused prop
+ * - **Strict Validation**: Won't render focus ring for invalid/undetectable elements
+ * - **DOM Fallback**: Uses getBBox() when props detection fails
+ * - **Performance Optimized**: Smart memoization and path caching
+ * - **Flexible Z-Order**: Choose inline or separate rendering
+ *
+ * @example
+ * // Mode 1: Inline (children)
+ * const [isFocused, setIsFocused] = useState(false);
+ * <FocusRing isFocused={isFocused}>
+ *   <rect
+ *     onFocus={() => setIsFocused(true)}
+ *     onBlur={() => setIsFocused(false)}
+ *   />
+ * </FocusRing>
+ *
+ * @example
+ * // Mode 2: Separate (targetRef)
+ * const rectRef = useRef<SVGRectElement>(null);
+ * const [isFocused, setIsFocused] = useState(false);
+ * <>
+ *   <rect
+ *     ref={rectRef}
+ *     onFocus={() => setIsFocused(true)}
+ *     onBlur={() => setIsFocused(false)}
+ *   />
+ *   <FocusRing targetRef={rectRef} isFocused={isFocused} />
+ * </>
+ */
 const FocusRingComponent = forwardRef<SVGElement, FocusRingProps>(
   (
     { children, dataTestId = 'focus-ring', disabled = false, focusConfig, isFocused, targetRef },
@@ -114,13 +114,11 @@ const FocusRingComponent = forwardRef<SVGElement, FocusRingProps>(
     const hasChildren = !!children;
     const hasTargetRef = !!targetRef;
 
-    // TODO - REVIEW
     if (!hasChildren && !hasTargetRef) {
       // Silent fail - no warning needed
       return null;
     }
 
-    // TODO - REVIEW
     if (hasChildren && hasTargetRef) {
       // Silent fail - use children mode when both are provided
     }
@@ -137,11 +135,6 @@ const FocusRingComponent = forwardRef<SVGElement, FocusRingProps>(
     // Internal ref for DOM-based detection (used for both modes)
     const internalRef = useRef<SVGElement>(null);
     const [domDetectedInfo, setDomDetectedInfo] = useState<ElementInfo | null>(null);
-
-    // State to store adaptive layers for targetRef mode
-    const [adaptiveLayers, setAdaptiveLayers] = useState<ReturnType<
-      typeof createFocusRingLayersFromDOM
-    > | null>(null);
 
     // Use the appropriate ref: targetRef for external mode, internalRef for children mode
     const elementRef = useExternalRef ? targetRef : internalRef;
@@ -186,15 +179,6 @@ const FocusRingComponent = forwardRef<SVGElement, FocusRingProps>(
         if (domInfo?.isValid) {
           setDomDetectedInfo(domInfo);
         }
-
-        // If using adaptive variant with targetRef, generate adaptive layers from DOM
-        const resolvedConfig = getFocusConfig(focusConfig);
-        if (resolvedConfig.variant === 'adaptive') {
-          const layers = createFocusRingLayersFromDOM(elementRef.current, resolvedConfig);
-          setAdaptiveLayers(layers);
-        } else {
-          setAdaptiveLayers(null);
-        }
         return;
       }
 
@@ -205,7 +189,7 @@ const FocusRingComponent = forwardRef<SVGElement, FocusRingProps>(
           setDomDetectedInfo(domInfo);
         }
       }
-    }, [useExternalRef, hasChildren, children, detectedInfo, elementRef, isFocused, focusConfig]);
+    }, [useExternalRef, hasChildren, children, detectedInfo, elementRef, isFocused]);
 
     // Determine final element info (props detection or DOM fallback)
     const finalElementInfo = useMemo(() => {
@@ -277,63 +261,29 @@ const FocusRingComponent = forwardRef<SVGElement, FocusRingProps>(
 
       return (
         <>
-          {/* Render focus ring when focused, not disabled, and we have valid data */}
-          {isFocused && !disabled && (
-            <>
-              {/* Try adaptive mode first (Clone & Scale) */}
-              {resolvedFocusConfig.variant === 'adaptive' && (
-                <FocusRingRenderer
-                  dataTestId={dataTestId}
-                  element={children}
-                  focusConfig={resolvedFocusConfig}
-                />
-              )}
-
-              {/* Fallback to bounding-box mode with outline calculation */}
-              {resolvedFocusConfig.variant === 'bounding-box' && focusOutline && (
-                <FocusRingRenderer
-                  dataTestId={dataTestId}
-                  focusConfig={resolvedFocusConfig}
-                  outline={focusOutline}
-                />
-              )}
-            </>
-          )}
           {/* Render the wrapped children */}
           {wrappedChildren}
+
+          {/* Render focus ring when focused, not disabled, and we have valid element info */}
+          {isFocused && !disabled && focusOutline && (
+            <FocusRingRenderer
+              dataTestId={dataTestId}
+              focusConfig={resolvedFocusConfig}
+              outline={focusOutline}
+            />
+          )}
         </>
       );
     }
 
     // MODO 2: targetRef (render only focus ring)
-    // Supports both adaptive and bounding-box strategies
-    if (!isFocused || disabled) {
-      return null;
-    }
-
-    // For adaptive variant with targetRef, render using adaptive layers from DOM
-    if (resolvedFocusConfig.variant === 'adaptive' && adaptiveLayers?.canRender) {
-      return (
-        <FocusRingRenderer
-          dataTestId={dataTestId}
-          focusConfig={resolvedFocusConfig}
-          layers={adaptiveLayers}
-        />
-      );
-    }
-
-    // For bounding-box variant with targetRef, render using calculated outline
-    if (resolvedFocusConfig.variant === 'bounding-box' && focusOutline) {
-      return (
-        <FocusRingRenderer
-          dataTestId={dataTestId}
-          focusConfig={resolvedFocusConfig}
-          outline={focusOutline}
-        />
-      );
-    }
-
-    return null;
+    return isFocused && !disabled && focusOutline ? (
+      <FocusRingRenderer
+        dataTestId={dataTestId}
+        focusConfig={resolvedFocusConfig}
+        outline={focusOutline}
+      />
+    ) : null;
   }
 );
 
@@ -347,24 +297,17 @@ FocusRingComponent.displayName = 'FocusRing';
  * - **Purely Decorative**: Does not intercept or manage events
  * - **Two Modes**: Inline (children) or Separate (targetRef) rendering
  * - **Zero Configuration**: Automatic element detection
+ * - **Strict Validation**: Won't render for invalid elements
+ * - **DOM Fallback**: Uses getBBox() when props detection fails
  *
- * **Two Modes:**
+ * **Mode 1: Inline (children)**
+ * - Wraps the element and renders focus ring inline
+ * - Best for simple cases where z-order is not a concern
  *
- * 1. **Inline (children)** - Wraps element, focus ring rendered inline, z-order handled automatically
- * 2. **Separate (targetRef)** - Only renders focus ring, allows precise z-order control
- *
- * **IMPORTANT NOTE: Z-Order with Adaptive Variant**
- *
- * When using `variant: 'adaptive'` (default) with `targetRef` mode, the FocusRing **MUST be rendered BEFORE**
- * the target element in SVG document order. Otherwise, focus ring strokes will cover the element.
- *
- * ```tsx
- * // CORRECT: FocusRing before element
- * <>
- *   <FocusRing targetRef={ref} isFocused={focused} />
- *   <circle ref={ref} cx={50} cy={50} r={30} />
- * </>
- * ```
+ * **Mode 2: Separate (targetRef)**
+ * - Only renders the focus ring, not the element
+ * - Allows precise control over z-order
+ * - Element must be rendered separately by parent
  *
  * @param props - FocusRingProps
  * @returns JSX element with focus ring or null

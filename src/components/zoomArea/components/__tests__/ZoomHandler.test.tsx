@@ -66,8 +66,8 @@ describe('ZoomHandler', () => {
     expect(handler).toHaveAttribute('aria-valuetext', screenReaderText);
   });
 
-  it('should handle focus state and different handler types', () => {
-    render(<ZoomHandler {...mockProps} isFocused={true} type={ZoomAreaElements.END_HANDLER} />);
+  it('should handle different handler types', () => {
+    render(<ZoomHandler {...mockProps} type={ZoomAreaElements.END_HANDLER} />);
 
     const handlerGroup = screen.getByTestId('test-zoom-handler-group');
     expect(handlerGroup).toBeInTheDocument();

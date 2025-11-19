@@ -123,10 +123,9 @@ describe('FocusRing Component', () => {
     const innerRing = getByTestId('focus-ring-focus-inner');
 
     expect(outerRing).toHaveAttribute('stroke', '#ff0000');
-    // In adaptive mode, stroke-width is (outlineStrokeWidth + innerStrokeWidth) * 2
-    expect(outerRing).toHaveAttribute('stroke-width', '14'); // (4 + 3) * 2 = 14
+    expect(outerRing).toHaveAttribute('stroke-width', '4');
     expect(innerRing).toHaveAttribute('stroke', '#00ff00');
-    expect(innerRing).toHaveAttribute('stroke-width', '6'); // 3 * 2 = 6
+    expect(innerRing).toHaveAttribute('stroke-width', '3');
   });
 
   it('uses custom dataTestId', () => {
@@ -223,7 +222,7 @@ describe('FocusRing Component', () => {
     it('handles unknown element types gracefully with defaults', () => {
       const { getByTestId } = render(
         <svg>
-          <FocusRing focusConfig={{ variant: 'bounding-box' }} isFocused={true}>
+          <FocusRing isFocused={true}>
             <text data-testid="test-text" tabIndex={0} x={10} y={10}>
               Unknown Element
             </text>
@@ -231,162 +230,8 @@ describe('FocusRing Component', () => {
         </svg>
       );
 
-      // Focus ring should still work with bounding-box fallback
+      // Focus ring should still work with default fallback values
       expect(getByTestId('focus-ring-focus-outer')).toBeInTheDocument();
-    });
-  });
-
-  describe('Shape Adaptation (Adaptive Mode)', () => {
-    it('renders circular focus ring for circle element', () => {
-      const { getByTestId } = render(
-        <svg>
-          <FocusRing isFocused={true}>
-            <circle cx={50} cy={50} data-testid="test-circle" r={30} tabIndex={0} />
-          </FocusRing>
-        </svg>
-      );
-
-      const outerRing = getByTestId('focus-ring-focus-outer');
-      const innerRing = getByTestId('focus-ring-focus-inner');
-
-      // Verify it's a circle element (not rect)
-      expect(outerRing.tagName.toLowerCase()).toBe('circle');
-      expect(innerRing.tagName.toLowerCase()).toBe('circle');
-
-      // Verify circle attributes are preserved
-      expect(outerRing).toHaveAttribute('cx', '50');
-      expect(outerRing).toHaveAttribute('cy', '50');
-      expect(outerRing).toHaveAttribute('r', '30');
-    });
-
-    it('renders ellipse focus ring for ellipse element', () => {
-      const { getByTestId } = render(
-        <svg>
-          <FocusRing isFocused={true}>
-            <ellipse cx={100} cy={80} data-testid="test-ellipse" rx={60} ry={40} tabIndex={0} />
-          </FocusRing>
-        </svg>
-      );
-
-      const outerRing = getByTestId('focus-ring-focus-outer');
-
-      expect(outerRing.tagName.toLowerCase()).toBe('ellipse');
-      expect(outerRing).toHaveAttribute('cx', '100');
-      expect(outerRing).toHaveAttribute('cy', '80');
-      expect(outerRing).toHaveAttribute('rx', '60');
-      expect(outerRing).toHaveAttribute('ry', '40');
-    });
-
-    it('renders path focus ring for path element', () => {
-      const pathD = 'M 10 10 L 90 90 L 10 90 Z';
-      const { getByTestId } = render(
-        <svg>
-          <FocusRing isFocused={true}>
-            <path d={pathD} data-testid="test-path" tabIndex={0} />
-          </FocusRing>
-        </svg>
-      );
-
-      const outerRing = getByTestId('focus-ring-focus-outer');
-
-      expect(outerRing.tagName.toLowerCase()).toBe('path');
-      expect(outerRing).toHaveAttribute('d', pathD);
-    });
-
-    it('renders polygon focus ring for polygon element', () => {
-      const points = '10,10 90,10 50,90';
-      const { getByTestId } = render(
-        <svg>
-          <FocusRing isFocused={true}>
-            <polygon data-testid="test-polygon" points={points} tabIndex={0} />
-          </FocusRing>
-        </svg>
-      );
-
-      const outerRing = getByTestId('focus-ring-focus-outer');
-
-      expect(outerRing.tagName.toLowerCase()).toBe('polygon');
-      expect(outerRing).toHaveAttribute('points', points);
-    });
-
-    it('renders line focus ring for line element (halo technique)', () => {
-      const { getByTestId } = render(
-        <svg>
-          <FocusRing isFocused={true}>
-            <line
-              data-testid="test-line"
-              strokeWidth={2}
-              tabIndex={0}
-              x1={10}
-              x2={90}
-              y1={20}
-              y2={80}
-            />
-          </FocusRing>
-        </svg>
-      );
-
-      const outerRing = getByTestId('focus-ring-focus-outer');
-
-      expect(outerRing.tagName.toLowerCase()).toBe('line');
-      expect(outerRing).toHaveAttribute('x1', '10');
-      expect(outerRing).toHaveAttribute('y1', '20');
-      expect(outerRing).toHaveAttribute('x2', '90');
-      expect(outerRing).toHaveAttribute('y2', '80');
-
-      // Verify halo technique: stroke-width includes original width
-      // (2 + (2 + 2)) * 2 = 10
-      expect(outerRing).toHaveAttribute('stroke-width', '10');
-    });
-
-    it('renders polyline focus ring for polyline element (halo technique)', () => {
-      const points = '10,10 50,50 90,10';
-      const { getByTestId } = render(
-        <svg>
-          <FocusRing isFocused={true}>
-            <polyline data-testid="test-polyline" points={points} strokeWidth={3} tabIndex={0} />
-          </FocusRing>
-        </svg>
-      );
-
-      const outerRing = getByTestId('focus-ring-focus-outer');
-
-      expect(outerRing.tagName.toLowerCase()).toBe('polyline');
-      expect(outerRing).toHaveAttribute('points', points);
-
-      // Verify halo technique for open lines
-      // (3 + (2 + 2)) * 2 = 11
-      expect(outerRing).toHaveAttribute('stroke-width', '11');
-    });
-
-    it('uses round stroke-linecap for line elements', () => {
-      const { getByTestId } = render(
-        <svg>
-          <FocusRing isFocused={true}>
-            <line data-testid="test-line" tabIndex={0} x1={10} x2={90} y1={20} y2={80} />
-          </FocusRing>
-        </svg>
-      );
-
-      const outerRing = getByTestId('focus-ring-focus-outer');
-
-      expect(outerRing).toHaveAttribute('stroke-linecap', 'round');
-      expect(outerRing).toHaveAttribute('stroke-linejoin', 'round');
-    });
-
-    it('uses miter stroke-linejoin for closed shapes', () => {
-      const { getByTestId } = render(
-        <svg>
-          <FocusRing isFocused={true}>
-            <rect data-testid="test-rect" height={50} tabIndex={0} width={100} x={10} y={20} />
-          </FocusRing>
-        </svg>
-      );
-
-      const outerRing = getByTestId('focus-ring-focus-outer');
-
-      expect(outerRing).toHaveAttribute('stroke-linejoin', 'miter');
-      expect(outerRing).toHaveAttribute('stroke-miterlimit', '10');
     });
   });
 });

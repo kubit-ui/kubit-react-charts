@@ -104,11 +104,7 @@ const PlotComponent = <T = string,>(
       )}
 
       {/* Main plot component wrapped with FocusRing */}
-      <FocusRing
-        dataTestId={dataTestId}
-        focusConfig={{ ...focusConfig, variant: focusConfig?.variant ?? 'bounding-box' }}
-        isFocused={isFocused}
-      >
+      <FocusRing dataTestId={dataTestId} focusConfig={focusConfig} isFocused={isFocused}>
         <PlotShape ref={ref} {...plotShapeProps} />
       </FocusRing>
     </>
