@@ -24,24 +24,28 @@ export const LineChartProjection: FC<LineChartProjectionProps> = ({
   const upperProjection = xUp || yUp ? { x: xUp, y: yUp } : undefined;
   const lowerProjection = xDw || yDw ? { x: xDw, y: yDw } : undefined;
 
+  // Extract values for stable dependencies
+  const upperY = upperProjection?.y;
+  const lowerY = lowerProjection?.y;
+  const upperX = upperProjection?.x;
+  const lowerX = lowerProjection?.x;
+
   // Projection error validations
   useEffect(() => {
     // Invalid projection bounds - upper/lower overlap
     if (upperProjection && lowerProjection) {
-      const upperY = upperProjection.y || 0;
-      const lowerY = lowerProjection.y || 0;
+      const upperYVal = upperY || 0;
+      const lowerYVal = lowerY || 0;
 
-      if (upperY >= lowerY) {
+      if (upperYVal >= lowerYVal) {
         addError?.('LINE_CHART_PROJECTION_ERROR', {
-          error: buildProjectionBoundsError(upperY, lowerY),
+          error: buildProjectionBoundsError(upperYVal, lowerYVal),
         });
       }
     }
 
     // Projection coordinates outside chart area
     if (upperProjection) {
-      const { x: upperX, y: upperY } = upperProjection;
-
       if (upperX !== undefined && (upperX < 0 || upperX > 100)) {
         addError?.('LINE_CHART_PROJECTION_ERROR', {
           error: buildProjectionXOutOfRangeError(upperX, true),
@@ -56,8 +60,6 @@ export const LineChartProjection: FC<LineChartProjectionProps> = ({
     }
 
     if (lowerProjection) {
-      const { x: lowerX, y: lowerY } = lowerProjection;
-
       if (lowerX !== undefined && (lowerX < 0 || lowerX > 100)) {
         addError?.('LINE_CHART_PROJECTION_ERROR', {
           error: buildProjectionXOutOfRangeError(lowerX, false),
@@ -70,7 +72,7 @@ export const LineChartProjection: FC<LineChartProjectionProps> = ({
         });
       }
     }
-  }, [upperProjection, lowerProjection, svgHeight, addError]);
+  }, [lowerProjection, lowerX, lowerY, svgHeight, upperProjection, upperX, upperY]);
 
   const { downPath, shapePath, upPath } = getProjection({
     curved,

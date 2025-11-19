@@ -1,6 +1,11 @@
-import { type FC, type ReactElement, useContext, useRef } from 'react';
+import { type FC, type ReactElement, useContext, useEffect, useRef } from 'react';
 
 import type { PathProps } from '@/components/path/path.types';
+import {
+  buildEmptyDataArrayError,
+  buildInvalidTotalError,
+  buildPieDataKeyNotFoundError,
+} from '@/utils/buildErrors/buildErrors';
 import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
 
 import { PieChartContext } from '../context/pieChartContext';
@@ -26,9 +31,42 @@ export const PieChartPath: FC<PathProps> = ({
   ...props
 }): ReactElement => {
   const key = String(dataKey);
-  const { canvasHeight, canvasWidth, data, dataTestId, halfChart } = useContext(PieChartContext);
+  const { addError, canvasHeight, canvasWidth, data, dataTestId, halfChart } =
+    useContext(PieChartContext);
   const chartInitAngle = halfChart ? 0 : -Math.PI / 2; // ? 0deg : -90deg
   const startAngle = useRef<number>(chartInitAngle);
+
+  // Extract data for this key to optimize useEffect dependencies
+  const dataArray = data[key];
+  const hasDataKey = Object.prototype.hasOwnProperty.call(data, key);
+
+  // Path error validations
+  useEffect(() => {
+    // Validate dataKey exists in dataset
+    if (!hasDataKey) {
+      addError?.('PIE_CHART_PATH_ERROR', {
+        error: buildPieDataKeyNotFoundError(key),
+      });
+      return;
+    }
+
+    // Validate data array exists and is not empty
+    if (!dataArray || dataArray.length === 0) {
+      addError?.('PIE_CHART_PATH_ERROR', {
+        error: buildEmptyDataArrayError(key),
+      });
+      return;
+    }
+
+    // Calculate total and validate
+    const calculatedTotal = dataArray.reduce((acc, group) => acc + group.value, 0);
+    if (calculatedTotal <= 0 || isNaN(calculatedTotal)) {
+      addError?.('PIE_CHART_PATH_ERROR', {
+        error: buildInvalidTotalError(key, calculatedTotal),
+      });
+    }
+  }, [dataArray, hasDataKey, key]);
+
   const total = data[key]?.reduce((acc, group) => acc + group.value, 0);
   const singleStroke = data[key]?.length === 1;
   const parsedInnerRadius = innerRadius ? parseStringToNumberPx(innerRadius) : undefined;
@@ -44,9 +82,11 @@ export const PieChartPath: FC<PathProps> = ({
           canvasHeight={canvasHeight}
           canvasWidth={canvasWidth}
           color={group.color || fill} // Use group color if available, otherwise use fill prop
+          dataKey={key}
           dataTestId={`${dataTestId}path-${index}`}
           gap={gap}
           halfChart={halfChart}
+          index={index}
           innerRadius={parsedInnerRadius}
           radius={parsedRadius}
           singleStroke={singleStroke}

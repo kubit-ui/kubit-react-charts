@@ -1,19 +1,41 @@
 import { useCallback, useState } from 'react';
 
 import { type ChartErrorCollection, normalizeToArray } from '@/types/errors.type';
-import { Positions } from '@/types/position.enum';
 
-import { LineChart } from '../../lineChart';
+import { PieChart } from '../../pieChart';
+import type { DataItem } from '../../pieChart.type';
 
-// Problematic data, just one entry to trigger an error
-const PROBLEMATIC_DATA = [{ cats: 20, year: '2023' }];
+// Problematic data to trigger validation errors
+const PROBLEMATIC_DATA: DataItem = {
+  invalidKey: [
+    { name: 'Valid Segment', value: 100 },
+    { name: 'Another Valid', value: 50 },
+  ],
+  invalidValues: [
+    { name: 'Valid Value', value: 100 },
+    { name: 'Invalid Value', value: 'not-a-number' as unknown as number }, // Invalid type
+  ],
+  missingDataKey: [], // Empty array to trigger error
+  missingName: [
+    { name: 'Valid Segment', value: 100 },
+    { name: '', value: 50 }, // Missing name
+  ],
+  negativeValues: [
+    { name: 'Positive', value: 200 },
+    { name: 'Negative', value: -50 }, // Negative value
+  ],
+  zeroTotal: [
+    { name: 'Zero Value 1', value: 0 },
+    { name: 'Zero Value 2', value: 0 },
+  ],
+};
 
 interface ErrorInfoState {
-  hasErrors: boolean;
   errors: ChartErrorCollection;
+  hasErrors: boolean;
 }
 
-export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
+export const PieChartWithErrorHandlingWithHooks = (): JSX.Element => {
   const [errorInfo, setErrorInfo] = useState<ErrorInfoState>({
     errors: {},
     hasErrors: false,
@@ -34,6 +56,7 @@ export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
         flexDirection: 'column',
         gap: '16px',
         height: '600px',
+        padding: '20px',
       }}
     >
       {/* Error panel */}
@@ -142,9 +165,9 @@ export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
       >
         {errorInfo.hasErrors ? (
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📈❌</div>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🥧❌</div>
             <h3 style={{ color: '#6c757d', margin: '0 0 12px 0' }}>
-              Line Chart Cannot Render Due to Multiple Errors
+              Pie Chart Cannot Render Due to Multiple Errors
             </h3>
             <p style={{ color: '#6c757d', fontSize: '13px', margin: '0' }}>
               Review the error panel above to see detailed diagnostics for each component.
@@ -152,8 +175,8 @@ export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
           </div>
         ) : (
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📈✅</div>
-            <h3 style={{ color: '#28a745', margin: '0' }}>Chart would render here</h3>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🥧✅</div>
+            <h3 style={{ color: '#28a745', margin: '0' }}>Chart would render</h3>
             <p style={{ color: '#6c757d', fontSize: '13px', margin: '8px 0 0 0' }}>
               No errors detected - chart rendering successfully
             </p>
@@ -161,36 +184,27 @@ export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
         )}
       </div>
 
-      {/* Hidden LineChart for error detection only */}
+      {/* Hidden PieChart for error detection */}
       <div style={{ display: 'none' }}>
-        <LineChart data={PROBLEMATIC_DATA} xKey="year" onErrors={handleChartError}>
-          <LineChart.Path dataKey="cats" stroke="#0078D4" strokeWidth="0.3" tabIndex={0} />
-          <LineChart.Path dataKey="invalidKey" stroke="#FF6B6B" strokeWidth="0.3" tabIndex={0} />
-          <LineChart.XAxis
-            ariaLabel="XAxis"
-            position={Positions.BOTTOM}
-            showTickLines={false}
-            stroke="black"
-            strokeWidth="0.1"
-            tickValues={{
-              custom: { values: ['2023'] }, // Only 1 value to trigger insufficient data error
-            }}
-          />
-          <LineChart.YAxis
-            ariaLabel="YAxis"
-            position={Positions.LEFT}
-            showTickLines={false}
-            stroke="black"
-            strokeWidth="0.1"
-            tickValues={{
-              numeric: { max: 20, min: 20, step: 1 }, // min = max configuration to trigger error
-            }}
-          />
-          <LineChart.Separator
-            areaSeparator={{ fill: 'rgba(255,0,0,0.1)' }}
-            xBreakAxis="2025" // Invalid break axis - outside data range
-          />
-        </LineChart>
+        <PieChart data={PROBLEMATIC_DATA} onErrors={handleChartError}>
+          {/* Test missing dataKey */}
+          <PieChart.Path dataKey="nonExistentKey" fill="#3498db" />
+
+          {/* Test empty data array */}
+          <PieChart.Path dataKey="missingDataKey" fill="#e74c3c" />
+
+          {/* Test negative values */}
+          <PieChart.Path dataKey="negativeValues" fill="#2ecc71" />
+
+          {/* Test invalid values (non-numeric) */}
+          <PieChart.Path dataKey="invalidValues" fill="#f39c12" />
+
+          {/* Test missing name property */}
+          <PieChart.Path dataKey="missingName" fill="#9b59b6" />
+
+          {/* Test zero total */}
+          <PieChart.Path dataKey="zeroTotal" fill="#1abc9c" />
+        </PieChart>
       </div>
     </div>
   );

@@ -134,7 +134,15 @@ export const argtypes = (): ArgTypes<PieChartProps> => {
         type: { summary: '(event: React.MouseEvent<SVGElement, MouseEvent>) => void' },
       },
     },
-
+    onErrors: {
+      action: 'error-occurred',
+      description:
+        'Callback function triggered when errors are detected in the chart. Receives a collection of validation errors from chart components (context, paths, segments). Use this to handle data validation errors, display error messages, or provide fallback UI.',
+      table: {
+        category: CATEGORY_CONTROL.FUNCTIONS,
+        type: { summary: '(errors: ChartErrorCollection) => void' },
+      },
+    },
     onFocus: {
       action: 'focused',
       description: 'Callback function triggered when the chart receives focus.',

@@ -34,10 +34,19 @@ export const LineChartPath: FC<LineChartPathProps> = ({
   // recovery the context values
   const { addError, xAxisCoordinates, yAxisCoordinates, ...context } = useContext(LineChartContext);
 
+  // Extract stable values for dependencies
+  const dataKey = props.dataKey as string;
+  const hasData = context.data.length > 0;
+  const firstDataItem = context.data[0];
+  const hasDataKey = firstDataItem
+    ? Object.prototype.hasOwnProperty.call(firstDataItem, dataKey)
+    : false;
+  const dataLength = context.data.length;
+
   // Path error validations
   useEffect(() => {
     // Invalid dataKey validation
-    if (!props.dataKey || typeof props.dataKey !== 'string') {
+    if (!dataKey || typeof dataKey !== 'string') {
       addError?.('LINE_CHART_PATH_ERROR', {
         error: buildError(BuildError.LINE_CHART_PATH_INVALID_DATAKEY),
       });
@@ -45,18 +54,15 @@ export const LineChartPath: FC<LineChartPathProps> = ({
     }
 
     // Check if dataKey exists in dataset
-    if (
-      context.data.length > 0 &&
-      !Object.prototype.hasOwnProperty.call(context.data[0], props.dataKey)
-    ) {
+    if (hasData && !hasDataKey) {
       addError?.('LINE_CHART_PATH_ERROR', {
-        error: buildDataKeyNotFoundError(props.dataKey),
+        error: buildDataKeyNotFoundError(dataKey),
       });
       return;
     }
 
     // Curved path calculation errors
-    if (curved && context.data.length < 2) {
+    if (curved && dataLength < 2) {
       addError?.('LINE_CHART_PATH_ERROR', {
         error: buildError(BuildError.LINE_CHART_PATH_INSUFFICIENT_POINTS),
       });
@@ -64,13 +70,13 @@ export const LineChartPath: FC<LineChartPathProps> = ({
     }
 
     // Path rendering errors - validate coordinates
-    const yData = getAxisData(context.data, props.dataKey);
+    const yData = getAxisData(context.data, dataKey);
     if (yData.length > 0 && yData.every(val => val === null || val === undefined)) {
       addError?.('LINE_CHART_PATH_ERROR', {
         error: buildError(BuildError.LINE_CHART_PATH_ALL_VALUES_NULL),
       });
     }
-  }, [props.dataKey, curved, context.data, addError]);
+  }, [addError, curved, dataKey, dataLength, hasData, hasDataKey, context.data]);
 
   // the node indicator logic
   const { indicatorRef, pathRef } = useIndicator(context.xCursor, !!indicatorConfig);
@@ -90,7 +96,7 @@ export const LineChartPath: FC<LineChartPathProps> = ({
   const { tickValues: xTickValues } = xAxisCoordinates;
   const { tickValues: yTickValues } = yAxisCoordinates;
   const xData = getAxisData(context.data, context.xKey);
-  const yData = getAxisData(context.data, props.dataKey as string);
+  const yData = getAxisData(context.data, dataKey);
   const xPoints = getPoints(xTickValues, xData, true);
   const yPoints = getPoints(yTickValues, yData);
   const points = xPoints.map((x, i) => [x, yPoints[i]]) as [number, number][];

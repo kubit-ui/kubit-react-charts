@@ -2,6 +2,7 @@ import type { ReactElement, ReactNode } from 'react';
 
 import type { PathProps } from '@/components/path/path.types';
 import type { CanvasConfig } from '@/types/canvas.type';
+import type { ChartError, ChartErrorCollection, ErrorType } from '@/types/errors.type';
 
 interface Group {
   name: string;
@@ -39,6 +40,7 @@ export interface PieChartProps {
   onBlur?: (event: React.FocusEvent<SVGElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<SVGSVGElement>) => void;
   onKeyUp?: (event: React.KeyboardEvent<SVGSVGElement>) => void;
+  onErrors?: (errors: ChartErrorCollection) => void;
 }
 
 export interface PieChartContextType {
@@ -53,6 +55,8 @@ export interface PieChartContextType {
   data: DataItem;
   dataTestId?: string;
   halfChart?: boolean;
+  error?: ChartError;
+  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => void;
 }
 
 export type PieChartSegmentProps = PathProps & {
@@ -65,6 +69,9 @@ export type PieChartSegmentProps = PathProps & {
   radius?: number;
   value: number;
   color?: string;
+  name?: string;
   singleStroke: boolean;
   halfChart?: boolean;
+  dataKey?: string;
+  index?: number;
 };

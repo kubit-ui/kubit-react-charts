@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2025-11-19
+
+### Added
+
+#### Error Handling System
+
+- **PieChart Error Accumulator**: Implemented comprehensive error accumulation system for PieChart components
+  - Added error validation for canvas dimensions (width and height must be > 0)
+  - Added dataKey existence validation in dataset
+  - Added validation for segment values (numeric, non-negative)
+  - Added validation for segment names (non-empty required property)
+  - Added validation for total values (must be > 0)
+  - Added radius validation (must be positive number)
+  - Added innerRadius validation (must be non-negative number)
+  - Added innerRadius < radius constraint validation
+  - Implemented `onErrors` callback prop for error handling
+  - Added error builders: `buildPieDataKeyNotFoundError`, `buildEmptyDataArrayError`, `buildInvalidTotalError`, `buildSegmentValueError`, `buildSegmentNegativeValueError`, `buildInvalidGroupError`, `buildInvalidRadiusError`, `buildInvalidInnerRadiusError`, `buildInnerRadiusOutOfRangeError`
+  - Added error types: `PIE_CHART_CONTEXT_ERROR`, `PIE_CHART_PATH_ERROR`, `PIE_CHART_SEGMENT_ERROR`
+  - Added PieChart-specific error messages and constants
+
+- **Interactive Error Handling Story**: Added comprehensive Storybook story demonstrating PieChart error handling
+  - Real-time error detection visualization with error panel
+  - Multiple error scenarios demonstration (missing dataKey, empty data, negative values, invalid values, missing names, zero totals)
+  - Interactive UI showing error count and categorization by component type
+  - Fallback UI demonstration for error states
+
+- **Chart Constants**: Extended chart defaults with PieChart-specific constants
+  - Added `PIE_CHART_DEFAULTS` for radius percentage and minimum segments
+  - Added `PIE_CHART_FALLBACK_DATA` for fallback data keys, segment names, and values
+
+### Changed
+
+#### Performance Optimizations
+
+- **useEffect Dependencies Optimization**: Optimized React hooks across chart components
+  - BarChart: Optimized `barChartPath.tsx` and `barChartSeparator.tsx` dependencies by extracting stable primitive values
+  - LineChart: Optimized `lineChartPath.tsx`, `lineChartSeparator.tsx`, and `lineChartProjection.tsx` dependencies
+  - Extracted computed values (numeric conversions, array accesses) outside useEffect to ensure stable references
+  - Removed unnecessary function dependencies (`addError`) from dependency arrays
+
+#### Documentation
+
+- **Storybook Argtypes**: Standardized `onErrors` prop descriptions across all chart components
+  - Updated BarChart argtypes with consistent error callback documentation
+  - Updated LineChart argtypes with consistent error callback documentation
+  - Added PieChart argtypes with comprehensive error callback documentation
+  - Unified documentation format across all chart types
+
 ## [1.4.0] - 2025-11-18
 
 ### Added

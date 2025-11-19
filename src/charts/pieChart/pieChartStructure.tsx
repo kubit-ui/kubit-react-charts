@@ -3,6 +3,9 @@ import { type FC, type ReactElement, useMemo } from 'react';
 import { SvgContainer } from '@/components/svgContainer/svgContainer';
 import { buildViewBox } from '@/components/svgContainer/utils/buildViewBox/buildViewBox';
 import { DefaultCanvasConfig } from '@/types/canvas.type';
+import type { ChartError, ErrorType } from '@/types/errors.type';
+import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
+import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
 import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
 
 import { buildPieContextValue } from './context/buildPieContextValue';
@@ -50,6 +53,7 @@ export const PieChartStructure: FC<PieChartProps> = ({
   dataTestId = 'pie-chart',
   halfChart,
   height = '100%',
+  onErrors,
   radius = '50%',
   role,
   tabIndex,
@@ -67,14 +71,25 @@ export const PieChartStructure: FC<PieChartProps> = ({
   // Build the viewBox string based on canvas dimensions and extra space.
   const viewBox = buildViewBox(parsedCanvasWidth, parsedCanvasHeight, parsedCanvasExtraSpace);
 
+  const errorAccumulator = useMemo(() => createErrorAccumulator(onErrors), [onErrors]);
+
+  // Create a fingerprint of the data to avoid unnecessary contextValue updates
+  const dataFingerprint = getDataFingerprint(data);
+
   const contextValue = useMemo(() => {
+    // Clear previous errors before building new context
+    errorAccumulator.clearErrors();
+
     return buildPieContextValue({
+      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => {
+        errorAccumulator.addError(errorType, error);
+      },
       canvasHeight: parsedCanvasHeight,
       canvasWidth: parsedCanvasWidth,
       children,
       halfChart,
     });
-  }, [canvasHeight, canvasWidth, halfChart]);
+  }, [canvasHeight, canvasWidth, halfChart, dataFingerprint, errorAccumulator]);
 
   return (
     <SvgContainer

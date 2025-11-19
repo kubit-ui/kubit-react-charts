@@ -144,7 +144,7 @@ export const argtypes = (): ArgTypes<LineChartProps> => {
     onErrors: {
       action: 'error-occurred',
       description:
-        'Error boundary callback that receives chart rendering errors. Implement this to handle data validation errors, rendering failures, or provide fallback UI.',
+        'Callback function triggered when errors are detected in the chart. Receives a collection of validation errors from chart components (context, paths, axes, separators). Use this to handle data validation errors, display error messages, or provide fallback UI.',
       table: {
         category: CATEGORY_CONTROL.FUNCTIONS,
         type: { summary: '(errors: ChartErrorCollection) => void' },
