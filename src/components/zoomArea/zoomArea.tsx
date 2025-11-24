@@ -1,11 +1,12 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { SvgContainer } from '@/components/svgContainer/svgContainer';
 import { getFocusConfig } from '@/utils/calculateFocusOutline/calculateFocusOutline';
 import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
 
+import { FocusRing } from '../focusRing/focusRing';
 import { LineRenderer } from './components/LineRenderer';
-import { SelectionArea, SelectionAreaFocusRing } from './components/SelectionArea';
+import { SelectionArea } from './components/SelectionArea';
 import { ZoomHandler } from './components/ZoomHandler';
 import { useDragInteraction } from './hooks/useDragInteraction';
 import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
@@ -80,6 +81,9 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
   const dataFingerprint = getDataFingerprint(data);
   const linesFingerprint = JSON.stringify(lines);
 
+  // Create ref for SelectionArea to enable separate focus ring rendering
+  const selectionAreaRef = useRef<SVGRectElement>(null);
+
   const accessibilityLabels = generateAccessibilityLabels(
     data,
     xKey,
@@ -136,6 +140,7 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
 
       {/* Selection area overlay - rendered below handlers */}
       <SelectionArea
+        ref={selectionAreaRef}
         currentRange={currentRange}
         dataLength={data.length}
         dataTestId={`${dataTestId}-selection-area`}
@@ -191,13 +196,12 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
         onTouchStart={handleTouchStart(ZoomAreaElements.END_HANDLER)}
       />
 
-      {/* Selection area focus ring - rendered above handlers */}
-      <SelectionAreaFocusRing
-        endX={endX}
-        focusConfig={resolvedFocusConfig}
-        height={parsedCanvas.height}
+      {/* Selection area focus ring - rendered above handlers for correct z-order */}
+      <FocusRing
+        dataTestId="selection-area-focus"
+        focusConfig={{ ...resolvedFocusConfig, variant: 'bounding-box' }}
         isFocused={isFocused(ZoomAreaElements.SELECTION_AREA)}
-        startX={startX}
+        targetRef={selectionAreaRef}
       />
     </SvgContainer>
   );

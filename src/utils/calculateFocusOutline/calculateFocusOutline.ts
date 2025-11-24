@@ -154,4 +154,5 @@ export const getFocusConfig = (focusConfig?: FocusConfig): Required<FocusConfig>
   innerStrokeWidth: focusConfig?.innerStrokeWidth ?? FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH,
   outlineColor: focusConfig?.outlineColor ?? FOCUS_DEFAULT.FOCUS_COLOR,
   outlineStrokeWidth: focusConfig?.outlineStrokeWidth ?? FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH,
+  variant: focusConfig?.variant ?? FOCUS_DEFAULT.VARIANT,
 });

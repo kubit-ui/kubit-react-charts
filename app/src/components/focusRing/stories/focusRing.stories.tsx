@@ -1,60 +1,70 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useRef, useState } from 'react';
 
 import { FocusRing } from '../focusRing';
 import { focusRingArgtypes } from './argtypes';
 
+// Common style to disable browser's native focus outline
+const noOutlineStyle = { outline: 'none' } as const;
+
+// Standard decorator for simple SVG stories
+const svgDecorator = (Story: React.ComponentType): JSX.Element => (
+  <div style={{ padding: '20px' }}>
+    <svg height="200" style={{ border: '1px solid #ccc' }} width="200">
+      <Story />
+    </svg>
+  </div>
+);
+
 const meta: Meta<typeof FocusRing> = {
   argTypes: focusRingArgtypes,
   component: FocusRing,
-  decorators: [
-    (Story: React.ComponentType): JSX.Element => (
-      <div style={{ padding: '20px' }}>
-        <svg height="200" style={{ border: '1px solid #ccc' }} width="200">
-          <Story />
-        </svg>
-      </div>
-    ),
-  ],
   parameters: {
     docs: {
       description: {
         component: `
 ## FocusRing Component
 
-A reusable component that wraps SVG elements and automatically handles focus ring rendering. This is the basic implementation that always renders rectangular focus rings.
+A reusable component that wraps SVG elements and provides a visual focus ring indicator. FocusRing is a **controlled component** that responds to the \`isFocused\` prop.
 
 ### Features
 
-- **Automatic Focus Management**: Uses the \`useFocus\` hook internally to manage focus state
-- **Reuses Existing Logic**: Leverages \`calculateFocusOutline\` utility for precise calculations
+- **Controlled Component**: Accepts \`isFocused\` prop to control visibility
+- **Automatic Detection**: Automatically detects element dimensions and position
+- **Two Modes**: 
+  - **Children Mode**: Wraps the element inline for simple cases
+  - **TargetRef Mode**: Renders separately for z-order control
+- **Reuses Logic**: Leverages \`calculateFocusOutline\` utility for precise calculations
 - **Consistent Styling**: Maintains existing \`FocusConfig\` API for uniform appearance
-- **Event Preservation**: Preserves original event handlers on wrapped children
-- **Configurable**: Supports disabled state and focus change callbacks
-
-### Basic Implementation Limitations
-
-- **Rectangular Only**: Always renders rectangular focus rings regardless of element shape
-- **Manual Props**: Requires explicit \`elementSize\`, \`elementPosition\`, etc.
-- **Single Child**: Supports only one SVG element at a time
+- **Fully Customizable**: Supports custom focus configuration and disabled state
 
 ### Usage
 
-This component significantly reduces focus ring implementation from ~30 lines to ~3 lines:
-
+#### Children Mode (Inline)
 \`\`\`tsx
-// Before (30+ lines of manual implementation)
-const focusOutline = calculateFocusOutline({...});
-{isFocused && focusOutline.type === 'rectangle' && (
-  <g>
-    <rect {...focusOutline.outer} />
-    <rect {...focusOutline.inner} />
-  </g>
-)}
+const [focused, setFocused] = useState(false);
 
-// After (3 lines with FocusRing)
-<FocusRing elementSize={32} elementPosition={{x: 50, y: 50}}>
-  <YourSVGElement />
+<FocusRing isFocused={focused}>
+  <rect
+    onFocus={() => setFocused(true)}
+    onBlur={() => setFocused(false)}
+    {...props}
+  />
 </FocusRing>
+\`\`\`
+
+#### TargetRef Mode (Separate Rendering)
+\`\`\`tsx
+const ref = useRef<SVGRectElement>(null);
+const [focused, setFocused] = useState(false);
+
+<rect
+  ref={ref}
+  onFocus={() => setFocused(true)}
+  onBlur={() => setFocused(false)}
+  {...props}
+/>
+<FocusRing targetRef={ref} isFocused={focused} />
 \`\`\`
         `,
       },
@@ -68,319 +78,959 @@ export default meta;
 type Story = StoryObj<typeof FocusRing>;
 
 /**
- * Basic usage of FocusRing with automatic element detection.
- * The component automatically detects the rectangle's properties.
- * Click on the rectangle and use Tab to see the focus ring in action.
+ * Basic usage showing controlled FocusRing behavior.
+ * Click on the rectangle to see the focus ring appear.
+ * Click outside to hide it.
  */
 export const BasicUsage: Story = {
+  decorators: [svgDecorator],
   parameters: {
     controls: { disable: true },
   },
-  render: () => (
-    <FocusRing>
-      <rect
-        aria-label="Interactive rectangle with auto-detection"
-        fill="blue"
-        height={32}
-        role="button"
-        tabIndex={0}
-        width={32}
-        x={84}
-        y={84}
-      />
-    </FocusRing>
-  ),
-};
+  render: () => {
+    const [isFocused, setIsFocused] = useState(false);
 
-/**
- * Manual configuration mode (legacy/compatibility mode).
- * Use this when you need precise control or when working with custom components.
- */
-export const ManualConfiguration: Story = {
-  args: {
-    autoDetect: false,
-    elementPosition: { x: 100, y: 100 },
-    elementSize: 32,
-    elementStrokeWidth: 0,
+    return (
+      <FocusRing isFocused={isFocused}>
+        <rect
+          aria-label="Interactive rectangle"
+          fill="blue"
+          height={32}
+          role="button"
+          style={noOutlineStyle}
+          tabIndex={0}
+          width={32}
+          x={84}
+          y={84}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+        />
+      </FocusRing>
+    );
   },
-  render: args => (
-    <FocusRing {...args}>
-      <rect
-        aria-label="Interactive rectangle with manual config"
-        fill="purple"
-        height={args.elementSize}
-        role="button"
-        tabIndex={0}
-        width={args.elementSize}
-        x={(args.elementPosition?.x ?? 100) - (args.elementSize ?? 32) / 2}
-        y={(args.elementPosition?.y ?? 100) - (args.elementSize ?? 32) / 2}
-      />
-    </FocusRing>
-  ),
 };
 
 /**
- * Automatic detection with different SVG elements.
- * Demonstrates how FocusRing automatically detects properties from various element types.
+ * FocusRing automatically detects rectangle properties.
  */
 export const AutomaticDetection: Story = {
+  decorators: [svgDecorator],
   parameters: {
     controls: { disable: true },
   },
-  render: () => (
-    <>
-      {/* Rectangle - automatically detected */}
-      <FocusRing>
+  render: () => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    return (
+      <FocusRing isFocused={isFocused}>
         <rect
           aria-label="Auto-detected rectangle"
-          fill="blue"
-          height={30}
-          role="button"
-          stroke="darkblue"
-          strokeWidth={1}
-          tabIndex={0}
-          width={50}
-          x={30}
-          y={30}
-        />
-      </FocusRing>
-
-      {/* Circle - automatically detected */}
-      <FocusRing>
-        <circle
-          aria-label="Auto-detected circle"
-          cx={140}
-          cy={45}
-          fill="red"
-          r={20}
-          role="button"
-          stroke="darkred"
-          strokeWidth={2}
-          tabIndex={0}
-        />
-      </FocusRing>
-
-      {/* Ellipse - automatically detected */}
-      <FocusRing>
-        <ellipse
-          aria-label="Auto-detected ellipse"
-          cx={100}
-          cy={120}
           fill="green"
+          height={40}
           role="button"
-          rx={30}
-          ry={15}
-          stroke="darkgreen"
-          strokeWidth={1}
+          style={noOutlineStyle}
           tabIndex={0}
+          width={60}
+          x={70}
+          y={80}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
         />
       </FocusRing>
-
-      {/* Polygon - automatically detected */}
-      <FocusRing>
-        <polygon
-          aria-label="Auto-detected triangle"
-          fill="orange"
-          points="50,150 75,180 25,180"
-          role="button"
-          stroke="darkorange"
-          strokeWidth={2}
-          tabIndex={0}
-        />
-      </FocusRing>
-    </>
-  ),
-};
-
-/**
- * Manual override of auto-detected properties.
- * Shows how you can override specific properties while still using auto-detection.
- */
-export const WithManualOverride: Story = {
-  args: {
-    elementSize: 60, // Override the detected size
+    );
   },
-  render: args => (
-    <FocusRing {...args}>
-      <circle
-        aria-label="Circle with size override"
-        cx={100}
-        cy={100}
-        fill="purple"
-        r={20}
-        role="button"
-        stroke="indigo"
-        strokeWidth={2}
-        tabIndex={0}
-      />
-    </FocusRing>
-  ),
 };
 
 /**
- * FocusRing with custom focus configuration.
- * Demonstrates how to customize colors, stroke widths, and gaps.
+ * FocusRing works with circles too.
  */
-export const CustomFocusConfig: Story = {
-  args: {
-    elementPosition: { x: 100, y: 100 },
-    elementSize: 48,
-    elementStrokeWidth: 3,
-    focusConfig: {
-      gap: 3,
-      innerColor: '#ffffff',
-      innerStrokeWidth: 2,
-      outlineColor: '#ff6b35',
-      outlineStrokeWidth: 4,
-    },
-  },
-  render: args => (
-    <FocusRing {...args}>
-      <rect
-        aria-label="Interactive rectangle with custom focus"
-        fill="purple"
-        height={args.elementSize}
-        role="button"
-        stroke="darkpurple"
-        strokeWidth={args.elementStrokeWidth}
-        tabIndex={0}
-        width={args.elementSize}
-        x={(args.elementPosition?.x ?? 100) - (args.elementSize ?? 48) / 2}
-        y={(args.elementPosition?.y ?? 100) - (args.elementSize ?? 48) / 2}
-      />
-    </FocusRing>
-  ),
-};
-
-/**
- * Disabled FocusRing example.
- * Even when focused, no focus ring will appear.
- */
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-    elementPosition: { x: 100, y: 100 },
-    elementSize: 36,
-    elementStrokeWidth: 1,
-  },
-  render: args => (
-    <FocusRing {...args}>
-      <rect
-        aria-label="Disabled focus ring rectangle"
-        fill="gray"
-        height={args.elementSize}
-        role="button"
-        stroke="darkgray"
-        strokeWidth={args.elementStrokeWidth}
-        style={{ opacity: 0.6 }}
-        tabIndex={0}
-        width={args.elementSize}
-        x={(args.elementPosition?.x ?? 100) - (args.elementSize ?? 36) / 2}
-        y={(args.elementPosition?.y ?? 100) - (args.elementSize ?? 36) / 2}
-      />
-    </FocusRing>
-  ),
-};
-
-/**
- * Multiple FocusRing elements to demonstrate independent behavior.
- * Each element has its own focus ring that appears/disappears independently.
- */
-export const MultiplElements: Story = {
+export const WithCircle: Story = {
+  decorators: [svgDecorator],
   parameters: {
     controls: { disable: true },
   },
-  render: () => (
-    <>
-      <FocusRing
-        elementPosition={{ x: 60, y: 60 }}
-        elementSize={24}
-        elementStrokeWidth={0}
-        focusConfig={{ outlineColor: '#0078d4' }}
-      >
-        <rect
-          aria-label="Blue square"
-          fill="blue"
-          height={24}
-          role="button"
-          tabIndex={0}
-          width={24}
-          x={48}
-          y={48}
-        />
-      </FocusRing>
+  render: () => {
+    const [isFocused, setIsFocused] = useState(false);
 
-      <FocusRing
-        elementPosition={{ x: 140, y: 60 }}
-        elementSize={32}
-        elementStrokeWidth={1}
-        focusConfig={{ outlineColor: '#d13438' }}
-      >
+    return (
+      <FocusRing isFocused={isFocused}>
         <circle
-          aria-label="Red circle"
-          cx={140}
-          cy={60}
+          aria-label="Interactive circle"
+          cx={100}
+          cy={100}
           fill="red"
-          r={16}
+          r={25}
           role="button"
-          stroke="darkred"
-          strokeWidth={1}
+          style={noOutlineStyle}
           tabIndex={0}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
         />
       </FocusRing>
-
-      <FocusRing
-        elementPosition={{ x: 100, y: 120 }}
-        elementSize={28}
-        elementStrokeWidth={2}
-        focusConfig={{ outlineColor: '#107c10' }}
-      >
-        <polygon
-          aria-label="Green triangle"
-          fill="green"
-          points="86,134 100,106 114,134"
-          role="button"
-          stroke="darkgreen"
-          strokeWidth={2}
-          tabIndex={0}
-        />
-      </FocusRing>
-    </>
-  ),
+    );
+  },
 };
 
 /**
- * Integration example showing FocusRing with event handlers.
- * Demonstrates preservation of original event handlers and focus change callback.
+ * Custom focus configuration for different visual styles.
+ */
+export const CustomFocusConfig: Story = {
+  decorators: [svgDecorator],
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    const customConfig = {
+      gap: 4,
+      innerColor: '#00ff00',
+      innerStrokeWidth: 3,
+      outlineColor: '#ff0000',
+      outlineStrokeWidth: 5,
+    };
+
+    return (
+      <FocusRing focusConfig={customConfig} isFocused={isFocused}>
+        <rect
+          aria-label="Custom styled focus ring"
+          fill="purple"
+          height={48}
+          role="button"
+          strokeWidth={2}
+          style={noOutlineStyle}
+          tabIndex={0}
+          width={48}
+          x={76}
+          y={76}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+        />
+      </FocusRing>
+    );
+  },
+};
+
+/**
+ * Disabled state - focus ring won't appear even when focused.
+ */
+export const Disabled: Story = {
+  decorators: [svgDecorator],
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    return (
+      <FocusRing disabled={true} isFocused={isFocused}>
+        <rect
+          aria-label="Disabled focus ring"
+          fill="gray"
+          height={36}
+          role="button"
+          style={noOutlineStyle}
+          tabIndex={0}
+          width={36}
+          x={82}
+          y={82}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+        />
+      </FocusRing>
+    );
+  },
+};
+
+/**
+ * Multiple elements with individual focus management.
+ */
+export const MultipleElements: Story = {
+  decorators: [svgDecorator],
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const [focused1, setFocused1] = useState(false);
+    const [focused2, setFocused2] = useState(false);
+    const [focused3, setFocused3] = useState(false);
+
+    return (
+      <>
+        <FocusRing focusConfig={{ outlineColor: '#0066cc' }} isFocused={focused1}>
+          <rect
+            aria-label="First element"
+            fill="lightblue"
+            height={32}
+            role="button"
+            style={noOutlineStyle}
+            tabIndex={0}
+            width={32}
+            x={44}
+            y={84}
+            onBlur={() => setFocused1(false)}
+            onFocus={() => setFocused1(true)}
+          />
+        </FocusRing>
+
+        <FocusRing focusConfig={{ outlineColor: '#cc6600' }} isFocused={focused2}>
+          <rect
+            aria-label="Second element"
+            fill="orange"
+            height={32}
+            role="button"
+            style={noOutlineStyle}
+            tabIndex={0}
+            width={32}
+            x={84}
+            y={84}
+            onBlur={() => setFocused2(false)}
+            onFocus={() => setFocused2(true)}
+          />
+        </FocusRing>
+
+        <FocusRing focusConfig={{ outlineColor: '#00cc66' }} isFocused={focused3}>
+          <rect
+            aria-label="Third element"
+            fill="lightgreen"
+            height={32}
+            role="button"
+            style={noOutlineStyle}
+            tabIndex={0}
+            width={32}
+            x={124}
+            y={84}
+            onBlur={() => setFocused3(false)}
+            onFocus={() => setFocused3(true)}
+          />
+        </FocusRing>
+      </>
+    );
+  },
+};
+
+/**
+ * Focus ring preserves original event handlers on the child element.
  */
 export const WithEventHandlers: Story = {
-  args: {
-    elementPosition: { x: 100, y: 100 },
-    elementSize: 40,
-    elementStrokeWidth: 2,
+  decorators: [svgDecorator],
+  parameters: {
+    controls: { disable: true },
   },
-  render: args => (
-    <FocusRing
-      {...args}
-      onBlur={() => alert('FocusRing onBlur')}
-      onFocus={() => alert('FocusRing onFocus')}
-      onFocusChange={focused => alert(`Focus changed: ${focused}`)}
-    >
-      <rect
-        aria-label="Interactive rectangle with event handlers"
-        fill="orange"
-        height={args.elementSize}
-        role="button"
-        stroke="darkorange"
-        strokeWidth={args.elementStrokeWidth}
-        tabIndex={0}
-        width={args.elementSize}
-        x={(args.elementPosition?.x ?? 100) - (args.elementSize ?? 32) / 2}
-        y={(args.elementPosition?.y ?? 100) - (args.elementSize ?? 32) / 2}
-        onBlur={() => alert('Child onBlur')}
-        onClick={() => alert('Rectangle clicked!')}
-        onFocus={() => alert('Child onFocus')}
-      />
-    </FocusRing>
-  ),
+  render: () => {
+    const [isFocused, setIsFocused] = useState(false);
+    const [clickCount, setClickCount] = useState(0);
+
+    return (
+      <>
+        <FocusRing isFocused={isFocused}>
+          <rect
+            aria-label={`Clickable rectangle (${clickCount} clicks)`}
+            fill="teal"
+            height={32}
+            role="button"
+            style={noOutlineStyle}
+            tabIndex={0}
+            width={32}
+            x={84}
+            y={84}
+            onBlur={() => {
+              setIsFocused(false);
+            }}
+            onClick={() => {
+              setClickCount(prev => prev + 1);
+            }}
+            onFocus={() => {
+              setIsFocused(true);
+            }}
+          />
+        </FocusRing>
+        <text fill="black" fontSize="12" x={84} y={130}>
+          Clicks: {clickCount}
+        </text>
+      </>
+    );
+  },
+};
+
+/**
+ * Interactive playground with different SVG shapes and real-time controls.
+ * Test adaptive vs bounding-box variants with various complex shapes.
+ */
+export const InteractivePlayground: Story = {
+  decorators: [], // Override global decorator
+  parameters: {
+    layout: 'padded',
+  },
+  render: function InteractivePlaygroundRender() {
+    const [focusedShape, setFocusedShape] = useState<string | null>(null);
+
+    return (
+      <div style={{ background: '#f5f5f5', minHeight: '100vh', padding: '40px' }}>
+        <h1 style={{ marginBottom: '30px' }}>FocusRing Interactive Playground</h1>
+
+        <div
+          style={{
+            background: 'white',
+            borderRadius: '8px',
+            marginBottom: '30px',
+            padding: '20px',
+          }}
+        >
+          <h2>Elements WITHOUT stroke (strokeWidth=0)</h2>
+          <p>
+            Click on shapes to see focus rings. The focus rings appear perfectly visible because
+            there's no element stroke to cover them.
+          </p>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginTop: '20px' }}>
+            {/* Circle without stroke */}
+            <div
+              style={{ cursor: 'pointer', textAlign: 'center' }}
+              onClick={() =>
+                setFocusedShape(focusedShape === 'circle-no-stroke' ? null : 'circle-no-stroke')
+              }
+            >
+              <svg height="150" style={{ border: '1px solid #ddd', display: 'block' }} width="150">
+                <FocusRing isFocused={focusedShape === 'circle-no-stroke'}>
+                  <circle
+                    cx={75}
+                    cy={75}
+                    fill="#ff6b6b"
+                    r={30}
+                    strokeWidth={0}
+                    style={noOutlineStyle}
+                  />
+                </FocusRing>
+              </svg>
+              <p>Circle (no stroke)</p>
+            </div>
+
+            {/* Rectangle without stroke */}
+            <div
+              style={{ cursor: 'pointer', textAlign: 'center' }}
+              onClick={() =>
+                setFocusedShape(focusedShape === 'rect-no-stroke' ? null : 'rect-no-stroke')
+              }
+            >
+              <svg height="150" style={{ border: '1px solid #ddd', display: 'block' }} width="150">
+                <FocusRing isFocused={focusedShape === 'rect-no-stroke'}>
+                  <rect
+                    fill="#51cf66"
+                    height={50}
+                    strokeWidth={0}
+                    style={noOutlineStyle}
+                    width={60}
+                    x={45}
+                    y={50}
+                  />
+                </FocusRing>
+              </svg>
+              <p>Rectangle (no stroke)</p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: 'white',
+            borderRadius: '8px',
+            marginBottom: '30px',
+            padding: '20px',
+          }}
+        >
+          <h2>Elements WITH stroke (strokeWidth={'>'} 0)</h2>
+          <p>
+            The FocusRing automatically accounts for the element's stroke width to ensure focus
+            rings appear outside the stroke, preventing them from being covered.
+          </p>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginTop: '20px' }}>
+            {/* Circle WITH stroke */}
+            <div
+              style={{ cursor: 'pointer', textAlign: 'center' }}
+              onClick={() => setFocusedShape(focusedShape === 'circle' ? null : 'circle')}
+            >
+              <svg height="150" style={{ border: '1px solid #ddd', display: 'block' }} width="150">
+                <FocusRing isFocused={focusedShape === 'circle'}>
+                  <circle
+                    cx={75}
+                    cy={75}
+                    fill="#ff6b6b"
+                    r={30}
+                    stroke="#c92a2a"
+                    strokeWidth={3}
+                    style={noOutlineStyle}
+                  />
+                </FocusRing>
+              </svg>
+              <p>Circle (stroke: 3px)</p>
+            </div>
+
+            {/* Rectangle WITH stroke */}
+            <div
+              style={{ cursor: 'pointer', textAlign: 'center' }}
+              onClick={() => setFocusedShape(focusedShape === 'rect' ? null : 'rect')}
+            >
+              <svg height="150" style={{ border: '1px solid #ddd', display: 'block' }} width="150">
+                <FocusRing isFocused={focusedShape === 'rect'}>
+                  <rect
+                    fill="#51cf66"
+                    height={50}
+                    stroke="#2f9e44"
+                    strokeWidth={2}
+                    style={noOutlineStyle}
+                    width={60}
+                    x={45}
+                    y={50}
+                  />
+                </FocusRing>
+              </svg>
+              <p>Rectangle (stroke: 2px)</p>
+            </div>
+
+            {/* Pentagon WITH stroke */}
+            <div
+              style={{ cursor: 'pointer', textAlign: 'center' }}
+              onClick={() => setFocusedShape(focusedShape === 'pentagon' ? null : 'pentagon')}
+            >
+              <svg height="150" style={{ border: '1px solid #ddd', display: 'block' }} width="150">
+                <FocusRing isFocused={focusedShape === 'pentagon'}>
+                  <polygon
+                    fill="#ff8787"
+                    points="75,40 105,65 95,100 55,100 45,65"
+                    stroke="#c92a2a"
+                    strokeWidth={2}
+                    style={noOutlineStyle}
+                  />
+                </FocusRing>
+              </svg>
+              <p>Pentagon (stroke: 2px)</p>
+            </div>
+
+            {/* Path (Line Chart) WITH stroke */}
+            <div
+              style={{ cursor: 'pointer', textAlign: 'center' }}
+              onClick={() => setFocusedShape(focusedShape === 'path' ? null : 'path')}
+            >
+              <svg height="150" style={{ border: '1px solid #ddd', display: 'block' }} width="150">
+                <FocusRing isFocused={focusedShape === 'path'}>
+                  <path
+                    d="M 20,75 Q 50,30 75,75 T 130,75"
+                    fill="none"
+                    stroke="#339af0"
+                    strokeLinecap="round"
+                    strokeWidth={3}
+                    style={noOutlineStyle}
+                  />
+                </FocusRing>
+              </svg>
+              <p>Line Path (stroke: 3px)</p>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            background: '#fff3cd',
+            border: '1px solid #ffc107',
+            borderRadius: '8px',
+            marginBottom: '30px',
+            padding: '20px',
+          }}
+        >
+          <h3>💡 Technical Note</h3>
+          <p style={{ marginBottom: '10px' }}>
+            <strong>How it works:</strong> The FocusRing uses the "Clone & Scale" technique. It
+            clones your element and scales its stroke-width to create focus rings that perfectly
+            match the shape.
+          </p>
+          <p style={{ marginBottom: '10px' }}>
+            <strong>Stroke width calculation:</strong>
+          </p>
+          <ul style={{ marginLeft: '20px' }}>
+            <li>
+              <code>outerStrokeWidth = originalStroke + (outlineStroke + innerStroke) * 2</code>
+            </li>
+            <li>
+              <code>innerStrokeWidth = originalStroke + innerStroke * 2</code>
+            </li>
+          </ul>
+          <p style={{ marginTop: '10px' }}>
+            This ensures the focus rings are always visible outside the element's stroke, even when
+            the element has a thick border.
+          </p>
+        </div>
+
+        <div
+          style={{
+            background: 'white',
+            borderRadius: '8px',
+            padding: '20px',
+          }}
+        >
+          <h3>Current Focus: {focusedShape || 'None'}</h3>
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * Comparison: Element WITH stroke vs WITHOUT stroke.
+ * Shows how FocusRing adapts to elements with different stroke widths.
+ */
+export const WithAndWithoutStroke: Story = {
+  decorators: [], // Override global decorator
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const [focusedWithStroke, setFocusedWithStroke] = useState(false);
+    const [focusedWithoutStroke, setFocusedWithoutStroke] = useState(false);
+
+    return (
+      <div style={{ display: 'flex', gap: '40px', padding: '20px' }}>
+        {/* Element WITHOUT stroke */}
+        <div style={{ textAlign: 'center' }}>
+          <h3>Without Stroke</h3>
+          <svg height="200" style={{ border: '1px solid #ccc' }} width="200">
+            <FocusRing isFocused={focusedWithoutStroke}>
+              <circle
+                aria-label="Circle without stroke"
+                cx={100}
+                cy={100}
+                fill="#4c6ef5"
+                r={40}
+                role="button"
+                strokeWidth={0}
+                style={noOutlineStyle}
+                tabIndex={0}
+                onBlur={() => setFocusedWithoutStroke(false)}
+                onFocus={() => setFocusedWithoutStroke(true)}
+              />
+            </FocusRing>
+          </svg>
+          <p>strokeWidth: 0</p>
+          <p style={{ fontSize: '12px', color: '#666' }}>
+            Focus ring appears directly around the shape
+          </p>
+        </div>
+
+        {/* Element WITH stroke */}
+        <div style={{ textAlign: 'center' }}>
+          <h3>With Stroke</h3>
+          <svg height="200" style={{ border: '1px solid #ccc' }} width="200">
+            <FocusRing isFocused={focusedWithStroke}>
+              <circle
+                aria-label="Circle with stroke"
+                cx={100}
+                cy={100}
+                fill="#4c6ef5"
+                r={40}
+                role="button"
+                stroke="#1c7ed6"
+                strokeWidth={6}
+                style={noOutlineStyle}
+                tabIndex={0}
+                onBlur={() => setFocusedWithStroke(false)}
+                onFocus={() => setFocusedWithStroke(true)}
+              />
+            </FocusRing>
+          </svg>
+          <p>strokeWidth: 6</p>
+          <p style={{ fontSize: '12px', color: '#666' }}>
+            Focus ring accounts for stroke, appears outside
+          </p>
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * Line path example showing how FocusRing creates a halo around open paths.
+ * The focus ring preserves strokeLinecap for smooth line endings.
+ */
+export const LinePathExample: Story = {
+  decorators: [svgDecorator],
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    return (
+      <FocusRing isFocused={isFocused}>
+        <path
+          aria-label="Line chart path"
+          d="M 20,100 L 60,50 L 100,80 L 140,40 L 180,90"
+          fill="none"
+          role="button"
+          stroke="#12b886"
+          strokeLinecap="round"
+          strokeWidth={3}
+          style={noOutlineStyle}
+          tabIndex={0}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+        />
+      </FocusRing>
+    );
+  },
+};
+
+/**
+ * Children Mode: The element is wrapped directly inside FocusRing.
+ * This is the simplest usage pattern for most cases.
+ */
+export const ChildrenMode: Story = {
+  decorators: [svgDecorator],
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    return (
+      <FocusRing isFocused={isFocused}>
+        <rect
+          aria-label="Rectangle using children mode"
+          fill="#7950f2"
+          height={60}
+          role="button"
+          stroke="#5f3dc4"
+          strokeWidth={2}
+          style={noOutlineStyle}
+          tabIndex={0}
+          width={80}
+          x={60}
+          y={70}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+        />
+      </FocusRing>
+    );
+  },
+};
+
+/**
+ * TargetRef Mode: The element and FocusRing are rendered separately.
+ * Useful when you need precise control over z-order or can't wrap the element.
+ */
+export const TargetRefMode: Story = {
+  decorators: [svgDecorator],
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const ref = useRef<SVGRectElement>(null);
+    const [isFocused, setIsFocused] = useState(false);
+
+    return (
+      <>
+        <FocusRing isFocused={isFocused} targetRef={ref} />
+        <rect
+          ref={ref}
+          aria-label="Rectangle using targetRef mode"
+          fill="#7950f2"
+          height={60}
+          role="button"
+          stroke="#5f3dc4"
+          strokeWidth={2}
+          style={noOutlineStyle}
+          tabIndex={0}
+          width={80}
+          x={60}
+          y={70}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+        />
+      </>
+    );
+  },
+};
+
+/**
+ * Bounding-Box variant with irregular polygon.
+ * The focus ring is always rectangular, using getBBox() dimensions.
+ */
+export const BoundingBoxVariant: Story = {
+  decorators: [svgDecorator],
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    return (
+      <FocusRing focusConfig={{ variant: 'bounding-box' }} isFocused={isFocused}>
+        <polygon
+          aria-label="Star using bounding-box variant"
+          fill="#f59f00"
+          points="100,30 115,70 155,70 125,95 135,135 100,110 65,135 75,95 45,70 85,70"
+          role="button"
+          stroke="#f08c00"
+          strokeWidth={2}
+          style={noOutlineStyle}
+          tabIndex={0}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+        />
+      </FocusRing>
+    );
+  },
+};
+
+/**
+ * Adaptive variant with irregular polygon.
+ * The focus ring follows the exact shape of the star.
+ */
+export const AdaptiveVariant: Story = {
+  decorators: [svgDecorator],
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    return (
+      <FocusRing focusConfig={{ variant: 'adaptive' }} isFocused={isFocused}>
+        <polygon
+          aria-label="Star using adaptive variant"
+          fill="#f59f00"
+          points="100,30 115,70 155,70 125,95 135,135 100,110 65,135 75,95 45,70 85,70"
+          role="button"
+          stroke="#f08c00"
+          strokeWidth={2}
+          style={noOutlineStyle}
+          tabIndex={0}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+        />
+      </FocusRing>
+    );
+  },
+};
+
+/**
+ * Side-by-side comparison of Adaptive vs Bounding-Box variants.
+ * Shows the visual difference on the same irregular shape (star).
+ */
+export const VariantComparison: Story = {
+  decorators: [], // Override global decorator
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const [focusedAdaptive, setFocusedAdaptive] = useState(false);
+    const [focusedBoundingBox, setFocusedBoundingBox] = useState(false);
+
+    const starPoints = '100,30 115,70 155,70 125,95 135,135 100,110 65,135 75,95 45,70 85,70';
+
+    return (
+      <div style={{ display: 'flex', gap: '40px', padding: '20px' }}>
+        {/* Adaptive Variant */}
+        <div style={{ textAlign: 'center' }}>
+          <h3>Adaptive Variant</h3>
+          <svg height="200" style={{ border: '1px solid #ccc' }} width="200">
+            <FocusRing focusConfig={{ variant: 'adaptive' }} isFocused={focusedAdaptive}>
+              <polygon
+                aria-label="Star with adaptive variant"
+                fill="#f59f00"
+                points={starPoints}
+                role="button"
+                stroke="#f08c00"
+                strokeWidth={2}
+                style={noOutlineStyle}
+                tabIndex={0}
+                onBlur={() => setFocusedAdaptive(false)}
+                onFocus={() => setFocusedAdaptive(true)}
+              />
+            </FocusRing>
+          </svg>
+          <p style={{ fontSize: '12px', color: '#666' }}>Focus ring follows the exact star shape</p>
+        </div>
+
+        {/* Bounding-Box Variant */}
+        <div style={{ textAlign: 'center' }}>
+          <h3>Bounding-Box Variant</h3>
+          <svg height="200" style={{ border: '1px solid #ccc' }} width="200">
+            <FocusRing focusConfig={{ variant: 'bounding-box' }} isFocused={focusedBoundingBox}>
+              <polygon
+                aria-label="Star with bounding-box variant"
+                fill="#f59f00"
+                points={starPoints}
+                role="button"
+                stroke="#f08c00"
+                strokeWidth={2}
+                style={noOutlineStyle}
+                tabIndex={0}
+                onBlur={() => setFocusedBoundingBox(false)}
+                onFocus={() => setFocusedBoundingBox(true)}
+              />
+            </FocusRing>
+          </svg>
+          <p style={{ fontSize: '12px', color: '#666' }}>Focus ring is always rectangular</p>
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * ⚠️ CRITICAL: Z-Order demonstration with targetRef mode and adaptive variant.
+ *
+ * When using adaptive variant with targetRef mode, the FocusRing MUST be rendered
+ * BEFORE the target element. Otherwise, the focus ring strokes will appear on top
+ * of the element, covering it.
+ *
+ * This story demonstrates both correct and incorrect rendering order.
+ */
+export const ZOrderWithTargetRef: Story = {
+  decorators: [], // Override global decorator
+  parameters: {
+    controls: { disable: true },
+  },
+  render: () => {
+    const correctRef = useRef<SVGCircleElement>(null);
+    const incorrectRef = useRef<SVGCircleElement>(null);
+    const [focusedCorrect, setFocusedCorrect] = useState(false);
+    const [focusedIncorrect, setFocusedIncorrect] = useState(false);
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', padding: '20px' }}>
+        <div
+          style={{
+            background: '#d4edda',
+            border: '2px solid #28a745',
+            borderRadius: '8px',
+            padding: '20px',
+          }}
+        >
+          <h2 style={{ color: '#155724', marginTop: 0 }}>✅ CORRECT: FocusRing Before Element</h2>
+          <p style={{ color: '#155724' }}>
+            The FocusRing is rendered BEFORE the circle element. The focus ring appears behind the
+            element, which is the correct behavior.
+          </p>
+          <svg height="200" style={{ border: '1px solid #28a745', display: 'block' }} width="200">
+            {/* ✅ FocusRing BEFORE element */}
+            <FocusRing isFocused={focusedCorrect} targetRef={correctRef} />
+            <circle
+              ref={correctRef}
+              aria-label="Correct z-order circle"
+              cx={100}
+              cy={100}
+              fill="#51cf66"
+              r={40}
+              role="button"
+              stroke="#2f9e44"
+              strokeWidth={3}
+              style={noOutlineStyle}
+              tabIndex={0}
+              onBlur={() => setFocusedCorrect(false)}
+              onFocus={() => setFocusedCorrect(true)}
+            />
+          </svg>
+          <p style={{ color: '#155724', fontSize: '14px', marginBottom: 0, marginTop: '10px' }}>
+            <strong>Code:</strong>
+          </p>
+          <pre
+            style={{
+              background: '#f8f9fa',
+              borderRadius: '4px',
+              fontSize: '12px',
+              overflow: 'auto',
+              padding: '10px',
+            }}
+          >
+            {`<>
+  <FocusRing targetRef={ref} isFocused={focused} />
+  <circle ref={ref} ... />
+</>`}
+          </pre>
+        </div>
+
+        <div
+          style={{
+            background: '#f8d7da',
+            border: '2px solid #dc3545',
+            borderRadius: '8px',
+            padding: '20px',
+          }}
+        >
+          <h2 style={{ color: '#721c24', marginTop: 0 }}>❌ INCORRECT: Element Before FocusRing</h2>
+          <p style={{ color: '#721c24' }}>
+            The circle element is rendered BEFORE the FocusRing. The focus ring strokes cover the
+            element, which is incorrect behavior. Notice how the element appears dimmer/covered.
+          </p>
+          <svg height="200" style={{ border: '1px solid #dc3545', display: 'block' }} width="200">
+            {/* ❌ Element BEFORE FocusRing */}
+            <circle
+              ref={incorrectRef}
+              aria-label="Incorrect z-order circle"
+              cx={100}
+              cy={100}
+              fill="#ff6b6b"
+              r={40}
+              role="button"
+              stroke="#c92a2a"
+              strokeWidth={3}
+              style={noOutlineStyle}
+              tabIndex={0}
+              onBlur={() => setFocusedIncorrect(false)}
+              onFocus={() => setFocusedIncorrect(true)}
+            />
+            <FocusRing isFocused={focusedIncorrect} targetRef={incorrectRef} />
+          </svg>
+          <p style={{ color: '#721c24', fontSize: '14px', marginBottom: 0, marginTop: '10px' }}>
+            <strong>Code (WRONG):</strong>
+          </p>
+          <pre
+            style={{
+              background: '#f8f9fa',
+              borderRadius: '4px',
+              fontSize: '12px',
+              overflow: 'auto',
+              padding: '10px',
+            }}
+          >
+            {`<>
+  <circle ref={ref} ... />
+  <FocusRing targetRef={ref} isFocused={focused} />
+</>`}
+          </pre>
+        </div>
+
+        <div
+          style={{
+            background: '#fff3cd',
+            border: '1px solid #ffc107',
+            borderRadius: '8px',
+            padding: '20px',
+          }}
+        >
+          <h3 style={{ marginTop: 0 }}>📝 Key Takeaways</h3>
+          <ul style={{ lineHeight: '1.8' }}>
+            <li>
+              <strong>SVG paint order is sequential</strong>: Elements are painted in the order they
+              appear in the DOM
+            </li>
+            <li>
+              <strong>targetRef mode requires manual z-order management</strong>: You must ensure
+              FocusRing comes before the element
+            </li>
+            <li>
+              <strong>children mode handles this automatically</strong>: The component internally
+              renders the focus ring before the child element
+            </li>
+            <li>
+              <strong>This only affects adaptive variant</strong>: bounding-box variant can be
+              rendered in any order
+            </li>
+          </ul>
+        </div>
+      </div>
+    );
+  },
 };

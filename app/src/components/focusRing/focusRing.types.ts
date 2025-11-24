@@ -3,6 +3,8 @@ import type { FocusEventHandler, ReactElement } from 'react';
 import type { FocusConfig } from '@/types/focusConfig.type';
 import type { FocusOutlineDimensions } from '@/utils/calculateFocusOutline/calculateFocusOutline';
 
+import type { FocusRingLayers } from './utils/createFocusRingLayersFromDOM';
+
 /**
  * Props for the FocusRing component.
  *
@@ -64,6 +66,12 @@ export interface FocusRingRendererProps {
   /** Resolved focus configuration with defaults */
   focusConfig: Required<FocusConfig>;
 
-  /** Focus outline dimensions calculated by calculateFocusOutline */
-  outline: FocusOutlineDimensions;
+  /** The React element to create focus rings for (for adaptive mode with children) */
+  element?: ReactElement;
+
+  /** Pre-computed adaptive layers from DOM (for adaptive mode with targetRef) */
+  layers?: FocusRingLayers;
+
+  /** Focus outline dimensions calculated by calculateFocusOutline (for bounding-box mode) */
+  outline?: FocusOutlineDimensions;
 }

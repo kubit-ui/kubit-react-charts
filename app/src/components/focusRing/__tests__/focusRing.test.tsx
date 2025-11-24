@@ -5,21 +5,10 @@ import { describe, expect, it, vi } from 'vitest';
 import { FocusRing } from '../focusRing';
 
 describe('FocusRing Component', () => {
-  const defaultProps = {
-    elementPosition: { x: 50, y: 50 },
-    elementSize: 32,
-    elementStrokeWidth: 2,
-  };
-
-  const manualProps = {
-    autoDetect: false,
-    ...defaultProps,
-  };
-
   it('renders children correctly', () => {
     const { getByTestId } = render(
       <svg>
-        <FocusRing {...defaultProps}>
+        <FocusRing isFocused={false}>
           <rect data-testid="test-rect" fill="blue" height={20} width={20} x={40} y={40} />
         </FocusRing>
       </svg>
@@ -33,7 +22,7 @@ describe('FocusRing Component', () => {
   it('does not show focus ring initially', () => {
     const { queryByTestId } = render(
       <svg>
-        <FocusRing {...defaultProps}>
+        <FocusRing isFocused={false}>
           <rect data-testid="test-rect" fill="blue" height={20} width={20} x={40} y={40} />
         </FocusRing>
       </svg>
@@ -43,10 +32,10 @@ describe('FocusRing Component', () => {
     expect(queryByTestId('focus-ring-focus-inner')).not.toBeInTheDocument();
   });
 
-  it('shows focus ring when element is focused', () => {
-    const { getByTestId, queryByTestId } = render(
+  it('shows focus ring when isFocused is true', () => {
+    const { queryByTestId } = render(
       <svg>
-        <FocusRing {...defaultProps}>
+        <FocusRing isFocused={true}>
           <rect
             data-testid="test-rect"
             fill="blue"
@@ -59,18 +48,15 @@ describe('FocusRing Component', () => {
         </FocusRing>
       </svg>
     );
-
-    const rect = getByTestId('test-rect');
-    fireEvent.focus(rect);
 
     expect(queryByTestId('focus-ring-focus-outer')).toBeInTheDocument();
     expect(queryByTestId('focus-ring-focus-inner')).toBeInTheDocument();
   });
 
-  it('hides focus ring when element loses focus', () => {
-    const { getByTestId, queryByTestId } = render(
+  it('hides focus ring when isFocused is false', () => {
+    const { queryByTestId } = render(
       <svg>
-        <FocusRing {...defaultProps}>
+        <FocusRing isFocused={false}>
           <rect
             data-testid="test-rect"
             fill="blue"
@@ -84,82 +70,13 @@ describe('FocusRing Component', () => {
       </svg>
     );
 
-    const rect = getByTestId('test-rect');
-
-    // Focus the element
-    fireEvent.focus(rect);
-    expect(queryByTestId('focus-ring-focus-outer')).toBeInTheDocument();
-
-    // Blur the element
-    fireEvent.blur(rect);
     expect(queryByTestId('focus-ring-focus-outer')).not.toBeInTheDocument();
   });
 
-  it('calls onFocusChange callback when focus state changes', () => {
-    const onFocusChange = vi.fn();
-
-    const { getByTestId } = render(
-      <svg>
-        <FocusRing {...defaultProps} onFocusChange={onFocusChange}>
-          <rect
-            data-testid="test-rect"
-            fill="blue"
-            height={20}
-            tabIndex={0}
-            width={20}
-            x={40}
-            y={40}
-          />
-        </FocusRing>
-      </svg>
-    );
-
-    const rect = getByTestId('test-rect');
-
-    // Focus the element
-    fireEvent.focus(rect);
-    expect(onFocusChange).toHaveBeenCalledWith(true);
-
-    // Blur the element
-    fireEvent.blur(rect);
-    expect(onFocusChange).toHaveBeenCalledWith(false);
-  });
-
-  it('calls original onFocus and onBlur handlers', () => {
-    const onFocus = vi.fn();
-    const onBlur = vi.fn();
-
-    const { getByTestId } = render(
-      <svg>
-        <FocusRing {...defaultProps} onBlur={onBlur} onFocus={onFocus}>
-          <rect
-            data-testid="test-rect"
-            fill="blue"
-            height={20}
-            tabIndex={0}
-            width={20}
-            x={40}
-            y={40}
-          />
-        </FocusRing>
-      </svg>
-    );
-
-    const rect = getByTestId('test-rect');
-
-    // Focus the element
-    fireEvent.focus(rect);
-    expect(onFocus).toHaveBeenCalled();
-
-    // Blur the element
-    fireEvent.blur(rect);
-    expect(onBlur).toHaveBeenCalled();
-  });
-
   it('does not show focus ring when disabled', () => {
-    const { getByTestId, queryByTestId } = render(
+    const { queryByTestId } = render(
       <svg>
-        <FocusRing {...defaultProps} disabled={true}>
+        <FocusRing disabled={true} isFocused={true}>
           <rect
             data-testid="test-rect"
             fill="blue"
@@ -172,9 +89,6 @@ describe('FocusRing Component', () => {
         </FocusRing>
       </svg>
     );
-
-    const rect = getByTestId('test-rect');
-    fireEvent.focus(rect);
 
     expect(queryByTestId('focus-ring-focus-outer')).not.toBeInTheDocument();
     expect(queryByTestId('focus-ring-focus-inner')).not.toBeInTheDocument();
@@ -191,7 +105,7 @@ describe('FocusRing Component', () => {
 
     const { getByTestId } = render(
       <svg>
-        <FocusRing {...defaultProps} focusConfig={customFocusConfig}>
+        <FocusRing focusConfig={customFocusConfig} isFocused={true}>
           <rect
             data-testid="test-rect"
             fill="blue"
@@ -204,23 +118,21 @@ describe('FocusRing Component', () => {
         </FocusRing>
       </svg>
     );
-
-    const rect = getByTestId('test-rect');
-    fireEvent.focus(rect);
 
     const outerRing = getByTestId('focus-ring-focus-outer');
     const innerRing = getByTestId('focus-ring-focus-inner');
 
     expect(outerRing).toHaveAttribute('stroke', '#ff0000');
-    expect(outerRing).toHaveAttribute('stroke-width', '4');
+    // In adaptive mode, stroke-width is (outlineStrokeWidth + innerStrokeWidth) * 2
+    expect(outerRing).toHaveAttribute('stroke-width', '14'); // (4 + 3) * 2 = 14
     expect(innerRing).toHaveAttribute('stroke', '#00ff00');
-    expect(innerRing).toHaveAttribute('stroke-width', '3');
+    expect(innerRing).toHaveAttribute('stroke-width', '6'); // 3 * 2 = 6
   });
 
   it('uses custom dataTestId', () => {
     const { getByTestId } = render(
       <svg>
-        <FocusRing {...defaultProps} dataTestId="custom-focus">
+        <FocusRing dataTestId="custom-focus" isFocused={true}>
           <rect
             data-testid="test-rect"
             fill="blue"
@@ -233,9 +145,6 @@ describe('FocusRing Component', () => {
         </FocusRing>
       </svg>
     );
-
-    const rect = getByTestId('test-rect');
-    fireEvent.focus(rect);
 
     expect(getByTestId('custom-focus-focus-outer')).toBeInTheDocument();
     expect(getByTestId('custom-focus-focus-inner')).toBeInTheDocument();
@@ -247,7 +156,7 @@ describe('FocusRing Component', () => {
 
     const { getByTestId } = render(
       <svg>
-        <FocusRing {...defaultProps}>
+        <FocusRing isFocused={false}>
           <rect
             data-testid="test-rect"
             fill="blue"
@@ -265,11 +174,11 @@ describe('FocusRing Component', () => {
 
     const rect = getByTestId('test-rect');
 
-    // Focus the element
+    // Focus the element - handlers del hijo deben ejecutarse
     fireEvent.focus(rect);
     expect(childOnFocus).toHaveBeenCalled();
 
-    // Blur the element
+    // Blur the element - handlers del hijo deben ejecutarse
     fireEvent.blur(rect);
     expect(childOnBlur).toHaveBeenCalled();
   });
@@ -278,7 +187,7 @@ describe('FocusRing Component', () => {
     it('automatically detects rect element properties', () => {
       const { getByTestId } = render(
         <svg>
-          <FocusRing>
+          <FocusRing isFocused={true}>
             <rect
               data-testid="test-rect"
               fill="blue"
@@ -292,9 +201,6 @@ describe('FocusRing Component', () => {
         </svg>
       );
 
-      const rect = getByTestId('test-rect');
-      fireEvent.focus(rect);
-
       // Focus ring should appear based on detected properties
       expect(getByTestId('focus-ring-focus-outer')).toBeInTheDocument();
       expect(getByTestId('focus-ring-focus-inner')).toBeInTheDocument();
@@ -303,76 +209,21 @@ describe('FocusRing Component', () => {
     it('automatically detects circle element properties', () => {
       const { getByTestId } = render(
         <svg>
-          <FocusRing>
+          <FocusRing isFocused={true}>
             <circle cx={100} cy={100} data-testid="test-circle" fill="red" r={25} tabIndex={0} />
           </FocusRing>
         </svg>
       );
-
-      const circle = getByTestId('test-circle');
-      fireEvent.focus(circle);
 
       // Focus ring should appear based on detected circle properties
       expect(getByTestId('focus-ring-focus-outer')).toBeInTheDocument();
       expect(getByTestId('focus-ring-focus-inner')).toBeInTheDocument();
     });
 
-    it('allows manual override of auto-detected properties', () => {
-      const { getByTestId } = render(
-        <svg>
-          <FocusRing elementSize={100}>
-            <rect
-              data-testid="test-rect"
-              fill="blue"
-              height={20}
-              tabIndex={0}
-              width={20}
-              x={10}
-              y={10}
-            />
-          </FocusRing>
-        </svg>
-      );
-
-      const rect = getByTestId('test-rect');
-      fireEvent.focus(rect);
-
-      // Focus ring should appear with manual override size
-      const outerRing = getByTestId('focus-ring-focus-outer');
-      expect(outerRing).toBeInTheDocument();
-
-      // The focus ring should be larger than the element due to manual override
-      expect(parseFloat(outerRing.getAttribute('width') || '0')).toBeGreaterThan(20);
-    });
-
-    it('can disable auto-detection and use manual props only', () => {
-      const { getByTestId } = render(
-        <svg>
-          <FocusRing {...manualProps}>
-            <rect
-              data-testid="test-rect"
-              fill="blue"
-              height={20}
-              tabIndex={0}
-              width={20}
-              x={10}
-              y={10}
-            />
-          </FocusRing>
-        </svg>
-      );
-
-      const rect = getByTestId('test-rect');
-      fireEvent.focus(rect);
-
-      // Focus ring should appear based only on manual props
-      expect(getByTestId('focus-ring-focus-outer')).toBeInTheDocument();
-    });
-
     it('handles unknown element types gracefully with defaults', () => {
       const { getByTestId } = render(
         <svg>
-          <FocusRing>
+          <FocusRing focusConfig={{ variant: 'bounding-box' }} isFocused={true}>
             <text data-testid="test-text" tabIndex={0} x={10} y={10}>
               Unknown Element
             </text>
@@ -380,11 +231,162 @@ describe('FocusRing Component', () => {
         </svg>
       );
 
-      const text = getByTestId('test-text');
-      fireEvent.focus(text);
-
-      // Focus ring should still work with default fallback values
+      // Focus ring should still work with bounding-box fallback
       expect(getByTestId('focus-ring-focus-outer')).toBeInTheDocument();
+    });
+  });
+
+  describe('Shape Adaptation (Adaptive Mode)', () => {
+    it('renders circular focus ring for circle element', () => {
+      const { getByTestId } = render(
+        <svg>
+          <FocusRing isFocused={true}>
+            <circle cx={50} cy={50} data-testid="test-circle" r={30} tabIndex={0} />
+          </FocusRing>
+        </svg>
+      );
+
+      const outerRing = getByTestId('focus-ring-focus-outer');
+      const innerRing = getByTestId('focus-ring-focus-inner');
+
+      // Verify it's a circle element (not rect)
+      expect(outerRing.tagName.toLowerCase()).toBe('circle');
+      expect(innerRing.tagName.toLowerCase()).toBe('circle');
+
+      // Verify circle attributes are preserved
+      expect(outerRing).toHaveAttribute('cx', '50');
+      expect(outerRing).toHaveAttribute('cy', '50');
+      expect(outerRing).toHaveAttribute('r', '30');
+    });
+
+    it('renders ellipse focus ring for ellipse element', () => {
+      const { getByTestId } = render(
+        <svg>
+          <FocusRing isFocused={true}>
+            <ellipse cx={100} cy={80} data-testid="test-ellipse" rx={60} ry={40} tabIndex={0} />
+          </FocusRing>
+        </svg>
+      );
+
+      const outerRing = getByTestId('focus-ring-focus-outer');
+
+      expect(outerRing.tagName.toLowerCase()).toBe('ellipse');
+      expect(outerRing).toHaveAttribute('cx', '100');
+      expect(outerRing).toHaveAttribute('cy', '80');
+      expect(outerRing).toHaveAttribute('rx', '60');
+      expect(outerRing).toHaveAttribute('ry', '40');
+    });
+
+    it('renders path focus ring for path element', () => {
+      const pathD = 'M 10 10 L 90 90 L 10 90 Z';
+      const { getByTestId } = render(
+        <svg>
+          <FocusRing isFocused={true}>
+            <path d={pathD} data-testid="test-path" tabIndex={0} />
+          </FocusRing>
+        </svg>
+      );
+
+      const outerRing = getByTestId('focus-ring-focus-outer');
+
+      expect(outerRing.tagName.toLowerCase()).toBe('path');
+      expect(outerRing).toHaveAttribute('d', pathD);
+    });
+
+    it('renders polygon focus ring for polygon element', () => {
+      const points = '10,10 90,10 50,90';
+      const { getByTestId } = render(
+        <svg>
+          <FocusRing isFocused={true}>
+            <polygon data-testid="test-polygon" points={points} tabIndex={0} />
+          </FocusRing>
+        </svg>
+      );
+
+      const outerRing = getByTestId('focus-ring-focus-outer');
+
+      expect(outerRing.tagName.toLowerCase()).toBe('polygon');
+      expect(outerRing).toHaveAttribute('points', points);
+    });
+
+    it('renders line focus ring for line element (halo technique)', () => {
+      const { getByTestId } = render(
+        <svg>
+          <FocusRing isFocused={true}>
+            <line
+              data-testid="test-line"
+              strokeWidth={2}
+              tabIndex={0}
+              x1={10}
+              x2={90}
+              y1={20}
+              y2={80}
+            />
+          </FocusRing>
+        </svg>
+      );
+
+      const outerRing = getByTestId('focus-ring-focus-outer');
+
+      expect(outerRing.tagName.toLowerCase()).toBe('line');
+      expect(outerRing).toHaveAttribute('x1', '10');
+      expect(outerRing).toHaveAttribute('y1', '20');
+      expect(outerRing).toHaveAttribute('x2', '90');
+      expect(outerRing).toHaveAttribute('y2', '80');
+
+      // Verify halo technique: stroke-width includes original width
+      // (2 + (2 + 2)) * 2 = 10
+      expect(outerRing).toHaveAttribute('stroke-width', '10');
+    });
+
+    it('renders polyline focus ring for polyline element (halo technique)', () => {
+      const points = '10,10 50,50 90,10';
+      const { getByTestId } = render(
+        <svg>
+          <FocusRing isFocused={true}>
+            <polyline data-testid="test-polyline" points={points} strokeWidth={3} tabIndex={0} />
+          </FocusRing>
+        </svg>
+      );
+
+      const outerRing = getByTestId('focus-ring-focus-outer');
+
+      expect(outerRing.tagName.toLowerCase()).toBe('polyline');
+      expect(outerRing).toHaveAttribute('points', points);
+
+      // Verify halo technique for open lines
+      // (3 + (2 + 2)) * 2 = 11
+      expect(outerRing).toHaveAttribute('stroke-width', '11');
+    });
+
+    it('uses round stroke-linecap for line elements', () => {
+      const { getByTestId } = render(
+        <svg>
+          <FocusRing isFocused={true}>
+            <line data-testid="test-line" tabIndex={0} x1={10} x2={90} y1={20} y2={80} />
+          </FocusRing>
+        </svg>
+      );
+
+      const outerRing = getByTestId('focus-ring-focus-outer');
+
+      expect(outerRing).toHaveAttribute('stroke-linecap', 'round');
+      expect(outerRing).toHaveAttribute('stroke-linejoin', 'round');
+    });
+
+    it('uses miter stroke-linejoin for closed shapes', () => {
+      const { getByTestId } = render(
+        <svg>
+          <FocusRing isFocused={true}>
+            <rect data-testid="test-rect" height={50} tabIndex={0} width={100} x={10} y={20} />
+          </FocusRing>
+        </svg>
+      );
+
+      const outerRing = getByTestId('focus-ring-focus-outer');
+
+      expect(outerRing).toHaveAttribute('stroke-linejoin', 'miter');
+      expect(outerRing).toHaveAttribute('stroke-miterlimit', '10');
     });
   });
 });
