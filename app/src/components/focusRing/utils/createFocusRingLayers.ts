@@ -1,15 +1,23 @@
-import React, { type ReactElement } from 'react';
-
 import type { FocusConfig } from '@/types/focusConfig.type';
+
+/**
+ * Props for rendering a focus ring element
+ */
+export interface FocusRingElementProps {
+  /** SVG element type (e.g., 'circle', 'rect', 'path') */
+  type: string;
+  /** Props to pass to React.createElement */
+  props: Record<string, unknown>;
+}
 
 /**
  * Result of creating focus ring layers
  */
 export interface FocusRingLayers {
-  /** Outer focus ring element (blue) */
-  outerRing: ReactElement;
-  /** Inner focus ring element (white) */
-  innerRing: ReactElement;
+  /** Outer focus ring element props (blue) */
+  outerRing: FocusRingElementProps;
+  /** Inner focus ring element props (white) */
+  innerRing: FocusRingElementProps;
   /** Can this element be rendered with focus rings? */
   canRender: boolean;
   /** Variant used for rendering */
@@ -19,17 +27,15 @@ export interface FocusRingLayers {
 /**
  * Creates adaptive focus ring layers from a DOM SVGElement.
  *
- * This is the ONLY implementation for creating focus rings.
- * It works by reading properties directly from the DOM element and creating
- * new SVG elements with scaled stroke-width for the focus rings.
+ * This function reads properties directly from the DOM element and creates
+ * props objects for rendering new SVG elements with scaled stroke-width for the focus rings.
  *
- * This unified approach works for both:
- * - children mode: reads from internalRef after element is mounted
- * - targetRef mode: reads from external ref after element is mounted
+ * This unified approach works for both targetRef and children modes by
+ * reading from the mounted DOM element.
  *
  * @param element - The SVG DOM element to create focus rings for
  * @param focusConfig - Focus ring configuration (colors, widths, gap)
- * @returns Focus ring layers (outer and inner) or null if not supported
+ * @returns Focus ring layers (outer and inner props) or null if not supported
  */
 export function createFocusRingLayers(
   element: SVGElement,
@@ -68,12 +74,13 @@ export function createFocusRingLayers(
   const strokeLinejoin = isOpenLine ? element.getAttribute('stroke-linejoin') || 'round' : 'miter';
   const strokeMiterlimit = isOpenLine ? undefined : '10';
 
-  // Extract geometric attributes from DOM element
-  const geometricProps = extractGeometricAttributes(element, elementType);
+  // Extract all attributes from the DOM element using cloneNode
+  // This automatically preserves all geometric attributes (cx, cy, r, x, y, width, height, d, points, etc.)
+  const allAttributes = extractAllAttributes(element);
 
-  // Common props for focus rings
+  // Common props for focus rings (without data-testid, that's added by the renderer)
   const getFocusRingProps = (strokeWidth: number, strokeColor: string, className: string) => ({
-    ...geometricProps,
+    ...allAttributes,
     className,
     fill: 'none',
     stroke: strokeColor,
@@ -83,74 +90,52 @@ export function createFocusRingLayers(
     strokeWidth,
   });
 
-  // Create outer ring (blue)
-  const outerRing = React.createElement(
-    elementType,
-    getFocusRingProps(outerStrokeWidth, focusConfig.outlineColor, 'focus-ring-outer')
-  );
-
-  // Create inner ring (white)
-  const innerRing = React.createElement(
-    elementType,
-    getFocusRingProps(innerStrokeWidth, focusConfig.innerColor, 'focus-ring-inner')
-  );
-
+  // Return props objects for outer and inner rings
+  // The renderer will create the React elements and add data-testid
   return {
     canRender: true,
-    innerRing,
-    outerRing,
+    innerRing: {
+      props: getFocusRingProps(innerStrokeWidth, focusConfig.innerColor, 'focus-ring-inner'),
+      type: elementType,
+    },
+    outerRing: {
+      props: getFocusRingProps(outerStrokeWidth, focusConfig.outlineColor, 'focus-ring-outer'),
+      type: elementType,
+    },
     variant: 'adaptive',
   };
 }
 
 /**
- * Extracts geometric attributes from a DOM SVGElement based on its type.
- * These are the attributes needed to recreate the element's shape.
+ * Extracts all attributes from a DOM SVGElement.
+ * This replaces the manual switch-case approach by reading all attributes directly from the DOM.
+ * Works for any SVG element type (circle, rect, ellipse, path, polygon, polyline, line, etc.)
  */
-function extractGeometricAttributes(
-  element: SVGElement,
-  elementType: string
-): Record<string, string | number | undefined> {
-  const attrs: Record<string, string | number | undefined> = {};
+function extractAllAttributes(element: SVGElement): Record<string, string | undefined> {
+  const attrs: Record<string, string | undefined> = {};
 
-  switch (elementType) {
-    case 'circle':
-      attrs.cx = element.getAttribute('cx') || undefined;
-      attrs.cy = element.getAttribute('cy') || undefined;
-      attrs.r = element.getAttribute('r') || undefined;
-      break;
+  // Attributes that should be excluded (React incompatible or will be overridden)
+  const excludedAttributes = new Set([
+    'style', // React expects an object, not a string
+    'class', // Use className instead
+    'id', // Avoid duplicate IDs in the DOM (causes focus/navigation issues)
+    'data-testid', // Avoid duplicate test IDs
+    'aria-label', // Focus rings don't need separate labels
+    'aria-labelledby', // Focus rings don't need separate labels
+    'role', // Focus rings are purely decorative
+    'tabindex', // Focus rings should not be focusable
+  ]);
 
-    case 'rect':
-      attrs.x = element.getAttribute('x') || undefined;
-      attrs.y = element.getAttribute('y') || undefined;
-      attrs.width = element.getAttribute('width') || undefined;
-      attrs.height = element.getAttribute('height') || undefined;
-      attrs.rx = element.getAttribute('rx') || undefined;
-      attrs.ry = element.getAttribute('ry') || undefined;
-      break;
+  // Iterate through all attributes of the element
+  for (let i = 0; i < element.attributes.length; i++) {
+    const attr = element.attributes[i];
 
-    case 'ellipse':
-      attrs.cx = element.getAttribute('cx') || undefined;
-      attrs.cy = element.getAttribute('cy') || undefined;
-      attrs.rx = element.getAttribute('rx') || undefined;
-      attrs.ry = element.getAttribute('ry') || undefined;
-      break;
+    // Skip excluded attributes
+    if (excludedAttributes.has(attr.name)) {
+      continue;
+    }
 
-    case 'path':
-      attrs.d = element.getAttribute('d') || undefined;
-      break;
-
-    case 'polygon':
-    case 'polyline':
-      attrs.points = element.getAttribute('points') || undefined;
-      break;
-
-    case 'line':
-      attrs.x1 = element.getAttribute('x1') || undefined;
-      attrs.y1 = element.getAttribute('y1') || undefined;
-      attrs.x2 = element.getAttribute('x2') || undefined;
-      attrs.y2 = element.getAttribute('y2') || undefined;
-      break;
+    attrs[attr.name] = attr.value;
   }
 
   return attrs;

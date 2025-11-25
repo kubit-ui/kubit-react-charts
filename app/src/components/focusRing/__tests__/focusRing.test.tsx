@@ -4,6 +4,39 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { FocusRing } from '../focusRing';
 
+// Mock getBBox for SVG elements since jsdom doesn't implement it properly
+if (!SVGElement.prototype.getBBox) {
+  SVGElement.prototype.getBBox = function () {
+    // Return reasonable defaults based on element type and attributes
+    const element = this as SVGElement;
+    const tagName = element.tagName.toLowerCase();
+
+    // For text elements, estimate based on content
+    if (tagName === 'text') {
+      const fontSize = parseFloat(element.getAttribute('font-size') || '16');
+      const textContent = element.textContent || '';
+      const width = textContent.length * fontSize * 0.6;
+      const x = parseFloat(element.getAttribute('x') || '0');
+      const y = parseFloat(element.getAttribute('y') || '0');
+      return {
+        height: fontSize,
+        width,
+        x,
+        y: y - fontSize,
+      };
+    }
+
+    // For other elements, use their attributes or defaults
+    const x = parseFloat(element.getAttribute('x') || element.getAttribute('cx') || '0');
+    const y = parseFloat(element.getAttribute('y') || element.getAttribute('cy') || '0');
+    const width = parseFloat(element.getAttribute('width') || element.getAttribute('r') || '0') * 2;
+    const height =
+      parseFloat(element.getAttribute('height') || element.getAttribute('r') || '0') * 2;
+
+    return { height, width, x, y };
+  };
+}
+
 describe('FocusRing Component', () => {
   it('renders children correctly', () => {
     const { getByTestId } = render(

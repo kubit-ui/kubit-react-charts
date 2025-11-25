@@ -1,10 +1,35 @@
-import React from 'react';
-
 import { describe, expect, it } from 'vitest';
 
 import { FOCUS_DEFAULT } from '@/types/focusConfig.type';
 
 import { createFocusRingLayers } from '../createFocusRingLayers';
+
+/**
+ * Helper to create a mock SVGElement for testing.
+ * In a real browser, this would be document.createElementNS('http://www.w3.org/2000/svg', tagName)
+ */
+function createMockSVGElement(
+  tagName: string,
+  attributes: Record<string, string | number>
+): SVGElement {
+  // Convert attributes object to array format for element.attributes
+  const attributesArray = Object.entries(attributes).map(([name, value]) => ({
+    name,
+    value: value.toString(),
+  }));
+
+  const element = {
+    tagName: tagName.toUpperCase(),
+    getAttribute: (name: string) => {
+      const kebabName = name.replace(/([A-Z])/g, '-$1').toLowerCase();
+      return attributes[name]?.toString() || attributes[kebabName]?.toString() || null;
+    },
+    // Mock element.attributes to simulate real DOM behavior
+    attributes: attributesArray,
+  } as unknown as SVGElement;
+
+  return element;
+}
 
 describe('createFocusRingLayers', () => {
   const defaultConfig = {
@@ -16,54 +41,183 @@ describe('createFocusRingLayers', () => {
     variant: FOCUS_DEFAULT.VARIANT,
   } as const;
 
-  describe('adaptive mode (closed shapes)', () => {
-    it('should create focus rings for circle element', () => {
-      const element = React.createElement('circle', { cx: 50, cy: 50, r: 30 });
-      const result = createFocusRingLayers(element, defaultConfig);
+  describe('Supported SVG elements', () => {
+    it('should create focus rings for all supported element types', () => {
+      const elements: Array<{ type: string; attrs: Record<string, string | number> }> = [
+        { type: 'circle', attrs: { cx: 50, cy: 50, r: 30 } },
+        { type: 'rect', attrs: { x: 10, y: 20, width: 150, height: 100 } },
+        { type: 'ellipse', attrs: { cx: 100, cy: 80, rx: 60, ry: 40 } },
+        { type: 'path', attrs: { d: 'M 10 10 L 90 90 Z' } },
+        { type: 'polygon', attrs: { points: '10,10 90,10 50,90' } },
+        { type: 'polyline', attrs: { points: '10,10 50,50 90,10' } },
+        { type: 'line', attrs: { x1: 10, y1: 20, x2: 90, y2: 80 } },
+      ];
 
-      expect(result).toBeTruthy();
-      expect(result?.canRender).toBe(true);
-      expect(result?.variant).toBe('adaptive');
-      expect(result?.outerRing.type).toBe('circle');
-      expect(result?.innerRing.type).toBe('circle');
+      elements.forEach(({ type, attrs }) => {
+        const element = createMockSVGElement(type, attrs);
+        const result = createFocusRingLayers(element, defaultConfig);
 
-      // Check outer ring props
-      expect(result?.outerRing.props.cx).toBe(50);
-      expect(result?.outerRing.props.cy).toBe(50);
-      expect(result?.outerRing.props.r).toBe(30);
-      expect(result?.outerRing.props.stroke).toBe(FOCUS_DEFAULT.FOCUS_COLOR);
-      // Now includes originalStrokeWidth (0 in this case)
-      expect(result?.outerRing.props.strokeWidth).toBe(
-        0 + (FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH) * 2
-      );
-      expect(result?.outerRing.props.fill).toBe('none');
-
-      // Check inner ring props
-      expect(result?.innerRing.props.stroke).toBe(FOCUS_DEFAULT.FOCUS_INNER);
-      expect(result?.innerRing.props.strokeWidth).toBe(
-        0 + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH * 2
-      );
+        expect(result, `${type} should be supported`).toBeTruthy();
+        expect(result?.canRender).toBe(true);
+        expect(result?.variant).toBe('adaptive');
+        expect(result?.outerRing.type).toBe(type);
+        expect(result?.innerRing.type).toBe(type);
+      });
     });
 
-    it('should create focus rings for rect element', () => {
-      const element = React.createElement('rect', {
-        height: 100,
-        width: 150,
-        x: 10,
-        y: 20,
+    it('should return null for unsupported element types', () => {
+      const unsupportedElements = ['text', 'image', 'g', 'svg'];
+
+      unsupportedElements.forEach(type => {
+        const element = createMockSVGElement(type, { x: 10, y: 20 });
+        const result = createFocusRingLayers(element, defaultConfig);
+
+        expect(result, `${type} should not be supported`).toBeNull();
+      });
+    });
+  });
+
+  describe('Stroke-width calculation', () => {
+    it('should calculate correct stroke widths without original stroke', () => {
+      const element = createMockSVGElement('circle', { cx: 50, cy: 50, r: 30 });
+      const result = createFocusRingLayers(element, defaultConfig);
+
+      const expectedOuterWidth =
+        (FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH) * 2;
+      const expectedInnerWidth = FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH * 2;
+
+      expect(result?.outerRing.props.strokeWidth).toBe(expectedOuterWidth);
+      expect(result?.innerRing.props.strokeWidth).toBe(expectedInnerWidth);
+    });
+
+    it('should account for original strokeWidth in all shapes', () => {
+      const originalStrokeWidth = 5;
+      const element = createMockSVGElement('circle', {
+        'cx': 50,
+        'cy': 50,
+        'r': 30,
+        'stroke-width': originalStrokeWidth,
       });
       const result = createFocusRingLayers(element, defaultConfig);
 
-      expect(result).toBeTruthy();
-      expect(result?.outerRing.type).toBe('rect');
-      expect(result?.outerRing.props.x).toBe(10);
-      expect(result?.outerRing.props.y).toBe(20);
-      expect(result?.outerRing.props.width).toBe(150);
-      expect(result?.outerRing.props.height).toBe(100);
+      const expectedOuterWidth =
+        originalStrokeWidth +
+        (FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH) * 2;
+      const expectedInnerWidth = originalStrokeWidth + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH * 2;
+
+      expect(result?.outerRing.props.strokeWidth).toBe(expectedOuterWidth);
+      expect(result?.innerRing.props.strokeWidth).toBe(expectedInnerWidth);
     });
 
-    it('should create focus rings for rect element with rounded corners', () => {
-      const element = React.createElement('rect', {
+    it('should parse strokeWidth from string attribute', () => {
+      const element = createMockSVGElement('rect', {
+        'height': 100,
+        'stroke-width': '3',
+        'width': 150,
+        'x': 10,
+        'y': 20,
+      });
+      const result = createFocusRingLayers(element, defaultConfig);
+
+      expect(result?.outerRing.props.strokeWidth).toBe(
+        3 + (FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH) * 2
+      );
+    });
+  });
+
+  describe('Open vs Closed shapes', () => {
+    it('should use miter stroke for closed shapes', () => {
+      const closedShapes = ['circle', 'rect', 'ellipse', 'polygon'];
+
+      closedShapes.forEach(type => {
+        const element = createMockSVGElement(type, { cx: 50, cy: 50, r: 30 });
+        const result = createFocusRingLayers(element, defaultConfig);
+
+        expect(result?.outerRing.props.strokeLinejoin, `${type}`).toBe('miter');
+        expect(result?.outerRing.props.strokeMiterlimit, `${type}`).toBe('10');
+        expect(result?.outerRing.props.strokeLinecap, `${type}`).toBeUndefined();
+      });
+    });
+
+    it('should use round stroke for open lines', () => {
+      const openLines = ['line', 'polyline'];
+
+      openLines.forEach(type => {
+        const element = createMockSVGElement(type, { x1: 10, y1: 20, x2: 90, y2: 80 });
+        const result = createFocusRingLayers(element, defaultConfig);
+
+        expect(result?.outerRing.props.strokeLinejoin, `${type}`).toBe('round');
+        expect(result?.outerRing.props.strokeLinecap, `${type}`).toBe('round');
+        expect(result?.outerRing.props.strokeMiterlimit, `${type}`).toBeUndefined();
+      });
+    });
+
+    it('should detect path with fill="none" as open line', () => {
+      const element = createMockSVGElement('path', {
+        d: 'M 10,10 Q 50,30 90,10',
+        fill: 'none',
+      });
+      const result = createFocusRingLayers(element, defaultConfig);
+
+      expect(result?.outerRing.props.strokeLinejoin).toBe('round');
+      expect(result?.outerRing.props.strokeLinecap).toBe('round');
+      expect(result?.outerRing.props.strokeMiterlimit).toBeUndefined();
+    });
+
+    it('should detect path with fill as closed shape', () => {
+      const element = createMockSVGElement('path', {
+        d: 'M 10 10 L 90 90 Z',
+        fill: 'blue',
+      });
+      const result = createFocusRingLayers(element, defaultConfig);
+
+      expect(result?.outerRing.props.strokeLinejoin).toBe('miter');
+      expect(result?.outerRing.props.strokeMiterlimit).toBe('10');
+      expect(result?.outerRing.props.strokeLinecap).toBeUndefined();
+    });
+
+    it('should preserve custom strokeLinecap for open lines', () => {
+      const element = createMockSVGElement('line', {
+        'stroke-linecap': 'square',
+        'x1': 10,
+        'x2': 90,
+        'y1': 20,
+        'y2': 80,
+      });
+      const result = createFocusRingLayers(element, defaultConfig);
+
+      expect(result?.outerRing.props.strokeLinecap).toBe('square');
+    });
+
+    it('should preserve custom strokeLinejoin for open lines', () => {
+      const element = createMockSVGElement('polyline', {
+        'points': '10,10 50,50 90,10',
+        'stroke-linejoin': 'bevel',
+      });
+      const result = createFocusRingLayers(element, defaultConfig);
+
+      expect(result?.outerRing.props.strokeLinejoin).toBe('bevel');
+    });
+  });
+
+  describe('Props and styling', () => {
+    it('should set correct fill, stroke, and className', () => {
+      const element = createMockSVGElement('circle', { cx: 50, cy: 50, r: 30 });
+      const result = createFocusRingLayers(element, defaultConfig);
+
+      // Outer ring
+      expect(result?.outerRing.props.fill).toBe('none');
+      expect(result?.outerRing.props.stroke).toBe(FOCUS_DEFAULT.FOCUS_COLOR);
+      expect(result?.outerRing.props.className).toBe('focus-ring-outer');
+
+      // Inner ring
+      expect(result?.innerRing.props.fill).toBe('none');
+      expect(result?.innerRing.props.stroke).toBe(FOCUS_DEFAULT.FOCUS_INNER);
+      expect(result?.innerRing.props.className).toBe('focus-ring-inner');
+    });
+
+    it('should preserve geometric attributes from source element', () => {
+      const element = createMockSVGElement('rect', {
         height: 100,
         rx: 5,
         ry: 10,
@@ -73,298 +227,24 @@ describe('createFocusRingLayers', () => {
       });
       const result = createFocusRingLayers(element, defaultConfig);
 
-      expect(result).toBeTruthy();
-      expect(result?.outerRing.props.rx).toBe(5);
-      expect(result?.outerRing.props.ry).toBe(10);
-    });
-
-    it('should create focus rings for ellipse element', () => {
-      const element = React.createElement('ellipse', {
-        cx: 100,
-        cy: 80,
-        rx: 60,
-        ry: 40,
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result).toBeTruthy();
-      expect(result?.outerRing.type).toBe('ellipse');
-      expect(result?.outerRing.props.cx).toBe(100);
-      expect(result?.outerRing.props.cy).toBe(80);
-      expect(result?.outerRing.props.rx).toBe(60);
-      expect(result?.outerRing.props.ry).toBe(40);
-    });
-
-    it('should create focus rings for path element', () => {
-      const element = React.createElement('path', {
-        d: 'M 10 10 L 90 90 L 10 90 Z',
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result).toBeTruthy();
-      expect(result?.outerRing.type).toBe('path');
-      expect(result?.outerRing.props.d).toBe('M 10 10 L 90 90 L 10 90 Z');
-    });
-
-    it('should create focus rings for polygon element', () => {
-      const element = React.createElement('polygon', {
-        points: '10,10 90,10 50,90',
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result).toBeTruthy();
-      expect(result?.outerRing.type).toBe('polygon');
-      expect(result?.outerRing.props.points).toBe('10,10 90,10 50,90');
-    });
-
-    it('should use miter stroke-linejoin for closed shapes', () => {
-      const element = React.createElement('rect', {
-        height: 100,
-        width: 150,
-        x: 10,
-        y: 20,
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result?.outerRing.props.strokeLinejoin).toBe('miter');
-      expect(result?.outerRing.props.strokeMiterlimit).toBe('10');
-      expect(result?.outerRing.props.strokeLinecap).toBeUndefined();
-    });
-
-    it('should account for original strokeWidth in closed shapes', () => {
-      const originalStrokeWidth = 5;
-      const element = React.createElement('circle', {
-        cx: 50,
-        cy: 50,
-        r: 30,
-        strokeWidth: originalStrokeWidth,
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      // For closed shapes, stroke-width now includes the original width
-      // This prevents the original stroke from covering the focus rings
-      const expectedOuterWidth =
-        originalStrokeWidth +
-        (FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH) * 2;
-      const expectedInnerWidth = originalStrokeWidth + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH * 2;
-
-      expect(result?.outerRing.props.strokeWidth).toBe(expectedOuterWidth);
-      expect(result?.innerRing.props.strokeWidth).toBe(expectedInnerWidth);
-    });
-
-    it('should treat path with fill="none" as an open line', () => {
-      const element = React.createElement('path', {
-        d: 'M 10,10 Q 50,30 90,10',
-        fill: 'none',
-        strokeLinecap: 'round',
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result).toBeTruthy();
-      expect(result?.outerRing.type).toBe('path');
-      // Should use round stroke-linecap (like line/polyline)
-      expect(result?.outerRing.props.strokeLinecap).toBe('round');
-      expect(result?.outerRing.props.strokeLinejoin).toBe('round');
-      expect(result?.outerRing.props.strokeMiterlimit).toBeUndefined();
-    });
-
-    it('should treat path with fill (closed shape) with miter stroke-linejoin', () => {
-      const element = React.createElement('path', {
-        d: 'M 10 10 L 90 90 L 10 90 Z',
-        fill: 'blue',
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result).toBeTruthy();
-      expect(result?.outerRing.type).toBe('path');
-      // Should use miter stroke-linejoin (like circle/rect)
-      expect(result?.outerRing.props.strokeLinejoin).toBe('miter');
-      expect(result?.outerRing.props.strokeMiterlimit).toBe('10');
-      expect(result?.outerRing.props.strokeLinecap).toBeUndefined();
+      // Check that geometric attributes are preserved
+      expect(result?.outerRing.props.x).toBe('10');
+      expect(result?.outerRing.props.y).toBe('20');
+      expect(result?.outerRing.props.width).toBe('150');
+      expect(result?.outerRing.props.height).toBe('100');
+      expect(result?.outerRing.props.rx).toBe('5');
+      expect(result?.outerRing.props.ry).toBe('10');
     });
   });
 
-  describe('adaptive mode (open lines)', () => {
-    it('should create focus rings for line element', () => {
-      const element = React.createElement('line', {
-        x1: 10,
-        x2: 90,
-        y1: 20,
-        y2: 80,
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result).toBeTruthy();
-      expect(result?.outerRing.type).toBe('line');
-      expect(result?.outerRing.props.x1).toBe(10);
-      expect(result?.outerRing.props.y1).toBe(20);
-      expect(result?.outerRing.props.x2).toBe(90);
-      expect(result?.outerRing.props.y2).toBe(80);
-    });
-
-    it('should create focus rings for polyline element', () => {
-      const element = React.createElement('polyline', {
-        points: '10,10 50,50 90,10',
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result).toBeTruthy();
-      expect(result?.outerRing.type).toBe('polyline');
-      expect(result?.outerRing.props.points).toBe('10,10 50,50 90,10');
-    });
-
-    it('should account for original strokeWidth in open lines (halo technique)', () => {
-      const originalStrokeWidth = 4;
-      const element = React.createElement('line', {
-        strokeWidth: originalStrokeWidth,
-        x1: 10,
-        x2: 90,
-        y1: 20,
-        y2: 80,
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      // For all shapes (open and closed), stroke-width includes the original width
-      const expectedOuterWidth =
-        originalStrokeWidth +
-        (FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH) * 2;
-      const expectedInnerWidth = originalStrokeWidth + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH * 2;
-
-      expect(result?.outerRing.props.strokeWidth).toBe(expectedOuterWidth);
-      expect(result?.innerRing.props.strokeWidth).toBe(expectedInnerWidth);
-    });
-
-    it('should use round stroke-linejoin and stroke-linecap for open lines', () => {
-      const element = React.createElement('line', {
-        x1: 10,
-        x2: 90,
-        y1: 20,
-        y2: 80,
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result?.outerRing.props.strokeLinejoin).toBe('round');
-      expect(result?.outerRing.props.strokeLinecap).toBe('round');
-      expect(result?.outerRing.props.strokeMiterlimit).toBeUndefined();
-    });
-
-    it('should preserve custom strokeLinejoin for open lines', () => {
-      const element = React.createElement('polyline', {
-        points: '10,10 50,50 90,10',
-        strokeLinejoin: 'bevel',
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result?.outerRing.props.strokeLinejoin).toBe('bevel');
-    });
-
-    it('should preserve custom strokeLinecap for open lines', () => {
-      const element = React.createElement('line', {
-        strokeLinecap: 'square',
-        x1: 10,
-        x2: 90,
-        y1: 20,
-        y2: 80,
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result?.outerRing.props.strokeLinecap).toBe('square');
-    });
-  });
-
-  describe('bounding-box mode', () => {
-    it('should return placeholder for bounding-box variant', () => {
-      const element = React.createElement('circle', { cx: 50, cy: 50, r: 30 });
-      const config = { ...defaultConfig, variant: 'bounding-box' as const };
-      const result = createFocusRingLayers(element, config);
-
-      expect(result).toBeTruthy();
-      expect(result?.canRender).toBe(true);
-      expect(result?.variant).toBe('bounding-box');
-      expect(result?.needsDOMCalculation).toBe(true);
-      expect(result?.outerRing.type).toBe('rect');
-      expect(result?.innerRing.type).toBe('rect');
-    });
-  });
-
-  describe('unsupported elements', () => {
-    it('should return null for unsupported element types', () => {
-      const element = React.createElement('text', { x: 10, y: 20 }, 'Hello');
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result).toBeNull();
-    });
-
-    it('should return null for React components (non-string type)', () => {
-      const CustomComponent = () => React.createElement('div');
-      const element = React.createElement(CustomComponent);
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result).toBeNull();
-    });
-  });
-
-  describe('stroke-width parsing', () => {
-    it('should handle strokeWidth as number prop', () => {
-      const element = React.createElement('circle', {
-        cx: 50,
-        cy: 50,
-        r: 30,
-        strokeWidth: 3,
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      // strokeWidth should be parsed and included in calculation
-      expect(result?.outerRing.props.strokeWidth).toBeGreaterThan(0);
-    });
-
-    it('should handle stroke-width as string prop (kebab-case)', () => {
-      const element = React.createElement('circle', {
-        'cx': 50,
-        'cy': 50,
-        'r': 30,
-        'stroke-width': '5',
-      });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result?.outerRing.props.strokeWidth).toBeGreaterThan(0);
-    });
-
-    it('should default to 0 when no strokeWidth is provided', () => {
-      const element = React.createElement('circle', { cx: 50, cy: 50, r: 30 });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      // For closed shapes without original stroke, the calculation should still work
-      const expectedWidth =
-        (FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH) * 2;
-      expect(result?.outerRing.props.strokeWidth).toBe(expectedWidth);
-    });
-  });
-
-  describe('class names', () => {
-    it('should add focus-ring-outer class to outer ring', () => {
-      const element = React.createElement('circle', { cx: 50, cy: 50, r: 30 });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result?.outerRing.props.className).toBe('focus-ring-outer');
-    });
-
-    it('should add focus-ring-inner class to inner ring', () => {
-      const element = React.createElement('circle', { cx: 50, cy: 50, r: 30 });
-      const result = createFocusRingLayers(element, defaultConfig);
-
-      expect(result?.innerRing.props.className).toBe('focus-ring-inner');
-    });
-  });
-
-  describe('custom focus config', () => {
+  describe('Custom configuration', () => {
     it('should use custom colors', () => {
       const customConfig = {
         ...defaultConfig,
         innerColor: '#FF0000',
         outlineColor: '#00FF00',
       };
-      const element = React.createElement('circle', { cx: 50, cy: 50, r: 30 });
+      const element = createMockSVGElement('circle', { cx: 50, cy: 50, r: 30 });
       const result = createFocusRingLayers(element, customConfig);
 
       expect(result?.outerRing.props.stroke).toBe('#00FF00');
@@ -377,7 +257,7 @@ describe('createFocusRingLayers', () => {
         innerStrokeWidth: 5,
         outlineStrokeWidth: 3,
       };
-      const element = React.createElement('circle', { cx: 50, cy: 50, r: 30 });
+      const element = createMockSVGElement('circle', { cx: 50, cy: 50, r: 30 });
       const result = createFocusRingLayers(element, customConfig);
 
       expect(result?.outerRing.props.strokeWidth).toBe((3 + 5) * 2);
