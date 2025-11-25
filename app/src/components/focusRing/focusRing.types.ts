@@ -5,44 +5,6 @@ import type { FocusOutlineDimensions } from '@/utils/calculateFocusOutline/calcu
 
 import type { FocusRingLayers } from './utils/createFocusRingLayers';
 
-/**
- * Props for the FocusRing component.
- *
- * FocusRing is a controlled, purely decorative component that renders focus rings
- * around SVG elements. It supports two modes:
- *
- * **Mode 1: Inline rendering (children)**
- * - Wraps the element with focus ring inline
- * - Useful when z-order is not a concern
- *
- * **Mode 2: Separate rendering (targetRef)**
- * - Renders only the focus ring, separate from the element
- * - Allows control over z-order (e.g., ring on top of other elements)
- * - Element must be rendered separately by the parent
- *
- * @example
- * // Mode 1: Inline (children)
- * const [isFocused, setIsFocused] = useState(false);
- * <FocusRing isFocused={isFocused}>
- *   <rect
- *     onFocus={() => setIsFocused(true)}
- *     onBlur={() => setIsFocused(false)}
- *   />
- * </FocusRing>
- *
- * @example
- * // Mode 2: Separate (targetRef)
- * const rectRef = useRef<SVGRectElement>(null);
- * const [isFocused, setIsFocused] = useState(false);
- * <>
- *   <rect
- *     ref={rectRef}
- *     onFocus={() => setIsFocused(true)}
- *     onBlur={() => setIsFocused(false)}
- *   />
- *   <FocusRing targetRef={rectRef} isFocused={isFocused} />
- * </>
- */
 export interface FocusRingProps {
   /**
    * The SVG element to wrap with focus ring (Mode 1: inline rendering).
