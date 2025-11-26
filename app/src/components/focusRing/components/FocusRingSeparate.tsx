@@ -49,7 +49,6 @@ export const FocusRingSeparate: React.FC<FocusRingSeparateProps> = ({
   isFocused,
   targetRef,
 }) => {
-  // Get all focus ring data from hook using the existing targetRef
   const { layers } = useFocusRingData({
     elementRef: targetRef,
     focusConfig,

@@ -4,6 +4,7 @@ import { type FocusConfig, getFocusConfig } from '@/types/focusConfig.type';
 
 import { createAdaptiveFocusRings } from '../utils/createAdaptiveFocusRings';
 import { createBoundingBoxFocusRings } from '../utils/createBoundingBoxFocusRings';
+import { FocusRingLayers } from '../utils/utils.types';
 
 export interface UseFocusRingDataOptions {
   elementRef: RefObject<SVGElement>;
@@ -13,7 +14,7 @@ export interface UseFocusRingDataOptions {
 
 export interface FocusRingData {
   resolvedConfig: Required<FocusConfig>;
-  layers: ReturnType<typeof createAdaptiveFocusRings> | null;
+  layers: FocusRingLayers | null;
 }
 
 /**
@@ -37,7 +38,7 @@ export function useFocusRingData({
   // Resolve config once at the top
   const resolvedConfig = useMemo(() => getFocusConfig(focusConfig), [focusConfig]);
 
-  const [layers, setLayers] = useState<ReturnType<typeof createAdaptiveFocusRings> | null>(null);
+  const [layers, setLayers] = useState<FocusRingLayers | null>(null);
 
   // DOM detection and data generation based on variant
   // Using useLayoutEffect to avoid visual delay when elements move
@@ -59,7 +60,6 @@ export function useFocusRingData({
     if (resolvedConfig.variant === 'adaptive') {
       const adaptiveLayers = createAdaptiveFocusRings(elementRef.current, resolvedConfig);
       setLayers(adaptiveLayers);
-      return;
     }
 
     // Strategy 2: Bounding-box variant - detect bounds and calculate layers

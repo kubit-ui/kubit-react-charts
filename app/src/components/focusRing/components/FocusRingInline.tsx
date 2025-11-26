@@ -35,12 +35,6 @@ export const FocusRingInline: React.FC<FocusRingInlineProps> = ({
   focusConfig,
   isFocused,
 }) => {
-  // TODO - review this validation
-  // Validate that children is a valid ReactElement (required for cloneElement)
-  if (!children || typeof children !== 'object' || !('type' in children)) {
-    return null;
-  }
-
   // Create ref for the element
   const childrenRef = useRef<SVGElement>(null);
   const { layers } = useFocusRingData({

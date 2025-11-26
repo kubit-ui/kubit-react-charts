@@ -1,6 +1,5 @@
 import type { ForwardedRef } from 'react';
 
-// TODO - review this util
 /**
  * Composes multiple refs into a single ref callback
  * Allows using both internal and external refs simultaneously
