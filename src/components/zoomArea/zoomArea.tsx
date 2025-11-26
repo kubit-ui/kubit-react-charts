@@ -1,7 +1,6 @@
 import { useMemo, useRef } from 'react';
 
 import { SvgContainer } from '@/components/svgContainer/svgContainer';
-import { getFocusConfig } from '@/utils/calculateFocusOutline/calculateFocusOutline';
 import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
 
 import { FocusRing } from '../focusRing/focusRing';
@@ -58,9 +57,6 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
 
   // Resolve selection config with defaults
   const resolvedSelectionConfig = getSelectionConfig(selectionConfig);
-
-  // Resolve focus config with defaults
-  const resolvedFocusConfig = getFocusConfig(focusConfig);
 
   // Hook for core data filtering functionality
   const { currentRange, handleRangeChange } = useZoomData({
@@ -159,7 +155,7 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
       {/* Start handler */}
       <ZoomHandler
         dataTestId={`${dataTestId}-start-handler`}
-        focusConfig={resolvedFocusConfig}
+        focusConfig={focusConfig}
         handlerConfig={handlerConfig}
         height={parsedCanvas.height}
         isFocused={isFocused(ZoomAreaElements.START_HANDLER)}
@@ -179,7 +175,7 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
       {/* End handler */}
       <ZoomHandler
         dataTestId={`${dataTestId}-end-handler`}
-        focusConfig={resolvedFocusConfig}
+        focusConfig={focusConfig}
         handlerConfig={handlerConfig}
         height={parsedCanvas.height}
         isFocused={isFocused(ZoomAreaElements.END_HANDLER)}
@@ -199,7 +195,7 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
       {/* Selection area focus ring - rendered above handlers for correct z-order */}
       <FocusRing
         dataTestId="selection-area-focus"
-        focusConfig={resolvedFocusConfig}
+        focusConfig={{ ...focusConfig, variant: 'bounding-box' }}
         isFocused={isFocused(ZoomAreaElements.SELECTION_AREA)}
         targetRef={selectionAreaRef}
       />

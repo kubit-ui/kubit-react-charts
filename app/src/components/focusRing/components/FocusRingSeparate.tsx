@@ -50,7 +50,7 @@ export const FocusRingSeparate: React.FC<FocusRingSeparateProps> = ({
   targetRef,
 }) => {
   // Get all focus ring data from hook using the existing targetRef
-  const { resolvedConfig, adaptiveLayers, focusOutline } = useFocusRingData({
+  const { layers } = useFocusRingData({
     elementRef: targetRef,
     focusConfig,
     isFocused,
@@ -61,13 +61,6 @@ export const FocusRingSeparate: React.FC<FocusRingSeparateProps> = ({
     return null;
   }
 
-  // Render focus ring with appropriate mode
-  return (
-    <FocusRingRenderer
-      dataTestId={dataTestId}
-      focusConfig={resolvedConfig}
-      layers={resolvedConfig.variant === 'adaptive' ? (adaptiveLayers ?? undefined) : undefined}
-      outline={resolvedConfig.variant === 'bounding-box' ? (focusOutline ?? undefined) : undefined}
-    />
-  );
+  // Render focus ring with unified structure
+  return <FocusRingRenderer dataTestId={dataTestId} layers={layers ?? undefined} />;
 };

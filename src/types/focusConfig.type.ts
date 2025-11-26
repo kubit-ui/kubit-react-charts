@@ -35,3 +35,15 @@ export const FOCUS_DEFAULT = {
   /** Focus ring rendering variant */
   VARIANT: 'adaptive' as const,
 } as const;
+
+/**
+ * Helper function to get complete focus config with defaults applied
+ */
+export const getFocusConfig = (focusConfig?: FocusConfig): Required<FocusConfig> => ({
+  gap: focusConfig?.gap ?? FOCUS_DEFAULT.OUTLINES_GAP,
+  innerColor: focusConfig?.innerColor ?? FOCUS_DEFAULT.FOCUS_INNER,
+  innerStrokeWidth: focusConfig?.innerStrokeWidth ?? FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH,
+  outlineColor: focusConfig?.outlineColor ?? FOCUS_DEFAULT.FOCUS_COLOR,
+  outlineStrokeWidth: focusConfig?.outlineStrokeWidth ?? FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH,
+  variant: focusConfig?.variant ?? FOCUS_DEFAULT.VARIANT,
+});

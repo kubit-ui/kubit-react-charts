@@ -14,15 +14,11 @@ const FocusRingComponent: FC<FocusRingProps> = ({
   targetRef,
 }) => {
   // Validation: need either children OR targetRef (not both, not neither)
-  const hasChildren = !!children;
-  const hasTargetRef = !!targetRef;
-
-  if (!hasChildren && !hasTargetRef) {
+  if (!children && !targetRef) {
     return null;
   }
 
-  // Route to appropriate component based on mode
-  if (hasChildren) {
+  if (children) {
     return (
       <FocusRingInline
         dataTestId={dataTestId}
@@ -35,7 +31,7 @@ const FocusRingComponent: FC<FocusRingProps> = ({
     );
   }
 
-  if (hasTargetRef) {
+  if (targetRef) {
     return (
       <FocusRingSeparate
         dataTestId={dataTestId}

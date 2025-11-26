@@ -25,7 +25,6 @@ describe('detectElementBounds', () => {
       elementPosition: { x: 60, y: 45 },
       elementSize: 100,
       elementStrokeWidth: 2,
-      elementType: 'rectangle',
       elementWidth: 100,
       isValid: true,
     });

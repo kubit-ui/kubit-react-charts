@@ -2,13 +2,12 @@ import { render, screen } from '@testing-library/react';
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { getFocusConfig } from '../../../../utils/calculateFocusOutline/calculateFocusOutline';
 import { ZoomAreaElements } from '../../zoomArea.type';
 import { ZoomHandler } from '../ZoomHandler';
 
 const mockProps = {
   dataTestId: 'test-zoom-handler',
-  focusConfig: getFocusConfig({}),
+  focusConfig: {},
   height: 100,
   isFocused: false,
   max: 4,

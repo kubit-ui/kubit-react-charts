@@ -48,8 +48,8 @@ interface ZoomHandlerProps {
   isFocused: boolean;
   /** Custom handler configuration */
   handlerConfig?: ZoomAreaHandlerConfig;
-  /** Custom focus configuration (already resolved) */
-  focusConfig: Required<FocusConfig>;
+  /** Focus ring configuration */
+  focusConfig?: FocusConfig;
   /** Text announced by screen readers */
   screenReaderText?: string;
   /** Data test ID */
@@ -114,7 +114,7 @@ export const ZoomHandler: React.FC<ZoomHandlerProps> = ({
         y2={height}
       />
 
-      {/* Circular handle with FocusRing - controlled mode */}
+      {/* Circular handle with FocusRing */}
       <FocusRing dataTestId={dataTestId} focusConfig={focusConfig} isFocused={isFocused}>
         <circle
           aria-label={screenReaderText}

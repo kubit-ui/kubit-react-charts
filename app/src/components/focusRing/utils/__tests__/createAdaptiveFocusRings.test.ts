@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { FOCUS_DEFAULT } from '@/types/focusConfig.type';
 
-import { createFocusRingLayers } from '../createFocusRingLayers';
+import { createAdaptiveFocusRings } from '../createAdaptiveFocusRings';
 
 /**
  * Helper to create a mock SVGElement for testing.
@@ -19,19 +19,19 @@ function createMockSVGElement(
   }));
 
   const element = {
-    tagName: tagName.toUpperCase(),
+    // Mock element.attributes to simulate real DOM behavior
+    attributes: attributesArray,
     getAttribute: (name: string) => {
       const kebabName = name.replace(/([A-Z])/g, '-$1').toLowerCase();
       return attributes[name]?.toString() || attributes[kebabName]?.toString() || null;
     },
-    // Mock element.attributes to simulate real DOM behavior
-    attributes: attributesArray,
+    tagName: tagName.toUpperCase(),
   } as unknown as SVGElement;
 
   return element;
 }
 
-describe('createFocusRingLayers', () => {
+describe('createAdaptiveFocusRings', () => {
   const defaultConfig = {
     gap: FOCUS_DEFAULT.OUTLINES_GAP,
     innerColor: FOCUS_DEFAULT.FOCUS_INNER,
@@ -44,21 +44,20 @@ describe('createFocusRingLayers', () => {
   describe('Supported SVG elements', () => {
     it('should create focus rings for all supported element types', () => {
       const elements: Array<{ type: string; attrs: Record<string, string | number> }> = [
-        { type: 'circle', attrs: { cx: 50, cy: 50, r: 30 } },
-        { type: 'rect', attrs: { x: 10, y: 20, width: 150, height: 100 } },
-        { type: 'ellipse', attrs: { cx: 100, cy: 80, rx: 60, ry: 40 } },
-        { type: 'path', attrs: { d: 'M 10 10 L 90 90 Z' } },
-        { type: 'polygon', attrs: { points: '10,10 90,10 50,90' } },
-        { type: 'polyline', attrs: { points: '10,10 50,50 90,10' } },
-        { type: 'line', attrs: { x1: 10, y1: 20, x2: 90, y2: 80 } },
+        { attrs: { cx: 50, cy: 50, r: 30 }, type: 'circle' },
+        { attrs: { height: 100, width: 150, x: 10, y: 20 }, type: 'rect' },
+        { attrs: { cx: 100, cy: 80, rx: 60, ry: 40 }, type: 'ellipse' },
+        { attrs: { d: 'M 10 10 L 90 90 Z' }, type: 'path' },
+        { attrs: { points: '10,10 90,10 50,90' }, type: 'polygon' },
+        { attrs: { points: '10,10 50,50 90,10' }, type: 'polyline' },
+        { attrs: { x1: 10, x2: 90, y1: 20, y2: 80 }, type: 'line' },
       ];
 
-      elements.forEach(({ type, attrs }) => {
+      elements.forEach(({ attrs, type }) => {
         const element = createMockSVGElement(type, attrs);
-        const result = createFocusRingLayers(element, defaultConfig);
+        const result = createAdaptiveFocusRings(element, defaultConfig);
 
         expect(result, `${type} should be supported`).toBeTruthy();
-        expect(result?.canRender).toBe(true);
         expect(result?.variant).toBe('adaptive');
         expect(result?.outerRing.type).toBe(type);
         expect(result?.innerRing.type).toBe(type);
@@ -70,7 +69,7 @@ describe('createFocusRingLayers', () => {
 
       unsupportedElements.forEach(type => {
         const element = createMockSVGElement(type, { x: 10, y: 20 });
-        const result = createFocusRingLayers(element, defaultConfig);
+        const result = createAdaptiveFocusRings(element, defaultConfig);
 
         expect(result, `${type} should not be supported`).toBeNull();
       });
@@ -80,7 +79,7 @@ describe('createFocusRingLayers', () => {
   describe('Stroke-width calculation', () => {
     it('should calculate correct stroke widths without original stroke', () => {
       const element = createMockSVGElement('circle', { cx: 50, cy: 50, r: 30 });
-      const result = createFocusRingLayers(element, defaultConfig);
+      const result = createAdaptiveFocusRings(element, defaultConfig);
 
       const expectedOuterWidth =
         (FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH) * 2;
@@ -98,7 +97,7 @@ describe('createFocusRingLayers', () => {
         'r': 30,
         'stroke-width': originalStrokeWidth,
       });
-      const result = createFocusRingLayers(element, defaultConfig);
+      const result = createAdaptiveFocusRings(element, defaultConfig);
 
       const expectedOuterWidth =
         originalStrokeWidth +
@@ -117,7 +116,7 @@ describe('createFocusRingLayers', () => {
         'x': 10,
         'y': 20,
       });
-      const result = createFocusRingLayers(element, defaultConfig);
+      const result = createAdaptiveFocusRings(element, defaultConfig);
 
       expect(result?.outerRing.props.strokeWidth).toBe(
         3 + (FOCUS_DEFAULT.OUTER_FOCUS_STROKE_WIDTH + FOCUS_DEFAULT.INNER_FOCUS_STROKE_WIDTH) * 2
@@ -131,7 +130,7 @@ describe('createFocusRingLayers', () => {
 
       closedShapes.forEach(type => {
         const element = createMockSVGElement(type, { cx: 50, cy: 50, r: 30 });
-        const result = createFocusRingLayers(element, defaultConfig);
+        const result = createAdaptiveFocusRings(element, defaultConfig);
 
         expect(result?.outerRing.props.strokeLinejoin, `${type}`).toBe('miter');
         expect(result?.outerRing.props.strokeMiterlimit, `${type}`).toBe('10');
@@ -143,8 +142,8 @@ describe('createFocusRingLayers', () => {
       const openLines = ['line', 'polyline'];
 
       openLines.forEach(type => {
-        const element = createMockSVGElement(type, { x1: 10, y1: 20, x2: 90, y2: 80 });
-        const result = createFocusRingLayers(element, defaultConfig);
+        const element = createMockSVGElement(type, { x1: 10, x2: 90, y1: 20, y2: 80 });
+        const result = createAdaptiveFocusRings(element, defaultConfig);
 
         expect(result?.outerRing.props.strokeLinejoin, `${type}`).toBe('round');
         expect(result?.outerRing.props.strokeLinecap, `${type}`).toBe('round');
@@ -157,7 +156,7 @@ describe('createFocusRingLayers', () => {
         d: 'M 10,10 Q 50,30 90,10',
         fill: 'none',
       });
-      const result = createFocusRingLayers(element, defaultConfig);
+      const result = createAdaptiveFocusRings(element, defaultConfig);
 
       expect(result?.outerRing.props.strokeLinejoin).toBe('round');
       expect(result?.outerRing.props.strokeLinecap).toBe('round');
@@ -169,7 +168,7 @@ describe('createFocusRingLayers', () => {
         d: 'M 10 10 L 90 90 Z',
         fill: 'blue',
       });
-      const result = createFocusRingLayers(element, defaultConfig);
+      const result = createAdaptiveFocusRings(element, defaultConfig);
 
       expect(result?.outerRing.props.strokeLinejoin).toBe('miter');
       expect(result?.outerRing.props.strokeMiterlimit).toBe('10');
@@ -184,7 +183,7 @@ describe('createFocusRingLayers', () => {
         'y1': 20,
         'y2': 80,
       });
-      const result = createFocusRingLayers(element, defaultConfig);
+      const result = createAdaptiveFocusRings(element, defaultConfig);
 
       expect(result?.outerRing.props.strokeLinecap).toBe('square');
     });
@@ -194,7 +193,7 @@ describe('createFocusRingLayers', () => {
         'points': '10,10 50,50 90,10',
         'stroke-linejoin': 'bevel',
       });
-      const result = createFocusRingLayers(element, defaultConfig);
+      const result = createAdaptiveFocusRings(element, defaultConfig);
 
       expect(result?.outerRing.props.strokeLinejoin).toBe('bevel');
     });
@@ -203,7 +202,7 @@ describe('createFocusRingLayers', () => {
   describe('Props and styling', () => {
     it('should set correct fill, stroke, and className', () => {
       const element = createMockSVGElement('circle', { cx: 50, cy: 50, r: 30 });
-      const result = createFocusRingLayers(element, defaultConfig);
+      const result = createAdaptiveFocusRings(element, defaultConfig);
 
       // Outer ring
       expect(result?.outerRing.props.fill).toBe('none');
@@ -225,7 +224,7 @@ describe('createFocusRingLayers', () => {
         x: 10,
         y: 20,
       });
-      const result = createFocusRingLayers(element, defaultConfig);
+      const result = createAdaptiveFocusRings(element, defaultConfig);
 
       // Check that geometric attributes are preserved
       expect(result?.outerRing.props.x).toBe('10');
@@ -245,7 +244,7 @@ describe('createFocusRingLayers', () => {
         outlineColor: '#00FF00',
       };
       const element = createMockSVGElement('circle', { cx: 50, cy: 50, r: 30 });
-      const result = createFocusRingLayers(element, customConfig);
+      const result = createAdaptiveFocusRings(element, customConfig);
 
       expect(result?.outerRing.props.stroke).toBe('#00FF00');
       expect(result?.innerRing.props.stroke).toBe('#FF0000');
@@ -258,7 +257,7 @@ describe('createFocusRingLayers', () => {
         outlineStrokeWidth: 3,
       };
       const element = createMockSVGElement('circle', { cx: 50, cy: 50, r: 30 });
-      const result = createFocusRingLayers(element, customConfig);
+      const result = createAdaptiveFocusRings(element, customConfig);
 
       expect(result?.outerRing.props.strokeWidth).toBe((3 + 5) * 2);
       expect(result?.innerRing.props.strokeWidth).toBe(5 * 2);

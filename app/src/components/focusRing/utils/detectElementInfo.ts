@@ -3,25 +3,21 @@
  */
 
 /**
- * Information about a detected SVG element
+ * Information about a detected SVG element's bounding box
  */
 export interface ElementInfo {
-  /** Type of the element */
-  elementType: 'rectangle' | 'circle' | 'ellipse' | 'path' | 'unknown';
-  /** Size of the element (width and height for rectangles, diameter for circles) */
-  elementSize?: number;
   /** Position of the element center */
-  elementPosition?: { x: number; y: number };
+  elementPosition: { x: number; y: number };
   /** Stroke width of the element */
-  elementStrokeWidth?: number;
-  /** Width for rectangles/ellipses */
-  elementWidth?: number;
-  /** Height for rectangles/ellipses */
-  elementHeight?: number;
-  /** Radius for circles */
-  elementRadius?: number;
+  elementStrokeWidth: number;
+  /** Width of the bounding box */
+  elementWidth: number;
+  /** Height of the bounding box */
+  elementHeight: number;
+  /** Size (max of width/height) - kept for backward compatibility */
+  elementSize: number;
   /** Whether the detection was successful */
-  isValid?: boolean;
+  isValid: boolean;
 }
 
 /**
@@ -54,7 +50,6 @@ export function detectElementBounds(element: SVGElement): ElementInfo | null {
       },
       elementSize: Math.max(bbox.width, bbox.height),
       elementStrokeWidth: strokeWidth,
-      elementType: 'rectangle', // Default to rectangle for getBBox results
       elementWidth: bbox.width,
       isValid: true,
     };

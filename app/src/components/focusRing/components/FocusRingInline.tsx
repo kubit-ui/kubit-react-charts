@@ -35,6 +35,7 @@ export const FocusRingInline: React.FC<FocusRingInlineProps> = ({
   focusConfig,
   isFocused,
 }) => {
+  // TODO - review this validation
   // Validate that children is a valid ReactElement (required for cloneElement)
   if (!children || typeof children !== 'object' || !('type' in children)) {
     return null;
@@ -42,7 +43,7 @@ export const FocusRingInline: React.FC<FocusRingInlineProps> = ({
 
   // Create ref for the element
   const childrenRef = useRef<SVGElement>(null);
-  const { resolvedConfig, adaptiveLayers, focusOutline } = useFocusRingData({
+  const { layers } = useFocusRingData({
     elementRef: childrenRef,
     focusConfig,
     isFocused,
@@ -50,7 +51,8 @@ export const FocusRingInline: React.FC<FocusRingInlineProps> = ({
 
   // Extract the ref from children safely
   // Children might have a ref attached, we need to preserve it while adding our own
-  const combinedRef = composeRefs(childrenRef, (children as any).ref);
+  const childrenWithRef = children as ReactElement & { ref?: React.Ref<SVGElement> };
+  const combinedRef = composeRefs(childrenRef, childrenWithRef.ref);
 
   // Clone children and add ref (but NOT event handlers - parent manages those)
   const wrappedChildren = cloneElement(children, {
@@ -61,14 +63,7 @@ export const FocusRingInline: React.FC<FocusRingInlineProps> = ({
     <>
       {/* Render focus ring when focused and not disabled */}
       {isFocused && !disabled && (
-        <FocusRingRenderer
-          dataTestId={dataTestId}
-          focusConfig={resolvedConfig}
-          layers={resolvedConfig.variant === 'adaptive' ? (adaptiveLayers ?? undefined) : undefined}
-          outline={
-            resolvedConfig.variant === 'bounding-box' ? (focusOutline ?? undefined) : undefined
-          }
-        />
+        <FocusRingRenderer dataTestId={dataTestId} layers={layers ?? undefined} />
       )}
 
       {/* Render the wrapped children */}

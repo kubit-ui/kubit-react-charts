@@ -1,34 +1,13 @@
 import type { FocusConfig } from '@/types/focusConfig.type';
 
-/**
- * Props for rendering a focus ring element
- */
-export interface FocusRingElementProps {
-  /** SVG element type (e.g., 'circle', 'rect', 'path') */
-  type: string;
-  /** Props to pass to React.createElement */
-  props: Record<string, unknown>;
-}
-
-/**
- * Result of creating focus ring layers
- */
-export interface FocusRingLayers {
-  /** Outer focus ring element props (blue) */
-  outerRing: FocusRingElementProps;
-  /** Inner focus ring element props (white) */
-  innerRing: FocusRingElementProps;
-  /** Can this element be rendered with focus rings? */
-  canRender: boolean;
-  /** Variant used for rendering */
-  variant: 'adaptive' | 'bounding-box';
-}
+import type { FocusRingLayers } from './utils.types';
 
 /**
  * Creates adaptive focus ring layers from a DOM SVGElement.
  *
  * This function reads properties directly from the DOM element and creates
  * props objects for rendering new SVG elements with scaled stroke-width for the focus rings.
+ * The focus rings adapt to the exact shape of the element (circle → circle, path → path, etc.)
  *
  * This unified approach works for both targetRef and children modes by
  * reading from the mounted DOM element.
@@ -37,7 +16,7 @@ export interface FocusRingLayers {
  * @param focusConfig - Focus ring configuration (colors, widths, gap)
  * @returns Focus ring layers (outer and inner props) or null if not supported
  */
-export function createFocusRingLayers(
+export function createAdaptiveFocusRings(
   element: SVGElement,
   focusConfig: Required<FocusConfig>
 ): FocusRingLayers | null {
@@ -93,7 +72,6 @@ export function createFocusRingLayers(
   // Return props objects for outer and inner rings
   // The renderer will create the React elements and add data-testid
   return {
-    canRender: true,
     innerRing: {
       props: getFocusRingProps(innerStrokeWidth, focusConfig.innerColor, 'focus-ring-inner'),
       type: elementType,
