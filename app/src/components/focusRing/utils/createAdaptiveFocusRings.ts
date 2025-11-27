@@ -3,6 +3,54 @@ import type { FocusConfig } from '@/types/focusConfig.type';
 import type { FocusRingLayers } from './utils.types';
 
 /**
+ * SVG geometric attributes that define shape position and dimensions.
+ * These attributes are extracted from the original element to create focus rings.
+ * Also used by MutationObserver to detect when focus rings need to be regenerated.
+ */
+export const SVG_GEOMETRIC_ATTRIBUTES = [
+  // Circle attributes
+  'cx',
+  'cy',
+  'r',
+  // Rectangle and general positioning attributes
+  'x',
+  'y',
+  'width',
+  'height',
+  // Ellipse attributes (cx, cy already included)
+  'rx',
+  'ry',
+  // Path attributes
+  'd',
+  // Polygon and polyline attributes
+  'points',
+  // Line attributes
+  'x1',
+  'y1',
+  'x2',
+  'y2',
+];
+
+/**
+ * SVG presentation attributes that affect stroke appearance.
+ * These are preserved for focus rings when they match the original element's style.
+ */
+const SVG_STROKE_ATTRIBUTES = [
+  'stroke-dasharray',
+  'stroke-dashoffset',
+  'stroke-linecap',
+  'stroke-linejoin',
+  'stroke-miterlimit',
+  'stroke-opacity',
+];
+
+/**
+ * SVG element types that support adaptive focus rings.
+ * These are geometric shapes that can be properly outlined with focus rings.
+ */
+const SUPPORTED_SVG_TYPES = ['circle', 'rect', 'ellipse', 'path', 'polygon', 'polyline', 'line'];
+
+/**
  * Creates adaptive focus ring layers from a DOM SVGElement.
  *
  * This function reads properties directly from the DOM element and creates
@@ -23,8 +71,7 @@ export function createAdaptiveFocusRings(
   const elementType = element.tagName.toLowerCase();
 
   // Validate that we have a valid SVG element
-  const supportedTypes = ['circle', 'rect', 'ellipse', 'path', 'polygon', 'polyline', 'line'];
-  if (!supportedTypes.includes(elementType)) {
+  if (!SUPPORTED_SVG_TYPES.includes(elementType)) {
     return null;
   }
 
@@ -53,31 +100,37 @@ export function createAdaptiveFocusRings(
   const strokeLinejoin = isOpenLine ? element.getAttribute('stroke-linejoin') || 'round' : 'miter';
   const strokeMiterlimit = isOpenLine ? undefined : '10';
 
-  // Extract all attributes from the DOM element using cloneNode
+  // Extract relevant attributes from the DOM element
   // This automatically preserves all geometric attributes (cx, cy, r, x, y, width, height, d, points, etc.)
-  const allAttributes = extractAllAttributes(element);
-
-  // Common props for focus rings (without data-testid, that's added by the renderer)
-  const getFocusRingProps = (strokeWidth: number, strokeColor: string, className: string) => ({
-    ...allAttributes,
-    className,
-    fill: 'none',
-    stroke: strokeColor,
-    strokeLinecap,
-    strokeLinejoin,
-    strokeMiterlimit,
-    strokeWidth,
-  });
+  const allAttributes = extractRelevantAttributes(element);
 
   // Return props objects for outer and inner rings
   // The renderer will create the React elements and add data-testid
   return {
     innerRing: {
-      props: getFocusRingProps(innerStrokeWidth, focusConfig.innerColor, 'focus-ring-inner'),
+      props: {
+        ...allAttributes,
+        className: 'focus-ring-inner',
+        fill: 'none',
+        stroke: focusConfig.innerColor,
+        strokeLinecap,
+        strokeLinejoin,
+        strokeMiterlimit,
+        strokeWidth: innerStrokeWidth,
+      },
       type: elementType,
     },
     outerRing: {
-      props: getFocusRingProps(outerStrokeWidth, focusConfig.outlineColor, 'focus-ring-outer'),
+      props: {
+        ...allAttributes,
+        className: 'focus-ring-outer',
+        fill: 'none',
+        stroke: focusConfig.outlineColor,
+        strokeLinecap,
+        strokeLinejoin,
+        strokeMiterlimit,
+        strokeWidth: outerStrokeWidth,
+      },
       type: elementType,
     },
     variant: 'adaptive',
@@ -85,35 +138,31 @@ export function createAdaptiveFocusRings(
 }
 
 /**
- * Extracts all attributes from a DOM SVGElement.
- * This replaces the manual switch-case approach by reading all attributes directly from the DOM.
- * Works for any SVG element type (circle, rect, ellipse, path, polygon, polyline, line, etc.)
+ * Extracts relevant SVG attributes from a DOM SVGElement for focus ring creation.
+ * Uses an allowlist approach: only geometric and stroke attributes are included.
+ * This ensures focus rings inherit the correct shape and appearance while avoiding
+ * React-incompatible attributes or those that would cause DOM conflicts.
+ *
+ * @param element - The SVG element to extract attributes from
+ * @returns Object containing only the allowed attributes
  */
-function extractAllAttributes(element: SVGElement): Record<string, string | undefined> {
+function extractRelevantAttributes(element: SVGElement): Record<string, string | undefined> {
   const attrs: Record<string, string | undefined> = {};
 
-  // Attributes that should be excluded (React incompatible or will be overridden)
-  const excludedAttributes = new Set([
-    'style', // React expects an object, not a string
-    'class', // Use className instead
-    'id', // Avoid duplicate IDs in the DOM (causes focus/navigation issues)
-    'data-testid', // Avoid duplicate test IDs
-    'aria-label', // Focus rings don't need separate labels
-    'aria-labelledby', // Focus rings don't need separate labels
-    'role', // Focus rings are purely decorative
-    'tabindex', // Focus rings should not be focusable
-  ]);
+  // Create a Set of allowed attributes for fast lookup
+  const allowedAttributes = new Set([
+    ...SVG_GEOMETRIC_ATTRIBUTES,
+    ...SVG_STROKE_ATTRIBUTES,
+  ] as const);
 
   // Iterate through all attributes of the element
   for (let i = 0; i < element.attributes.length; i++) {
     const attr = element.attributes[i];
 
-    // Skip excluded attributes
-    if (excludedAttributes.has(attr.name)) {
-      continue;
+    // Only include attributes that are in the allowlist
+    if (allowedAttributes.has(attr.name)) {
+      attrs[attr.name] = attr.value;
     }
-
-    attrs[attr.name] = attr.value;
   }
 
   return attrs;

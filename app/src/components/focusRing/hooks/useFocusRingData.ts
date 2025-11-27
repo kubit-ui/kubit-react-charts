@@ -1,10 +1,13 @@
-import { type RefObject, useLayoutEffect, useMemo, useState } from 'react';
+import { type RefObject, useEffect, useMemo, useState } from 'react';
 
 import { type FocusConfig, getFocusConfig } from '@/types/focusConfig.type';
 
-import { createAdaptiveFocusRings } from '../utils/createAdaptiveFocusRings';
+import {
+  SVG_GEOMETRIC_ATTRIBUTES,
+  createAdaptiveFocusRings,
+} from '../utils/createAdaptiveFocusRings';
 import { createBoundingBoxFocusRings } from '../utils/createBoundingBoxFocusRings';
-import { FocusRingLayers } from '../utils/utils.types';
+import type { FocusRingLayers } from '../utils/utils.types';
 
 export interface UseFocusRingDataOptions {
   elementRef: RefObject<SVGElement>;
@@ -40,33 +43,57 @@ export function useFocusRingData({
 
   const [layers, setLayers] = useState<FocusRingLayers | null>(null);
 
-  // DOM detection and data generation based on variant
-  // Using useLayoutEffect to avoid visual delay when elements move
-  // This runs synchronously BEFORE browser paint, ensuring focus rings update immediately
-  // Detection happens on mount, when isFocused changes, or when focus config changes
-  useLayoutEffect(() => {
-    // Need a mounted DOM element
-    if (!elementRef?.current) {
-      return;
-    }
-
-    // Only generate layers when focused
-    if (!isFocused) {
+  // Calculation happens when isFocused changes or when focus config changes
+  // MutationObserver watches for geometric attribute changes
+  // to automatically regenerate layers when the element moves or resizes
+  useEffect(() => {
+    if (!elementRef?.current || !isFocused) {
       setLayers(null);
       return;
     }
 
-    // Strategy 1: Adaptive variant - generate layers from DOM element
-    if (resolvedConfig.variant === 'adaptive') {
-      const adaptiveLayers = createAdaptiveFocusRings(elementRef.current, resolvedConfig);
-      setLayers(adaptiveLayers);
-    }
+    const element = elementRef.current;
 
-    // Strategy 2: Bounding-box variant - detect bounds and calculate layers
-    if (resolvedConfig.variant === 'bounding-box') {
-      const boundingBoxLayers = createBoundingBoxFocusRings(elementRef.current, resolvedConfig);
-      setLayers(boundingBoxLayers);
-    }
+    // Function to calculate focus ring layers from current DOM state
+    const calculateRings = () => {
+      // Strategy 1: Adaptive variant - generate layers from DOM element
+      if (resolvedConfig.variant === 'adaptive') {
+        const adaptiveLayers = createAdaptiveFocusRings(element, resolvedConfig);
+        setLayers(adaptiveLayers);
+      }
+
+      // Strategy 2: Bounding-box variant - detect bounds and calculate layers
+      if (resolvedConfig.variant === 'bounding-box') {
+        const boundingBoxLayers = createBoundingBoxFocusRings(element, resolvedConfig);
+        setLayers(boundingBoxLayers);
+      }
+    };
+
+    // Calculate layers initially
+    calculateRings();
+
+    // Set up MutationObserver to detect changes in geometric attributes
+    // This ensures focus ring updates automatically when the element moves or resizes
+    const observer = new MutationObserver(mutations => {
+      const hasGeometricChanges = mutations.some(
+        mutation =>
+          mutation.type === 'attributes' &&
+          SVG_GEOMETRIC_ATTRIBUTES.includes(mutation.attributeName ?? '')
+      );
+
+      if (hasGeometricChanges) {
+        // Recalculate focus rings on relevant attribute changes
+        calculateRings();
+      }
+    });
+
+    // Observe only geometric attributes that affect position and size
+    observer.observe(element, {
+      attributeFilter: [...SVG_GEOMETRIC_ATTRIBUTES],
+      attributes: true,
+    });
+
+    return () => observer.disconnect();
   }, [isFocused, resolvedConfig]);
 
   return {

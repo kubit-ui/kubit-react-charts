@@ -42,8 +42,6 @@ const FocusRingComponent: FC<FocusRingProps> = ({
       />
     );
   }
-
-  return null;
 };
 
 /**

@@ -20,55 +20,6 @@ const meta: Meta<typeof FocusRing> = {
   argTypes: focusRingArgtypes,
   component: FocusRing,
   parameters: {
-    docs: {
-      description: {
-        component: `
-## FocusRing Component
-
-A reusable component that wraps SVG elements and provides a visual focus ring indicator. FocusRing is a **controlled component** that responds to the \`isFocused\` prop.
-
-### Features
-
-- **Controlled Component**: Accepts \`isFocused\` prop to control visibility
-- **Automatic Detection**: Automatically detects element dimensions and position
-- **Two Modes**: 
-  - **Children Mode**: Wraps the element inline for simple cases
-  - **TargetRef Mode**: Renders separately for z-order control
-- **Reuses Logic**: Leverages focus ring utilities for precise calculations
-- **Consistent Styling**: Maintains existing \`FocusConfig\` API for uniform appearance
-- **Fully Customizable**: Supports custom focus configuration and disabled state
-
-### Usage
-
-#### Children Mode (Inline)
-\`\`\`tsx
-const [focused, setFocused] = useState(false);
-
-<FocusRing isFocused={focused}>
-  <rect
-    onFocus={() => setFocused(true)}
-    onBlur={() => setFocused(false)}
-    {...props}
-  />
-</FocusRing>
-\`\`\`
-
-#### TargetRef Mode (Separate Rendering)
-\`\`\`tsx
-const ref = useRef<SVGRectElement>(null);
-const [focused, setFocused] = useState(false);
-
-<rect
-  ref={ref}
-  onFocus={() => setFocused(true)}
-  onBlur={() => setFocused(false)}
-  {...props}
-/>
-<FocusRing targetRef={ref} isFocused={focused} />
-\`\`\`
-        `,
-      },
-    },
     layout: 'centered',
   },
   title: 'Components/FocusRing',
@@ -526,6 +477,25 @@ export const InteractivePlayground: Story = {
                 </FocusRing>
               </svg>
               <p>Line Path (stroke: 3px)</p>
+            </div>
+
+            {/* Pie Chart Segment */}
+            <div
+              style={{ cursor: 'pointer', textAlign: 'center' }}
+              onClick={() => setFocusedShape(focusedShape === 'pie-segment' ? null : 'pie-segment')}
+            >
+              <svg height="150" style={{ border: '1px solid #ddd', display: 'block' }} width="150">
+                <FocusRing isFocused={focusedShape === 'pie-segment'}>
+                  <path
+                    d="M 75,40 A 35,35 0 0 1 105,90 L 75,75 Z"
+                    fill="#ffa94d"
+                    stroke="#fd7e14"
+                    strokeWidth={2}
+                    style={noOutlineStyle}
+                  />
+                </FocusRing>
+              </svg>
+              <p>Pie Segment (stroke: 2px)</p>
             </div>
           </div>
         </div>
