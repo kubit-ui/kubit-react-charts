@@ -6,17 +6,19 @@ import type { FocusRingLayers } from './utils/utils.types';
 
 export interface FocusRingProps {
   /**
-   * The SVG element to wrap with focus ring (Mode 1: inline rendering).
+   * The SVG graphics element to wrap with focus ring (Mode 1: inline rendering).
+   * Must be a renderable SVG element (path, circle, rect, g, etc.).
    * Mutually exclusive with targetRef - provide either children OR targetRef, not both.
    */
   children?: ReactElement;
 
   /**
-   * Reference to external SVG element (Mode 2: separate rendering).
+   * Reference to external SVG graphics element (Mode 2: separate rendering).
+   * Must be a renderable SVG element (path, circle, rect, g, etc.).
    * When provided, only the focus ring is rendered (not the element itself).
    * Mutually exclusive with children - provide either children OR targetRef, not both.
    */
-  targetRef?: RefObject<SVGElement>;
+  targetRef?: RefObject<SVGGraphicsElement>;
 
   /**
    * Controlled focus state (REQUIRED).

@@ -10,7 +10,7 @@ import { createBoundingBoxFocusRings } from '../utils/createBoundingBoxFocusRing
 import type { FocusRingLayers } from '../utils/utils.types';
 
 export interface UseFocusRingDataOptions {
-  elementRef: RefObject<SVGElement>;
+  elementRef: RefObject<SVGGraphicsElement>;
   isFocused: boolean;
   focusConfig?: FocusConfig;
 }
@@ -49,7 +49,7 @@ export function useFocusRingData({
   useEffect(() => {
     if (!elementRef?.current || !isFocused) {
       setLayers(null);
-      return;
+      return undefined;
     }
 
     const element = elementRef.current;

@@ -60,12 +60,12 @@ const SUPPORTED_SVG_TYPES = ['circle', 'rect', 'ellipse', 'path', 'polygon', 'po
  * This unified approach works for both targetRef and children modes by
  * reading from the mounted DOM element.
  *
- * @param element - The SVG DOM element to create focus rings for
+ * @param element - The SVG graphics element to create focus rings for
  * @param focusConfig - Focus ring configuration (colors, widths, gap)
  * @returns Focus ring layers (outer and inner props) or null if not supported
  */
 export function createAdaptiveFocusRings(
-  element: SVGElement,
+  element: SVGGraphicsElement,
   focusConfig: Required<FocusConfig>
 ): FocusRingLayers | null {
   const elementType = element.tagName.toLowerCase();

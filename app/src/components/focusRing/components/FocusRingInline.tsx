@@ -35,8 +35,8 @@ export const FocusRingInline: React.FC<FocusRingInlineProps> = ({
   focusConfig,
   isFocused,
 }) => {
-  // Create ref for the element
-  const childrenRef = useRef<SVGElement>(null);
+  // Create ref for the SVG graphics element
+  const childrenRef = useRef<SVGGraphicsElement>(null);
   const { layers } = useFocusRingData({
     elementRef: childrenRef,
     focusConfig,
@@ -45,7 +45,7 @@ export const FocusRingInline: React.FC<FocusRingInlineProps> = ({
 
   // Extract the ref from children safely
   // Children might have a ref attached, we need to preserve it while adding our own
-  const childrenWithRef = children as ReactElement & { ref?: React.Ref<SVGElement> };
+  const childrenWithRef = children as ReactElement & { ref?: React.Ref<SVGGraphicsElement> };
   const combinedRef = composeRefs(childrenRef, childrenWithRef.ref);
 
   // Clone children and add ref (but NOT event handlers - parent manages those)

@@ -6,7 +6,7 @@ import { useFocusRingData } from '../hooks/useFocusRingData';
 import { FocusRingRenderer } from './FocusRingRenderer';
 
 export interface FocusRingSeparateProps {
-  targetRef: RefObject<SVGElement>;
+  targetRef: RefObject<SVGGraphicsElement>;
   isFocused: boolean;
   disabled?: boolean;
   dataTestId?: string;

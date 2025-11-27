@@ -13,11 +13,6 @@ const FocusRingComponent: FC<FocusRingProps> = ({
   isFocused,
   targetRef,
 }) => {
-  // Validation: need either children OR targetRef (not both, not neither)
-  if (!children && !targetRef) {
-    return null;
-  }
-
   if (children) {
     return (
       <FocusRingInline
@@ -42,6 +37,8 @@ const FocusRingComponent: FC<FocusRingProps> = ({
       />
     );
   }
+
+  return null;
 };
 
 /**

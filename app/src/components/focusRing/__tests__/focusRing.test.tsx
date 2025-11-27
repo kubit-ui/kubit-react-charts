@@ -354,7 +354,7 @@ describe('FocusRing Component', () => {
     });
 
     it('works with text elements and applies gap configuration', () => {
-      const { getByTestId, container: containerWithGap } = render(
+      const { container: containerWithGap, getByTestId } = render(
         <svg>
           <FocusRing focusConfig={{ gap: 4, variant: 'bounding-box' }} isFocused={true}>
             <text data-testid="test-text" tabIndex={0} x={50} y={50}>

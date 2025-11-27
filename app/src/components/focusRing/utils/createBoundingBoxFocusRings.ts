@@ -61,7 +61,7 @@ export const calculateBoundingBoxFocusRings = (
  * @param element - SVG element to detect
  * @returns Element bounds information or null if detection fails
  */
-function detectElementBoundsFromDOM(element: SVGElement): ElementBounds | null {
+function detectElementBoundsFromDOM(element: SVGGraphicsElement): ElementBounds | null {
   try {
     const bbox = element.getBBox();
     if (bbox.width <= 0 || bbox.height <= 0) {
@@ -96,12 +96,12 @@ function detectElementBoundsFromDOM(element: SVGElement): ElementBounds | null {
  *
  * This provides a unified API for both adaptive and bounding-box strategies.
  *
- * @param element - The SVG DOM element to create focus rings for
+ * @param element - The SVG graphics element to create focus rings for
  * @param focusConfig - Focus ring configuration (colors, widths, gap)
  * @returns Focus ring layers in the same format as createAdaptiveFocusRings, or null if detection fails
  */
 export function createBoundingBoxFocusRings(
-  element: SVGElement,
+  element: SVGGraphicsElement,
   focusConfig: Required<FocusConfig>
 ): FocusRingLayers | null {
   // Detect element bounds from DOM
