@@ -67,12 +67,12 @@ const SUPPORTED_SVG_TYPES = ['circle', 'rect', 'ellipse', 'path', 'polygon', 'po
 export function createAdaptiveFocusRings(
   element: SVGGraphicsElement,
   focusConfig: Required<FocusConfig>
-): FocusRingLayers | null {
+): FocusRingLayers | undefined {
   const elementType = element.tagName.toLowerCase();
 
   // Validate that we have a valid SVG element
   if (!SUPPORTED_SVG_TYPES.includes(elementType)) {
-    return null;
+    return undefined;
   }
 
   // Read original stroke width from DOM
@@ -104,7 +104,6 @@ export function createAdaptiveFocusRings(
   // This automatically preserves all geometric attributes (cx, cy, r, x, y, width, height, d, points, etc.)
   const allAttributes = extractRelevantAttributes(element);
 
-  // Return props objects for outer and inner rings
   // The renderer will create the React elements and add data-testid
   return {
     innerRing: {
@@ -133,7 +132,6 @@ export function createAdaptiveFocusRings(
       },
       type: elementType,
     },
-    variant: 'adaptive',
   };
 }
 

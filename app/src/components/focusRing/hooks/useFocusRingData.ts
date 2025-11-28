@@ -17,7 +17,7 @@ export interface UseFocusRingDataOptions {
 
 export interface FocusRingData {
   resolvedConfig: Required<FocusConfig>;
-  layers: FocusRingLayers | null;
+  layers: FocusRingLayers | undefined;
 }
 
 /**
@@ -41,14 +41,14 @@ export function useFocusRingData({
   // Resolve config once at the top
   const resolvedConfig = useMemo(() => getFocusConfig(focusConfig), [focusConfig]);
 
-  const [layers, setLayers] = useState<FocusRingLayers | null>(null);
+  const [layers, setLayers] = useState<FocusRingLayers | undefined>(undefined);
 
   // Calculation happens when isFocused changes or when focus config changes
   // MutationObserver watches for geometric attribute changes
   // to automatically regenerate layers when the element moves or resizes
   useEffect(() => {
     if (!elementRef?.current || !isFocused) {
-      setLayers(null);
+      setLayers(undefined);
       return undefined;
     }
 

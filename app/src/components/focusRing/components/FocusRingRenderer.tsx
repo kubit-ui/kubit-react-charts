@@ -13,22 +13,21 @@ import type { FocusRingRendererProps } from '../focusRing.types';
  * @returns JSX element with focus ring SVG elements, or null if no valid data
  */
 export const FocusRingRenderer: React.FC<FocusRingRendererProps> = ({ dataTestId, layers }) => {
-  // Unified rendering: both adaptive and bounding-box use the same structure
-  if (layers) {
-    return (
-      <g className="focus-ring-container" pointerEvents="none">
-        {createElement(layers.outerRing.type, {
-          ...layers.outerRing.props,
-          'data-testid': `${dataTestId}-focus-outer`,
-        })}
-        {createElement(layers.innerRing.type, {
-          ...layers.innerRing.props,
-          'data-testid': `${dataTestId}-focus-inner`,
-        })}
-      </g>
-    );
+  if (!layers) {
+    return null;
   }
 
-  // No valid rendering data
-  return null;
+  // Unified rendering: both adaptive and bounding-box use the same structure
+  return (
+    <g className="focus-ring-container" pointerEvents="none">
+      {createElement(layers.outerRing.type, {
+        ...layers.outerRing.props,
+        'data-testid': `${dataTestId}-focus-outer`,
+      })}
+      {createElement(layers.innerRing.type, {
+        ...layers.innerRing.props,
+        'data-testid': `${dataTestId}-focus-inner`,
+      })}
+    </g>
+  );
 };

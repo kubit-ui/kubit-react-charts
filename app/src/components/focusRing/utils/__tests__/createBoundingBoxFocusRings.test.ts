@@ -13,7 +13,7 @@ describe('createBoundingBoxFocusRings', () => {
     tagName: string,
     bbox: { x: number; y: number; width: number; height: number },
     strokeWidth = '1'
-  ): SVGElement => {
+  ): SVGGraphicsElement => {
     const element = document.createElementNS('http://www.w3.org/2000/svg', tagName);
 
     element.getBBox = vi.fn(() => bbox);
@@ -23,7 +23,7 @@ describe('createBoundingBoxFocusRings', () => {
       strokeWidth,
     } as CSSStyleDeclaration);
 
-    return element;
+    return element as SVGGraphicsElement;
   };
 
   beforeEach(() => {
@@ -126,8 +126,8 @@ describe('createBoundingBoxFocusRings', () => {
         const zeroWidth = createMockElement('rect', { height: 50, width: 0, x: 10, y: 20 });
         const zeroHeight = createMockElement('rect', { height: 0, width: 100, x: 10, y: 20 });
 
-        expect(createBoundingBoxFocusRings(zeroWidth, defaultConfig)).toBeNull();
-        expect(createBoundingBoxFocusRings(zeroHeight, defaultConfig)).toBeNull();
+        expect(createBoundingBoxFocusRings(zeroWidth, defaultConfig)).toBeUndefined();
+        expect(createBoundingBoxFocusRings(zeroHeight, defaultConfig)).toBeUndefined();
       });
 
       it('should return null on DOM errors', () => {
@@ -137,7 +137,7 @@ describe('createBoundingBoxFocusRings', () => {
           throw new Error('getBBox failed');
         });
 
-        expect(createBoundingBoxFocusRings(element, defaultConfig)).toBeNull();
+        expect(createBoundingBoxFocusRings(element, defaultConfig)).toBeUndefined();
       });
     });
 
@@ -174,8 +174,11 @@ describe('createBoundingBoxFocusRings', () => {
             },
             type: 'rect',
           },
-          variant: 'bounding-box',
         });
+
+        // Bounding-box variant always produces rectangular focus rings
+        expect(result?.outerRing.type).toBe('rect');
+        expect(result?.innerRing.type).toBe('rect');
       });
     });
 

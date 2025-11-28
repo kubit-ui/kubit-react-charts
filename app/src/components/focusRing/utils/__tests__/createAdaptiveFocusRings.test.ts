@@ -11,7 +11,7 @@ import { createAdaptiveFocusRings } from '../createAdaptiveFocusRings';
 function createMockSVGElement(
   tagName: string,
   attributes: Record<string, string | number>
-): SVGElement {
+): SVGGraphicsElement {
   // Convert attributes object to array format for element.attributes
   const attributesArray = Object.entries(attributes).map(([name, value]) => ({
     name,
@@ -26,7 +26,7 @@ function createMockSVGElement(
       return attributes[name]?.toString() || attributes[kebabName]?.toString() || null;
     },
     tagName: tagName.toUpperCase(),
-  } as unknown as SVGElement;
+  } as unknown as SVGGraphicsElement;
 
   return element;
 }
@@ -51,14 +51,15 @@ describe('createAdaptiveFocusRings', () => {
       [circle, rect, path].forEach(element => {
         const result = createAdaptiveFocusRings(element, defaultConfig);
         expect(result).toBeTruthy();
-        expect(result?.variant).toBe('adaptive');
+        // Adaptive variant preserves the original element type
         expect(result?.outerRing.type).toBe(element.tagName.toLowerCase());
+        expect(result?.innerRing.type).toBe(element.tagName.toLowerCase());
       });
 
       // Unsupported elements
       ['text', 'image', 'g'].forEach(type => {
         const element = createMockSVGElement(type, { x: 10, y: 20 });
-        expect(createAdaptiveFocusRings(element, defaultConfig)).toBeNull();
+        expect(createAdaptiveFocusRings(element, defaultConfig)).toBeUndefined();
       });
     });
   });

@@ -103,21 +103,20 @@ function detectElementBoundsFromDOM(element: SVGGraphicsElement): ElementBounds 
 export function createBoundingBoxFocusRings(
   element: SVGGraphicsElement,
   focusConfig: Required<FocusConfig>
-): FocusRingLayers | null {
+): FocusRingLayers | undefined {
   // Detect element bounds from DOM
   const bounds = detectElementBoundsFromDOM(element);
   if (!bounds) {
-    return null;
+    return undefined;
   }
 
-  // Calculate dimensions using the existing utility
   const dimensions = calculateBoundingBoxFocusRings(bounds, {
     gap: focusConfig.gap,
     innerStrokeWidth: focusConfig.innerStrokeWidth,
     outlineStrokeWidth: focusConfig.outlineStrokeWidth,
   });
 
-  // Convert to FocusRingLayers format (same as createAdaptiveFocusRings)
+  // The renderer will create the React elements and add data-testid
   return {
     innerRing: {
       props: {
@@ -145,6 +144,5 @@ export function createBoundingBoxFocusRings(
       },
       type: 'rect',
     },
-    variant: 'bounding-box',
   };
 }

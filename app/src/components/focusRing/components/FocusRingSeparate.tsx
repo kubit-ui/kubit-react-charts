@@ -61,5 +61,5 @@ export const FocusRingSeparate: React.FC<FocusRingSeparateProps> = ({
   }
 
   // Render focus ring with unified structure
-  return <FocusRingRenderer dataTestId={dataTestId} layers={layers ?? undefined} />;
+  return <FocusRingRenderer dataTestId={dataTestId} layers={layers} />;
 };

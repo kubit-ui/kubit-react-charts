@@ -16,8 +16,6 @@ export interface FocusRingLayers {
   outerRing: FocusRingElementProps;
   /** Inner focus ring element props (white) */
   innerRing: FocusRingElementProps;
-  /** Variant used for rendering */
-  variant: 'adaptive' | 'bounding-box';
 }
 
 /**

@@ -22,7 +22,7 @@ const meta = {
     );
   },
   tags: ['autodocs'],
-  title: 'Components/Plot',
+  title: 'Internal Components/Plot',
 } satisfies Meta<typeof PlotStory>;
 
 export default meta;
