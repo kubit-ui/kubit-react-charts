@@ -89,9 +89,15 @@ export const LineChartPath: FC<LineChartPathProps> = ({
   const pressedRef = useRef<number | null>(null);
   // the projection line logic
   const { autoClick, lineIndicator, ...nodeIndicatorConfig } = indicatorConfig || {};
-  // line indicator <Y> coordinates
-  const y1 = context.extraSpaceTopY;
-  const y2 = Number(context.canvasHeight) - context.extraSpaceBottomY;
+  
+  // Calculate line indicator boundaries using pre-calculated axis coordinates
+  // Y-axis: spans from top to bottom of chart area
+  const { y1, y2 } = yAxisCoordinates.coordinates;
+  
+  // X-axis: constrain to path area to prevent overflow into axis labels
+  // The indicator should only render within the data visualization area
+  const { x1: pathAreaMinX, x2: pathAreaMaxX } = xAxisCoordinates.coordinates;
+  const isCursorWithinPathArea = context.xCursor >= pathAreaMinX && context.xCursor <= pathAreaMaxX;
   // the path
   const { tickValues: xTickValues } = xAxisCoordinates;
   const { tickValues: yTickValues } = yAxisCoordinates;
@@ -193,7 +199,7 @@ export const LineChartPath: FC<LineChartPathProps> = ({
       )}
       {showIndicator && (
         <>
-          {!!lineIndicator && (
+          {!!lineIndicator && isCursorWithinPathArea && (
             <Line
               {...lineIndicator}
               className="pointer-events-none"

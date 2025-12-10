@@ -78,4 +78,45 @@ describe('LineChartPath', () => {
     const nodeElement = container.querySelector('[aria-label*="Data point 1: testKey"]');
     expect(nodeElement).toBeInTheDocument();
   });
+
+  describe('lineIndicator boundary constraints', () => {
+    const lineIndicatorConfig = {
+      lineIndicator: { stroke: 'red', strokeWidth: 1 },
+    };
+
+    it('should constrain lineIndicator within xAxisCoordinates boundaries', () => {
+      const testCases = [
+        { description: 'left of boundary', shouldRender: false, x1: 50, x2: 400, xCursor: 40 },
+        { description: 'at min boundary', shouldRender: true, x1: 50, x2: 400, xCursor: 50 },
+        { description: 'within boundary', shouldRender: true, x1: 50, x2: 400, xCursor: 200 },
+        { description: 'at max boundary', shouldRender: true, x1: 50, x2: 400, xCursor: 400 },
+        { description: 'right of boundary', shouldRender: false, x1: 50, x2: 400, xCursor: 450 },
+      ];
+
+      testCases.forEach(({ shouldRender, x1, x2, xCursor }) => {
+        const context = {
+          ...CONTEXT,
+          xAxisCoordinates: {
+            ...CONTEXT.xAxisCoordinates,
+            coordinates: { x1, x2, y1: 0, y2: 0 },
+          },
+          xCursor,
+        };
+
+        const { container } = render(
+          <LineChartContext.Provider value={context}>
+            <LineChart.Path dataKey="testKey" indicatorConfig={lineIndicatorConfig} />
+          </LineChartContext.Provider>
+        );
+
+        const lineIndicator = container.querySelector('line[class*="pointer-events-none"]');
+        
+        if (shouldRender) {
+          expect(lineIndicator).toBeInTheDocument();
+        } else {
+          expect(lineIndicator).not.toBeInTheDocument();
+        }
+      });
+    });
+  });
 });
