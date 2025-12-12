@@ -2,9 +2,8 @@ import { render, screen } from '@testing-library/react';
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { getFocusConfig } from '../../../../utils/calculateFocusOutline/calculateFocusOutline';
 import { getSelectionConfig } from '../../utils/selectionConfig';
-import { SelectionArea, SelectionAreaFocusRing } from '../SelectionArea';
+import { SelectionArea } from '../SelectionArea';
 
 const mockProps = {
   currentRange: { end: 3, start: 1 },
@@ -117,66 +116,5 @@ describe('SelectionArea', () => {
     );
 
     expect(selectionArea).toHaveStyle({ visibility: 'visible' });
-  });
-});
-
-describe('SelectionAreaFocusRing', () => {
-  const focusRingProps = {
-    endX: 80,
-    focusConfig: getFocusConfig({}), // Use default resolved configuration
-    height: 100,
-    isFocused: true,
-    startX: 20,
-  };
-
-  it('should render focus ring when focused', () => {
-    const { container } = render(
-      <svg>
-        <SelectionAreaFocusRing {...focusRingProps} />
-      </svg>
-    );
-
-    const focusGroup = container.querySelector('g');
-    expect(focusGroup).toBeInTheDocument();
-    expect(focusGroup).toHaveAttribute('pointer-events', 'none');
-
-    // Should have outer and inner border rectangles
-    const rects = container.querySelectorAll('rect');
-    expect(rects).toHaveLength(2);
-    expect(rects[0]).toHaveAttribute('fill', 'none');
-    expect(rects[1]).toHaveAttribute('fill', 'none');
-  });
-
-  it('should not render when not focused', () => {
-    const { container } = render(
-      <svg>
-        <SelectionAreaFocusRing {...focusRingProps} isFocused={false} />
-      </svg>
-    );
-
-    const focusGroup = container.querySelector('g');
-    expect(focusGroup).not.toBeInTheDocument();
-  });
-
-  it('should apply custom focus configuration', () => {
-    const customFocusConfig = getFocusConfig({
-      innerColor: '#custom-inner',
-      innerStrokeWidth: 2,
-      outlineColor: '#custom-outline',
-      outlineStrokeWidth: 3,
-    });
-
-    const { container } = render(
-      <svg>
-        <SelectionAreaFocusRing {...focusRingProps} focusConfig={customFocusConfig} />
-      </svg>
-    );
-
-    const rects = container.querySelectorAll('rect');
-    expect(rects).toHaveLength(2);
-    expect(rects[0]).toHaveAttribute('stroke', '#custom-outline');
-    expect(rects[0]).toHaveAttribute('stroke-width', '3');
-    expect(rects[1]).toHaveAttribute('stroke', '#custom-inner');
-    expect(rects[1]).toHaveAttribute('stroke-width', '2');
   });
 });

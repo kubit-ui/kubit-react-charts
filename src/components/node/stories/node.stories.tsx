@@ -26,7 +26,7 @@ const meta = {
     );
   },
   tags: ['autodocs'],
-  title: 'Components/Node',
+  title: 'Internal Components/Node',
 } satisfies Meta<typeof NodeStory>;
 
 export default meta;

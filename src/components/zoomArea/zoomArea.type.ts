@@ -130,7 +130,7 @@ export interface ZoomAreaProps {
   /** Custom selection area configuration */
   selectionConfig?: ZoomAreaSelectionConfig;
   /** Custom focus configuration applied to all focusable elements */
-  focusConfig?: FocusConfig;
+  focusConfig?: Omit<FocusConfig, 'variant'>;
   /** Configuration for interaction behavior (keyboard navigation, handler distances) */
   interactionConfig?: ZoomAreaInteractionConfig;
   /** Configuration for accessibility label templates */

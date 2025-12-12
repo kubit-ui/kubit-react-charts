@@ -1,7 +1,7 @@
 import type { KeyboardEvent, MouseEvent, TouchEvent } from 'react';
 
+import { FocusRing } from '@/components/focusRing/focusRing';
 import type { FocusConfig } from '@/types/focusConfig.type';
-import { calculateFocusOutline } from '@/utils/calculateFocusOutline/calculateFocusOutline';
 
 import type { ZoomAreaElements, ZoomAreaHandlerConfig } from '../zoomArea.type';
 import { HandlerIcon } from './HandlerIcon';
@@ -44,12 +44,12 @@ interface ZoomHandlerProps {
   min: number;
   /** Maximum allowed value */
   max: number;
-  /** Whether this handler is focused */
+  /** Whether the handler is focused (controlled mode) */
   isFocused: boolean;
   /** Custom handler configuration */
   handlerConfig?: ZoomAreaHandlerConfig;
-  /** Custom focus configuration (already resolved) */
-  focusConfig: Required<FocusConfig>;
+  /** Focus ring configuration */
+  focusConfig?: FocusConfig;
   /** Text announced by screen readers */
   screenReaderText?: string;
   /** Data test ID */
@@ -101,21 +101,6 @@ export const ZoomHandler: React.FC<ZoomHandlerProps> = ({
   const centerY = height / 2;
   const styles = getHandlerStyles(handlerConfig);
 
-  // Calculate focus ring dimensions using the new util
-  const focusOutline = calculateFocusOutline({
-    elementHeight: styles.radius * 2,
-    elementPosition: { x, y: centerY },
-    elementStrokeWidth:
-      typeof styles.strokeWidth === 'number'
-        ? styles.strokeWidth
-        : parseFloat(styles.strokeWidth.toString()),
-    elementType: 'circle',
-    elementWidth: styles.radius * 2,
-    gap: focusConfig.gap,
-    innerStrokeWidth: focusConfig.innerStrokeWidth,
-    outlineStrokeWidth: focusConfig.outlineStrokeWidth,
-  });
-
   return (
     <g data-testid={`${dataTestId}-group`}>
       {/* Vertical guide line */}
@@ -129,57 +114,35 @@ export const ZoomHandler: React.FC<ZoomHandlerProps> = ({
         y2={height}
       />
 
-      {/* Circular handle */}
-      <circle
-        aria-label={screenReaderText}
-        aria-valuemax={max}
-        aria-valuemin={min}
-        // Used valuetext instead of valuenow to provide understandable information
-        aria-valuetext={screenReaderText}
-        cursor="ew-resize"
-        cx={x}
-        cy={centerY}
-        data-testid={dataTestId}
-        fill={styles.fill}
-        r={styles.radius}
-        role="slider"
-        stroke={styles.stroke}
-        strokeWidth={styles.strokeWidth}
-        style={{ outline: 'none' }}
-        tabIndex={0}
-        onBlur={onBlur}
-        onFocus={onFocus}
-        onKeyDown={onKeyDown}
-        onMouseDown={onMouseDown}
-        onTouchStart={onTouchStart}
-      />
+      {/* Circular handle with FocusRing */}
+      <FocusRing dataTestId={dataTestId} focusConfig={focusConfig} isFocused={isFocused}>
+        <circle
+          aria-label={screenReaderText}
+          aria-valuemax={max}
+          aria-valuemin={min}
+          // Used valuetext instead of valuenow to provide understandable information
+          aria-valuetext={screenReaderText}
+          cursor="ew-resize"
+          cx={x}
+          cy={centerY}
+          data-testid={dataTestId}
+          fill={styles.fill}
+          r={styles.radius}
+          role="slider"
+          stroke={styles.stroke}
+          strokeWidth={styles.strokeWidth}
+          style={{ outline: 'none' }}
+          tabIndex={0}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          onKeyDown={onKeyDown}
+          onMouseDown={onMouseDown}
+          onTouchStart={onTouchStart}
+        />
+      </FocusRing>
 
       {/* Handler icon */}
       <HandlerIcon fill={styles.iconColor} x={x} y={centerY} />
-
-      {/* Focus ring */}
-      {isFocused && focusOutline.type === 'circle' && (
-        <g pointerEvents="none">
-          {/* Outer border */}
-          <circle
-            cx={focusOutline.outer.cx}
-            cy={focusOutline.outer.cy}
-            fill="none"
-            r={focusOutline.outer.r}
-            stroke={focusConfig.outlineColor}
-            strokeWidth={focusConfig.outlineStrokeWidth}
-          />
-          {/* Inner border */}
-          <circle
-            cx={focusOutline.inner.cx}
-            cy={focusOutline.inner.cy}
-            fill="none"
-            r={focusOutline.inner.r}
-            stroke={focusConfig.innerColor}
-            strokeWidth={focusConfig.innerStrokeWidth}
-          />
-        </g>
-      )}
     </g>
   );
 };

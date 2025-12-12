@@ -1,0 +1,14 @@
+.focus-ring-outer {
+    /* Ensure focus rings don't interfere with pointer events */
+    pointer-events: none;
+}
+
+.focus-ring-inner {
+    /* Ensure focus rings don't interfere with pointer events */
+    pointer-events: none;
+}
+
+.focus-ring-container {
+    /* Ensure focus ring group doesn't interfere with interactions */
+    pointer-events: none;
+}

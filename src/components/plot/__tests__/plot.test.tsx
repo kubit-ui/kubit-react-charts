@@ -1,7 +1,20 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import { Plot } from '../plot';
 import { PLOT_SIZE_MAP, type PlotProps, PlotSize, PlotType } from '../plot.types';
+
+// Mock getBBox for SVG elements since jsdom doesn't implement it
+beforeAll(() => {
+  SVGElement.prototype.getBBox = function () {
+    // Default mock for basic shapes
+    return {
+      height: 24,
+      width: 24,
+      x: 0,
+      y: 0,
+    } as DOMRect;
+  };
+});
 
 describe('Plot Component', () => {
   const defaultProps: PlotProps = {
@@ -161,7 +174,7 @@ describe('Plot Component', () => {
     expect(queryByTestId('test-plot-hover-circle')).not.toBeInTheDocument();
   });
 
-  it('renders focus outlines when focused', () => {
+  it('renders focus outlines when focused', async () => {
     const { getByTestId, queryByTestId } = render(
       <svg>
         <Plot {...defaultProps} />
@@ -175,13 +188,17 @@ describe('Plot Component', () => {
 
     // After focus, focus outline elements should appear
     fireEvent.focus(plotElement);
-    expect(queryByTestId('test-plot-focus-outer')).toBeInTheDocument();
-    expect(queryByTestId('test-plot-focus-inner')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(queryByTestId('test-plot-focus-outer')).toBeInTheDocument();
+      expect(queryByTestId('test-plot-focus-inner')).toBeInTheDocument();
+    });
 
     // After blur, focus outline elements should disappear
     fireEvent.blur(plotElement);
-    expect(queryByTestId('test-plot-focus-outer')).not.toBeInTheDocument();
-    expect(queryByTestId('test-plot-focus-inner')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(queryByTestId('test-plot-focus-outer')).not.toBeInTheDocument();
+      expect(queryByTestId('test-plot-focus-inner')).not.toBeInTheDocument();
+    });
   });
 
   it('uses custom hover configuration', () => {
@@ -213,7 +230,7 @@ describe('Plot Component', () => {
     expect(hoverElement).toHaveAttribute('r', String((defaultSize * 1.5) / 2));
   });
 
-  it('uses custom focus configuration', () => {
+  it('uses custom focus configuration', async () => {
     const focusConfig = {
       gap: 4,
       innerColor: 'orange',
@@ -231,19 +248,21 @@ describe('Plot Component', () => {
 
     fireEvent.focus(plotElement);
 
-    const outerFocusElement = queryByTestId('test-plot-focus-outer');
-    const innerFocusElement = queryByTestId('test-plot-focus-inner');
+    await waitFor(() => {
+      const outerFocusElement = queryByTestId('test-plot-focus-outer');
+      const innerFocusElement = queryByTestId('test-plot-focus-inner');
 
-    expect(outerFocusElement).toBeInTheDocument();
-    expect(innerFocusElement).toBeInTheDocument();
+      expect(outerFocusElement).toBeInTheDocument();
+      expect(innerFocusElement).toBeInTheDocument();
 
-    expect(outerFocusElement).toHaveAttribute('stroke', 'purple');
-    expect(outerFocusElement).toHaveAttribute('stroke-width', '3');
-    expect(innerFocusElement).toHaveAttribute('stroke', 'orange');
-    expect(innerFocusElement).toHaveAttribute('stroke-width', '2');
+      expect(outerFocusElement).toHaveAttribute('stroke', 'purple');
+      expect(outerFocusElement).toHaveAttribute('stroke-width', '3');
+      expect(innerFocusElement).toHaveAttribute('stroke', 'orange');
+      expect(innerFocusElement).toHaveAttribute('stroke-width', '2');
+    });
   });
 
-  it('hover effect is not shown when element is focused', () => {
+  it('hover effect is not shown when element is focused', async () => {
     const { getByTestId, queryByTestId } = render(
       <svg>
         <Plot {...defaultProps} hasHoverEffect={true} />
@@ -259,7 +278,9 @@ describe('Plot Component', () => {
     expect(queryByTestId('test-plot-hover-circle')).not.toBeInTheDocument();
 
     // Focus outlines should still be visible
-    expect(queryByTestId('test-plot-focus-outer')).toBeInTheDocument();
-    expect(queryByTestId('test-plot-focus-inner')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(queryByTestId('test-plot-focus-outer')).toBeInTheDocument();
+      expect(queryByTestId('test-plot-focus-inner')).toBeInTheDocument();
+    });
   });
 });

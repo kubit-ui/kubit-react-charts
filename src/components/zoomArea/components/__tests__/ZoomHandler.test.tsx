@@ -2,13 +2,12 @@ import { render, screen } from '@testing-library/react';
 
 import { describe, expect, it, vi } from 'vitest';
 
-import { getFocusConfig } from '../../../../utils/calculateFocusOutline/calculateFocusOutline';
 import { ZoomAreaElements } from '../../zoomArea.type';
 import { ZoomHandler } from '../ZoomHandler';
 
 const mockProps = {
   dataTestId: 'test-zoom-handler',
-  focusConfig: getFocusConfig({}),
+  focusConfig: {},
   height: 100,
   isFocused: false,
   max: 4,
@@ -66,8 +65,8 @@ describe('ZoomHandler', () => {
     expect(handler).toHaveAttribute('aria-valuetext', screenReaderText);
   });
 
-  it('should handle focus state and different handler types', () => {
-    render(<ZoomHandler {...mockProps} isFocused={true} type={ZoomAreaElements.END_HANDLER} />);
+  it('should handle different handler types', () => {
+    render(<ZoomHandler {...mockProps} type={ZoomAreaElements.END_HANDLER} />);
 
     const handlerGroup = screen.getByTestId('test-zoom-handler-group');
     expect(handlerGroup).toBeInTheDocument();

@@ -1,6 +1,7 @@
 export * from './axisChart';
 export * from './bar';
 export * from './chartText';
+export * from './focusRing';
 export * from './foreignObject';
 export * from './line';
 export * from './node';
