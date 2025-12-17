@@ -51,8 +51,7 @@ const args = {
   dataTestId: 'line-chart',
   height: '100%',
   // === ACCESSIBILITY AND SEMANTICS ===
-  role: 'img',
-  tabIndex: 0,
+  role: 'application',
   // === DIMENSIONS AND LAYOUT ===
   width: '70%',
 
@@ -183,13 +182,11 @@ export const LineChartAccessibility: Story = {
   aria-label="Line chart showing evolution of cats"
   dataKey="cats"
   // Custom attributes for the path
-  aria-describedby="chart-description"
   data-chart-type="line"
   data-test-id="cats-line-chart"
   nodeConfig={{
     'aria-label': 'Data point {{index}}: {{yValue}} cats in year {{xValue}}',
     // Custom attributes for nodes
-    'aria-level': 1,
     'data-series': 'cats',
     'data-test-id': 'line-chart-node'
   }}

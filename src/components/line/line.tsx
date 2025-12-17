@@ -7,20 +7,6 @@ import type { LineProps } from './line.types';
  *
  * @returns A `line` SVG element with the specified properties and attributes.
  */
-export const Line: FC<LineProps> = ({
-  ariaLabel = '',
-  className = 'line',
-  dataTestId,
-  tabIndex = -1,
-  ...props
-}) => {
-  return (
-    <line
-      {...props}
-      aria-label={ariaLabel}
-      className={className}
-      data-testid={dataTestId}
-      tabIndex={tabIndex}
-    />
-  );
+export const Line: FC<LineProps> = ({ ariaLabel, className = 'line', dataTestId, ...props }) => {
+  return <line {...props} aria-label={ariaLabel} className={className} data-testid={dataTestId} />;
 };

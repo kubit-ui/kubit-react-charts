@@ -64,7 +64,7 @@ export const AXIS_HORIZONTAL_MIXED_BARS = [
   ...BAR_CHART_PATHS,
   <BarChart.XAxis
     key="4"
-    ariaLabel="XAxis"
+    ariaLabel="X Axis"
     position={Positions.BOTTOM}
     showTickLines={false}
     stroke="black"
@@ -77,7 +77,7 @@ export const AXIS_HORIZONTAL_MIXED_BARS = [
   />,
   <BarChart.YAxis
     key="5"
-    ariaLabel="ariaLabel Yaxis"
+    ariaLabel="Y Axis"
     position={Positions.CENTER}
     showTickLines={false}
     stroke="black"

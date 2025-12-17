@@ -29,12 +29,14 @@ export interface LineChartCoordinatesData {
 }
 
 export interface LineChartExtraSpacings {
-  extraSpaceBottomY: number;
-  extraSpaceTopY: number;
-  extraSpaceLeftX: number;
-  extraSpaceRightX: number;
-  securityXSpace: number;
-  securityYSpace: number;
+  xAxisLeftSpacing: number;
+  xAxisTopSpacing: number;
+  xAxisRightSpacing: number;
+  xAxisBottomSpacing: number;
+  yAxisLeftSpacing: number;
+  yAxisTopSpacing: number;
+  yAxisRightSpacing: number;
+  yAxisBottomSpacing: number;
   lineChartXPosition: (typeof Positions)[keyof typeof Positions];
   lineChartYPosition: (typeof Positions)[keyof typeof Positions];
   xData: string[];
@@ -128,7 +130,7 @@ export interface LineChartXAxisProps
   [key: `data-${string}`]: string | number | boolean | undefined;
 }
 export interface LineChartYAxisProps
-  extends Omit<YAxisProps, OmitProps | 'ariaLabel'>,
+  extends Omit<YAxisProps, OmitProps | 'ariaLabel' | 'tickText'>,
     React.AriaAttributes {
   /**
    * TODO: This prop is defined in the interface but NOT IMPLEMENTED in LineChartYAxis component.
@@ -136,6 +138,9 @@ export interface LineChartYAxisProps
    * Implementation needed in lineChartYAxis.tsx to properly handle custom tick values.
    */
   tickValues?: TickValuesAxisProps;
+  tickText?: YAxisProps['tickText'] & {
+    useAxisAsOrigin?: boolean;
+  };
   valueFormatter?: ValueFormatter;
   /**
    * @deprecated Use aria-label instead for better accessibility standards

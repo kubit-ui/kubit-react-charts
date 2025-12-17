@@ -11,6 +11,7 @@ export const divergentTemplate = ({
   return [
     <LineChart.Path
       key="1"
+      aria-label="Line chart for cats data series"
       closestClick={true}
       dataKey="cats"
       nodeConfig={{
@@ -29,9 +30,10 @@ export const divergentTemplate = ({
       tabIndex={0}
     />,
     <LineChart.XAxis
-      key="3"
-      aria-label="XAxis"
+      key="2"
+      aria-label="X Axis"
       position={Positions.BOTTOM}
+      role="img"
       showTickLines={true}
       stroke="black"
       strokeWidth="0.1"
@@ -42,9 +44,10 @@ export const divergentTemplate = ({
       }}
     />,
     <LineChart.YAxis
-      key="4"
-      aria-label="Yaxis"
+      key="3"
+      aria-label="Y Axis"
       position={Positions.LEFT}
+      role="img"
       showTickLines={true}
       stroke="black"
       strokeWidth="0.1"

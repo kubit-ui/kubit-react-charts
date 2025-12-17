@@ -167,7 +167,7 @@ export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
           <LineChart.Path dataKey="cats" stroke="#0078D4" strokeWidth="0.3" tabIndex={0} />
           <LineChart.Path dataKey="invalidKey" stroke="#FF6B6B" strokeWidth="0.3" tabIndex={0} />
           <LineChart.XAxis
-            ariaLabel="XAxis"
+            ariaLabel="X Axis"
             position={Positions.BOTTOM}
             showTickLines={false}
             stroke="black"

@@ -1,30 +1,30 @@
 import { type ChartError, ErrorType } from '@/types/errors.type';
 import { Positions } from '@/types/position.enum';
-import {
-  BuildError,
-  buildCanvasDimensionsError,
-  buildError,
-} from '@/utils/buildErrors/buildErrors';
-import { getXCoordinates, getYCoordinates } from '@/utils/getCoordinates/getCoordinates';
 import { getPoints } from '@/utils/getPoints/getPoints';
-import { getXTicks, getYTicks } from '@/utils/getTicks/getTicks';
 
 import {
-  AXIS_VALIDATION,
   BREAK_AXIS_DEFAULTS,
   CHART_CANVAS_DEFAULTS,
   LINE_CHART_FALLBACK_DATA,
   SHARED_FALLBACK_DATA,
 } from '../../constants/chartDefaults';
 import type { ChildrenType, IDataPoint, LineChartContextType } from '../lineChart.type';
+import { getXCoordinates, getYCoordinates } from '../utils/getCoordinates';
 import { getExtraSpacing } from '../utils/getExtraSpacing';
+import { getXTicks, getYTicks } from '../utils/getTicks';
+import {
+  validateCanvasDimensions,
+  validateData,
+  validateXCoordinates,
+  validateXTickValues,
+  validateYCoordinates,
+  validateYTickValues,
+} from '../utils/validations';
 
 interface BuildContextValue {
   children: ChildrenType;
   data: IDataPoint[];
   xKey: string;
-  ajustedX: number;
-  ajustedY: number;
   canvasHeight: number;
   canvasWidth: number;
   viewBox: string;
@@ -50,8 +50,6 @@ type OmitProps =
  */
 export const buildLineContextValue = ({
   addError,
-  ajustedX,
-  ajustedY,
   canvasHeight,
   canvasWidth,
   children,
@@ -61,29 +59,17 @@ export const buildLineContextValue = ({
 }: BuildContextValue): Omit<LineChartContextType, OmitProps> => {
   let error: Omit<ChartError, 'type'> | undefined = undefined;
 
-  // 1. Validate data exists
-  if (!data || data.length === 0) {
-    const dataError = {
-      error: buildError(BuildError.LINE_CHART_NO_DATA),
-    };
-    addError?.('LINE_CHART_CONTEXT_ERROR', dataError);
+  const { error: dataError } = validateData({ data, addError });
+  if (dataError) {
     error = dataError;
   }
 
-  if (data && data.length === 1) {
-    const singlePointError = {
-      error: buildError(BuildError.LINE_CHART_SINGLE_POINT),
-    };
-    addError?.('LINE_CHART_CONTEXT_ERROR', singlePointError);
-    error = singlePointError;
-  }
-
-  // 2. Validate canvas dimensions
-  if (canvasWidth <= 0 || canvasHeight <= 0) {
-    const canvasError = {
-      error: buildCanvasDimensionsError(canvasWidth, canvasHeight),
-    };
-    addError?.('LINE_CHART_CONTEXT_ERROR', canvasError);
+  const { error: canvasError } = validateCanvasDimensions({
+    canvasWidth,
+    canvasHeight,
+    addError,
+  });
+  if (canvasError) {
     error = canvasError;
   }
 
@@ -108,14 +94,16 @@ export const buildLineContextValue = ({
    * Get the extra spacings for the line chart.
    */
   const {
-    extraSpaceBottomY,
-    extraSpaceLeftX,
-    extraSpaceRightX,
-    extraSpaceTopY,
+    xAxisLeftSpacing,
+    xAxisTopSpacing,
+    xAxisRightSpacing,
+    xAxisBottomSpacing,
+    yAxisLeftSpacing,
+    yAxisTopSpacing,
+    yAxisRightSpacing,
+    yAxisBottomSpacing,
     lineChartXPosition,
     lineChartYPosition,
-    securityXSpace,
-    securityYSpace,
     xAxisText,
     xBreakAxis,
     xData,
@@ -123,8 +111,6 @@ export const buildLineContextValue = ({
     yBreakAxis,
     yData,
   } = getExtraSpacing({
-    ajustedX,
-    ajustedY,
     canvasHeight: safeCanvasHeight,
     canvasWidth: safeCanvasWidth,
     children,
@@ -133,95 +119,42 @@ export const buildLineContextValue = ({
     xKey,
   });
 
-  /**
-   * Calculate the tick values for the X Axis.
-   */
-  const crossXAxis =
-    lineChartXPosition !== Positions.TOP && lineChartXPosition !== Positions.BOTTOM;
-  const yAxisSpace = extraSpaceLeftX + extraSpaceRightX;
   const xTickValues = getXTicks({
-    initPos: extraSpaceLeftX,
-    maxSpaceAvailable: safeCanvasWidth,
-    otherAxisSpace: yAxisSpace,
-    securitySpace: securityXSpace,
     tickValues: xData,
+    maxSpaceAvailable: safeCanvasWidth,
+    xAxisLeftSpacing,
+    xAxisRightSpacing,
+    yAxisLeftSpacing,
+    yAxisRightSpacing,
   });
-  if ((xTickValues ?? []).some(({ position }) => isNaN(position))) {
-    const xTickError = {
-      error: buildError(BuildError.INVALID_X_TICK),
-    };
-    addError?.('LINE_CHART_CONTEXT_ERROR', xTickError);
+
+  const { error: xTickError } = validateXTickValues({ xTickValues, addError });
+  if (!error && xTickError) {
     error = xTickError;
   }
 
-  // Validate X-axis tick values
-  if (xTickValues) {
-    const hasInsufficientTicks = xTickValues.length < AXIS_VALIDATION.MIN_TICK_COUNT;
-    const hasIdenticalValues =
-      xTickValues.length >= AXIS_VALIDATION.MIN_TICK_COUNT &&
-      new Set(xTickValues.map(tick => tick.value)).size === AXIS_VALIDATION.UNIQUE_VALUE_THRESHOLD;
-
-    if (hasInsufficientTicks) {
-      const xAxisError = {
-        error: buildError(BuildError.LINE_CHART_X_AXIS_INSUFFICIENT_TICKS),
-      };
-      addError?.('LINE_CHART_X_AXIS_ERROR', xAxisError);
-      if (!error) {
-        error = xAxisError;
-      }
-    }
-
-    if (hasIdenticalValues) {
-      const xAxisError = {
-        error: buildError(BuildError.LINE_CHART_X_AXIS_IDENTICAL_VALUES),
-      };
-      addError?.('LINE_CHART_X_AXIS_ERROR', xAxisError);
-      if (!error) {
-        error = xAxisError;
-      }
-    }
-  }
   /**
    * Calculate the tick values for the Y Axis.
    */
-  const crossYAxis =
-    lineChartYPosition !== Positions.LEFT && lineChartYPosition !== Positions.RIGHT;
-  const otherAxisSpace = extraSpaceTopY + extraSpaceBottomY;
   const yTickValues = getYTicks({
-    initPos: safeCanvasHeight - extraSpaceBottomY,
     maxSpaceAvailable: safeCanvasHeight,
-    otherAxisSpace,
-    securitySpace: securityYSpace,
     tickValues: yData,
+    xAxisTopSpacing,
+    xAxisBottomSpacing,
+    yAxisTopSpacing,
+    yAxisBottomSpacing,
   });
 
-  // Validate Y-axis tick values
-  if (yTickValues) {
-    const hasInsufficientTicks = yTickValues.length < AXIS_VALIDATION.MIN_TICK_COUNT;
-    const hasIdenticalValues =
-      yTickValues.length >= AXIS_VALIDATION.MIN_TICK_COUNT &&
-      new Set(yTickValues.map(tick => tick.value)).size === AXIS_VALIDATION.UNIQUE_VALUE_THRESHOLD;
-
-    if (hasInsufficientTicks) {
-      const yAxisError = {
-        error: buildError(BuildError.LINE_CHART_Y_AXIS_INSUFFICIENT_TICKS),
-      };
-      addError?.('LINE_CHART_Y_AXIS_ERROR', yAxisError);
-      if (!error) {
-        error = yAxisError;
-      }
-    }
-
-    if (hasIdenticalValues) {
-      const yAxisError = {
-        error: buildError(BuildError.LINE_CHART_Y_AXIS_IDENTICAL_VALUES),
-      };
-      addError?.('LINE_CHART_Y_AXIS_ERROR', yAxisError);
-      if (!error) {
-        error = yAxisError;
-      }
-    }
+  const { error: yTickError } = validateYTickValues({ yTickValues, addError });
+  if (!error && yTickError) {
+    error = yTickError;
   }
+
+  const crossXAxis =
+    lineChartXPosition !== Positions.TOP && lineChartXPosition !== Positions.BOTTOM;
+
+  const crossYAxis =
+    lineChartYPosition !== Positions.LEFT && lineChartYPosition !== Positions.RIGHT;
 
   /**
    * Calculate the custom breakAxis for the X and Y Axis.
@@ -240,12 +173,16 @@ export const buildLineContextValue = ({
     canvasHeight: safeCanvasHeight,
     canvasWidth: safeCanvasWidth,
     customBreakAxis: Number(customBreakXAxis),
-    extraSpaceBottomY,
-    extraSpaceLeftX,
-    extraSpaceRightX,
-    extraSpaceTopY,
-    position: lineChartXPosition,
-    securityYSpace,
+    lineChartXPosition,
+    lineChartYPosition,
+    xAxisLeftSpacing,
+    xAxisTopSpacing,
+    xAxisRightSpacing,
+    xAxisBottomSpacing,
+    yAxisLeftSpacing,
+    yAxisTopSpacing,
+    yAxisRightSpacing,
+    yAxisBottomSpacing,
   });
   /**
    * Calculate the Y coordinates for the line chart.
@@ -254,45 +191,40 @@ export const buildLineContextValue = ({
     canvasHeight: safeCanvasHeight,
     canvasWidth: safeCanvasWidth,
     customBreakAxis: Number(customBreakYAxis),
-    extraSpaceBottomY,
-    extraSpaceLeftX,
-    extraSpaceRightX,
-    extraSpaceTopY,
-    position: lineChartYPosition as (typeof Positions)[keyof typeof Positions],
-    securityYSpace,
+    lineChartXPosition,
+    lineChartYPosition,
+    xAxisLeftSpacing,
+    xAxisTopSpacing,
+    xAxisRightSpacing,
+    xAxisBottomSpacing,
+    yAxisLeftSpacing,
+    yAxisTopSpacing,
+    yAxisRightSpacing,
+    yAxisBottomSpacing,
   });
 
-  // Validate axis coordinates for zero-length axes
-  if (xCoordinates.x1 === xCoordinates.x2) {
-    const xAxisError = {
-      error: buildError(BuildError.LINE_CHART_X_AXIS_ZERO_LENGTH),
-    };
-    addError?.('LINE_CHART_X_AXIS_ERROR', xAxisError);
-    if (!error) {
-      error = xAxisError;
-    }
+  const { error: xCoordinatesError } = validateXCoordinates({ xCoordinates, addError });
+  if (!error && xCoordinatesError) {
+    error = xCoordinatesError;
   }
 
-  if (yCoordinates.y1 === yCoordinates.y2) {
-    const yAxisError = {
-      error: buildError(BuildError.LINE_CHART_Y_AXIS_ZERO_LENGTH),
-    };
-    addError?.('LINE_CHART_Y_AXIS_ERROR', yAxisError);
-    if (!error) {
-      error = yAxisError;
-    }
+  const { error: yCoordinatesError } = validateYCoordinates({ yCoordinates, addError });
+  if (!error && yCoordinatesError) {
+    error = yCoordinatesError;
   }
 
   const baseContext = {
     addError,
     crossXAxis,
     crossYAxis,
-    extraSpaceBottomY,
-    extraSpaceLeftX,
-    extraSpaceRightX,
-    extraSpaceTopY,
-    securityXSpace,
-    securityYSpace,
+    xAxisLeftSpacing,
+    xAxisTopSpacing,
+    xAxisRightSpacing,
+    xAxisBottomSpacing,
+    yAxisLeftSpacing,
+    yAxisTopSpacing,
+    yAxisRightSpacing,
+    yAxisBottomSpacing,
     xAxisCoordinates: {
       coordinates: xCoordinates,
       tickValues:

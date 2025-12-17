@@ -30,9 +30,6 @@ export const LineChartXAxis: FC<LineChartXAxisProps> = ({
     tickText?.top ?? 0
   );
 
-  const y1 = context.extraSpaceTopY;
-  const y2 = Number(context.canvasHeight) - context.extraSpaceBottomY;
-
   const tickValues = tickText
     ? TickDataUtils.formatTicksValues(contextTickValues, valueFormatter)
     : undefined;
@@ -56,14 +53,10 @@ export const LineChartXAxis: FC<LineChartXAxisProps> = ({
       canvasWidth={Number(context.canvasWidth)}
       cursor={xCursor}
       dataTestId={`${context.dataTestId}xAxis`}
-      extraSpace={{
-        left: context.extraSpaceLeftX,
-        right: context.extraSpaceRightX,
-      }}
       tickLine={{
         ...tickLine,
-        y1,
-        y2,
+        y1: context.yAxisCoordinates.coordinates.y1,
+        y2: context.yAxisCoordinates.coordinates.y2,
       }}
       tickText={{
         ...tickText,

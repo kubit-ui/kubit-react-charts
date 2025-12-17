@@ -200,7 +200,7 @@ export const YAxisCustomization: Story = {
         ))}
 
         <BarChart.XAxis
-          ariaLabel="XAxis"
+          ariaLabel="X Axis"
           position={Positions.BOTTOM}
           showTickLines={false}
           stroke="transparent"

@@ -16,14 +16,9 @@ import type { ChartTextProps } from './chartText.types';
  * @param {React.ReactNode} props.children - The text content to be rendered within the `<text>` element.
  * @returns {React.ReactElement} A React element representing the SVG text.
  */
-export const ChartText: FC<ChartTextProps> = ({
-  children,
-  className = 'circle',
-  tabIndex = -1,
-  ...props
-}) => {
+export const ChartText: FC<ChartTextProps> = ({ children, className = 'circle', ...props }) => {
   return (
-    <text className={className} tabIndex={tabIndex} {...props}>
+    <text className={className} {...props}>
       {children}
     </text>
   );

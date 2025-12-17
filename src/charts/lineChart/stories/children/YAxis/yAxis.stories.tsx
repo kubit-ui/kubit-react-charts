@@ -209,3 +209,93 @@ export const YAxisCustomization: Story = {
     );
   },
 };
+
+export const YAxisTextUseAsOrigin: Story = {
+  args: {
+    opacity: 1,
+    // === POSITIONING & LAYOUT ===
+    position: 'LEFT',
+    // === TICK CONFIGURATION ===
+    showTickLines: true,
+    // === AXIS LINE STYLING ===
+    stroke: '#666666',
+    strokeDasharray: '5,3', // e.g., "5,5" for dashed line
+    strokeOpacity: 1,
+    strokeWidth: 0.5,
+    tickLine: {
+      opacity: 1,
+      stroke: '#999999',
+      strokeDasharray: '1,1',
+      strokeOpacity: 1,
+      strokeWidth: 0.25,
+    },
+    tickLineHover: {
+      stroke: '#333333',
+      strokeWidth: 0.25,
+    },
+    // === TICK TEXT STYLING ===
+    tickText: {
+      // Color and appearance
+      fill: '#333333',
+      // Font properties
+      fontSize: 1.5,
+      left: 0.5, // YAxis specific: distance from right side when position=LEFT
+      // React/DOM properties
+      // Text positioning and alignment
+      textAnchor: 'end',
+      useAxisAsOrigin: true, // ← Use axis line as origin for left/right spacing
+      // Advanced text properties
+    },
+    // === DATA CONFIGURATION ===
+    // NOTE: tickValues is NOT IMPLEMENTED for YAxis - component uses auto-generated values
+    valueFormatter: 'currency', // Default to "Currency ($)" formatter - user can change via dropdown
+  },
+
+  render: (args: YAxisStoryArgs<LineChartYAxisProps>) => {
+    const actualArgs = {
+      ...args,
+      valueFormatter: getValueFormatter(args.valueFormatter as string),
+    };
+
+    return (
+      <>
+        <Note
+          collapsible={true}
+          defaultCollapsed={false}
+          heading="🎯 useAxisAsOrigin: Axis-Relative Text Positioning"
+          text={[
+            <>
+              This story demonstrates the <code>useAxisAsOrigin</code> property, which changes how{' '}
+              <code>left</code> and <code>right</code> spacing values are calculated for tick text.
+            </>,
+            <></>,
+            <>
+              <strong>When useAxisAsOrigin is true:</strong>
+            </>,
+            <>
+              • The Y-axis line becomes the <strong>origin point</strong> for positioning
+            </>,
+            <>
+              • <code>textAnchor</code> positioning is calculated relative to the Y-axis line
+            </>,
+            <>
+              • <code>left</code> moves text toward the left (negative X direction)
+            </>,
+            <>
+              • <code>right</code> moves text toward the right (positive X direction)
+            </>,
+            <>
+              • Spacing calculations automatically adjust based on text position relative to the
+              axis
+            </>,
+          ]}
+          variant="success"
+        />
+        <LineChart data={SUBCOMPONENT_DEMO_DATA} xKey="x">
+          <LineChart.YAxis {...actualArgs} />
+          <LineChart.Path dataKey="y" stroke="#0078D4" strokeWidth={1} />
+        </LineChart>
+      </>
+    );
+  },
+};

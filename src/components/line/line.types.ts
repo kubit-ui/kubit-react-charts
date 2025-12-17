@@ -1,3 +1,5 @@
+import type { HTMLAttributes } from 'react';
+
 /**
  * Props for the `Line` component, defining the visual appearance and behavior of a line element.
  *
@@ -38,5 +40,6 @@ export interface LineProps {
   className?: string;
   tabIndex?: number;
   ariaLabel?: string;
+  role?: HTMLAttributes<SVGElement>['role'];
   dataTestId?: string;
 }
