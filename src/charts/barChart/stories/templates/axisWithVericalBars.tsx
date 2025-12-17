@@ -64,7 +64,7 @@ export const AXIS_WITH_VERTICAL_BARS = [
   ...BAR_CHART_PATHS,
   <BarChart.XAxis
     key="4"
-    ariaLabel="XAxis"
+    ariaLabel="X Axis"
     position={Positions.BOTTOM}
     showTickLines={true}
     stroke="black"
@@ -93,7 +93,7 @@ export const AXIS_WITH_VERTICAL_BARS = [
   />,
   <BarChart.YAxis
     key="5"
-    ariaLabel="ariaLabel Yaxis"
+    ariaLabel="Y Axis"
     position={Positions.LEFT}
     showTickLines={true}
     stroke="black"

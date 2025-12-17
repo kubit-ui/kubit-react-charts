@@ -89,11 +89,11 @@ export const LineChartPath: FC<LineChartPathProps> = ({
   const pressedRef = useRef<number | null>(null);
   // the projection line logic
   const { autoClick, lineIndicator, ...nodeIndicatorConfig } = indicatorConfig || {};
-  
+
   // Calculate line indicator boundaries using pre-calculated axis coordinates
   // Y-axis: spans from top to bottom of chart area
   const { y1, y2 } = yAxisCoordinates.coordinates;
-  
+
   // X-axis: constrain to path area to prevent overflow into axis labels
   // The indicator should only render within the data visualization area
   const { x1: pathAreaMinX, x2: pathAreaMaxX } = xAxisCoordinates.coordinates;
@@ -112,13 +112,13 @@ export const LineChartPath: FC<LineChartPathProps> = ({
     curved,
     extendToBottom: false,
     points,
-    svgHeight: Number(context.canvasHeight) - context.extraSpaceBottomY,
+    svgHeight: yAxisCoordinates.coordinates.y2,
   });
   const dataFill = getPathData({
     curved,
     extendToBottom: !!props.fill || !!props.gradient,
     points,
-    svgHeight: Number(context.canvasHeight) - context.extraSpaceBottomY,
+    svgHeight: yAxisCoordinates.coordinates.y2,
   });
   // the ref to the path and handler the nodes focus
   useEffect(() => {
@@ -194,7 +194,7 @@ export const LineChartPath: FC<LineChartPathProps> = ({
           dataKey={props.dataKey as string}
           lineProjection={lineProjection}
           points={points}
-          svgHeight={Number(context.canvasHeight) - context.extraSpaceBottomY}
+          svgHeight={yAxisCoordinates.coordinates.y2}
         />
       )}
       {showIndicator && (

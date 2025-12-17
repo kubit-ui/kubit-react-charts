@@ -1,4 +1,3 @@
- 
 import { NodeType } from '@/components/node/node.types';
 import { Positions } from '@/types/position.enum';
 
@@ -11,9 +10,8 @@ export const BASIC_NODES_TEMPLATE = [
     dataKey="cats"
     nodeConfig={{
       // Example custom aria attributes
-      'aria-describedby': 'cats-description',
       'aria-label': 'Data point {{index}}: {{dataKey}} has value {{yValue}} at {{xValue}}',
-      'aria-level': 1,
+      'role': 'img',
       // Example custom data attributes
       'data-chart-type': 'line',
       'data-series': 'cats',
@@ -47,25 +45,9 @@ export const BASIC_NODES_TEMPLATE = [
   />,
   <LineChart.XAxis
     key="2"
-    aria-label="XAxis"
+    aria-label="X Axis"
     position={Positions.BOTTOM}
-    showTickLines={true}
-    stroke="black"
-    strokeWidth="0.1"
-  />,
-  <LineChart.YAxis
-    key="1"
-    aria-label="ariaLabel Yaxis"
-    extraSpace={{ right: 2.5 }}
-    position={Positions.LEFT}
-    showTickLines={true}
-    stroke="black"
-    strokeWidth="0.1"
-  />,
-  <LineChart.XAxis
-    key="3"
-    aria-label="XAxis"
-    position={Positions.BOTTOM}
+    role="img"
     showTickLines={true}
     stroke="black"
     strokeWidth="0.1"
@@ -76,9 +58,10 @@ export const BASIC_NODES_TEMPLATE = [
     }}
   />,
   <LineChart.YAxis
-    key="4"
-    aria-label="ariaLabel Yaxis"
+    key="3"
+    aria-label="Y Axis"
     position={Positions.LEFT}
+    role="img"
     showTickLines={true}
     stroke="black"
     strokeWidth="0.1"

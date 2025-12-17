@@ -41,7 +41,7 @@ describe('pickCustomAttributes', () => {
     expect(result).toEqual({ 'aria-label': 'label', 'data-test': 'value' });
   });
 
-  it('should exclude non-aria/data attributes', () => {
+  it('should exclude non-aria/data/role attributes', () => {
     const attributes = {
       'aria-label': 'label',
       'data-test': 'value',
@@ -49,13 +49,12 @@ describe('pickCustomAttributes', () => {
       'role': 'button',
     };
     const result = pickCustomAttributes(attributes);
-    expect(result).toEqual({ 'aria-label': 'label', 'data-test': 'value' });
+    expect(result).toEqual({ 'aria-label': 'label', 'data-test': 'value', 'role': 'button' });
   });
 
   it('should convert non-string values to strings', () => {
     const attributes = {
       'aria-expanded': true,
-      'aria-level': 1,
       'className': 'ignored', // Should be excluded
       'data-active': false,
       'data-count': 42,
@@ -63,7 +62,6 @@ describe('pickCustomAttributes', () => {
     const result = pickCustomAttributes(attributes);
     expect(result).toEqual({
       'aria-expanded': 'true',
-      'aria-level': '1',
       'data-active': 'false',
       'data-count': '42',
     });

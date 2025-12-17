@@ -1,6 +1,8 @@
 import type { TickData } from '@/components/tick/tick.types';
 
-export const CONTEXT = {
+import type { LineChartContextType } from '../../lineChart.type';
+
+export const CONTEXT: LineChartContextType = {
   addError: undefined,
   canvasExtraSpace: 0,
   canvasHeight: 500,
@@ -13,12 +15,14 @@ export const CONTEXT = {
     { testKey: 30, xKey: 3 },
   ],
   dataTestId: 'test',
-  extraSpaceBottomY: 0,
-  extraSpaceLeftX: 0,
-  extraSpaceRightX: 0,
-  extraSpaceTopY: 0,
-  securityXSpace: 0,
-  securityYSpace: 0,
+  xAxisLeftSpacing: 0,
+  xAxisTopSpacing: 0,
+  xAxisRightSpacing: 0,
+  xAxisBottomSpacing: 0,
+  yAxisLeftSpacing: 0,
+  yAxisTopSpacing: 0,
+  yAxisRightSpacing: 0,
+  yAxisBottomSpacing: 0,
   xAxisCoordinates: {
     coordinates: { x1: 0, x2: 100, y1: 0, y2: 0 },
     tickValues: [

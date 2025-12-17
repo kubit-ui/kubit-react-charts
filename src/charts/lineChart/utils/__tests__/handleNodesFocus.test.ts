@@ -35,26 +35,20 @@ describe('handleNodesFocus', () => {
   it('should add the event listeners when the mount function is called', () => {
     const { mount } = handleNodesFocus({ data, getNodeFocusInfo, nodes, ref });
     const addEventListenerSpy = vi.spyOn(ref, 'addEventListener');
-    const addWindowEventListenerSpy = vi.spyOn(window, 'addEventListener');
 
     mount();
 
-    expect(addEventListenerSpy).toHaveBeenCalledWith('focusin', expect.any(Function));
-    expect(addEventListenerSpy).toHaveBeenCalledWith('focusout', expect.any(Function));
-    expect(addWindowEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+    expect(addEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
   });
 
   it('should remove all event listener when unmount function is called', () => {
     const { mount, unmount } = handleNodesFocus({ data, getNodeFocusInfo, nodes, ref });
     const removeEventListenerSpy = vi.spyOn(ref, 'removeEventListener');
-    const removeWindowEventListenerSpy = vi.spyOn(window, 'removeEventListener');
 
     mount();
     unmount();
 
-    expect(removeEventListenerSpy).toHaveBeenCalledWith('focusin', expect.any(Function));
-    expect(removeEventListenerSpy).toHaveBeenCalledWith('focusout', expect.any(Function));
-    expect(removeWindowEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
   });
 
   it('should focus the next node when ArrowRight is pressed', () => {
@@ -62,8 +56,8 @@ describe('handleNodesFocus', () => {
     mount();
 
     ref.focus();
-    const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
-    window.dispatchEvent(event);
+    const event = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true });
+    ref.dispatchEvent(event);
 
     expect(document.activeElement).toBe(nodes[0]);
     expect(getNodeFocusInfo).toHaveBeenCalledWith(data[0]);
@@ -74,8 +68,8 @@ describe('handleNodesFocus', () => {
     mount();
 
     ref.focus();
-    const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
-    window.dispatchEvent(event);
+    const event = new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true });
+    ref.dispatchEvent(event);
 
     expect(document.activeElement).toBe(nodes[2]);
     expect(getNodeFocusInfo).toHaveBeenCalledWith(data[2]);
@@ -86,8 +80,8 @@ describe('handleNodesFocus', () => {
     mount();
 
     nodes[2].focus();
-    const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
-    window.dispatchEvent(event);
+    const event = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true });
+    ref.dispatchEvent(event);
 
     expect(document.activeElement).toBe(nodes[0]);
     expect(getNodeFocusInfo).toHaveBeenCalledWith(data[0]);
@@ -98,23 +92,10 @@ describe('handleNodesFocus', () => {
     mount();
 
     nodes[0].focus();
-    const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
-    window.dispatchEvent(event);
+    const event = new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true });
+    ref.dispatchEvent(event);
 
     expect(document.activeElement).toBe(nodes[2]);
     expect(getNodeFocusInfo).toHaveBeenCalledWith(data[2]);
-  });
-
-  it('should updated correctly the refFocused when focusin and focusout are triggered', () => {
-    const { mount } = handleNodesFocus({ data, getNodeFocusInfo, nodes, ref });
-    mount();
-
-    const focusinEvent = new FocusEvent('focusin');
-    ref.dispatchEvent(focusinEvent);
-
-    const focusoutEvent = new FocusEvent('focusout');
-    ref.dispatchEvent(focusoutEvent);
-
-    expect(getNodeFocusInfo).not.toHaveBeenCalled();
   });
 });

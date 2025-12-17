@@ -142,7 +142,6 @@ const NodeComponent: ForwardRefRenderFunction<SVGSVGElement, NodeProps> = (
           dataTestId={`${dataTestId}-halo`}
           position={position}
           size={size + size / 2}
-          tabIndex={-1}
         />
       )}
       <InnerNode

@@ -89,10 +89,6 @@ export const LineChartStructure: FC<LineChartProps> = ({
   const arrayChildren = (Children.toArray(children) || []) as JSX.Element[];
   const chidrenWithDefaultAxis = defaultAxis.concat(arrayChildren);
 
-  const maxValue = Math.max(parsedCanvas.width, parsedCanvas.height, parsedCanvasExtraSpace ?? 0);
-  const ajustedX = isNaN(parsedCanvas.width / maxValue) ? 0 : parsedCanvas.width / maxValue;
-  const ajustedY = isNaN(parsedCanvas.height / maxValue) ? 0 : parsedCanvas.height / maxValue;
-
   // watch the Y childs keys
   getChildrenAttr({
     attrName: 'dataKey',
@@ -112,8 +108,6 @@ export const LineChartStructure: FC<LineChartProps> = ({
       addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => {
         errorAccumulator.addError(errorType, error);
       },
-      ajustedX,
-      ajustedY,
       canvasHeight: parsedCanvas.height,
       canvasWidth: parsedCanvas.width,
       children: chidrenWithDefaultAxis,
@@ -154,12 +148,18 @@ export const LineChartStructure: FC<LineChartProps> = ({
 
   useEffect(() => {
     getPathArea?.({
-      x1: contextValue.extraSpaceLeftX,
-      x2: parsedCanvas.width - contextValue.extraSpaceRightX,
-      y1: contextValue.extraSpaceTopY,
-      y2: parsedCanvas.height - contextValue.extraSpaceBottomY,
+      x1: contextValue.xAxisCoordinates.coordinates.x1,
+      y1: contextValue.yAxisCoordinates.coordinates.y1,
+      x2: contextValue.xAxisCoordinates.coordinates.x2,
+      y2: contextValue.yAxisCoordinates.coordinates.y2,
     });
-  }, [parsedCanvas.width, parsedCanvas.height]);
+  }, [
+    contextValue.xAxisCoordinates.coordinates.x1,
+    contextValue.yAxisCoordinates.coordinates.y1,
+    contextValue.xAxisCoordinates.coordinates.x2,
+    contextValue.yAxisCoordinates.coordinates.y2,
+    getPathArea,
+  ]);
 
   return (
     <SvgContainer

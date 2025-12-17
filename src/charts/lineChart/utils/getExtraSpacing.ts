@@ -9,26 +9,37 @@ import { LineChartYAxis } from '../fragments/lineChartYAxis';
 import type { ChildrenType, IDataPoint, LineChartExtraSpacings } from '../lineChart.type';
 import { getDataValues } from './getDataValues';
 import { getYKeyRoundMaxValue } from './getRoundedMaxValue';
+import {
+  getXAxisLeftTextSpacing,
+  getXAxisRightTextSpacing,
+  getYAxisLeftTextSpacing,
+  getYAxisRightTextSpacing,
+} from './tickTextPosition';
+
+const getBreakAxis = ({ tickValues, tickText }: { tickValues?: any; tickText?: any }) => {
+  if (tickValues?.numeric) {
+    return tickValues.numeric.breakAxis ?? 0;
+  }
+  return tickText?.custom?.breakAxis ?? 0;
+};
 
 const handleLineChartXAxis = (
   child: ReactElement,
   data: IDataPoint[],
   xKey: string,
-  ajustedX: number,
   viewBox: string,
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  const { position, tickText, tickValues, valueFormatter } = child.props;
+  const { position = Positions.BOTTOM, tickText, tickValues, valueFormatter } = child.props;
   const fontSize = tickText?.fontSize ?? 0;
-  const spaceFontSize = fontSize * ajustedX;
 
   const xData = tickValues ? (getDataValues(tickValues) as string[]) : data.map(d => d[xKey]);
 
   // Apply the valueFormatter if provided to get the actual rendered text width
   const formattedXData: string[] = valueFormatter ? xData.map(valueFormatter) : xData;
 
-  const securityXSpace = textBound({
+  const textWidth = textBound({
     bound: 'width',
     data: formattedXData,
     fontSize,
@@ -36,27 +47,32 @@ const handleLineChartXAxis = (
     svgWidth: `${canvasWidth}`,
     viewBox,
   });
+  const textHeight = textBound({
+    bound: 'height',
+    data: formattedXData,
+    fontSize,
+    svgHeight: `${canvasHeight}`,
+    svgWidth: `${canvasWidth}`,
+    viewBox,
+  });
 
-  const isBottomPosition = position === Positions.BOTTOM;
-  const isTopPosition = position === Positions.TOP;
+  const xAxisBottomSpacing = position === Positions.BOTTOM ? textHeight + (tickText?.top ?? 0) : 0;
+  const xAxisTopSpacing = position === Positions.TOP ? textHeight + (tickText?.bottom ?? 0) : 0;
 
-  const extraSpaceBottomY = isBottomPosition ? spaceFontSize + (tickText?.top ?? 0) : 0;
-  const extraSpaceTopY = isTopPosition ? spaceFontSize + (tickText?.bottom ?? 0) : 0;
-  const lineChartXPosition = (() => position || Positions.BOTTOM)();
-
-  const getBreakAxis = () => {
-    if (tickValues?.numeric) {
-      return tickValues.numeric.breakAxis ?? 0;
-    }
-    return tickText?.custom?.breakAxis ?? 0;
-  };
-  const xBreakAxis = getBreakAxis();
+  const xBreakAxis = getBreakAxis({ tickValues, tickText });
 
   return {
-    extraSpaceBottomY,
-    extraSpaceTopY,
-    lineChartXPosition,
-    securityXSpace,
+    xAxisLeftSpacing: getXAxisLeftTextSpacing({
+      textWidth,
+      tickText,
+    }),
+    xAxisTopSpacing,
+    xAxisRightSpacing: getXAxisRightTextSpacing({
+      textWidth,
+      tickText,
+    }),
+    xAxisBottomSpacing,
+    lineChartXPosition: position,
     xBreakAxis,
     xData,
   };
@@ -66,14 +82,12 @@ const handleLineChartYAxis = (
   child: ReactElement,
   data: IDataPoint[],
   xKey: string,
-  ajustedY: number,
   viewBox: string,
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  const { position, tickText, tickValues, valueFormatter } = child.props;
-  const fontSize = tickText?.fontSize ?? '0';
-  const spaceFontSize = fontSize * ajustedY;
+  const { position = Positions.LEFT, tickText, tickValues, valueFormatter } = child.props;
+  const fontSize = tickText?.fontSize ?? 0;
 
   const dataValues =
     tickValues ||
@@ -92,30 +106,31 @@ const handleLineChartYAxis = (
     svgWidth: `${canvasWidth}`,
     viewBox,
   });
-  const securityYSpace = spaceFontSize;
-
-  const isLeftPosition = position === Positions.LEFT;
-  const isRightPosition = position === Positions.RIGHT;
-
-  const extraSpaceLeftX = isLeftPosition ? yAxisText + (tickText?.right ?? 0) : 0;
-  const extraSpaceRightX = isRightPosition ? yAxisText + (tickText?.left ?? 0) : 0;
-  const lineChartYPosition = position || Positions.LEFT;
-
-  const getBreakAxis = () => {
-    if (tickValues?.numeric) {
-      return tickValues.numeric.breakAxis ?? 0;
-    }
-    return tickText?.custom?.breakAxis ?? 0;
-  };
-  const yBreakAxis = getBreakAxis();
+  const textHeight = textBound({
+    bound: 'height',
+    data: formattedYData,
+    fontSize,
+    svgHeight: `${canvasHeight}`,
+    svgWidth: `${canvasWidth}`,
+    viewBox,
+  });
 
   return {
-    extraSpaceLeftX,
-    extraSpaceRightX,
-    lineChartYPosition,
-    securityYSpace,
+    yAxisLeftSpacing: getYAxisLeftTextSpacing({
+      tickText,
+      textWidth: yAxisText,
+      yAxisPosition: position,
+    }),
+    yAxisTopSpacing: textHeight,
+    yAxisRightSpacing: getYAxisRightTextSpacing({
+      tickText,
+      textWidth: yAxisText,
+      yAxisPosition: position,
+    }),
+    yAxisBottomSpacing: 0,
+    lineChartYPosition: position,
     yAxisText,
-    yBreakAxis,
+    yBreakAxis: getBreakAxis({ tickValues, tickText }),
     yData,
   };
 };
@@ -124,8 +139,6 @@ interface GetExtraSpacing {
   children: ChildrenType;
   data: IDataPoint[];
   xKey: string;
-  ajustedX: number;
-  ajustedY: number;
   viewBox: string;
   canvasHeight: number;
   canvasWidth: number;
@@ -137,8 +150,6 @@ interface GetExtraSpacing {
  * @returns {LineChartExtraSpacings} - The calculated extra spacings for the line chart.
  */
 export const getExtraSpacing = ({
-  ajustedX,
-  ajustedY,
   canvasHeight,
   canvasWidth,
   children,
@@ -146,15 +157,17 @@ export const getExtraSpacing = ({
   viewBox,
   xKey,
 }: GetExtraSpacing): LineChartExtraSpacings => {
-  let result = {
-    extraSpaceBottomY: 0,
-    extraSpaceLeftX: 0,
-    extraSpaceRightX: 0,
-    extraSpaceTopY: 0,
+  let result: LineChartExtraSpacings = {
+    xAxisLeftSpacing: 0,
+    xAxisTopSpacing: 0,
+    xAxisRightSpacing: 0,
+    xAxisBottomSpacing: 0,
+    yAxisLeftSpacing: 0,
+    yAxisTopSpacing: 0,
+    yAxisRightSpacing: 0,
+    yAxisBottomSpacing: 0,
     lineChartXPosition: Positions.BOTTOM,
     lineChartYPosition: Positions.LEFT,
-    securityXSpace: 0,
-    securityYSpace: 0,
     xAxisText: 0,
     xBreakAxis: 0,
     xData: [] as string[],
@@ -168,12 +181,12 @@ export const getExtraSpacing = ({
       if (child.type === LineChartXAxis) {
         result = {
           ...result,
-          ...handleLineChartXAxis(child, data, xKey, ajustedX, viewBox, canvasHeight, canvasWidth),
+          ...handleLineChartXAxis(child, data, xKey, viewBox, canvasHeight, canvasWidth),
         };
       } else if (child.type === LineChartYAxis) {
         result = {
           ...result,
-          ...handleLineChartYAxis(child, data, xKey, ajustedY, viewBox, canvasHeight, canvasWidth),
+          ...handleLineChartYAxis(child, data, xKey, viewBox, canvasHeight, canvasWidth),
         };
       }
     }

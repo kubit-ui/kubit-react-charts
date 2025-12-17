@@ -3,12 +3,11 @@ import { type ReactElement, useContext } from 'react';
 import { YAxis } from '@/components/axisChart/yAxis/yAxis';
 import { TickDataUtils } from '@/components/tick/tick.types';
 import { Positions } from '@/types/position.enum';
-import { ajustedTextSpace } from '@/utils/ajustedTextSpace/ajustedTextSpace';
-import { getTickTextXCoordinate } from '@/utils/getTickTextCoordinate/getTickTextCoordinates';
 import { pickCustomAttributes } from '@/utils/pickCustomAttributes/pickCustomAttributes';
 
 import { LineChartContext } from '../context/lineChartContext';
 import type { LineChartYAxisProps } from '../lineChart.type';
+import { getYAxisTextXCoordinate } from '../utils/tickTextPosition';
 
 export const LineChartYAxis: React.FC<LineChartYAxisProps> = ({
   ariaLabel,
@@ -31,16 +30,12 @@ export const LineChartYAxis: React.FC<LineChartYAxisProps> = ({
   // 2. Use custom tick values instead of context values when provided
   // 3. Update buildLineContextValue to handle custom Y-axis tick values
 
-  const textAnchor = tickText?.textAnchor || 'middle';
-  const addSpace = position === Positions.RIGHT ? tickText?.right : tickText?.left;
-  const ajustedSpace = addSpace ?? 0;
-  const ajustedText = ajustedTextSpace(textAnchor, context.yAxisText, ajustedSpace);
-
-  const xTickText = getTickTextXCoordinate(
-    position as (typeof Positions)[keyof typeof Positions],
-    coordinates.x1,
-    ajustedText
-  );
+  const xTickText = getYAxisTextXCoordinate({
+    tickText,
+    yAxisPosition: position,
+    textWidth: context.yAxisText,
+    yAxisX1: coordinates.x1,
+  });
 
   const tickValues = tickText
     ? TickDataUtils.formatTicksValues(contextTickValues, valueFormatter)
@@ -67,8 +62,8 @@ export const LineChartYAxis: React.FC<LineChartYAxisProps> = ({
       dataTestId={`${context.dataTestId}yAxis`}
       tickLine={{
         ...tickLine,
-        x1: context.extraSpaceLeftX,
-        x2: Number(context.canvasWidth) - context.extraSpaceRightX,
+        x1: context.xAxisCoordinates.coordinates.x1,
+        x2: context.xAxisCoordinates.coordinates.x2,
       }}
       tickText={{ ...tickText, x: xTickText }}
       tickValues={tickValues}

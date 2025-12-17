@@ -25,6 +25,7 @@ export const LINE_CONFIGS = [
   {
     curved: true,
     dataKey: 'dogs',
+    ['aria-label']: 'Line chart for dogs data series',
     // fill: '#0074d9',
     fillOpacity: 0.1,
     stroke: '#0074d9',
@@ -33,6 +34,7 @@ export const LINE_CONFIGS = [
   },
   {
     dataKey: 'cats',
+    ['aria-label']: 'Line chart for cats data series',
     // fill: '#ff4136',
     fillOpacity: 0.1,
     stroke: '#ff4136',
@@ -41,6 +43,7 @@ export const LINE_CONFIGS = [
   },
   {
     dataKey: 'birds',
+    ['aria-label']: 'Line chart for birds data series',
     // fill: '#2ecc40',
     fillOpacity: 0.1,
     stroke: '#2ecc40',
@@ -71,6 +74,7 @@ export const LineChartWithZoomAreaTemplate: FC = () => {
         {LINE_CONFIGS.map(config => (
           <LineChart.Path
             key={config.dataKey}
+            aria-label={config['aria-label']}
             curved={config.curved}
             dataKey={config.dataKey}
             // nodeConfig={{
@@ -87,8 +91,9 @@ export const LineChartWithZoomAreaTemplate: FC = () => {
           />
         ))}
         <LineChart.XAxis
-          ariaLabel="Year"
+          aria-label="Year"
           position={Positions.BOTTOM}
+          role="img"
           showTickLines={true}
           stroke="#666"
           strokeWidth="0.1"
@@ -100,8 +105,9 @@ export const LineChartWithZoomAreaTemplate: FC = () => {
         />
 
         <LineChart.YAxis
-          ariaLabel="Cantidad"
+          aria-label="Quantity"
           position={Positions.LEFT}
+          role="img"
           showTickLines={true}
           stroke="#666"
           strokeWidth="0.1"

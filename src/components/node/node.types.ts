@@ -1,3 +1,5 @@
+import type { HTMLAttributes } from 'react';
+
 /**
  * Enum for node types.
  *
@@ -56,6 +58,7 @@ export interface NodeProps {
     xKey?: string;
     nodePosition?: { x: number; y: number };
   };
+  role?: HTMLAttributes<SVGElement>['role'];
   // TODO - Enrich events with data, stop using extra parameters for callbacks
   onClick?: (
     event: React.MouseEvent<SVGPathElement, MouseEvent>,

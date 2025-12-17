@@ -3,10 +3,10 @@ import { Positions } from '@/types/position.enum';
 import { LineChart } from '../../lineChart';
 
 export const FULL_CUSTOM_TEMPLATE_NEGATIVE = [
-  <LineChart.Separator key="7" areaSeparator={{ fill: 'rgba(0,0,0,0.1)' }} />,
+  <LineChart.Separator key="1" areaSeparator={{ fill: 'rgba(0,0,0,0.1)' }} />,
   <LineChart.Path
     key="2"
-    ariaLabel="XAxis"
+    aria-label="Line chart for cats data series"
     curved={false}
     dataKey="cats"
     stroke="green"
@@ -15,16 +15,24 @@ export const FULL_CUSTOM_TEMPLATE_NEGATIVE = [
   />,
   <LineChart.Path
     key="3"
-    ariaLabel="YAxis"
+    aria-label="Line chart for lions data series"
     curved={true}
     dataKey="lions"
     stroke="pink"
     strokeWidth="0.1"
     tabIndex={0}
   />,
-  <LineChart.Path key="1" dataKey="dogs" stroke="#0074d9" strokeWidth="0.1" tabIndex={0} />,
   <LineChart.Path
     key="4"
+    aria-label="Line chart for dogs data series"
+    dataKey="dogs"
+    stroke="#0074d9"
+    strokeWidth="0.1"
+    tabIndex={0}
+  />,
+  <LineChart.Path
+    key="5"
+    aria-label="Line chart for rabbits data series"
     curved={true}
     dataKey="rabbits"
     stroke="red"
@@ -32,9 +40,10 @@ export const FULL_CUSTOM_TEMPLATE_NEGATIVE = [
     tabIndex={0}
   />,
   <LineChart.XAxis
-    key="5"
-    ariaLabel="XAxis"
+    key="6"
+    aria-label="X Axis"
     position={Positions.CUSTOM}
+    role="img"
     showTickLines={true}
     stroke="black"
     strokeWidth="0.1"
@@ -46,9 +55,10 @@ export const FULL_CUSTOM_TEMPLATE_NEGATIVE = [
     tickValues={{ numeric: { breakAxis: 0, max: 10, min: -6, step: 2 } }}
   />,
   <LineChart.YAxis
-    key="6"
-    ariaLabel="YAxis"
+    key="7"
+    aria-label="Y Axis"
     position={Positions.CUSTOM}
+    role="img"
     showTickLines={true}
     stroke="black"
     strokeWidth="0.1"

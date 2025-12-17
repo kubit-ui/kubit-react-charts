@@ -3,10 +3,10 @@ import { Positions } from '@/types/position.enum';
 import { LineChart } from '../../lineChart';
 
 export const FULL_CUSTOM_TEMPLATE = [
-  <LineChart.Separator key="7" areaSeparator={{ fill: 'rgba(0,0,0,0.1)' }} />,
+  <LineChart.Separator key="1" areaSeparator={{ fill: 'rgba(0,0,0,0.1)' }} />,
   <LineChart.Path
-    key="3"
-    ariaLabel="XAxis"
+    key="2"
+    aria-label="Line chart for lions data series"
     curved={true}
     dataKey="lions"
     stroke="pink"
@@ -14,16 +14,25 @@ export const FULL_CUSTOM_TEMPLATE = [
     tabIndex={0}
   />,
   <LineChart.Path
-    key="2"
+    key="3"
+    aria-label="Line chart for cats data series"
     curved={false}
     dataKey="cats"
     stroke="green"
     strokeWidth="0.1"
     tabIndex={0}
   />,
-  <LineChart.Path key="1" dataKey="dogs" stroke="#0074d9" strokeWidth="0.1" tabIndex={0} />,
   <LineChart.Path
     key="4"
+    aria-label="Line chart for dogs data series"
+    dataKey="dogs"
+    stroke="#0074d9"
+    strokeWidth="0.1"
+    tabIndex={0}
+  />,
+  <LineChart.Path
+    key="5"
+    aria-label="Line chart for rabbits data series"
     curved={true}
     dataKey="rabbits"
     stroke="red"
@@ -31,9 +40,10 @@ export const FULL_CUSTOM_TEMPLATE = [
     tabIndex={0}
   />,
   <LineChart.XAxis
-    key="5"
-    ariaLabel="XAxis"
+    key="6"
+    aria-label="X Axis"
     position={Positions.CENTER}
+    role="img"
     showTickLines={true}
     stroke="black"
     strokeWidth="0.1"
@@ -48,9 +58,10 @@ export const FULL_CUSTOM_TEMPLATE = [
     }}
   />,
   <LineChart.YAxis
-    key="6"
-    ariaLabel="YAxis"
+    key="7"
+    aria-label="Y Axis"
     position={Positions.RIGHT}
+    role="img"
     showTickLines={true}
     stroke="black"
     strokeWidth="0.1"

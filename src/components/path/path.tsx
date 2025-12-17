@@ -139,7 +139,7 @@ const PathComponent = (
   };
 
   return (
-    <g ref={mainRef} tabIndex={-1}>
+    <g ref={mainRef}>
       {gradientSvgElement && gradientSvgElement}
       {mergedProps.shadowSvgConfig && (
         <ShadowSvg id={SHADOW_FILTER_ID} shadowSvgConfig={mergedProps.shadowSvgConfig} />
