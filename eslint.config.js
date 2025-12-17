@@ -96,7 +96,7 @@ module.exports = eslintFlatConfig({
         '@typescript-eslint/no-explicit-any': 'warn',
         'no-alert': 'off',
         'perfectionist/sort-objects': [
-          'error',
+          'off',
           {
             order: 'asc',
             type: 'natural',
