@@ -23,7 +23,8 @@ export const pathArgTypes = (): ArgTypes<PathProps> => {
 
     'aria-label': {
       control: { type: 'text' },
-      description: 'Accessibility label describing the pie segments content for screen readers.',
+      description:
+        'Accessibility label describing the pie segments content for screen readers. Supports template placeholders in aria-label for dynamic accessibility: {{dataKey}} (data series key), {{index}} (1-based point index), {{groupName}} (segment name), {{groupValue}} (segment value). Example: "{{dataKey}} - {{groupName}} with value {{groupValue}}"',
       table: {
         category: CATEGORY_CONTROL.ACCESIBILITY,
         type: { summary: 'string' },

@@ -23,10 +23,7 @@ export const PathCustomization: Story = {
     // === ACCESSIBILITY ===
     'aria-hidden': false,
 
-    'aria-label': 'Pie chart segments showing data distribution',
-
-    // DEPRECATED but included
-    'ariaLabel': 'Pie chart segments showing data distribution',
+    'aria-label': '{{dataKey}} - {{groupName}} with value {{groupValue}}',
 
     // === STYLING CLASSES ===
     'classNames': '',
@@ -78,7 +75,7 @@ export const PathCustomization: Story = {
 
     'strokeWidth': 1,
 
-    'tabIndex': 0,
+    'tabIndex': undefined,
 
     'title': 'Interactive pie chart segments',
 

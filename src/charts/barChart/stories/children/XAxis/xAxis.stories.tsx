@@ -174,10 +174,30 @@ export const XAxisCustomization: Story = {
 
     // Solid bar configurations with unique soft colors per year
     const barConfigs = [
-      { color: '#FFB366', coverage: 100, title: '2001' },
-      { color: '#66B3FF', coverage: 100, title: '2002' },
-      { color: '#66D9B3', coverage: 100, title: '2003' },
-      { color: '#B366FF', coverage: 100, title: '2004' },
+      {
+        color: '#FFB366',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#66B3FF',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#66D9B3',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#B366FF',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
     ];
 
     return (
@@ -204,7 +224,9 @@ export const XAxisCustomization: Story = {
         ))}
 
         <BarChart.YAxis
+          aria-label="Y Axis"
           position={Positions.LEFT}
+          role="img"
           stroke="transparent"
           strokeWidth={0.5}
           tickValues={{ numeric: { max: 80, min: 0, step: 20 } }}

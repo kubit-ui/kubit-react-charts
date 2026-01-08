@@ -59,6 +59,9 @@ export interface PathProps extends StyleProps, AriaAttributes, DataAttributes {
   dataValue?: string | number | IDataPoint[];
   title?: string;
   role?: string;
+  /**
+   * @deprecated Use 'aria-label' instead.
+   */
   ariaLabel?: string;
   ariaHidden?: boolean;
   tabIndex?: number;

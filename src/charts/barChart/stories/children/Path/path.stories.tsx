@@ -22,7 +22,14 @@ type Story = StoryObj<typeof meta>;
 
 const baseBarConfig = {
   barWidth: 15,
-  singleConfig: [{ color: '#0078D4', coverage: 100, title: 'Primary Bar' }],
+  singleConfig: [
+    {
+      color: '#0078D4',
+      coverage: 100,
+      ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+      role: 'img',
+    },
+  ],
 };
 
 export const PathCustomization: Story = {
@@ -98,14 +105,18 @@ export const PathCustomization: Story = {
           startRounded={args.startRounded}
         />
         <BarChart.XAxis
+          aria-label="X Axis"
           position={Positions.BOTTOM}
+          role="img"
           showTickLines={false}
           stroke="#666"
           strokeWidth={0.5}
           tickText={{ fontSize: 0 }}
         />
         <BarChart.YAxis
+          aria-label="Y Axis"
           position={Positions.LEFT}
+          role="img"
           showTickLines={false}
           stroke="#666"
           strokeWidth={0.5}
@@ -122,9 +133,27 @@ export const StackedBars: Story = {
       barWidth: 18,
       gap: 2,
       singleConfig: [
-        { color: '#0078D4', coverage: 50, title: 'Segment 1' },
-        { color: '#107C10', coverage: 30, title: 'Segment 2' },
-        { color: '#FFB900', coverage: 20, title: 'Segment 3' },
+        {
+          color: '#0078D4',
+          coverage: 50,
+          ['aria-label']:
+            '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+          role: 'img',
+        },
+        {
+          color: '#107C10',
+          coverage: 30,
+          ['aria-label']:
+            '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+          role: 'img',
+        },
+        {
+          color: '#FFB900',
+          coverage: 20,
+          ['aria-label']:
+            '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+          role: 'img',
+        },
       ],
     },
     dataIdx: 3,
@@ -198,14 +227,18 @@ export const StackedBars: Story = {
           startRounded={args.startRounded}
         />
         <BarChart.XAxis
+          aria-label="X Axis"
           position={Positions.BOTTOM}
+          role="img"
           showTickLines={false}
           stroke="#666"
           strokeWidth={1}
           tickText={{ fontSize: 0 }}
         />
         <BarChart.YAxis
+          aria-label="Y Axis"
           position={Positions.LEFT}
+          role="img"
           showTickLines={false}
           stroke="#666"
           strokeWidth={1}

@@ -169,10 +169,30 @@ export const YAxisCustomization: Story = {
     const chartData = simplifiedData;
 
     const barConfigs = [
-      { color: '#FFB366', coverage: 100, title: '2001' },
-      { color: '#66B3FF', coverage: 100, title: '2002' },
-      { color: '#66D9B3', coverage: 100, title: '2003' },
-      { color: '#B366FF', coverage: 100, title: '2004' },
+      {
+        color: '#FFB366',
+        coverage: 100,
+        ['aria-label']: '{{yKey}}:{{yData}} - {{xData}}',
+        role: 'img',
+      },
+      {
+        color: '#66B3FF',
+        coverage: 100,
+        ['aria-label']: '{{yKey}}:{{yData}} - {{xData}}',
+        role: 'img',
+      },
+      {
+        color: '#66D9B3',
+        coverage: 100,
+        ['aria-label']: '{{yKey}}:{{yData}} - {{xData}}',
+        role: 'img',
+      },
+      {
+        color: '#B366FF',
+        coverage: 100,
+        ['aria-label']: '{{yKey}}:{{yData}} - {{xData}}',
+        role: 'img',
+      },
     ];
 
     return (
@@ -200,8 +220,9 @@ export const YAxisCustomization: Story = {
         ))}
 
         <BarChart.XAxis
-          ariaLabel="X Axis"
+          aria-label="X Axis"
           position={Positions.BOTTOM}
+          role="img"
           showTickLines={false}
           stroke="transparent"
           strokeWidth={0.1}

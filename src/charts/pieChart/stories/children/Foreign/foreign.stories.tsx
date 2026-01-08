@@ -205,6 +205,7 @@ export const ForeignObjectCustomization: Story = {
         width="70%"
       >
         <PieChart.Path
+          aria-label="{{dataKey}} - {{groupName}} with value {{groupValue}}"
           dataKey="groups"
           fill="red"
           gap={5}

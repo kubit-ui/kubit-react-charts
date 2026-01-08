@@ -94,9 +94,14 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
     <Bar
       barConfig={barConfig}
       currentBars={context.barChildrenCount}
+      dataKey={dataKey}
       extraSpacing={context.gapBetweenBars}
       order={order}
       orientation={context.orientation}
+      xData={xData}
+      xKey={xKey}
+      yData={yData}
+      yKey={yKey}
       {...points}
       {...props}
     />

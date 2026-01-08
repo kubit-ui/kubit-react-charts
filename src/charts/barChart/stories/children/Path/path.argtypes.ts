@@ -9,7 +9,7 @@ export const pathArgTypes = (): ArgTypes<BarChartPathProps> => {
     barConfig: {
       control: { type: 'object' },
       description:
-        'Configuration object for bar appearance. Contains: barWidth (number - width of the bar), gap (optional number - spacing between segments in stacked bars), and singleConfig (array of BarChartColor objects with color, coverage percentage, and optional title). Example: { barWidth: 15, gap: 2, singleConfig: [{ color: "#107C10", coverage: 60, title: "Part 1" }, { color: "#FFB900", coverage: 40, title: "Part 2" }] }',
+        'Configuration object for bar appearance. Contains: barWidth (number - width of the bar), gap (optional number - spacing between segments in stacked bars), and singleConfig (array of BarChartColor objects with color, coverage percentage, optional title, and accessibility properties). Each segment in singleConfig can include: color (string), coverage (number), title (optional string), aria-label (optional string with template support), aria-describedby, aria-labelledby, data attributes, role (string), and tabIndex (number). Templates available for aria-label: {{dataKey}} (data series key), {{xKey}} (x-axis key), {{yKey}} (y-axis key), {{xData}} (x-axis value), {{yData}} (y-axis value), {{coverage}} (segment percentage), {{index}} (segment index). Example: { barWidth: 15, gap: 2, singleConfig: [{ color: "#107C10", coverage: 60, "aria-label": "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})", role: "img" }] }',
       table: {
         category: CATEGORY_CONTROL.CUSTOMIZATION,
         defaultValue: { summary: 'undefined' },

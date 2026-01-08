@@ -1,35 +1,90 @@
 import type { ReactElement } from 'react';
 
+import type { BarChartStyles } from '@/components/bar/bar.type';
 import { Positions } from '@/types/position.enum';
 
 import { BarChart } from '../../barChart';
 import { COMPARATIVE_DATA } from './data';
 
-const rabbitsBarConfig = {
+const rabbitsBarConfig: BarChartStyles = {
   barWidth: 3,
   gap: 1,
   singleConfig: [
-    { color: 'pink', coverage: 45 },
-    { color: 'red', coverage: 25 },
-    { color: 'blue', coverage: 30 },
+    {
+      color: 'pink',
+      coverage: 45,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'red',
+      coverage: 25,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'blue',
+      coverage: 30,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
   ],
 };
-const dogsBarConfig = {
+const dogsBarConfig: BarChartStyles = {
   barWidth: 3,
   gap: 1,
   singleConfig: [
-    { color: 'yellow', coverage: 20 },
-    { color: 'orange', coverage: 25 },
-    { color: 'green', coverage: 55 },
+    {
+      color: 'yellow',
+      coverage: 20,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'orange',
+      coverage: 25,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'green',
+      coverage: 55,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
   ],
 };
-const birdsBarConfig = {
+const birdsBarConfig: BarChartStyles = {
   barWidth: 3,
   gap: 1,
   singleConfig: [
-    { color: 'gray', coverage: 10 },
-    { color: 'grey', coverage: 30 },
-    { color: 'black', coverage: 60 },
+    {
+      color: 'gray',
+      coverage: 10,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'grey',
+      coverage: 30,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'black',
+      coverage: 60,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
   ],
 };
 
@@ -64,26 +119,18 @@ export const AXIS_WITH_VERTICAL_BARS = [
   ...BAR_CHART_PATHS,
   <BarChart.XAxis
     key="4"
-    ariaLabel="X Axis"
+    aria-label="X Axis"
     position={Positions.BOTTOM}
+    role="img"
     showTickLines={true}
     stroke="black"
     strokeWidth="0.1"
     tickLine={{
-      ariaLabel: undefined,
-      className: undefined,
-      dataTestId: undefined,
       opacity: 1,
       stroke: '#999999',
       strokeDasharray: '1,1',
-      strokeDashoffset: undefined,
-      strokeLinecap: undefined,
-      strokeLinejoin: undefined,
       strokeOpacity: 1,
       strokeWidth: 0.25,
-      style: undefined,
-      tabIndex: undefined,
-      transform: undefined,
     }}
     tickText={{
       fontSize: 1,
@@ -93,26 +140,19 @@ export const AXIS_WITH_VERTICAL_BARS = [
   />,
   <BarChart.YAxis
     key="5"
-    ariaLabel="Y Axis"
+    aria-label="Y Axis"
     position={Positions.LEFT}
+    role="img"
     showTickLines={true}
     stroke="black"
     strokeWidth="0.1"
     tickLine={{
-      ariaLabel: undefined,
-      className: undefined,
-      dataTestId: undefined,
       opacity: 1,
       stroke: '#999999',
       strokeDasharray: '1,1',
-      strokeDashoffset: undefined,
-      strokeLinecap: undefined,
-      strokeLinejoin: undefined,
+
       strokeOpacity: 1,
       strokeWidth: 0.25,
-      style: undefined,
-      tabIndex: undefined,
-      transform: undefined,
     }}
     tickText={{
       fontSize: 1,
