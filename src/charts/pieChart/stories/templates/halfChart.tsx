@@ -5,6 +5,7 @@ import { PieChart } from '../../pieChart';
 export const HALF_CHART_TEMPLATE = [
   <PieChart.Path
     key="1"
+    aria-label="{{dataKey}} - {{groupName}} with value {{groupValue}}"
     dataKey="groups"
     fill="red"
     gap={0}

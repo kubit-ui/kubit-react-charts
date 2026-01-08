@@ -3,6 +3,7 @@ import { PieChart } from '../../pieChart';
 export const MULTIPLE_TEMPLATE = [
   <PieChart.Path
     key="1"
+    aria-label="{{dataKey}} - {{groupName}} with value {{groupValue}}"
     dataKey="groups"
     fill="red"
     gap={10}
@@ -14,6 +15,7 @@ export const MULTIPLE_TEMPLATE = [
   />,
   <PieChart.Path
     key="3"
+    aria-label="{{dataKey}} - {{groupName}} with value {{groupValue}}"
     dataKey="animals"
     fill="red"
     gap={8}
@@ -25,6 +27,7 @@ export const MULTIPLE_TEMPLATE = [
   />,
   <PieChart.Path
     key="2"
+    aria-label="{{dataKey}} - {{groupName}} with value {{groupValue}}"
     dataKey="vehicles"
     fill="red"
     gap={2}

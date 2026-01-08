@@ -1,12 +1,20 @@
+import type { AriaAttributes, HTMLAttributes } from 'react';
+
 export const BarOrientation = {
   HORIZONTAL: 'HORIZONTAL',
   VERTICAL: 'VERTICAL',
 } as const;
 
-export interface BarChartColor {
+interface DataAttributes {
+  [key: `data-${string}`]: string | number | boolean | undefined;
+}
+
+export interface BarChartColor extends AriaAttributes, DataAttributes {
   color: string;
   coverage: number;
   title?: string;
+  role?: HTMLAttributes<SVGElement>['role'];
+  tabIndex?: HTMLAttributes<SVGElement>['tabIndex'];
 }
 
 export interface BarChartStyles {
@@ -28,6 +36,12 @@ export interface BarProps {
   y2: number;
   startRounded?: number;
   endRounded?: number;
+  // Allow to build a11y aria-labels with templates
+  dataKey?: string;
+  xKey?: string;
+  yKey?: string;
+  xData?: string | number;
+  yData?: string | number;
 }
 
 export interface BarChartSegmentProps extends Omit<BarProps, 'colorPalette'> {

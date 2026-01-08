@@ -9,27 +9,81 @@ const rabbitsBarConfig = {
   barWidth: 3,
   gap: 1,
   singleConfig: [
-    { color: 'pink', coverage: 45 },
-    { color: 'red', coverage: 25 },
-    { color: 'blue', coverage: 30 },
+    {
+      color: 'pink',
+      coverage: 45,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'red',
+      coverage: 25,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'blue',
+      coverage: 30,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
   ],
 };
 const dogsBarConfig = {
   barWidth: 3,
   gap: 1,
   singleConfig: [
-    { color: 'yellow', coverage: 20 },
-    { color: 'orange', coverage: 25 },
-    { color: 'green', coverage: 55 },
+    {
+      color: 'yellow',
+      coverage: 20,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'orange',
+      coverage: 25,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'green',
+      coverage: 55,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
   ],
 };
 const birdsBarConfig = {
   barWidth: 3,
   gap: 1,
   singleConfig: [
-    { color: 'gray', coverage: 10 },
-    { color: 'grey', coverage: 30 },
-    { color: 'black', coverage: 60 },
+    {
+      color: 'gray',
+      coverage: 10,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'grey',
+      coverage: 30,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
+    {
+      color: 'black',
+      coverage: 60,
+      ['aria-label']:
+        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
+      role: 'img',
+    },
   ],
 };
 
@@ -64,8 +118,9 @@ export const AXIS_VERTICAL_MIXED_BARS = [
   ...BAR_CHART_PATHS,
   <BarChart.XAxis
     key="4"
-    ariaLabel="X Axis"
+    aria-label="X Axis"
     position={Positions.CENTER}
+    role="img"
     showTickLines={false}
     stroke="black"
     strokeWidth="0.1"
@@ -77,8 +132,9 @@ export const AXIS_VERTICAL_MIXED_BARS = [
   />,
   <BarChart.YAxis
     key="5"
-    ariaLabel="Y Axis"
+    aria-label="Y Axis"
     position={Positions.RIGHT}
+    role="img"
     showTickLines={false}
     stroke="black"
     strokeWidth="0.1"

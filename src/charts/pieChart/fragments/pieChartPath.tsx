@@ -9,6 +9,7 @@ import {
 import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
 
 import { PieChartContext } from '../context/pieChartContext';
+import { buildAriaLabel } from '../utils/accessibility';
 import { PieChartSegment } from './pieChartSegment';
 
 /**
@@ -23,6 +24,8 @@ import { PieChartSegment } from './pieChartSegment';
  * @returns {ReactElement} The rendered PieChartPath component.
  */
 export const PieChartPath: FC<PathProps> = ({
+  ariaLabel: deprecatedAriaLabel,
+  ['aria-label']: ariaLabel,
   dataKey,
   fill,
   gap,
@@ -79,6 +82,13 @@ export const PieChartPath: FC<PathProps> = ({
           {...props}
           {...group}
           key={`${index.toString()}`}
+          ariaLabel={buildAriaLabel({
+            ariaLabel: ariaLabel || deprecatedAriaLabel,
+            dataKey: key,
+            index: index,
+            groupName: group.name,
+            groupValue: group.value,
+          })}
           canvasHeight={canvasHeight}
           canvasWidth={canvasWidth}
           color={group.color || fill} // Use group color if available, otherwise use fill prop

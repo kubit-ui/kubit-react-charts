@@ -111,11 +111,19 @@ export interface BarChartTickValuesAxisProps {
   custom?: BarChartTickCustom;
   numeric?: BarChartTickNumeric;
 }
-type OmitProps = 'x1' | 'x2' | 'y1' | 'y2' | 'tickValues' | 'cursor';
-export interface BarChartXAxisProps extends Omit<XAxisProps, OmitProps> {
+type OmitProps = 'x1' | 'x2' | 'y1' | 'y2' | 'tickValues' | 'cursor' | 'ariaLabel';
+export interface BarChartXAxisProps extends Omit<XAxisProps, OmitProps>, React.AriaAttributes {
+  /**
+   * @deprecated Use aria-label instead for better accessibility standards
+   */
+  ariaLabel?: string;
   tickValues?: BarChartTickValuesAxisProps;
 }
-export interface BarChartYAxisProps extends Omit<YAxisProps, OmitProps> {
+export interface BarChartYAxisProps extends Omit<YAxisProps, OmitProps>, React.AriaAttributes {
+  /**
+   * @deprecated Use aria-label instead for better accessibility standards
+   */
+  ariaLabel?: string;
   tickValues?: BarChartTickValuesAxisProps;
 }
 export interface BarChartSeparatorProps {

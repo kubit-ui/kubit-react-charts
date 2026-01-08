@@ -2,6 +2,7 @@ import type { FC, ReactElement } from 'react';
 
 import { Path } from '../path/path';
 import type { BarProps } from './bar.type';
+import { buildAriaLabel } from './utils/accessibility';
 import { buildD } from './utils/buildD';
 import { getSegments } from './utils/getSegments';
 
@@ -17,12 +18,18 @@ export const Bar: FC<BarProps> = ({
   x2,
   y1,
   y2,
+  // Allow to build a11y aria-labels with templates
+  dataKey,
+  xKey,
+  yKey,
+  xData,
+  yData,
 }): ReactElement => {
   const { barWidth, singleConfig } = barConfig;
   const segments = getSegments({ barConfig, orientation, x1, x2, y1, y2 });
   return (
     <g>
-      {singleConfig.map((single, index) => {
+      {singleConfig.map(({ color, 'aria-label': ariaLabel, ...singleProps }, index) => {
         const [segmentX1, segmentX2] = orientation === 'HORIZONTAL' ? segments[index] : [x1, x2];
         const [segmentY1, segmentY2] = orientation === 'VERTICAL' ? segments[index] : [y1, y2];
         const d = buildD({
@@ -40,16 +47,25 @@ export const Bar: FC<BarProps> = ({
         });
         return (
           <Path
-            key={`${single.title}-${index.toString()}`}
+            key={`${index.toString()}`}
+            aria-label={buildAriaLabel({
+              ariaLabel,
+              dataKey,
+              xKey,
+              yKey,
+              xData,
+              yData,
+              coverage: singleProps.coverage,
+              index,
+            })}
             d={d}
-            fill={single.color}
+            fill={color}
             hoverConfig={{
               stroke: 'transparent',
               strokeWidth: '0',
             }}
             stroke="transparent"
-            tabIndex={0}
-            title={single.title}
+            {...singleProps}
           />
         );
       })}

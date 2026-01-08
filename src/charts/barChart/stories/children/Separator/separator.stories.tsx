@@ -118,10 +118,30 @@ export const HorizontalSeparator: Story = {
     ];
 
     const barConfigs = [
-      { color: '#FFB366', coverage: 100, title: '2001' },
-      { color: '#66B3FF', coverage: 100, title: '2002' },
-      { color: '#66D9B3', coverage: 100, title: '2003' },
-      { color: '#B366FF', coverage: 100, title: '2004' },
+      {
+        color: '#FFB366',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#66B3FF',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#66D9B3',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#B366FF',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
     ];
 
     return (
@@ -149,7 +169,9 @@ export const HorizontalSeparator: Story = {
         <BarChart.Separator {...args} />
 
         <BarChart.XAxis
+          aria-label="X Axis"
           position={Positions.BOTTOM}
+          role="img"
           showTickLines={false}
           stroke="black"
           strokeWidth="0.1"
@@ -160,7 +182,9 @@ export const HorizontalSeparator: Story = {
           tickValues={{ numeric: { max: 2004, min: 2001, step: 1 } }}
         />
         <BarChart.YAxis
+          aria-label="Y Axis"
           position={Positions.LEFT}
+          role="img"
           showTickLines={false}
           stroke="black"
           strokeWidth="0.1"
@@ -198,10 +222,30 @@ export const VerticalSeparator: Story = {
     ];
 
     const barConfigs = [
-      { color: '#FF9999', coverage: 100, title: '2001' },
-      { color: '#99D6FF', coverage: 100, title: '2002' },
-      { color: '#99FFB3', coverage: 100, title: '2003' },
-      { color: '#E699FF', coverage: 100, title: '2004' },
+      {
+        color: '#FF9999',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#99D6FF',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#99FFB3',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#E699FF',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
     ];
 
     return (
@@ -229,7 +273,9 @@ export const VerticalSeparator: Story = {
         <BarChart.Separator {...args} />
 
         <BarChart.XAxis
+          aria-label="X Axis"
           position={Positions.BOTTOM}
+          role="img"
           showTickLines={false}
           stroke="black"
           strokeWidth="0.1"
@@ -240,7 +286,9 @@ export const VerticalSeparator: Story = {
           tickValues={{ numeric: { max: 2004, min: 2001, step: 1 } }}
         />
         <BarChart.YAxis
+          aria-label="Y Axis"
           position={Positions.LEFT}
+          role="img"
           showTickLines={false}
           stroke="black"
           strokeWidth="0.1"
@@ -282,10 +330,30 @@ export const CombinedSeparators: Story = {
     ];
 
     const barConfigs = [
-      { color: '#FFCC99', coverage: 100, title: '2001' },
-      { color: '#99CCFF', coverage: 100, title: '2002' },
-      { color: '#B3FFB3', coverage: 100, title: '2003' },
-      { color: '#D9B3FF', coverage: 100, title: '2004' },
+      {
+        color: '#FFCC99',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#99CCFF',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#B3FFB3',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
+      {
+        color: '#D9B3FF',
+        coverage: 100,
+        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
+        role: 'img',
+      },
     ];
 
     return (
@@ -313,7 +381,9 @@ export const CombinedSeparators: Story = {
         <BarChart.Separator {...args} />
 
         <BarChart.XAxis
+          aria-label="X Axis"
           position={Positions.BOTTOM}
+          role="img"
           showTickLines={false}
           stroke="black"
           strokeWidth="0.1"
@@ -324,7 +394,9 @@ export const CombinedSeparators: Story = {
           tickValues={{ numeric: { max: 2004, min: 2001, step: 1 } }}
         />
         <BarChart.YAxis
+          aria-label="Y Axis"
           position={Positions.LEFT}
+          role="img"
           showTickLines={false}
           stroke="black"
           strokeWidth="0.1"
