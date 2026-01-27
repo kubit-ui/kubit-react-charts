@@ -1,12 +1,12 @@
 import { type FC, type ReactElement, useMemo } from 'react';
 
 import { SvgContainer } from '@/components/svgContainer/svgContainer';
-import { buildViewBox } from '@/components/svgContainer/utils/buildViewBox/buildViewBox';
+import { useId } from '@/hooks/useId/useId';
+import { useResponsiveCanvas } from '@/hooks/useResponsiveCanvas/useResponsiveCanvas';
 import { DefaultCanvasConfig } from '@/types/canvas.type';
 import type { ChartError, ErrorType } from '@/types/errors.type';
 import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
 import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
-import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
 
 import { buildPieContextValue } from './context/buildPieContextValue';
 import { PieChartContext } from './context/pieChartContext';
@@ -50,7 +50,7 @@ export const PieChartStructure: FC<PieChartProps> = ({
   children,
   classNames,
   data,
-  dataTestId = 'pie-chart',
+  dataTestId: dataTestIdProp = 'pie-chart',
   halfChart,
   height = '100%',
   onErrors,
@@ -60,16 +60,18 @@ export const PieChartStructure: FC<PieChartProps> = ({
   width = '100%',
   ...props
 }): ReactElement => {
-  // Destructure the canvas configuration to obtain width, height, and extra space.
-  const { extraSpace: canvasExtraSpace, height: canvasHeight, width: canvasWidth } = canvasConfig;
+  const dataTestId = useId(dataTestIdProp);
+  
+  // Use the responsive canvas hook for dimension management
+  const { parsedCanvas, viewBox } = useResponsiveCanvas({
+    canvasConfig,
+    dataTestId,
+    height,
+    width,
+  });
 
-  const parsedCanvasWidth = parseStringToNumberPx(canvasWidth);
-  const parsedCanvasHeight = parseStringToNumberPx(canvasHeight);
-  const parsedCanvasExtraSpace = canvasExtraSpace
-    ? parseStringToNumberPx(canvasExtraSpace)
-    : undefined;
-  // Build the viewBox string based on canvas dimensions and extra space.
-  const viewBox = buildViewBox(parsedCanvasWidth, parsedCanvasHeight, parsedCanvasExtraSpace);
+  const parsedCanvasWidth = parsedCanvas.width;
+  const parsedCanvasHeight = parsedCanvas.height;
 
   const errorAccumulator = useMemo(() => createErrorAccumulator(onErrors), [onErrors]);
 
@@ -89,7 +91,7 @@ export const PieChartStructure: FC<PieChartProps> = ({
       children,
       halfChart,
     });
-  }, [canvasHeight, canvasWidth, halfChart, dataFingerprint, errorAccumulator]);
+  }, [parsedCanvasHeight, parsedCanvasWidth, halfChart, dataFingerprint, errorAccumulator]);
 
   return (
     <SvgContainer

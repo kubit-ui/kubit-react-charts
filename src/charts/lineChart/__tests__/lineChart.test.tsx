@@ -4,6 +4,16 @@ import { render } from '@/tests/render/render';
 
 import { LineChart } from '../lineChart';
 
+const ResizeObserverMock = vi.fn(() => ({
+  disconnect: vi.fn(),
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+}));
+
+beforeEach(() => {
+  vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+});
+
 declare global {
   interface SVGElement {
     getBBox: () => { x: number; y: number; width: number; height: number };

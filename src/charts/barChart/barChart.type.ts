@@ -77,6 +77,9 @@ export interface BarChartProps {
   height?: string | number;
   data: BarChartIDataPoint[];
   pKey: string;
+  /**
+   * @deprecated Use `width` and `height` props instead to define chart dimensions.
+   */
   canvasConfig?: CanvasConfig;
   dataTestId?: string;
   caption?: string;
