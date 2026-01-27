@@ -3,11 +3,19 @@ import { Positions } from '@/types/position.enum';
 
 import { LineChart } from '../../lineChart';
 
+// Adjusted focusConfig for LineChart's small viewBox (100x80)
+// Values are scaled down to compensate for viewBox-to-container scaling (~6x)
+const FOCUS_CONFIG = {
+  stroke: '#0078D4',
+  strokeWidth: 0.3,
+};
+
 export const BASIC_NODES_TEMPLATE = [
   <LineChart.Path
     key="1"
     aria-label="Line chart for cats data series"
     dataKey="cats"
+    focusConfig={FOCUS_CONFIG}
     nodeConfig={{
       // Example custom aria attributes
       'aria-label': 'Data point {{index}}: {{dataKey}} has value {{yValue}} at {{xValue}}',

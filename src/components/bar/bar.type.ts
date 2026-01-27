@@ -1,5 +1,7 @@
 import type { AriaAttributes, HTMLAttributes } from 'react';
 
+import type { StyleProps } from '@/components/path/path.types';
+
 export const BarOrientation = {
   HORIZONTAL: 'HORIZONTAL',
   VERTICAL: 'VERTICAL',
@@ -36,6 +38,14 @@ export interface BarProps {
   y2: number;
   startRounded?: number;
   endRounded?: number;
+  /**
+   * @deprecated In the next major version, this prop will use a more restrictive interface
+   * based on FocusConfig type. Other StyleProps fields are currently ignored.
+   */
+  focusConfig?: StyleProps;
+  tabIndex?: number;
+  onFocus?: (event: React.FocusEvent<SVGPathElement>) => void;
+  onBlur?: (event: React.FocusEvent<SVGPathElement>) => void;
   // Allow to build a11y aria-labels with templates
   dataKey?: string;
   xKey?: string;

@@ -337,7 +337,7 @@ export const Customization: Story = {
     focusConfig: {
       gap: 5,
       innerColor: '#FFFFFF',
-      innerStrokeWidth: 2,
+      innerStrokeWidth: 3,
       outlineColor: '#9B59B6',
       outlineStrokeWidth: 3,
     },

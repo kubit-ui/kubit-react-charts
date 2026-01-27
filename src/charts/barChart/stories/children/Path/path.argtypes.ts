@@ -45,6 +45,35 @@ export const pathArgTypes = (): ArgTypes<BarChartPathProps> => {
       },
     },
 
+    focusConfig: {
+      control: { type: 'object' },
+      description:
+        'Configuration for the focus ring appearance and behavior. Includes properties like outlineStrokeWidth and innerStrokeWidth to customize the focus indicator. Defaults to adaptive variant with outlineStrokeWidth: 0.2 and innerStrokeWidth: 1.5.',
+      table: {
+        category: CATEGORY_CONTROL.CUSTOMIZATION,
+        defaultValue: { summary: '{ outlineStrokeWidth: 0.2, innerStrokeWidth: 1.5 }' },
+        type: { summary: 'FocusConfig' },
+      },
+    },
+
+    onBlur: {
+      action: 'blur',
+      description: 'Function executed when removing focus from the bar.',
+      table: {
+        category: CATEGORY_CONTROL.FUNCTIONS,
+        type: { summary: '(event: React.FocusEvent<SVGPathElement>) => void' },
+      },
+    },
+
+    onFocus: {
+      action: 'focus',
+      description: 'Function executed when focusing the bar.',
+      table: {
+        category: CATEGORY_CONTROL.FUNCTIONS,
+        type: { summary: '(event: React.FocusEvent<SVGPathElement>) => void' },
+      },
+    },
+
     order: {
       control: { type: 'number' },
       description:
@@ -62,6 +91,17 @@ export const pathArgTypes = (): ArgTypes<BarChartPathProps> => {
       table: {
         category: CATEGORY_CONTROL.CUSTOMIZATION,
         defaultValue: { summary: 'undefined' },
+        type: { summary: 'number' },
+      },
+    },
+
+    tabIndex: {
+      control: { type: 'number' },
+      description:
+        'Tab index for keyboard navigation. Defaults to 0 (focusable and included in tab order). Set to -1 to exclude from tab order but allow programmatic focus.',
+      table: {
+        category: CATEGORY_CONTROL.CUSTOMIZATION,
+        defaultValue: { summary: '0' },
         type: { summary: 'number' },
       },
     },

@@ -8,8 +8,11 @@ import {
   useRef,
 } from 'react';
 
+import { FocusRing } from '@/components/focusRing/focusRing';
 import { useFocus } from '@/hooks/useFocus/useFocus';
 import { useHover } from '@/hooks/useHover/useHover';
+import type { FocusConfig } from '@/types/focusConfig.type';
+import { adaptLegacyFocusConfig } from '@/utils/adaptLegacyFocusConfig/adaptLegacyFocusConfig';
 import { cssGradientToSVG } from '@/utils/cssGradientToSvg/cssGradientToSvg';
 import { pickCustomAttributes } from '@/utils/pickCustomAttributes/pickCustomAttributes';
 import { ShadowSvg } from '@/utils/shadowSvg/shadowSvg';
@@ -28,7 +31,7 @@ const ENTER = {
 const SHADOW_FILTER_ID = 'shadow';
 
 /**
- * Represents a customizable SVG path component in
+ * Represents a customizable SVG path component with FocusRing integration
  *
  * This component renders an SVG path with various customizable properties such as fill color, stroke color, and stroke width.
  * It supports dynamic SVG gradients through a utility function, interactive event handlers, and accessibility features.
@@ -39,7 +42,8 @@ const SHADOW_FILTER_ID = 'shadow';
  * @param {string} [props.gradient] - A CSS gradient string that will be converted to an SVG gradient.
  * @param {string | number} [props.dataValue] - The value of the represented data.
  * @param {string} [props.d] - The SVG path data string.
- * @param {number} [props.tabIndex] - The tab index for keyboard navigation.
+ * @param {number} [props.tabIndex=0] - The tab index for keyboard navigation. Defaults to 0 (focusable). Set to -1 to exclude from tab order.
+ * @param {FocusConfig} [props.focusConfig] - Configuration for the focus ring appearance and behavior. Defaults to adaptive variant.
  * @param {Function} [props.onClick] - Click event handler.
  * @param {Function} [props.onMouseEnter] - Mouse enter event handler.
  * @param {Function} [props.onMouseLeave] - Mouse leave event handler.
@@ -56,32 +60,46 @@ const SHADOW_FILTER_ID = 'shadow';
  * @param {Array} [props.points] - An array of points for rendering nodes along the path.
  * @param {Object} [props.nodeConfig] - Configuration for the nodes.
  *
- * @returns {ReactElement} A React element representing the SVG path.
+ * @returns {ReactElement} A React element representing the SVG path with FocusRing.
  */
+
 const PathComponent = (
   {
     classNames = '',
     fill = 'transparent',
     stroke = '#0000FF',
+    // NOTE: Default strokeWidth='1' affects FocusRing calculations in adaptive variant.
+    // FocusRing adds originalStrokeWidth to focus ring widths. If using fill-only paths
+    // (like Bar), pass strokeWidth="0" explicitly to avoid inflated focus rings.
     strokeWidth = '1',
-    focusConfig = {
-      stroke: '#0000FF',
-      strokeWidth: '0.5',
-    },
+    focusConfig,
     hoverConfig = {
       stroke: '#0000FF',
       strokeWidth: '0.5',
     },
     role = 'img',
+    tabIndex = 0, // Default to 0 for keyboard accessibility
     ...props
   }: PathProps,
+
   ref: ForwardedRef<unknown> | undefined | null
 ): ReactElement => {
   const { handleBlur, handleFocus, isFocused } = useFocus(props.onFocus, props.onBlur);
+
+  /**
+   * Translate StyleProps focusConfig to FocusConfig for FocusRing component.
+   * Maps: stroke → outlineColor, strokeWidth → outlineStrokeWidth
+   *
+   * @deprecated This adapter will be removed in the next major version when
+   * focusConfig prop uses FocusConfig type directly.
+   */
+  const resolvedFocusConfig: FocusConfig | undefined = adaptLegacyFocusConfig(focusConfig);
+
   const { handleMouseEnter, handleMouseLeave, isHovered } = useHover(
     props.onMouseEnter,
     props.onMouseLeave
   );
+
   const pathRef = useRef<SVGPathElement | null>(null);
   const nodeRef = useRef<SVGSVGElement[] | null[]>([]);
   const mainRef = useRef<SVGSVGElement | null>(null);
@@ -121,7 +139,7 @@ const PathComponent = (
   // Extract custom data-* and aria-* attributes
   const customAttributes = pickCustomAttributes(props);
 
-  // Merge props to include focus and hover styles
+  // Merge props to include hover styles (focus is now handled by FocusRing)
   const defaultProps = {
     ...props,
     classNames: `path ${classNames}`,
@@ -130,11 +148,11 @@ const PathComponent = (
     role,
     stroke,
     strokeWidth,
+    tabIndex,
   };
 
   const mergedProps = {
     ...defaultProps,
-    ...(isFocused && focusConfig),
     ...(isHovered && hoverConfig),
   };
 
@@ -144,6 +162,13 @@ const PathComponent = (
       {mergedProps.shadowSvgConfig && (
         <ShadowSvg id={SHADOW_FILTER_ID} shadowSvgConfig={mergedProps.shadowSvgConfig} />
       )}
+      {/* Render FocusRing BEFORE the path for proper z-order */}
+      <FocusRing
+        dataTestId={`${mergedProps.dataTestId}-focus-ring`}
+        focusConfig={resolvedFocusConfig}
+        isFocused={isFocused}
+        targetRef={pathRef}
+      />
       <g
         aria-label={mergedProps.ariaLabel}
         className={mergedProps.classNames}
