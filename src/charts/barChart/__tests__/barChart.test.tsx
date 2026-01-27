@@ -11,6 +11,19 @@ declare global {
   }
 }
 
+// Mock ResizeObserver
+global.ResizeObserver = class ResizeObserver {
+  observe() {
+    // Mock implementation
+  }
+  unobserve() {
+    // Mock implementation
+  }
+  disconnect() {
+    // Mock implementation
+  }
+};
+
 describe('BarChart component', () => {
   beforeEach(() => {
     SVGElement.prototype.getBBox = vi.fn(() => ({

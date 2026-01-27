@@ -1,12 +1,12 @@
 import { Children, useMemo } from 'react';
 
 import { SvgContainer } from '@/components/svgContainer/svgContainer';
-import { buildViewBox } from '@/components/svgContainer/utils/buildViewBox/buildViewBox';
+import { useId } from '@/hooks/useId/useId';
+import { useResponsiveCanvas } from '@/hooks/useResponsiveCanvas/useResponsiveCanvas';
 import { DefaultCanvasConfig } from '@/types/canvas.type';
 import type { ChartError, ErrorType } from '@/types/errors.type';
 import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
 import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
-import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
 
 import type { BarChartProps } from './barChart.type';
 import { BarChartContext } from './context/barChartContext';
@@ -21,7 +21,7 @@ export const BarChartStructure: React.FC<BarChartProps> = ({
   children,
   classNames,
   data,
-  dataTestId,
+  dataTestId: dataTestIdProp = 'bar-chart',
   gapBetweenBars = 0,
   height = '100%',
   onErrors,
@@ -32,15 +32,18 @@ export const BarChartStructure: React.FC<BarChartProps> = ({
   width = '100%',
   ...props
 }): React.ReactElement => {
-  // Extracts and sets default values for canvas configuration
-  const { extraSpace: canvasExtraSpace, height: canvasHeight, width: canvasWidth } = canvasConfig;
-  const parsedCanvasWidth = parseStringToNumberPx(canvasWidth);
-  const parsedCanvasHeight = parseStringToNumberPx(canvasHeight);
-  const parsedCanvasExtraSpace = canvasExtraSpace
-    ? parseStringToNumberPx(canvasExtraSpace)
-    : undefined;
+  const dataTestId = useId(dataTestIdProp);
 
-  const viewBox = buildViewBox(parsedCanvasWidth, parsedCanvasHeight, parsedCanvasExtraSpace);
+  // Use the responsive canvas hook for dimension management
+  const { parsedCanvas, parsedCanvasExtraSpace, viewBox } = useResponsiveCanvas({
+    canvasConfig,
+    dataTestId,
+    height,
+    width,
+  });
+
+  const parsedCanvasWidth = parsedCanvas.width;
+  const parsedCanvasHeight = parsedCanvas.height;
 
   // count how many of bar children exists
   const barChildrenCount = countBarChildren(children);
@@ -83,7 +86,14 @@ export const BarChartStructure: React.FC<BarChartProps> = ({
       pKey,
       viewBox,
     });
-  }, [canvasHeight, canvasWidth, dataFingerprint, pKey, orientation, errorAccumulator.addError]);
+  }, [
+    parsedCanvasHeight,
+    parsedCanvasWidth,
+    dataFingerprint,
+    pKey,
+    orientation,
+    errorAccumulator.addError,
+  ]);
 
   return (
     <SvgContainer

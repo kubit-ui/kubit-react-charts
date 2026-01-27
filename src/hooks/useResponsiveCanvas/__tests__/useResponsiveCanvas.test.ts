@@ -12,9 +12,15 @@ vi.mock('@/utils/getCanvasDimensions/getCanvasDimensions', () => ({
 
 vi.mock('@/utils/parseStringToNumberPx.ts/parseStringToNumberPx', () => ({
   parseStringToNumberPx: vi.fn(value => {
-    if (typeof value === 'number') {return value;}
-    if (value === '100%') {return 400;}
-    if (value === '2.5rem') {return 40;}
+    if (typeof value === 'number') {
+      return value;
+    }
+    if (value === '100%') {
+      return 400;
+    }
+    if (value === '2.5rem') {
+      return 40;
+    }
     return parseInt(value) || 0;
   }),
 }));

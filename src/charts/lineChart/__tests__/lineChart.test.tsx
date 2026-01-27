@@ -4,6 +4,21 @@ import { render } from '@/tests/render/render';
 
 import { LineChart } from '../lineChart';
 
+class ResizeObserverMock {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(_callback: any) {
+    // Mock constructor
+  }
+
+  disconnect = vi.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
+}
+
+beforeEach(() => {
+  vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+});
+
 declare global {
   interface SVGElement {
     getBBox: () => { x: number; y: number; width: number; height: number };

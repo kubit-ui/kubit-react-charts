@@ -6,6 +6,21 @@ import { DefaultCanvasConfig } from '@/types/canvas.type';
 
 import { PieChart } from '../pieChart';
 
+class ResizeObserverMock {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(_callback: any) {
+    // Mock constructor
+  }
+
+  disconnect = vi.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
+}
+
+beforeEach(() => {
+  vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+});
+
 describe('PieChart', () => {
   const defaultProps = {
     canvasConfig: DefaultCanvasConfig,
@@ -27,7 +42,7 @@ describe('PieChart', () => {
 
   it('renders without errors', () => {
     render(<PieChart {...defaultProps} />);
-    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    expect(screen.getByTestId('pie-chart0')).toBeInTheDocument();
   });
 
   it('passes correct properties to SvgContainer', () => {
@@ -40,7 +55,7 @@ describe('PieChart', () => {
       />
     );
     const svgContainer = container.querySelector('.pie-chart');
-    expect(svgContainer).toHaveAttribute('data-testid', 'pie-chart');
+    expect(svgContainer).toHaveAttribute('data-testid', 'pie-chart1');
     expect(svgContainer).toHaveAttribute('aria-label', 'Pie Chart');
   });
 

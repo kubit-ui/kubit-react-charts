@@ -21,6 +21,9 @@ export interface PieChartProps {
   ariaLabel?: string;
   ariaHidden?: boolean;
   caption?: string;
+  /**
+   * @deprecated Use `width` and `height` props instead to define chart dimensions.
+   */
   canvasConfig?: CanvasConfig;
   dataTestId?: string;
   width?: string;

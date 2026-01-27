@@ -81,6 +81,9 @@ export interface LineChartProps {
   height?: string | number;
   data: IDataPoint[];
   xKey: string;
+  /**
+   * @deprecated Use `width` and `height` props instead to define chart dimensions.
+   */
   canvasConfig?: CanvasConfig;
   dataTestId?: string;
   caption?: string;

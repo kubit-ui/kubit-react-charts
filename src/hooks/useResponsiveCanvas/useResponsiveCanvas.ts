@@ -62,6 +62,8 @@ interface UseResponsiveCanvasReturn {
   parsedCanvas: { width: number; height: number };
   /** SVG viewBox string */
   viewBox: string;
+  /** Parsed extra space in pixels (optional) */
+  parsedCanvasExtraSpace?: number;
 }
 
 export const useResponsiveCanvas = ({
@@ -162,6 +164,7 @@ export const useResponsiveCanvas = ({
 
   return {
     parsedCanvas,
+    parsedCanvasExtraSpace,
     viewBox,
   };
 };

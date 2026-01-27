@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react';
 
 import { SvgContainer } from '@/components/svgContainer/svgContainer';
+import { useResponsiveCanvas } from '@/hooks/useResponsiveCanvas/useResponsiveCanvas';
 import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
 
 import { FocusRing } from '../focusRing/focusRing';
@@ -9,7 +10,6 @@ import { SelectionArea } from './components/SelectionArea';
 import { ZoomHandler } from './components/ZoomHandler';
 import { useDragInteraction } from './hooks/useDragInteraction';
 import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
-import { useResponsiveCanvas } from './hooks/useResponsiveCanvas';
 import { useZoomAreaFocus } from './hooks/useZoomAreaFocus';
 import { useZoomData } from './hooks/useZoomData';
 import { generateAccessibilityLabels } from './utils/accessibilityLabels';

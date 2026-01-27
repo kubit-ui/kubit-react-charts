@@ -1,15 +1,13 @@
 import { Children, type FC, type ReactElement, useEffect, useMemo, useState } from 'react';
 
 import { SvgContainer } from '@/components/svgContainer/svgContainer';
-import { buildViewBox } from '@/components/svgContainer/utils/buildViewBox/buildViewBox';
+import { useId } from '@/hooks/useId/useId';
+import { useResponsiveCanvas } from '@/hooks/useResponsiveCanvas/useResponsiveCanvas';
 import { DefaultCanvasConfig } from '@/types/canvas.type';
 import type { ChartError, ErrorType } from '@/types/errors.type';
 import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
-import { getCanvasDimensions } from '@/utils/getCanvasDimensions/getCanvasDimensions';
 import { getChildrenAttr } from '@/utils/getChildrenAttr/getChildrenAttr';
 import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
-import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
-
 import { buildLineContextValue } from './context/buildLineContextValue';
 import { LineChartContext } from './context/lineChartContext';
 import { LineChartXAxis } from './fragments/lineChartXAxis';
@@ -54,7 +52,7 @@ export const LineChartStructure: FC<LineChartProps> = ({
   children,
   classNames,
   data,
-  dataTestId = 'line-chart',
+  dataTestId: dataTestIdProp = 'line-chart',
   getPathArea,
   height = '100%',
   onErrors,
@@ -64,22 +62,17 @@ export const LineChartStructure: FC<LineChartProps> = ({
   xKey,
   ...props
 }): ReactElement => {
-  const { extraSpace: canvasExtraSpace, height: canvasHeight, width: canvasWidth } = canvasConfig;
+  const dataTestId = useId(dataTestIdProp);
 
   const [childrenYKeys, setChildrenYKey] = useState<string>('');
-  const [parsedCanvas, setParsedCanvas] = useState<{
-    width: number;
-    height: number;
-  }>({
-    height: 0,
-    width: 0,
+
+  // Use the responsive canvas hook for dimension management
+  const { parsedCanvas, parsedCanvasExtraSpace, viewBox } = useResponsiveCanvas({
+    canvasConfig,
+    dataTestId,
+    height,
+    width,
   });
-
-  const parsedCanvasExtraSpace = canvasExtraSpace
-    ? parseStringToNumberPx(canvasExtraSpace)
-    : undefined;
-
-  const viewBox = buildViewBox(parsedCanvas.width, parsedCanvas.height, parsedCanvasExtraSpace);
 
   // Set the default axis for the chart
   const defaultAxis = [
@@ -128,23 +121,6 @@ export const LineChartStructure: FC<LineChartProps> = ({
     canvasHeight: parsedCanvas.height,
     canvasWidth: parsedCanvas.width,
   });
-
-  useEffect(() => {
-    const svgElement = document.querySelector<SVGSVGElement>('[data-kbt-svg]');
-    if (!svgElement) {
-      return;
-    }
-    const { parsedCanvasHeight, parsedCanvasWidth } = getCanvasDimensions({
-      canvasHeight,
-      canvasWidth,
-      svgElement,
-    });
-
-    setParsedCanvas({
-      height: parsedCanvasHeight,
-      width: parsedCanvasWidth,
-    });
-  }, [canvasWidth, canvasHeight]);
 
   useEffect(() => {
     getPathArea?.({
