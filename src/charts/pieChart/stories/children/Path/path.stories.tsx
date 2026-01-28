@@ -40,7 +40,7 @@ export const PathCustomization: Story = {
     'fillRule': 'nonzero',
     // === INTERACTION STYLING ===
     'focusConfig': {
-      stroke: '#007ACC',
+      stroke: '#0078D4',
       strokeWidth: 3,
     },
 

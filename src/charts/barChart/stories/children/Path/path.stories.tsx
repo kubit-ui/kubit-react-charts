@@ -20,6 +20,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Adjusted focusConfig for BarChart's small viewBox (100x80)
+// Values are scaled down to compensate for viewBox-to-container scaling (~6x)
+const FOCUS_CONFIG = {
+  stroke: '#0078D4',
+  strokeWidth: 0.3,
+};
+
 const baseBarConfig = {
   barWidth: 15,
   singleConfig: [
@@ -101,6 +108,7 @@ export const PathCustomization: Story = {
           dataIdx={args.dataIdx}
           dataKey={args.dataKey}
           endRounded={args.endRounded}
+          focusConfig={FOCUS_CONFIG}
           order={args.order}
           startRounded={args.startRounded}
         />
@@ -223,6 +231,7 @@ export const StackedBars: Story = {
           dataIdx={args.dataIdx}
           dataKey={args.dataKey}
           endRounded={args.endRounded}
+          focusConfig={FOCUS_CONFIG}
           order={args.order}
           startRounded={args.startRounded}
         />
