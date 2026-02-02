@@ -145,4 +145,12 @@ export interface BarChartPathProps {
   dataIdx: number;
   startRounded?: number;
   endRounded?: number;
+  /**
+   * @deprecated In the next major version, this prop will use a more restrictive interface
+   * based on FocusConfig type. Other StyleProps fields are currently ignored.
+   */
+  focusConfig?: StyleProps;
+  tabIndex?: number;
+  onFocus?: (event: React.FocusEvent<SVGPathElement>) => void;
+  onBlur?: (event: React.FocusEvent<SVGPathElement>) => void;
 }

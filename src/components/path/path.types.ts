@@ -54,6 +54,15 @@ export interface PathProps extends StyleProps, AriaAttributes, DataAttributes {
   classNames?: string;
   gradient?: string;
   shadowSvgConfig?: ShadowSvgConfig;
+  /**
+   * Focus styling configuration.
+   * Uses StyleProps interface - internally translated to FocusRing configuration.
+   * Only `stroke` and `strokeWidth` are mapped to the FocusRing component
+   * (stroke → outlineColor, strokeWidth → outlineStrokeWidth).
+   *
+   * @deprecated In the next major version, this prop will use a more restrictive interface
+   * based on FocusConfig type. Other StyleProps fields are currently ignored.
+   */
   focusConfig?: StyleProps;
   hoverConfig?: StyleProps;
   dataValue?: string | number | IDataPoint[];

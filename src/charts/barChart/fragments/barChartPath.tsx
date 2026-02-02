@@ -23,7 +23,11 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
   barConfig,
   dataIdx,
   dataKey,
+  focusConfig,
+  onBlur,
+  onFocus,
   order,
+  tabIndex,
   ...props
 }): React.ReactElement => {
   const { addError, xAxisCoordinates, yAxisCoordinates, ...context } = useContext(BarChartContext);
@@ -96,12 +100,16 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
       currentBars={context.barChildrenCount}
       dataKey={dataKey}
       extraSpacing={context.gapBetweenBars}
+      focusConfig={focusConfig}
       order={order}
       orientation={context.orientation}
+      tabIndex={tabIndex}
       xData={xData}
       xKey={xKey}
       yData={yData}
       yKey={yKey}
+      onBlur={onBlur}
+      onFocus={onFocus}
       {...points}
       {...props}
     />

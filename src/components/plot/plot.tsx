@@ -10,6 +10,10 @@ import { Triangle } from './components/triangle/triangle';
 import './plot.css';
 import { PLOT_SIZE_MAP, type PlotProps, PlotSize, PlotType } from './plot.types';
 
+// The centroid of a triangle is at 1/3 of the height from the base.
+// When scaling, we need to compensate by (scaledSize - originalSize) / 6 to align centroids.
+const TRIANGLE_CENTROID_OFFSET_DIVISOR = 6;
+
 // Map of components by type
 const Component = {
   [PlotType.CIRCLE]: Circle,
@@ -49,6 +53,14 @@ const PlotComponent = <T = string,>(
   const { handleMouseEnter, handleMouseLeave, isHovered } = useHover(onMouseEnter, onMouseLeave);
   const { handleBlur, handleFocus, isFocused } = useFocus(onFocus, onBlur);
 
+  const handleKeyDown: React.KeyboardEventHandler<SVGElement> = event => {
+    if (onClick && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      onClick(event as unknown as React.MouseEvent<SVGElement>);
+    }
+    onKeyDown?.(event);
+  };
+
   // Extract properties from hoverConfig with default values
   const {
     fill: hoverFill = fill,
@@ -73,7 +85,7 @@ const PlotComponent = <T = string,>(
     onBlur: handleBlur,
     onClick,
     onFocus: handleFocus,
-    onKeyDown,
+    onKeyDown: handleKeyDown,
     onMouseEnter: handleMouseEnter,
     onMouseLeave: handleMouseLeave,
     opacity, // Maintains original overall opacity
@@ -81,12 +93,22 @@ const PlotComponent = <T = string,>(
     role: 'button',
     size: sizeInPixels,
     stroke, // Maintains original stroke color
-    strokeWidth: hasHoverEffect && isHovered ? 0 : strokeWidth, // Removed isFocused dependency
+    strokeWidth: hasHoverEffect && isHovered && !isFocused ? 0 : strokeWidth,
     tabIndex,
   };
 
   // Get the correct component based on type
   const PlotShape = Component[type];
+
+  // Calculate hover position with vertical offset for triangles
+  // Triangles need compensation because their centroid is not at the geometric center
+  const hoverPosition =
+    type === PlotType.TRIANGLE
+      ? {
+          x: position.x,
+          y: position.y - (sizeInPixels * (hoverScale - 1)) / TRIANGLE_CENTROID_OFFSET_DIVISOR,
+        }
+      : position;
 
   return (
     <>
@@ -96,7 +118,7 @@ const PlotComponent = <T = string,>(
           dataTestId={`${dataTestId}-hover`}
           fill={hoverFill}
           opacity={hoverOpacity}
-          position={position}
+          position={hoverPosition}
           size={sizeInPixels * hoverScale}
           stroke={hoverStroke}
           strokeWidth={hoverStrokeWidth}

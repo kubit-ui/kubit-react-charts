@@ -39,24 +39,6 @@ export const PathCustomization: Story = {
     'fillOpacity': 0.8,
     'fillRule': 'nonzero',
     // === ADVANCED CONFIGURATION OBJECTS ===
-    'focusConfig': {
-      fill: 'transparent',
-      fillOpacity: 1,
-      fillRule: 'nonzero',
-      opacity: 1,
-      orientation: '',
-      rotate: '',
-      stroke: '#0078D4',
-      strokeDasharray: '',
-      strokeDashoffset: '',
-      strokeLinecap: 'butt',
-      strokeLinejoin: 'miter',
-      strokeMiterlimit: 4,
-      strokeOpacity: 1,
-      strokeWidth: 1,
-      transform: '',
-      visibility: 'visible',
-    },
     'gradient': '180, #fabada 0%, #FFF 100%', // Vertical fade from fabada to white
     'hoverConfig': {
       fill: '#15bedc89',

@@ -11,9 +11,16 @@ export const Bar: FC<BarProps> = ({
   currentBars,
   endRounded,
   extraSpacing = 0,
+  focusConfig = {
+    stroke: '#0078D4',
+    strokeWidth: 0.2,
+  },
+  onBlur,
+  onFocus,
   order = 1,
   orientation,
   startRounded,
+  tabIndex = 0,
   x1,
   x2,
   y1,
@@ -60,11 +67,15 @@ export const Bar: FC<BarProps> = ({
             })}
             d={d}
             fill={color}
+            focusConfig={focusConfig}
             hoverConfig={{
               stroke: 'transparent',
               strokeWidth: '0',
             }}
             stroke="transparent"
+            tabIndex={tabIndex}
+            onBlur={onBlur}
+            onFocus={onFocus}
             {...singleProps}
           />
         );
