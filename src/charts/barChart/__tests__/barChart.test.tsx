@@ -11,18 +11,20 @@ declare global {
   }
 }
 
-// Mock ResizeObserver
-global.ResizeObserver = class ResizeObserver {
-  observe() {
-    // Mock implementation
+class ResizeObserverMock {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(_callback: any) {
+    // Mock constructor
   }
-  unobserve() {
-    // Mock implementation
-  }
-  disconnect() {
-    // Mock implementation
-  }
-};
+
+  disconnect = vi.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
+}
+
+beforeEach(() => {
+  vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+});
 
 describe('BarChart component', () => {
   beforeEach(() => {

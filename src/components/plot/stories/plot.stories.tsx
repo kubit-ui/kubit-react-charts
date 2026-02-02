@@ -68,7 +68,7 @@ const args: PlotProps<unknown> = {
   position: { x: 75, y: 75 },
   size: PlotSize.EXTRA_LARGE,
   stroke: '#FFFFFF',
-  strokeWidth: 2,
+  strokeWidth: 1,
   tabIndex: 0,
   type: PlotType.CIRCLE,
 };
