@@ -150,6 +150,11 @@
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
+  "packageManager": "pnpm@10.8.1",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
   "funding": {
     "type": "corporate",
     "url": "https://www.kubit-lab.com/"
