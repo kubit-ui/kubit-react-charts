@@ -1,0 +1,202 @@
+name: Release Production with Changesets
+
+# This workflow publishes production releases when PRs are merged to main
+# It uses Changesets to manage versioning and publishing
+# It automatically detects version bump type from commits:
+# - feat: ... → MINOR version bump
+# - fix: ... → PATCH version bump
+# - break/breaking/feat!: ... → MAJOR version bump
+#
+# Required secrets:
+# 1. NPM_TOKEN: NPM automation token for publishing packages
+# 2. RELEASE_TOKEN: GitHub PAT with bypass permissions
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+  actions: read
+  id-token: write # Required for NPM provenance
+
+jobs:
+  auto-release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies with pnpm..."
+          pnpm --version
+          pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Detect version bump type from commits
+        id: detect
+        run: |
+          BASE_REF="origin/${{ github.event.pull_request.base.ref }}"
+
+          echo "📝 Analyzing commits in this PR..."
+
+          # Get all commit messages in the PR
+          COMMITS=$(git log --pretty=format:"%s" $BASE_REF..HEAD)
+          echo "Commits:"
+          echo "$COMMITS"
+          echo ""
+
+          # Detect version bump type from commits
+          BUMP_TYPE="patch"
+          HAS_FEAT=false
+          HAS_BREAKING=false
+
+          while IFS= read -r commit; do
+            if [[ "$commit" =~ ^(break|breaking|feat!) ]] || [[ "$commit" =~ BREAKING\ CHANGE ]]; then
+              HAS_BREAKING=true
+            elif [[ "$commit" =~ ^feat ]]; then
+              HAS_FEAT=true
+            fi
+          done <<< "$COMMITS"
+
+          if [ "$HAS_BREAKING" = true ]; then
+            BUMP_TYPE="major"
+          elif [ "$HAS_FEAT" = true ]; then
+            BUMP_TYPE="minor"
+          fi
+
+          echo "bump_type=$BUMP_TYPE" >> $GITHUB_OUTPUT
+          echo "📦 Version bump type: $BUMP_TYPE"
+
+      - name: Create changeset
+        run: |
+          BUMP_TYPE="${{ steps.detect.outputs.bump_type }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+
+          # Clean PR title for changeset summary
+          SUMMARY=$(echo "$PR_TITLE" | sed -E 's/^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|break|breaking)(\([^)]+\))?!?:\s*//')
+
+          # Create changeset file
+          CHANGESET_ID=$(date +%s)
+          CHANGESET_FILE=".changeset/auto-$CHANGESET_ID.md"
+
+          echo "---" > $CHANGESET_FILE
+          echo "\"@kubit-ui-web/react-charts\": $BUMP_TYPE" >> $CHANGESET_FILE
+          echo "---" >> $CHANGESET_FILE
+          echo "" >> $CHANGESET_FILE
+          echo "$SUMMARY" >> $CHANGESET_FILE
+          echo "" >> $CHANGESET_FILE
+          echo "PR: #$PR_NUMBER" >> $CHANGESET_FILE
+
+          echo "✅ Created changeset:"
+          cat $CHANGESET_FILE
+
+      - name: Update version and changelog
+        run: |
+          echo "📦 Updating version and changelog..."
+          pnpm changeset:version
+
+          # Configure git
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Commit version changes
+          git add .
+          if git diff --staged --quiet; then
+            echo "No version changes to commit"
+          else
+            git commit -m "chore: version packages [skip ci]"
+            git push origin main
+          fi
+
+      - name: Build packages
+        run: |
+          echo "🏗️ Building packages..."
+          pnpm dist
+        env:
+          NODE_ENV: production
+
+      - name: Publish to NPM
+        run: |
+          echo "🚀 Publishing to NPM..."
+          pnpm changeset:publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        run: |
+          # Get version from package.json
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="v$VERSION"
+
+          # Extract changelog for this version
+          CHANGELOG=$(awk "/^## $VERSION/,/^## /" CHANGELOG.md | sed '1d;$d')
+
+          # Create release
+          gh release create "$TAG" \
+            --title "@kubit-ui-web/react-charts v$VERSION" \
+            --notes "$CHANGELOG" \
+            --target main
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const bumpType = '${{ steps.detect.outputs.bump_type }}';
+            const fs = require('fs');
+            const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            const version = packageJson.version;
+            const npmLink = `https://www.npmjs.com/package/@kubit-ui-web/react-charts/v/${version}`;
+
+            let comment = '## 🚀 Package Published\n\n';
+            comment += `**Version bump type:** \`${bumpType}\`\n\n`;
+            comment += '| Package | Version | NPM Link |\n';
+            comment += '|---------|---------|----------|\n';
+            comment += `| @kubit-ui-web/react-charts | \`${version}\` | [View on NPM](${npmLink}) |\n`;
+            comment += '\n✅ Package has been successfully published to NPM!';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

@@ -1,12 +1,12 @@
 {
   "exclude": [
-    "src/**/__mocks__",
-    "src/**/__fixtures__",
     "dist",
+    "node_modules",
+    "**/__tests__/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
     "vitest.config.ts",
-    "vitest.setup.ts",
-    "vite.config.mts",
-    "viteStorybook.config.mts"
+    "vitest.setup.ts"
   ],
   "compilerOptions": {
     "noEmit": false,
@@ -44,5 +44,10 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts", "app/src/types/global.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "app/src/types/global.d.ts"
+  ]
 }

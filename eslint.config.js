@@ -12,6 +12,7 @@ module.exports = eslintFlatConfig({
     'Edge >= 15',
   ],
   checkBrowserCompatibility: true,
+  ignorePatterns: ['.changeset/**'],
   globals: {
     afterAll: 'readonly',
     afterEach: 'readonly',

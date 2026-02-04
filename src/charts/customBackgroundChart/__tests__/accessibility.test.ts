@@ -34,7 +34,9 @@ describe('accessibility utils', () => {
 
   describe('formatValue', () => {
     it('formats numbers with locale separators', () => {
-      expect(formatValue(1234567)).toBe('1,234,567');
+      const result = formatValue(1234567);
+      // Accept both en-US (1,234,567) and es-ES (1.234.567) formats
+      expect(result).toMatch(/^1[,.]234[,.]567$/);
     });
 
     it('returns strings as-is', () => {

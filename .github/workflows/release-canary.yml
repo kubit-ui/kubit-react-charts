@@ -1,0 +1,203 @@
+name: Release Canary with Changesets
+
+# This workflow publishes canary versions on push to develop/next branches
+# Canary versions follow the pattern: X.Y.Z-canary.SHA (e.g., 1.2.3-canary.abc1234)
+# Uses Changesets for version management
+#
+# Use cases:
+# - Quick testing of features before beta
+# - Continuous deployment from develop branch
+# - Preview releases for stakeholders
+#
+# Required secrets:
+# 1. NPM_TOKEN: NPM automation token for publishing packages
+# 2. RELEASE_TOKEN: GitHub PAT with bypass permissions
+
+on:
+  push:
+    branches:
+      - develop
+      - next
+
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+  actions: read
+  id-token: write # Required for NPM provenance
+
+jobs:
+  release-canary:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies with pnpm..."
+          pnpm --version
+          pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Get commit info
+        id: commit
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+
+          echo "message=$COMMIT_MSG" >> $GITHUB_OUTPUT
+          echo "sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+
+      - name: Create canary changeset
+        run: |
+          COMMIT_MSG="${{ steps.commit.outputs.message }}"
+          COMMIT_SHA="${{ steps.commit.outputs.sha }}"
+
+          # Clean commit message for changeset summary
+          SUMMARY=$(echo "$COMMIT_MSG" | sed -E 's/^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|break|breaking)(\([^)]+\))?!?:\s*//')
+
+          # Create changeset file
+          CHANGESET_ID=$(date +%s)
+          CHANGESET_FILE=".changeset/canary-$CHANGESET_ID.md"
+
+          echo "---" > $CHANGESET_FILE
+          echo "\"@kubit-ui-web/react-charts\": patch" >> $CHANGESET_FILE
+          echo "---" >> $CHANGESET_FILE
+          echo "" >> $CHANGESET_FILE
+          echo "$SUMMARY (canary.$COMMIT_SHA)" >> $CHANGESET_FILE
+
+          echo "✅ Created canary changeset:"
+          cat $CHANGESET_FILE
+
+      - name: Enter prerelease mode
+        run: |
+          echo "📦 Checking prerelease mode status..."
+
+          # Check if already in pre mode
+          if [ -f ".changeset/pre.json" ]; then
+            echo "⚠️ Already in prerelease mode, exiting first..."
+            pnpm changeset pre exit
+
+            # Commit the exit
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git add .
+            if ! git diff --staged --quiet; then
+              git commit -m "chore: exit prerelease mode [skip ci]"
+            fi
+          fi
+
+          echo "📦 Entering canary prerelease mode..."
+          pnpm changeset pre enter canary
+
+      - name: Version packages
+        run: |
+          echo "📦 Versioning packages for canary..."
+          pnpm changeset:version
+
+          # Append commit SHA to canary version
+          COMMIT_SHA="${{ steps.commit.outputs.sha }}"
+
+          # Update version to include commit SHA
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = pkg.version.replace(/-canary\.\d+/, '-canary.$COMMIT_SHA');
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+          "
+
+          # Configure git
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Commit version changes
+          git add .
+          if git diff --staged --quiet; then
+            echo "No version changes to commit"
+          else
+            git commit -m "chore: version packages for canary [skip ci]"
+            git push origin ${{ github.ref_name }}
+          fi
+
+      - name: Build packages
+        run: |
+          echo "🏗️ Building packages..."
+          pnpm dist
+        env:
+          NODE_ENV: production
+
+      - name: Publish canary to NPM
+        run: |
+          echo "🚀 Publishing canary to NPM..."
+          pnpm changeset:publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Exit prerelease mode
+        run: |
+          echo "📦 Exiting canary prerelease mode..."
+          pnpm changeset pre exit
+
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: exit canary prerelease mode [skip ci]"
+            git push origin ${{ github.ref_name }}
+          fi
+
+      - name: Get published version
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "📦 Published @kubit-ui-web/react-charts@$VERSION"
+
+      - name: Create summary
+        run: |
+          COMMIT_SHA="${{ steps.commit.outputs.sha }}"
+          VERSION="${{ steps.version.outputs.version }}"
+          NPM_LINK="https://www.npmjs.com/package/@kubit-ui-web/react-charts/v/$VERSION"
+
+          echo "## 🚀 Canary Release Published" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** \`$COMMIT_SHA\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Package | Version | NPM Link |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|---------|----------|" >> $GITHUB_STEP_SUMMARY
+          echo "| @kubit-ui-web/react-charts | \`$VERSION\` | [View on NPM]($NPM_LINK) |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Install canary version:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`sh" >> $GITHUB_STEP_SUMMARY
+          echo "pnpm add @kubit-ui-web/react-charts@$VERSION" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

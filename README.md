@@ -62,6 +62,12 @@
 
 ## Installation
 
+### pnpm (Recommended)
+
+```bash
+pnpm add @kubit-ui-web/react-charts
+```
+
 ### NPM
 
 ```bash
@@ -377,19 +383,28 @@ This pattern enables:
 
 ```bash
 # Start Storybook in development mode
-yarn start
+pnpm start
 
 # Build library for production
-yarn dist
+pnpm dist
 
 # Run tests with coverage
-yarn test
+pnpm test
 
 # Lint code with ESLint
-yarn eslint
+pnpm eslint
+
+# Format code
+pnpm prettier
 
 # Build Storybook for production
-yarn build
+pnpm build
+
+# Changeset commands (for maintainers)
+pnpm changeset              # Create a changeset manually
+pnpm changeset:version      # Version packages
+pnpm changeset:publish      # Publish to NPM
+pnpm changeset:status       # Check changeset status
 
 # Run accessibility tests
 yarn storybook:axe

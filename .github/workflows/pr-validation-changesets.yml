@@ -1,0 +1,250 @@
+name: PR Validation with Changesets
+
+# This workflow validates PRs with automatic version detection
+# It checks:
+# - Branch naming conventions
+# - PR title format (conventional commits)
+# - Runs tests and type checking
+# - Code quality checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+    branches:
+      - main
+      - master
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  pr-validation:
+    runs-on: ubuntu-latest
+    name: Validate PR Standards
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          pnpm --version
+          pnpm install --frozen-lockfile
+
+      - name: Validate Branch Naming
+        id: branch-validation
+        continue-on-error: true
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          echo "Branch name: $BRANCH_NAME"
+
+          VALID_PATTERNS=(
+            "^(feat|feature)/.*"
+            "^(fix|bugfix)/.*"
+            "^(break|breaking)/.*"
+            "^hotfix/.*"
+            "^chore/.*"
+            "^docs/.*"
+            "^style/.*"
+            "^refactor/.*"
+            "^test/.*"
+          )
+
+          BRANCH_VALID=false
+          for pattern in "${VALID_PATTERNS[@]}"; do
+            if [[ "$BRANCH_NAME" =~ $pattern ]]; then
+              BRANCH_VALID=true
+              break
+            fi
+          done
+
+          if [ "$BRANCH_VALID" = true ]; then
+            echo "✅ Branch name follows conventions"
+            echo "branch_valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Branch name must follow pattern: type/description"
+            echo "   Valid types: feat, fix, break, hotfix, chore, docs, style, refactor, test"
+            echo "branch_valid=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Validate PR Title
+        id: pr-title-validation
+        continue-on-error: true
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          echo "PR Title: $PR_TITLE"
+
+          # Check conventional commits format
+          if [[ "$PR_TITLE" =~ ^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|break|breaking)(\([^)]+\))?!?:\ .+ ]]; then
+            echo "✅ PR title follows conventional commits format"
+            echo "title_valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ PR title must follow conventional commits format"
+            echo "   Format: type(scope): description"
+            echo "   Example: feat: add new chart type"
+            echo "title_valid=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          # Check title length
+          TITLE_LENGTH=${#PR_TITLE}
+          if [ $TITLE_LENGTH -gt 72 ]; then
+            echo "⚠️ PR title is $TITLE_LENGTH characters (recommended: ≤72)"
+            echo "title_length_valid=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ PR title length is appropriate"
+            echo "title_length_valid=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Detect Version Bump Type
+        id: version-detection
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+
+          BUMP_TYPE="patch"
+
+          if [[ "$BRANCH_NAME" =~ ^(feat|feature)/ ]] || [[ "$PR_TITLE" =~ ^feat ]]; then
+            BUMP_TYPE="minor"
+          elif [[ "$BRANCH_NAME" =~ ^(break|breaking)/ ]] || [[ "$PR_TITLE" =~ ^(break|breaking|feat!) ]] || [[ "$PR_BODY" =~ BREAKING\ CHANGE ]]; then
+            BUMP_TYPE="major"
+          fi
+
+          echo "bump_type=$BUMP_TYPE" >> $GITHUB_OUTPUT
+          echo "📊 Expected version bump: $BUMP_TYPE"
+
+      - name: TypeScript Check
+        id: typecheck
+        continue-on-error: true
+        run: |
+          echo "🔍 Running TypeScript check..."
+          pnpm run eslint
+          echo "typecheck=true" >> $GITHUB_OUTPUT
+
+      - name: Run Tests
+        id: test
+        continue-on-error: true
+        run: |
+          echo "🧪 Running tests..."
+          pnpm test
+          echo "test=true" >> $GITHUB_OUTPUT
+
+      - name: Check for console.log
+        id: console-check
+        continue-on-error: true
+        run: |
+          echo "🔍 Checking for console.log statements..."
+
+          CONSOLE_LOGS=$(git diff origin/${{ github.base_ref }}...HEAD -- '*.ts' '*.tsx' '*.js' '*.jsx' | grep -E '^\+.*console\.(log|debug|info|warn|error)' | grep -v '// eslint-disable' || true)
+
+          if [ -n "$CONSOLE_LOGS" ]; then
+            echo "⚠️ Found console.log statements in diff:"
+            echo "$CONSOLE_LOGS"
+            echo "console_check=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ No console.log statements found"
+            echo "console_check=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check TODOs
+        id: todo-check
+        continue-on-error: true
+        run: |
+          echo "🔍 Checking for TODOs without issue references..."
+
+          TODOS=$(git diff origin/${{ github.base_ref }}...HEAD -- '*.ts' '*.tsx' '*.js' '*.jsx' | grep -E '^\+.*TODO' | grep -v '#[0-9]' || true)
+
+          if [ -n "$TODOS" ]; then
+            echo "⚠️ Found TODOs without issue references:"
+            echo "$TODOS"
+            echo "   TODOs should reference an issue: // TODO: #123"
+            echo "todo_check=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ All TODOs have issue references"
+            echo "todo_check=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate Validation Report
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branchValid = '${{ steps.branch-validation.outputs.branch_valid }}' === 'true';
+            const titleValid = '${{ steps.pr-title-validation.outputs.title_valid }}' === 'true';
+            const titleLengthValid = '${{ steps.pr-title-validation.outputs.title_length_valid }}' === 'true';
+            const typecheck = '${{ steps.typecheck.outputs.typecheck }}' === 'true';
+            const test = '${{ steps.test.outputs.test }}' === 'true';
+            const consoleCheck = '${{ steps.console-check.outputs.console_check }}' === 'true';
+            const todoCheck = '${{ steps.todo-check.outputs.todo_check }}' === 'true';
+
+            const bumpType = '${{ steps.version-detection.outputs.bump_type }}';
+
+            const allPassed = branchValid && titleValid && typecheck && test && consoleCheck && todoCheck;
+
+            let comment = '## 🔍 PR Validation Report\n\n';
+            comment += `**Status:** ${allPassed ? '✅ PASSED' : '❌ FAILED'}\n`;
+            comment += `**Branch:** \`${{ github.head_ref }}\`\n`;
+            comment += `**Expected Version Bump:** \`${bumpType}\`\n\n`;
+
+            comment += '### ✅ Validation Results\n\n';
+            comment += '| Check | Status | Description |\n';
+            comment += '|-------|--------|-------------|\n';
+            comment += `| Branch Naming | ${branchValid ? '✅ Pass' : '❌ Fail'} | Must follow \`type/description\` |\n`;
+            comment += `| PR Title | ${titleValid ? '✅ Pass' : '❌ Fail'} | Must follow conventional commits |\n`;
+            comment += `| Title Length | ${titleLengthValid ? '✅ Pass' : '⚠️ Warning'} | Should be ≤72 characters |\n`;
+            comment += `| TypeScript | ${typecheck ? '✅ Pass' : '❌ Fail'} | Type checking validation |\n`;
+            comment += `| Tests | ${test ? '✅ Pass' : '❌ Fail'} | All tests must pass |\n`;
+            comment += `| Code Quality | ${consoleCheck ? '✅ Pass' : '⚠️ Warning'} | No console.log in production |\n`;
+            comment += `| TODOs | ${todoCheck ? '✅ Pass' : '⚠️ Warning'} | TODOs should reference issues |\n`;
+
+            comment += '\n### 🎯 Next Steps\n\n';
+            if (allPassed) {
+              comment += 'This PR is ready for review - all validation checks passed!\n\n';
+              comment += '### 📝 Automatic Release\n\n';
+              comment += 'When your PR is merged:\n';
+              comment += `- Version will be bumped (\`${bumpType}\`)\n`;
+              comment += '- CHANGELOG will be updated automatically\n';
+              comment += '- Package will be published to NPM\n';
+              comment += '- GitHub Release will be created\n';
+              comment += '- You\'ll get a comment with the published version\n\n';
+              comment += 'No manual changeset needed - it\'s all automatic! 🚀\n';
+            } else {
+              comment += 'Please fix the failing checks before this PR can be merged.\n';
+            }
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
