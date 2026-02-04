@@ -1,5 +1,13 @@
 # @kubit-ui-web/react-charts
 
+## 1.11.1
+
+### Patch Changes
+
+- Add changesets and update packages
+
+  PR: #20
+
 ## Changelog
 
 All notable changes to this project will be documented in this file.
