@@ -46,6 +46,9 @@ export interface BarProps {
   tabIndex?: number;
   onFocus?: (event: React.FocusEvent<SVGPathElement>) => void;
   onBlur?: (event: React.FocusEvent<SVGPathElement>) => void;
+  onMouseEnter?: (event: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
+  onMouseLeave?: (event: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
+  onClick?: (event: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
   // Allow to build a11y aria-labels with templates
   dataKey?: string;
   xKey?: string;

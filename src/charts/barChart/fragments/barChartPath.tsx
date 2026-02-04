@@ -25,7 +25,10 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
   dataKey,
   focusConfig,
   onBlur,
+  onClick,
   onFocus,
+  onMouseEnter,
+  onMouseLeave,
   order,
   tabIndex,
   ...props
@@ -94,6 +97,34 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
         y2: yPoint,
       };
 
+  // Create hover data object to pass to event handlers
+  // For horizontal charts, the numeric value is in xData; for vertical charts, it's in yData
+  const numericValue = isVertical ? numericYData : Number(xData);
+  
+  const hoverData = {
+    dataKey,
+    dataIdx,
+    xKey,
+    yKey,
+    xData,
+    yData,
+    value: numericValue,
+    dataPoint: dataItem,
+  };
+
+  // Create wrapped event handlers that include hover data
+  const handleMouseEnter = (e: React.MouseEvent<SVGPathElement, MouseEvent>) => {
+    onMouseEnter?.(e, hoverData);
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<SVGPathElement, MouseEvent>) => {
+    onMouseLeave?.(e, hoverData);
+  };
+
+  const handleClick = (e: React.MouseEvent<SVGPathElement, MouseEvent>) => {
+    onClick?.(e, hoverData);
+  };
+
   return (
     <Bar
       barConfig={barConfig}
@@ -109,7 +140,10 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
       yData={yData}
       yKey={yKey}
       onBlur={onBlur}
+      onClick={onClick ? handleClick : undefined}
       onFocus={onFocus}
+      onMouseEnter={onMouseEnter ? handleMouseEnter : undefined}
+      onMouseLeave={onMouseLeave ? handleMouseLeave : undefined}
       {...points}
       {...props}
     />
