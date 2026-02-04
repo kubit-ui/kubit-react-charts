@@ -1,7 +1,7 @@
 {
   "name": "@kubit-ui-web/react-charts",
-  "version": "1.11.0",
   "private": false,
+  "version": "1.11.0",
   "main": "dist/kubit-ui-web-react-charts.cjs.js",
   "module": "dist/kubit-ui-web-react-charts.es.js",
   "unpkg": "dist/kubit-ui-web-react-charts.umd.js",
