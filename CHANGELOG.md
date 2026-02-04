@@ -1,5 +1,13 @@
 # @kubit-ui-web/react-charts
 
+## 1.11.2
+
+### Patch Changes
+
+- Add mouse event handlers to Bar component for tooltip support
+
+  PR: #21
+
 ## 1.11.1
 
 ### Patch Changes
