@@ -16,7 +16,10 @@ export const Bar: FC<BarProps> = ({
     strokeWidth: 0.2,
   },
   onBlur,
+  onClick,
   onFocus,
+  onMouseEnter,
+  onMouseLeave,
   order = 1,
   orientation,
   startRounded,
@@ -34,6 +37,24 @@ export const Bar: FC<BarProps> = ({
 }): ReactElement => {
   const { barWidth, singleConfig } = barConfig;
   const segments = getSegments({ barConfig, orientation, x1, x2, y1, y2 });
+  
+  // Create event handlers that match Path component signatures
+  const handlePathMouseEnter = (e: React.MouseEvent<SVGPathElement, MouseEvent>) => {
+    onMouseEnter?.(e);
+  };
+  
+  const handlePathMouseLeave = (e: React.MouseEvent<SVGPathElement, MouseEvent>) => {
+    onMouseLeave?.(e);
+  };
+  
+  const handlePathClick = () => {
+    // Path's onClick expects dataValue, but we'll trigger the bar's onClick with a synthetic event
+    if (onClick) {
+      const syntheticEvent = {} as React.MouseEvent<SVGPathElement, MouseEvent>;
+      onClick(syntheticEvent);
+    }
+  };
+  
   return (
     <g>
       {singleConfig.map(({ color, 'aria-label': ariaLabel, ...singleProps }, index) => {
@@ -75,7 +96,10 @@ export const Bar: FC<BarProps> = ({
             stroke="transparent"
             tabIndex={tabIndex}
             onBlur={onBlur}
+            onClick={onClick ? handlePathClick : undefined}
             onFocus={onFocus}
+            onMouseEnter={onMouseEnter ? handlePathMouseEnter : undefined}
+            onMouseLeave={onMouseLeave ? handlePathMouseLeave : undefined}
             {...singleProps}
           />
         );

@@ -12,6 +12,10 @@ import { AXIS_WITH_HORIZONTAL_BARS } from './templates/axisWithHorizontalBars';
 import { AXIS_WITH_VERTICAL_BARS } from './templates/axisWithVericalBars';
 import { COMPARATIVE_DATA, MIXED_DATA } from './templates/data';
 import { BarChartWithErrorHandlingWithHooks } from './templates/withErrorHandling';
+import {
+  BarChartWithTooltip,
+  BarChartHorizontalWithTooltip,
+} from './templates/withTooltip';
 
 const meta = {
   argTypes: argtypes(),
@@ -180,4 +184,121 @@ export const BarChartWithErrorHandling: Story = {
     },
   },
   render: () => <BarChartWithErrorHandlingWithHooks />,
+};
+
+export const WithTooltip: Story = {
+  args: {
+    ...complexArgs,
+    children: AXIS_WITH_VERTICAL_BARS,
+    data: COMPARATIVE_DATA,
+    orientation: BarOrientation.VERTICAL,
+  },
+  decorators: [
+    (Story: React.ComponentType): JSX.Element => {
+      return (
+        <>
+          <Note
+            collapsible={true}
+            defaultCollapsed={false}
+            heading="📊 Interactive Tooltips with BarChart"
+            text={[
+              <div key="tooltip-explanation">
+                <p>
+                  This example demonstrates how to implement <strong>interactive tooltips</strong>{' '}
+                  for the BarChart component using the new hover event callbacks.
+                </p>
+                <h4>🎯 Key Features:</h4>
+                <ul>
+                  <li>
+                    <strong>onMouseEnter:</strong> Called when hovering over a bar, receives event
+                    and bar data
+                  </li>
+                  <li>
+                    <strong>onMouseLeave:</strong> Called when leaving a bar, useful for hiding
+                    tooltips
+                  </li>
+                  <li>
+                    <strong>Bar Data:</strong> Access dataKey, value, xData, yData, and full data
+                    point
+                  </li>
+                  <li>
+                    <strong>Custom UI:</strong> Build your own tooltip component with complete
+                    styling control
+                  </li>
+                </ul>
+                <h4>💡 Implementation:</h4>
+                <p>
+                  The example shows two patterns: a <strong>floating tooltip</strong> that follows
+                  the cursor, and a <strong>fixed info panel</strong> that updates when hovering
+                  over bars.
+                </p>
+                <p>
+                  <strong>Try it:</strong> Hover over any bar to see the tooltip in action!
+                </p>
+              </div>,
+            ]}
+            variant="information"
+          />
+          <Story />
+        </>
+      );
+    },
+  ],
+  parameters: {
+    docs: {
+      source: {
+        code: 'See withTooltip.tsx template for complete implementation',
+      },
+    },
+  },
+  render: () => <BarChartWithTooltip />,
+};
+
+export const WithTooltipHorizontal: Story = {
+  args: {
+    ...complexArgs,
+    children: AXIS_WITH_HORIZONTAL_BARS,
+    data: COMPARATIVE_DATA,
+    orientation: BarOrientation.HORIZONTAL,
+  },
+  decorators: [
+    (Story: React.ComponentType): JSX.Element => {
+      return (
+        <>
+          <Note
+            collapsible={true}
+            defaultCollapsed={true}
+            heading="📊 Horizontal BarChart with Info Panel"
+            text={[
+              <div key="tooltip-horizontal-explanation">
+                <p>
+                  This example shows a <strong>horizontal bar chart</strong> with a fixed info
+                  panel that displays details about the hovered bar.
+                </p>
+                <p>
+                  Instead of a floating tooltip, this pattern uses a persistent panel that updates
+                  its content based on the hovered bar. This approach is ideal for:
+                </p>
+                <ul>
+                  <li>Dashboard layouts where space permits dedicated info areas</li>
+                  <li>Mobile-friendly designs where floating tooltips may obscure content</li>
+                  <li>Scenarios requiring more detailed information than a tooltip can show</li>
+                </ul>
+              </div>,
+            ]}
+            variant="information"
+          />
+          <Story />
+        </>
+      );
+    },
+  ],
+  parameters: {
+    docs: {
+      source: {
+        code: 'See withTooltip.tsx template for complete implementation',
+      },
+    },
+  },
+  render: () => <BarChartHorizontalWithTooltip />,
 };

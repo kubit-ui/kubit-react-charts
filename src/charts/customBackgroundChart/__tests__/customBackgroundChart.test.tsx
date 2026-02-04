@@ -134,7 +134,7 @@ describe('CustomBackgroundChart', () => {
           ariaLabel="{{name}}: {{value}}"
           dataKey="spain"
           fill="#0074D9"
-          formatAriaValue={(v: CustomValue) => `${v.amount.toLocaleString('en-US')} ${v.currency}`}
+          formatAriaValue={(v: CustomValue) => `${v.amount.toLocaleString()} ${v.currency}`}
           size={20}
         />
       </CustomBackgroundChart>,

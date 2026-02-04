@@ -153,4 +153,18 @@ export interface BarChartPathProps {
   tabIndex?: number;
   onFocus?: (event: React.FocusEvent<SVGPathElement>) => void;
   onBlur?: (event: React.FocusEvent<SVGPathElement>) => void;
+  onMouseEnter?: (event: React.MouseEvent<SVGPathElement, MouseEvent>, data: BarHoverData) => void;
+  onMouseLeave?: (event: React.MouseEvent<SVGPathElement, MouseEvent>, data: BarHoverData) => void;
+  onClick?: (event: React.MouseEvent<SVGPathElement, MouseEvent>, data: BarHoverData) => void;
+}
+
+export interface BarHoverData {
+  dataKey: string;
+  dataIdx: number;
+  xKey: string;
+  yKey: string;
+  xData: string | number;
+  yData: string | number;
+  value: number;
+  dataPoint: BarChartIDataPoint;
 }
