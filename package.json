@@ -1,12 +1,22 @@
 {
   "name": "@kubit-ui-web/react-charts",
-  "version": "1.11.0",
   "private": false,
-  "main": "dist/kubit-ui-web-react-charts.cjs.js",
-  "module": "dist/kubit-ui-web-react-charts.es.js",
-  "unpkg": "dist/kubit-ui-web-react-charts.umd.js",
-  "jsdelivr": "dist/kubit-ui-web-react-charts.umd.js",
+  "version": "1.11.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "*.svg",
+    "*.ttf",
+    "*.otf",
+    "*.eot",
+    "*.png",
+    "*.jpg",
+    "*.gif",
+    "*.webp"
+  ],
   "description": "Modern React chart library with TypeScript support - Create beautiful, interactive, and accessible data visualizations with ease. Features bar charts, line charts, pie charts, and more!",
   "keywords": [
     "react",
@@ -22,45 +32,21 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/esm/index.d.ts",
-      "import": "./dist/kubit-ui-web-react-charts.es.js",
-      "require": "./dist/kubit-ui-web-react-charts.cjs.js"
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
     },
-    "./*": {
-      "types": "./dist/esm/charts/*/index.d.ts",
+    "./charts/*": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/esm/charts/*/index.js",
       "require": "./dist/cjs/charts/*/index.js"
     },
-    "./components": {
-      "types": "./dist/esm/components/index.d.ts",
-      "import": "./dist/esm/components/index.js",
-      "require": "./dist/cjs/components/index.js"
-    },
     "./components/*": {
-      "types": "./dist/esm/components/*/index.d.ts",
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/esm/components/*/index.js",
       "require": "./dist/cjs/components/*/index.js"
     },
-    "./charts": {
-      "types": "./dist/esm/charts/index.d.ts",
-      "import": "./dist/esm/charts/index.js",
-      "require": "./dist/cjs/charts/index.js"
-    },
-    "./charts/*": {
-      "types": "./dist/esm/charts/*/index.d.ts",
-      "import": "./dist/esm/charts/*/index.js",
-      "require": "./dist/cjs/charts/*/index.js"
-    },
-    "./types": {
-      "types": "./dist/esm/types/index.d.ts",
-      "import": "./dist/esm/types/index.js",
-      "require": "./dist/cjs/types/index.js"
-    },
-    "./types/*": {
-      "types": "./dist/esm/types/*/index.d.ts",
-      "import": "./dist/esm/types/*/index.js",
-      "require": "./dist/cjs/types/*/index.js"
-    }
+    "./package.json": "./package.json"
   },
   "typesVersions": {
     "*": {
@@ -73,44 +59,55 @@
     }
   },
   "files": [
-    "dist",
+    "dist/cjs",
+    "dist/esm",
+    "dist/types",
     "package.json",
     "README.md",
     "LICENSE.md",
-    "!dist/cjs/assets",
-    "!dist/esm/assets",
+    "CHANGELOG.md",
+    "!dist/**/*.test.*",
+    "!dist/**/*.test.d.ts",
+    "!dist/**/*.stories.*",
+    "!dist/**/__tests__",
+    "!dist/**/__mocks__",
+    "!dist/**/__fixtures__",
     "!dist/**/tests",
-    "!dist/**/**/*.test.*",
-    "!dist/**/**/*.stories.*",
-    "!dist/**/storybook",
-    "!dist/**/**/stories"
+    "!dist/**/stories",
+    "!dist/**/.DS_Store"
   ],
   "scripts": {
-    "test:ci": "pnpm test",
-    "eslint": "eslint src",
-    "custom-start": "echo -e '\n▐█µ   ╓▓█▀             ▐█         j█▌   ╓▄   \n▐█▌,▄██─    ▓▌     ▓▌  ▐█▄▄▓▓█▓▄   ▓▌ @▓██▓▓▓\n▐██▀└╙██    █▌     █▌  ▐█─    └█▌  █▌   ██   \n▐█▌    ▀█▌  ██▄▄▄▄▀█▌  ▐██▄╓,▄██`  █▌   ╙█▄▄▄'",
-    "postinstall": "echo postinstall",
-    "stylelint": "echo 'no css files'",
-    "start": "pnpm run custom-start && storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "start": "storybook dev -p 6006",
     "storybook": "storybook dev -p 6006",
-    "predist": "echo predist",
-    "postdist": "cpy 'src/**/*.(svg|ttf|eot|css|png|jpg|otf)' dist/esm --no-overwrite --parents && cpy 'src/**/*.(svg|ttf|eot|css|png|jpg|otf)' dist/cjs --no-overwrite --parents",
-    "dist": "rm -rf dist && pnpm run dist:all && pnpm dist:cjs && pnpm dist:esm",
-    "dist:watch": "rm -rf dist && pnpm dist:cjs:watch & pnpm dist:esm:watch",
-    "dist:cjs": "tsc -p tsconfig.build.cjs.json && tsc-alias -p tsconfig.build.cjs.json",
-    "dist:esm": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-    "dev:yalc:push": "nodemon --watch dist --exec 'find dist \\( -name '*.svg' -o  -name '*.ttf' -o  -name '*.otf' -o -name '*.eot' -o  -name '*.png' -o  -name '*.jpg' \\) -exec rm \"{}\" \\; && pnpm postdist && yalc push'",
-    "build": "storybook build -o bundle --disable-telemetry",
-    "storybook:axe": "pnpm build && axe-storybook --build-dir bundle",
-    "createAssetsFiles": "node ./scripts/createAssetsFiles.js",
-    "prettier": "prettier 'src/**/*.ts' --write",
-    "test": "pnpm run eslint --fix && pnpm tsc && pnpm vitest --coverage.enabled=true --silent --run",
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "predist": "rm -rf dist",
+    "dist": "vite build",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
+    "test": "pnpm lint && pnpm typecheck && vitest --coverage.enabled=true --silent --run",
+    "test:ci": "vitest --ui --coverage.enabled=true",
+    "test:watch": "vitest --watch",
+    "test:unit": "vitest --run",
+    "test:coverage": "vitest --coverage.enabled=true --run",
+    "test:coverage:ui": "vitest --coverage.enabled=true --ui",
+    "typecheck": "tsc --noEmit",
+    "validate": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm dist",
+    "validate:quick": "pnpm lint && pnpm typecheck",
+    "pack:check": "pnpm pack --dry-run",
+    "pack:size": "pnpm pack --dry-run 2>&1 | tail -1",
+    "pack:analyze": "pnpm pack && tar -tzf *.tgz | head -50 && rm *.tgz",
+    "pack:verify": "pnpm pack:check && pnpm pack:size",
+    "clean": "rm -rf dist node_modules",
+    "clean:build": "rm -rf dist",
+    "prepublishOnly": "pnpm dist && pnpm pack:size",
+    "prerelease": "pnpm validate && pnpm test",
     "test-storybook": "test-storybook",
+    "build-storybook": "storybook build",
+    "storybook:axe": "pnpm build-storybook && axe-storybook --build-dir storybook-static",
     "vitest": "vitest",
-    "vitest-report": "vitest --ui --coverage.enabled=true",
-    "vitest:watch": "vitest - watch",
-    "dist:all": "pnpm run vite build",
     "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
     "changeset": "changeset",
     "changeset:version": "changeset version",
@@ -126,7 +123,6 @@
   "bugs": {
     "url": "https://github.com/kubit-ui/kubit-react-charts/issues"
   },
-  "sideEffects": false,
   "author": {
     "name": "Kubit Team",
     "url": "https://www.kubit-lab.com",
@@ -149,6 +145,11 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "packageManager": "pnpm@10.8.1",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
   },
   "funding": {
     "type": "corporate",
@@ -202,24 +203,17 @@
     "eslint-plugin-react-refresh": "^0.5.0",
     "eslint-plugin-storybook": "^10.2.5",
     "eslint-plugin-unused-imports": "^4.3.0",
-    "gts": "^7.0.0",
+    "glob": "^13.0.0",
     "html-validate": "^10.7.0",
     "jsdom": "^28.0.0",
-    "json-beautify": "^1.1.1",
     "prettier": "^3.8.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "sort-imports": "^1.1.0",
     "storybook": "10.2.5",
-    "tsc-alias": "1.8.16",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.54.0",
-    "vite": "^7.3.1",
+    "vite": "8.0.0-beta.10",
     "vite-plugin-dts": "^4.5.4",
-    "vite-tsconfig-paths": "^6.0.5",
     "vitest": "^4.0.18",
-    "vitest-axe": "^0.1.0",
-    "yarn": "^1.22.22",
-    "yarn-deduplicate": "^6.0.2"
+    "vitest-axe": "^0.1.0"
   },
   "dependencies": {
     "react": "18.3.1",

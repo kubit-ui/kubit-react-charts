@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm build-storybook",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "outputDirectory": "storybook-static"
+}
