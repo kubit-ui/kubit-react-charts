@@ -75,6 +75,10 @@ export const PieChartPath: FC<PathProps> = ({
   const parsedInnerRadius = innerRadius ? parseStringToNumberPx(innerRadius) : undefined;
   const parsedRadius = radius ? parseStringToNumberPx(radius) : undefined;
 
+  // Reset startAngle before each render pass to prevent accumulation across re-renders
+  // (e.g., when ResizeObserver triggers dimension recalculation on resolution change)
+  startAngle.current = chartInitAngle;
+
   return data[key]?.length ? (
     <g>
       {data[key].map((group, index) => (
