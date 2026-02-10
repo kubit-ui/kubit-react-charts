@@ -127,9 +127,12 @@ export const useResponsiveCanvas = ({
         svgElement,
       });
 
-      setParsedCanvas({
-        height: parsedCanvasHeight,
-        width: parsedCanvasWidth,
+      // Only update state when dimensions actually change to prevent unnecessary re-renders
+      setParsedCanvas(prev => {
+        if (prev.height === parsedCanvasHeight && prev.width === parsedCanvasWidth) {
+          return prev;
+        }
+        return { height: parsedCanvasHeight, width: parsedCanvasWidth };
       });
     };
 
