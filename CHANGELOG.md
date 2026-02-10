@@ -1,5 +1,13 @@
 # @kubit-ui-web/react-charts
 
+## 1.11.3
+
+### Patch Changes
+
+- PieChart disappearing on resize when halfChart=true
+
+  PR: #22
+
 ## 1.11.2
 
 ### Patch Changes
