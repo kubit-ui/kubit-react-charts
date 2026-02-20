@@ -78,7 +78,7 @@ export const Plot: Story = {
     ...args,
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -137,7 +137,7 @@ export const ScatterChart: Story = {
     source: 'Scatter Chart with Different Plot Types',
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -336,7 +336,7 @@ export const MultipleAxesChart: Story = {
     source: 'Chart with Multiple Axes and Different Plot Types',
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note

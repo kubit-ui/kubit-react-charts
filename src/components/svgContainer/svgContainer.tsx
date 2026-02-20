@@ -78,4 +78,4 @@ export const SvgContainer = forwardRef(SvgContainerComponent) as (
   props: SvgContainerProps & {
     ref?: ForwardedRef<SVGSVGElement>;
   }
-) => JSX.Element;
+) => React.JSX.Element;

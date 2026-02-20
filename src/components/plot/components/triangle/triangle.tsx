@@ -5,7 +5,7 @@ import type { PlotShapeProps } from '../../plot.types';
 const TriangleComponent: ForwardRefRenderFunction<SVGPolygonElement, PlotShapeProps> = (
   { dataTestId, position, size, ...props },
   ref
-): JSX.Element => {
+): React.JSX.Element => {
   // Create an isosceles triangle where both width and height are size*2
   // This maintains consistency with the circle and square Plots
   const halfWidth = size / 2;
@@ -26,4 +26,4 @@ export const Triangle = forwardRef(TriangleComponent) as (
   props: PlotShapeProps & {
     ref?: ForwardedRef<SVGElement>;
   }
-) => JSX.Element;
+) => React.JSX.Element;

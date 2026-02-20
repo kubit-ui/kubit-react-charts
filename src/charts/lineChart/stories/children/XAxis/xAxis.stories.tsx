@@ -11,7 +11,7 @@ import type { XAxisStoryArgs } from './xAxis.types';
 const meta = {
   argTypes: xAxisArgTypes(),
   decorators: [
-    (Story: React.ComponentType): JSX.Element => (
+    (Story: React.ComponentType): React.JSX.Element => (
       <>
         <Note
           collapsible={true}

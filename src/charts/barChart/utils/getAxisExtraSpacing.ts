@@ -26,7 +26,7 @@ const handleBarChartXAxis = (
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  const { position, tickText, tickValues } = child.props;
+  const { position, tickText, tickValues } = child.props as any;
   const fontSize = tickText?.fontSize ?? 0;
   const spaceFontSize = fontSize * ajustedX;
 
@@ -71,7 +71,7 @@ const handleBarChartYAxis = (
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  const { position, tickText, tickValues } = child.props;
+  const { position, tickText, tickValues } = child.props as any;
   const fontSize = tickText?.fontSize ?? 0;
   const spaceFontSize = fontSize * ajustedY; //! review
 
@@ -154,9 +154,9 @@ export const getAxisExtraSpacing = ({
 
   Children.forEach(children, (child: React.ReactNode) => {
     if (isValidElement(child)) {
-      if (child.type === BarChartPath && !reviews.includes(child.props.order)) {
-        reviews.push(child.props.order);
-        barsSpacing += child.props.barConfig.barWidth ?? 0;
+      if (child.type === BarChartPath && !reviews.includes((child.props as any).order)) {
+        reviews.push((child.props as any).order);
+        barsSpacing += (child.props as any).barConfig.barWidth ?? 0;
       }
       if (child.type === BarChartXAxis) {
         const securitySpace = orientation === BarOrientation.VERTICAL ? barsSpacing : 0;

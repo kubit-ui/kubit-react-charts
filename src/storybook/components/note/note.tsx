@@ -18,7 +18,7 @@ export const Note = ({
   heading,
   text,
   variant = 'information',
-}: INote): JSX.Element => {
+}: INote): React.JSX.Element => {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
 
   const toggleCollapse = () => {

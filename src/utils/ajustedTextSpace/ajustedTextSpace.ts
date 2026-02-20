@@ -3,7 +3,7 @@ export const ajustedTextSpace = (
   value: number,
   extra: number
 ): number => {
-  let ajusted = 0;
+  let ajusted: number;
   switch (textAnchor) {
     case 'middle':
       ajusted = value / 2 + extra;

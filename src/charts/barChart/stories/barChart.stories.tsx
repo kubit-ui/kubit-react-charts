@@ -40,7 +40,7 @@ const complexArgs = {
 };
 
 // Reusable decorator for customization examples
-const withCustomizationNote = (Story: React.ComponentType): JSX.Element => {
+const withCustomizationNote = (Story: React.ComponentType): React.JSX.Element => {
   return (
     <>
       <Note
@@ -133,7 +133,7 @@ export const BarChartWithErrorHandling: Story = {
     orientation: BarOrientation.VERTICAL,
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -194,7 +194,7 @@ export const WithTooltip: Story = {
     orientation: BarOrientation.VERTICAL,
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -262,7 +262,7 @@ export const WithTooltipHorizontal: Story = {
     orientation: BarOrientation.HORIZONTAL,
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note

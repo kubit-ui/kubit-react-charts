@@ -11,7 +11,7 @@ import type { YAxisStoryArgs } from './yAxis.types';
 const meta = {
   argTypes: yAxisArgTypes(),
   decorators: [
-    (Story: React.ComponentType): JSX.Element => (
+    (Story: React.ComponentType): React.JSX.Element => (
       <>
         <Note
           collapsible={true}

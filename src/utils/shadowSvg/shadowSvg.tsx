@@ -6,7 +6,7 @@ export const ShadowSvg = ({
   x = '-20%',
   y = '-20%',
   ...props
-}: ShadowSvgProps): JSX.Element => {
+}: ShadowSvgProps): React.JSX.Element => {
   return (
     <defs>
       <filter height={height} id={props.id} width={width} x={x} y={y}>

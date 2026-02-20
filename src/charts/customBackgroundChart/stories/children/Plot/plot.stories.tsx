@@ -41,7 +41,7 @@ export const PlotCustomization: Story = {
   },
 
   decorators: [
-    (Story: React.ComponentType): JSX.Element => (
+    (Story: React.ComponentType): React.JSX.Element => (
       <>
         <Note
           collapsible={true}
@@ -78,7 +78,7 @@ export const PlotCustomization: Story = {
     ),
   ],
 
-  render: (args: CustomBackgroundChartPlotProps): JSX.Element => {
+  render: (args: CustomBackgroundChartPlotProps): React.JSX.Element => {
     return (
       <CustomBackgroundChart
         backgroundUrl={GRID_BACKGROUND_URL}

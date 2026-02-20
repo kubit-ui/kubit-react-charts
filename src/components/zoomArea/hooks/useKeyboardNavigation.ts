@@ -151,7 +151,7 @@ export const useKeyboardNavigation = (
           ? interactionConfig.keyboardFastStep
           : interactionConfig.keyboardStep;
 
-        let newRange = { ...currentRange };
+        let newRange: typeof currentRange;
 
         switch (event.key) {
           case 'ArrowLeft':

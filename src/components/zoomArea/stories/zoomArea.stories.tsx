@@ -80,7 +80,7 @@ export const Basic: Story = {
     ...defaultArgs,
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -157,7 +157,7 @@ export const Advanced: Story = {
     xKey: 'month',
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -246,7 +246,7 @@ const InteractiveZoomArea = () => {
 export const Interactive: Story = {
   args: defaultArgs,
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -371,7 +371,7 @@ export const Customization: Story = {
     },
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -405,7 +405,7 @@ export const CustomInteraction: Story = {
     },
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -459,7 +459,7 @@ export const OverlayBehavior: Story = {
     },
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note

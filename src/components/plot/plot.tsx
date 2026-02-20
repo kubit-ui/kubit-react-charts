@@ -173,4 +173,4 @@ export const Plot = forwardRef(PlotComponent) as <T = string>(
   props: PlotProps<T> & {
     ref?: ForwardedRef<SVGElement>;
   }
-) => JSX.Element;
+) => React.JSX.Element;

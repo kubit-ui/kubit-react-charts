@@ -159,4 +159,4 @@ export const Node = forwardRef(NodeComponent) as (
   props: NodeProps & {
     ref?: ForwardedRef<SVGSVGElement>;
   }
-) => JSX.Element;
+) => React.JSX.Element;

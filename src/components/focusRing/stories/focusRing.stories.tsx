@@ -48,7 +48,7 @@ export const Playground: Story = {
     ...defaultArgs,
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => (
+    (Story: React.ComponentType): React.JSX.Element => (
       <>
         <Note
           collapsible={true}
@@ -122,7 +122,7 @@ export const Playground: Story = {
  */
 export const VariantComparison: Story = {
   decorators: [
-    (Story: React.ComponentType): JSX.Element => (
+    (Story: React.ComponentType): React.JSX.Element => (
       <>
         <Note
           collapsible={true}

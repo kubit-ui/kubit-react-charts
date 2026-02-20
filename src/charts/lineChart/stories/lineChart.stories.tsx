@@ -59,7 +59,7 @@ const args = {
 };
 
 // Reusable decorator for customization examples
-const withCustomizationNote = (Story: React.ComponentType): JSX.Element => {
+const withCustomizationNote = (Story: React.ComponentType): React.JSX.Element => {
   return (
     <>
       <Note
@@ -106,7 +106,7 @@ export const LineChartAccessibility: Story = {
     data: DATA,
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -299,7 +299,7 @@ export const LineChartWithNodeDivergent: Story = {
     data: [],
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -444,7 +444,7 @@ export const LineChartWithErrorHandling: Story = {
     data: [],
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -504,7 +504,7 @@ export const LineChartWithZoomArea: Story = {
     data: ZOOM_INTEGRATION_DATA,
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note

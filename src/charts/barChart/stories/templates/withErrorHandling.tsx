@@ -22,7 +22,7 @@ interface ErrorInfoState {
   hasErrors: boolean;
 }
 
-export const BarChartWithErrorHandlingWithHooks = (): JSX.Element => {
+export const BarChartWithErrorHandlingWithHooks = (): React.JSX.Element => {
   const [errorInfo, setErrorInfo] = useState<ErrorInfoState>({
     errors: {},
     hasErrors: false,
