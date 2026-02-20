@@ -1,5 +1,13 @@
 # @kubit-ui-web/react-charts
 
+## 1.11.4
+
+### Patch Changes
+
+- Update peerdependencies
+
+  PR: #23
+
 ## 1.11.3
 
 ### Patch Changes
