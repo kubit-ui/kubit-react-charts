@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 
 import { beforeEach, describe, expect, vi } from 'vitest';
 
@@ -127,7 +127,7 @@ describe('useResponsiveCanvas', () => {
     expect(result.current.parsedCanvas).toBe(firstCanvas);
   });
 
-  it('should update parsedCanvas when ResizeObserver fires with different dimensions', () => {
+  it('should update parsedCanvas when ResizeObserver fires with different dimensions', async () => {
     const { result } = renderHook(() =>
       useResponsiveCanvas({
         dataTestId: 'test-chart',
@@ -137,6 +137,7 @@ describe('useResponsiveCanvas', () => {
     );
 
     const firstCanvas = result.current.parsedCanvas;
+    expect(firstCanvas).toEqual({ height: 300, width: 400 });
 
     // Simulate dimensions actually changing (e.g., percentage-based canvasConfig)
     vi.mocked(getCanvasDimensions).mockReturnValue({
@@ -148,8 +149,10 @@ describe('useResponsiveCanvas', () => {
       resizeObserverCallback();
     }
 
-    expect(result.current.parsedCanvas).not.toBe(firstCanvas);
-    expect(result.current.parsedCanvas).toEqual({ height: 500, width: 600 });
+    // Wait for the hook to update (React 19 batches updates)
+    await vi.waitFor(() => {
+      expect(result.current.parsedCanvas).toEqual({ height: 500, width: 600 });
+    });
   });
 
   it('should handle edge cases and cleanup', () => {

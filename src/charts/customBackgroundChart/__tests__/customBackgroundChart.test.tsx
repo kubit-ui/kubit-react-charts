@@ -141,7 +141,9 @@ describe('CustomBackgroundChart', () => {
       false
     );
 
-    expect(screen.getByLabelText('Spain: 1,250,000 EUR')).toBeInTheDocument();
+    // Accept both English (1,250,000) and Spanish (1.250.000) locale formats
+    const element = screen.getByRole('button', { name: /Spain: 1[,.]250[,.]000 EUR/ });
+    expect(element).toBeInTheDocument();
   });
 
   it('supports custom ariaLabel template', () => {
