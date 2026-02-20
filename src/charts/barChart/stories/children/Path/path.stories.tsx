@@ -55,7 +55,7 @@ export const PathCustomization: Story = {
   },
 
   decorators: [
-    (Story: React.ComponentType): JSX.Element => (
+    (Story: React.ComponentType): React.JSX.Element => (
       <>
         <Note
           collapsible={true}
@@ -94,7 +94,7 @@ export const PathCustomization: Story = {
     ),
   ],
 
-  render: (args: BarChartPathProps): JSX.Element => (
+  render: (args: BarChartPathProps): React.JSX.Element => (
     <div style={{ height: '400px', width: '600px' }}>
       <BarChart
         data={COMPARATIVE_DATA}
@@ -172,7 +172,7 @@ export const StackedBars: Story = {
   },
 
   decorators: [
-    (Story: React.ComponentType): JSX.Element => (
+    (Story: React.ComponentType): React.JSX.Element => (
       <>
         <Note
           collapsible={true}
@@ -217,7 +217,7 @@ export const StackedBars: Story = {
     ),
   ],
 
-  render: (args: BarChartPathProps): JSX.Element => (
+  render: (args: BarChartPathProps): React.JSX.Element => (
     <div style={{ height: '400px', width: '600px' }}>
       <BarChart
         data={COMPARATIVE_DATA}

@@ -33,7 +33,7 @@ const args = {
 };
 
 // Reusable decorator for customization examples
-const withCustomizationNote = (Story: React.ComponentType): JSX.Element => {
+const withCustomizationNote = (Story: React.ComponentType): React.JSX.Element => {
   return (
     <>
       <Note
@@ -85,7 +85,7 @@ export const PieChartMultiple: Story = {
     data: DATA,
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -152,7 +152,7 @@ export const PieChartWithCustomAnimation: Story = {
     segmentClassNames: 'custom-animation',
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -223,7 +223,7 @@ export const HalfChart: Story = {
     radius: '0%',
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -292,7 +292,7 @@ export const PieChartWithErrorHandling: Story = {
     data: {},
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note

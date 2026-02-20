@@ -35,7 +35,7 @@ interface ErrorInfoState {
   hasErrors: boolean;
 }
 
-export const PieChartWithErrorHandlingWithHooks = (): JSX.Element => {
+export const PieChartWithErrorHandlingWithHooks = (): React.JSX.Element => {
   const [errorInfo, setErrorInfo] = useState<ErrorInfoState>({
     errors: {},
     hasErrors: false,

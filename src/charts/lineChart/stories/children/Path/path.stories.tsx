@@ -144,7 +144,7 @@ export const PathCustomization: Story = {
   },
 
   decorators: [
-    (Story: React.ComponentType): JSX.Element => (
+    (Story: React.ComponentType): React.JSX.Element => (
       <>
         <Note
           collapsible={true}
@@ -208,7 +208,7 @@ export const PathCustomization: Story = {
     ),
   ],
 
-  render: (args: LineChartPathProps): JSX.Element => {
+  render: (args: LineChartPathProps): React.JSX.Element => {
     return (
       <LineChart data={SUBCOMPONENT_DEMO_DATA} xKey="x">
         {/* Path protagonist - receives args from controls */}
@@ -310,7 +310,7 @@ export const PathWithProjections: Story = {
   },
 
   decorators: [
-    (Story: React.ComponentType): JSX.Element => (
+    (Story: React.ComponentType): React.JSX.Element => (
       <>
         <Note
           collapsible={true}
@@ -352,7 +352,7 @@ export const PathWithProjections: Story = {
     ),
   ],
 
-  render: (args: LineChartPathProps): JSX.Element => {
+  render: (args: LineChartPathProps): React.JSX.Element => {
     return (
       <LineChart data={PROJECTION_DEMO_DATA} xKey="x">
         <LineChart.Path {...args} />

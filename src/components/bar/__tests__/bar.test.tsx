@@ -37,15 +37,17 @@ describe('Bar Component', () => {
     const paths = screen.getAllByTestId('path');
     expect(paths).toHaveLength(mockBarConfig.singleConfig.length);
 
-    mockBarConfig.singleConfig.forEach(segment => {
-      expect(Path).toHaveBeenCalledWith(
-        expect.objectContaining({
+    const calls = vi.mocked(Path).mock.calls;
+    mockBarConfig.singleConfig.forEach((segment, index) => {
+      const call = calls.find(c => c[0]?.fill === segment.color && c[0]?.title === segment.title);
+      expect(call).toBeDefined();
+      if (call) {
+        expect(call[0]).toMatchObject({
           d: expect.any(String),
           fill: segment.color,
           title: segment.title,
-        }),
-        expect.anything()
-      );
+        });
+      }
     });
   });
 
@@ -56,12 +58,10 @@ describe('Bar Component', () => {
     expect(paths).toHaveLength(mockBarConfig.singleConfig.length);
 
     // Verifica que los segmentos se calculen correctamente
-    expect(Path).toHaveBeenCalledWith(
-      expect.objectContaining({
-        d: expect.any(String),
-      }),
-      expect.anything()
-    );
+    const calls = vi.mocked(Path).mock.calls;
+    expect(calls.length).toBeGreaterThan(0);
+    expect(calls[0][0]).toHaveProperty('d');
+    expect(typeof calls[0][0].d).toBe('string');
   });
 
   it('should calculate correctly the segments for vertical orientation', () => {
@@ -71,12 +71,10 @@ describe('Bar Component', () => {
     expect(paths).toHaveLength(mockBarConfig.singleConfig.length);
 
     // Verifica que los segmentos se calculen correctamente
-    expect(Path).toHaveBeenCalledWith(
-      expect.objectContaining({
-        d: expect.any(String),
-      }),
-      expect.anything()
-    );
+    const calls = vi.mocked(Path).mock.calls;
+    expect(calls.length).toBeGreaterThan(0);
+    expect(calls[0][0]).toHaveProperty('d');
+    expect(typeof calls[0][0].d).toBe('string');
   });
 
   it('should handler correctly the round borders', () => {
@@ -85,21 +83,14 @@ describe('Bar Component', () => {
     const paths = screen.getAllByTestId('path');
     expect(paths).toHaveLength(mockBarConfig.singleConfig.length);
 
-    // Verify that the first segment has`startRounded`
-    expect(Path).toHaveBeenCalledWith(
-      expect.objectContaining({
-        d: expect.any(String),
-      }),
-      expect.anything()
-    );
-
-    // Verify that the last segment has `endRounded`
-    expect(Path).toHaveBeenCalledWith(
-      expect.objectContaining({
-        d: expect.any(String),
-      }),
-      expect.anything()
-    );
+    // Verify that segments were rendered with path data
+    const calls = vi.mocked(Path).mock.calls;
+    expect(calls.length).toBeGreaterThan(0);
+    // Verify all calls have valid path data
+    calls.forEach(call => {
+      expect(call[0]).toHaveProperty('d');
+      expect(typeof call[0].d).toBe('string');
+    });
   });
 
   it('should handler correctly a empty barConfig', () => {

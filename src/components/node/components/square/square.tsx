@@ -5,7 +5,7 @@ import type { NodeProps } from '../../node.types';
 const SquareComponent: ForwardRefRenderFunction<SVGRectElement, NodeProps> = (
   { dataTestId, position = { x: 0, y: 0 }, size = 1, ...props },
   ref
-): JSX.Element => {
+): React.JSX.Element => {
   return (
     <rect
       {...props}
@@ -23,4 +23,4 @@ export const Square = forwardRef(SquareComponent) as (
   props: NodeProps & {
     ref?: ForwardedRef<SVGSVGElement>;
   }
-) => JSX.Element;
+) => React.JSX.Element;

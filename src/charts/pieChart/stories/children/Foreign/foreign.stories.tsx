@@ -41,7 +41,7 @@ export const ForeignObjectCustomization: Story = {
   },
 
   decorators: [
-    (Story: React.ComponentType): JSX.Element => (
+    (Story: React.ComponentType): React.JSX.Element => (
       <>
         <Note
           collapsible={true}

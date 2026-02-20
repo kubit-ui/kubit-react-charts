@@ -7,7 +7,7 @@ export const divergentTemplate = ({
   cb,
 }: {
   cb: (active: { x: number; y: number } | undefined) => void;
-}): JSX.Element[] => {
+}): React.JSX.Element[] => {
   return [
     <LineChart.Path
       key="1"

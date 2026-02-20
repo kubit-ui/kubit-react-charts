@@ -40,7 +40,7 @@ const defaultArgs = {
   width: '100%',
 };
 
-const withBasicNote = (Story: React.ComponentType): JSX.Element => {
+const withBasicNote = (Story: React.ComponentType): React.JSX.Element => {
   return (
     <>
       <Note
@@ -359,7 +359,7 @@ export const WithWorldMapBackground: Story = {
     width: '100%',
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note
@@ -613,7 +613,7 @@ export const WithGenericValueType: Story = {
     width: '100%',
   },
   decorators: [
-    (Story: React.ComponentType): JSX.Element => {
+    (Story: React.ComponentType): React.JSX.Element => {
       return (
         <>
           <Note

@@ -16,7 +16,7 @@ export const LineChartProjection: FC<LineChartProjectionProps> = ({
   lineProjection,
   points,
   svgHeight,
-}): JSX.Element => {
+}): React.JSX.Element => {
   const { addError } = useContext(LineChartContext);
   const { lower, shapeColor, upper } = lineProjection;
   const { xProjection: xUp, yProjection: yUp, ...upperProps } = upper || {};

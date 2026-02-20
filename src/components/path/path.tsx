@@ -167,7 +167,7 @@ const PathComponent = (
         dataTestId={`${mergedProps.dataTestId}-focus-ring`}
         focusConfig={resolvedFocusConfig}
         isFocused={isFocused}
-        targetRef={pathRef}
+        targetRef={pathRef as any}
       />
       <g
         aria-label={mergedProps.ariaLabel}
@@ -192,7 +192,7 @@ const PathComponent = (
         onMouseLeave={handleMouseLeave}
       >
         <path
-          ref={pathRef}
+          ref={pathRef as React.Ref<SVGPathElement>}
           d={mergedProps.d}
           data-testid={mergedProps.dataTestId}
           fill={mergedProps.dFill ? 'transparent' : mergedProps.fill}
@@ -232,7 +232,11 @@ const PathComponent = (
           return (
             <NodePath
               key={`${index.toString()}`}
-              ref={rf => (nodeRef.current[index] = rf)}
+              ref={rf => {
+                if (rf) {
+                  nodeRef.current[index] = rf;
+                }
+              }}
               data={nodeData}
               nodeConfig={mergedProps.nodeConfig}
               tabIndex={-1}

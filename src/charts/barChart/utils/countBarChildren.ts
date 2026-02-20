@@ -6,8 +6,12 @@ import { BarChartPath } from '../fragments/barChartPath';
 export const countBarChildren = (children: BarChartChildrenType): number => {
   let higherOrder = 0;
   Children.toArray(children).forEach(child => {
-    if (isValidElement(child) && child.type === BarChartPath && child.props.order > higherOrder) {
-      higherOrder = child.props.order;
+    if (
+      isValidElement(child) &&
+      child.type === BarChartPath &&
+      (child.props as any).order > higherOrder
+    ) {
+      higherOrder = (child.props as any).order;
     }
   });
   return higherOrder;

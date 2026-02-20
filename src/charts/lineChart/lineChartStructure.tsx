@@ -8,6 +8,7 @@ import type { ChartError, ErrorType } from '@/types/errors.type';
 import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
 import { getChildrenAttr } from '@/utils/getChildrenAttr/getChildrenAttr';
 import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
+
 import { buildLineContextValue } from './context/buildLineContextValue';
 import { LineChartContext } from './context/lineChartContext';
 import { LineChartXAxis } from './fragments/lineChartXAxis';
@@ -79,7 +80,7 @@ export const LineChartStructure: FC<LineChartProps> = ({
     <LineChartXAxis key="default-x-axis" />,
     <LineChartYAxis key="default-y-axis" />,
   ];
-  const arrayChildren = (Children.toArray(children) || []) as JSX.Element[];
+  const arrayChildren = (Children.toArray(children) || []) as React.JSX.Element[];
   const chidrenWithDefaultAxis = defaultAxis.concat(arrayChildren);
 
   // watch the Y childs keys

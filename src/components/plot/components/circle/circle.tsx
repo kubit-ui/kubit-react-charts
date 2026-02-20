@@ -5,7 +5,7 @@ import type { PlotShapeProps } from '../../plot.types';
 const CircleComponent: ForwardRefRenderFunction<SVGCircleElement, PlotShapeProps> = (
   { dataTestId, position, size, ...props },
   ref
-): JSX.Element => {
+): React.JSX.Element => {
   return (
     <circle
       {...props}
@@ -22,4 +22,4 @@ export const Circle = forwardRef(CircleComponent) as (
   props: PlotShapeProps & {
     ref?: ForwardedRef<SVGElement>;
   }
-) => JSX.Element;
+) => React.JSX.Element;

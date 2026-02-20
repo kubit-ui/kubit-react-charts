@@ -31,7 +31,7 @@ const handleLineChartXAxis = (
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  const { position = Positions.BOTTOM, tickText, tickValues, valueFormatter } = child.props;
+  const { position = Positions.BOTTOM, tickText, tickValues, valueFormatter } = child.props as any;
   const fontSize = tickText?.fontSize ?? 0;
 
   const xData = tickValues ? (getDataValues(tickValues) as string[]) : data.map(d => d[xKey]);
@@ -86,7 +86,7 @@ const handleLineChartYAxis = (
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  const { position = Positions.LEFT, tickText, tickValues, valueFormatter } = child.props;
+  const { position = Positions.LEFT, tickText, tickValues, valueFormatter } = child.props as any;
   const fontSize = tickText?.fontSize ?? 0;
 
   const dataValues =

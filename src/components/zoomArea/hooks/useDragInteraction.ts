@@ -24,7 +24,7 @@ interface UseDragInteractionParams {
  */
 interface UseDragInteractionReturn {
   /** Reference to the SVG group element */
-  groupRef: React.RefObject<SVGSVGElement>;
+  groupRef: React.RefObject<SVGSVGElement | null>;
   /** Handler for mouse down events on different elements */
   handleMouseDown: (
     target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements]

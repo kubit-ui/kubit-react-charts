@@ -6,7 +6,7 @@ import { calculateShapePoints } from '../../utils/calculateShapePoints/calculate
 const StarComponent: ForwardRefRenderFunction<SVGPolygonElement, NodeProps> = (
   { dataTestId, position = { x: 0, y: 0 }, size = 1, ...props },
   ref
-): JSX.Element => {
+): React.JSX.Element => {
   const outerRadius = size / 2;
   const innerRadius = outerRadius / 2;
   const starPoints = calculateShapePoints(position.x, position.y, 5, outerRadius, innerRadius);
@@ -17,4 +17,4 @@ export const Star = forwardRef(StarComponent) as (
   props: NodeProps & {
     ref?: ForwardedRef<SVGSVGElement>;
   }
-) => JSX.Element;
+) => React.JSX.Element;

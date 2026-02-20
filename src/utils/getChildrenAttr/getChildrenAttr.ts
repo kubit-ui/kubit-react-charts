@@ -16,7 +16,7 @@ export const getChildrenAttr = ({
   let combineString = '';
   Children.toArray(children).forEach((child: React.ReactNode) => {
     if (isValidElement(child)) {
-      const attrValue = child.props[attrName];
+      const attrValue = (child.props as any)[attrName];
       if (attrValue) {
         combineString += attrValue;
       }

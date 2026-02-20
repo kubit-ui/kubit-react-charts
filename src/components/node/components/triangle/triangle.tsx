@@ -5,7 +5,7 @@ import type { NodeProps } from '../../node.types';
 const TriangleComponent: ForwardRefRenderFunction<SVGPolygonElement, NodeProps> = (
   { dataTestId, position = { x: 0, y: 0 }, size = 1, ...props },
   ref
-): JSX.Element => {
+): React.JSX.Element => {
   const points = [
     `${position.x},${position.y - size / 2}`,
     `${position.x - size / 2},${position.y + size / 2}`,
@@ -18,4 +18,4 @@ export const Triangle = forwardRef(TriangleComponent) as (
   props: NodeProps & {
     ref?: ForwardedRef<SVGSVGElement>;
   }
-) => JSX.Element;
+) => React.JSX.Element;

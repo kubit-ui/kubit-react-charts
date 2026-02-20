@@ -5,7 +5,7 @@ import type { PlotShapeProps } from '../../plot.types';
 const SquareComponent: ForwardRefRenderFunction<SVGRectElement, PlotShapeProps> = (
   { dataTestId, position, size, ...props },
   ref
-): JSX.Element => {
+): React.JSX.Element => {
   return (
     <rect
       {...props}
@@ -23,4 +23,4 @@ export const Square = forwardRef(SquareComponent) as (
   props: PlotShapeProps & {
     ref?: ForwardedRef<SVGElement>;
   }
-) => JSX.Element;
+) => React.JSX.Element;

@@ -197,7 +197,7 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
         dataTestId="selection-area-focus"
         focusConfig={{ ...focusConfig, variant: 'bounding-box' }}
         isFocused={isFocused(ZoomAreaElements.SELECTION_AREA)}
-        targetRef={selectionAreaRef}
+        targetRef={selectionAreaRef as React.RefObject<SVGGraphicsElement>}
       />
     </SvgContainer>
   );

@@ -20,7 +20,7 @@ import type { GradientStop } from './cssGradientToSvg.types';
  *          CSS gradient string. If the angle is not supported, it returns an empty
  *          React fragment.
  */
-export const cssGradientToSVG = (cssGradient: string, id = 'gradientePath'): JSX.Element => {
+export const cssGradientToSVG = (cssGradient: string, id = 'gradientePath'): React.JSX.Element => {
   const parts = cssGradient.split(',').map(part => part.trim());
   const angle = parseInt(parts[0], 10); // Extract the angle
   const stops: GradientStop[] = parts.slice(1).map(part => {

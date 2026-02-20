@@ -13,7 +13,7 @@ interface ErrorInfoState {
   errors: ChartErrorCollection;
 }
 
-export const LineChartWithErrorHandlingWithHooks = (): JSX.Element => {
+export const LineChartWithErrorHandlingWithHooks = (): React.JSX.Element => {
   const [errorInfo, setErrorInfo] = useState<ErrorInfoState>({
     errors: {},
     hasErrors: false,

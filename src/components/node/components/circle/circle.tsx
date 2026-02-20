@@ -5,7 +5,7 @@ import type { NodeProps } from '../../node.types';
 const CircleComponent: ForwardRefRenderFunction<SVGCircleElement, NodeProps> = (
   { dataTestId, position, size = 1, ...props },
   ref
-): JSX.Element => {
+): React.JSX.Element => {
   return (
     <circle
       {...props}
@@ -22,4 +22,4 @@ export const Circle = forwardRef(CircleComponent) as (
   props: NodeProps & {
     ref?: ForwardedRef<SVGSVGElement>;
   }
-) => JSX.Element;
+) => React.JSX.Element;
