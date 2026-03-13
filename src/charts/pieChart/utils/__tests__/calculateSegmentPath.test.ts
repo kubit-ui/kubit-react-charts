@@ -121,4 +121,19 @@ describe('calculateSegmentPath', () => {
       'M 100 50 A 50,50 0 0,0 0, 49.99999999999999 M 50,50 M 100,50 A 50,50 0 0 1 0,49.99999999999999 M 50,50 A 0,0 0 0 0 50,50'
     );
   });
+
+  it('should not mirror a single segment when halfChart is true', () => {
+    const path = calculateSegmentPath({
+      canvasHeight: 100,
+      canvasWidth: 100,
+      gap: 0,
+      halfChart: true,
+      innerRadius: 0,
+      singleStroke: true,
+      startAngle: { current: 0 },
+      total: 100,
+      value: 100,
+    });
+    expect(path).toBe('M 100 100 A 50,50 0 0,0 0, 100 L 50,100 Z');
+  });
 });

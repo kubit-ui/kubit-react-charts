@@ -4,15 +4,18 @@ import { BarOrientation } from '@/components/bar/bar.type';
 import { Note } from '@/storybook/components/note/note';
 import { DefaultCanvasConfig } from '@/types/canvas.type';
 import { Positions } from '@/types/position.enum';
+import type { ValueFormatter } from '@/types/valueFormatter.type';
 
 import { BarChart } from '../../../barChart';
 import type { BarChartXAxisProps } from '../../../barChart.type';
-import { BarChartXAxis } from '../../../fragments/barChartXAxis';
 import { xAxisArgTypes } from './xAxis.argtypes';
+
+type XAxisStoryArgs = Omit<BarChartXAxisProps, 'valueFormatter'> & {
+  valueFormatter?: ValueFormatter | string;
+};
 
 const meta = {
   argTypes: xAxisArgTypes(),
-  component: BarChartXAxis,
   decorators: [
     (Story: React.ComponentType) => (
       <>
@@ -32,6 +35,11 @@ const meta = {
             <>
               • <strong>tickValues</strong> - Define custom tick positions using numeric or custom
               format
+            </>,
+            <>
+              • <strong>valueFormatter</strong> - Format tick labels using a callback function{' '}
+              <code>(val) =&gt; string</code>. The dropdown below shows preset examples, but in your
+              code you'll pass actual functions.
             </>,
             <>
               • <strong>tickText</strong> - Complete text styling control including font, color, and
@@ -61,10 +69,28 @@ const meta = {
   ],
   tags: ['autodocs'],
   title: 'Charts/BarChart/Child Components/BarChartXAxis',
-} satisfies Meta<typeof BarChartXAxis>;
+} satisfies Meta<XAxisStoryArgs>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<XAxisStoryArgs>;
+
+const getValueFormatter = (formatterType: string) => {
+  switch (formatterType) {
+    case 'currency':
+      return val => `$${val}`;
+    case 'percentage':
+      return val => `${val}%`;
+    case 'thousands':
+      return val => `${val}K`;
+    case 'millions':
+      return val => `${val}M`;
+    case 'custom':
+      return val => `[${val}]`;
+    case 'none':
+    default:
+      return undefined;
+  }
+};
 
 export const XAxisCustomization: Story = {
   args: {
@@ -159,11 +185,17 @@ export const XAxisCustomization: Story = {
         values: ['2001', '2002', '2003', '2004'],
       },
     },
+    valueFormatter: 'thousands',
 
     transform: undefined,
   },
 
-  render: (args: BarChartXAxisProps) => {
+  render: (args: XAxisStoryArgs) => {
+    const actualArgs = {
+      ...args,
+      valueFormatter: getValueFormatter(args.valueFormatter as string),
+    };
+
     // Simplified data for better visualization (single series per year)
     const simplifiedData = [
       { value: 50, year: 2001 },
@@ -208,7 +240,7 @@ export const XAxisCustomization: Story = {
         orientation={BarOrientation.VERTICAL}
         pKey="year"
       >
-        <BarChart.XAxis {...args} />
+        <BarChart.XAxis {...actualArgs} />
         {simplifiedData.map((dataPoint, index) => (
           <BarChart.Path
             key={`bar-${dataPoint.year}`}

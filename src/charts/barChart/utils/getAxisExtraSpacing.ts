@@ -1,4 +1,4 @@
-import { Children, type ReactElement, isValidElement } from 'react';
+import { Children, type ReactElement, type ReactNode, isValidElement } from 'react';
 
 import { BarOrientation } from '@/components/bar/bar.type';
 import { Positions } from '@/types/position.enum';
@@ -26,16 +26,17 @@ const handleBarChartXAxis = (
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  const { position, tickText, tickValues } = child.props as any;
+  const { position, tickText, tickValues, valueFormatter } = child.props as any;
   const fontSize = tickText?.fontSize ?? 0;
   const spaceFontSize = fontSize * ajustedX;
 
   const xData = tickValues
     ? (getBarDataValues(tickValues) as string[])
     : (data.map(d => d[pKey]) as string[]);
+  const formattedXData: string[] = valueFormatter ? xData.map(valueFormatter) : xData;
   const fontSpacing = textBound({
     bound: 'width',
-    data: xData,
+    data: formattedXData,
     fontSize,
     svgHeight: `${canvasHeight}`,
     svgWidth: `${canvasWidth}`,
@@ -62,7 +63,7 @@ const handleBarChartXAxis = (
 };
 
 const handleBarChartYAxis = (
-  child: React.ReactElement,
+  child: ReactElement,
   data: BarChartIDataPoint[],
   pKey: string,
   ajustedY: number,
@@ -71,7 +72,7 @@ const handleBarChartYAxis = (
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  const { position, tickText, tickValues } = child.props as any;
+  const { position, tickText, tickValues, valueFormatter } = child.props as any;
   const fontSize = tickText?.fontSize ?? 0;
   const spaceFontSize = fontSize * ajustedY; //! review
 
@@ -79,11 +80,12 @@ const handleBarChartYAxis = (
     tickValues ||
     buildTickValues([...new Set(getBarKeyRoundMaxValue(data, pKey) as unknown as string[])]);
   const yData = getBarDataValues(dataValues) as string[];
+  const formattedYData: string[] = valueFormatter ? yData.map(valueFormatter) : yData;
 
   const securityYSpace = (() => (barSpacing > spaceFontSize ? barSpacing : spaceFontSize))();
   const textWidth = textBound({
     bound: 'width',
-    data: yData,
+    data: formattedYData,
     fontSize,
     svgHeight: `${canvasHeight}`,
     svgWidth: `${canvasWidth}`,
@@ -133,7 +135,7 @@ export const getAxisExtraSpacing = ({
   pKey,
   viewBox,
 }: GetExtraSpacing): BarChartExtraSpacings => {
-  let result = {
+  let result: BarChartExtraSpacings = {
     barChartXPosition: Positions.BOTTOM,
     barChartYPosition: Positions.LEFT,
     extraSpaceBottomY: 0,
@@ -152,7 +154,7 @@ export const getAxisExtraSpacing = ({
   let barsSpacing = gapBetweenBars;
   const reviews = [] as number[];
 
-  Children.forEach(children, (child: React.ReactNode) => {
+  Children.forEach(children, (child: ReactNode) => {
     if (isValidElement(child)) {
       if (child.type === BarChartPath && !reviews.includes((child.props as any).order)) {
         reviews.push((child.props as any).order);
