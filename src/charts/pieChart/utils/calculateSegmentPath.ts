@@ -46,6 +46,7 @@ export const calculateSegmentPath = ({
   total,
   value,
 }: CalculateSegmanentPathProps): string => {
+  const useSingleStroke = singleStroke && !halfChart;
   const segmentCanvasHeight = halfChart ? canvasHeight * 2 : canvasHeight;
   const maxRadius = Math.min(canvasWidth, segmentCanvasHeight) / 2;
   const radius = customRadius && customRadius < maxRadius ? customRadius : maxRadius;
@@ -53,7 +54,7 @@ export const calculateSegmentPath = ({
   const center = { x: canvasWidth / 2, y: halfChart ? canvasHeight : canvasHeight / 2 };
 
   // Total * 2 is needed when a single stroke is used, to prevent the segment from being drawn as a full circle
-  const segmentTotal = singleStroke ? total * 2 : total;
+  const segmentTotal = useSingleStroke ? total * 2 : total;
   const piePortion = (value * 100) / segmentTotal;
   const angleEquivalent = (piePortion * maxAngle) / 100;
   const gapAngle = gap / radius;
@@ -84,6 +85,6 @@ export const calculateSegmentPath = ({
     outerStart,
     radius,
     rotateDirection,
-    singleStroke,
+    singleStroke: useSingleStroke,
   });
 };

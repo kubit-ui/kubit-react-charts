@@ -1,6 +1,7 @@
 import { type FC, type ReactElement, useContext } from 'react';
 
 import { YAxis } from '@/components/axisChart/yAxis/yAxis';
+import { TickDataUtils } from '@/components/tick/tick.types';
 import { Positions } from '@/types/position.enum';
 import { ajustedTextSpace } from '@/utils/ajustedTextSpace/ajustedTextSpace';
 import { getTickTextXCoordinate } from '@/utils/getTickTextCoordinate/getTickTextCoordinates';
@@ -13,6 +14,7 @@ export const BarChartYAxis: FC<BarChartYAxisProps> = ({
   position = Positions.LEFT,
   tickLine,
   tickText,
+  valueFormatter = (value: string) => value,
   ...props
 }): ReactElement => {
   const {
@@ -30,6 +32,9 @@ export const BarChartYAxis: FC<BarChartYAxisProps> = ({
     coordinates.x1,
     ajustedText
   );
+  const formattedTickValues = tickText
+    ? TickDataUtils.formatTicksValues(tickValues, valueFormatter)
+    : undefined;
 
   return (
     <YAxis
@@ -44,7 +49,7 @@ export const BarChartYAxis: FC<BarChartYAxisProps> = ({
         x2: Number(context.canvasWidth) - context.extraSpaceRightX,
       }}
       tickText={{ ...tickText, x: xTickText }}
-      tickValues={tickText ? tickValues : undefined}
+      tickValues={formattedTickValues}
     />
   );
 };

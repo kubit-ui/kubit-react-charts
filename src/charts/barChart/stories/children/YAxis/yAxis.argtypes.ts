@@ -172,6 +172,28 @@ export const yAxisArgTypes = (): ArgTypes<BarChartYAxisProps> => {
       },
     },
 
+    valueFormatter: {
+      control: {
+        labels: {
+          currency: 'Currency ($)',
+          custom: 'Custom brackets [val]',
+          millions: 'Millions (M)',
+          none: 'None (no formatting)',
+          percentage: 'Percentage (%)',
+          thousands: 'Thousands (K)',
+          units: 'Units (k)',
+        },
+        type: 'select',
+      },
+      description: 'Select a formatting style for tick labels in this story.',
+      options: ['none', 'currency', 'percentage', 'units', 'thousands', 'millions', 'custom'],
+      table: {
+        category: CATEGORY_CONTROL.DATA,
+        defaultValue: { summary: 'undefined' },
+        type: { summary: 'ValueFormatter' },
+      },
+    },
+
     transform: {
       control: { type: 'text' },
       description: 'SVG transform attribute for positioning and scaling.',

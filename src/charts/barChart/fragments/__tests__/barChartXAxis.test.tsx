@@ -15,4 +15,20 @@ describe('LineChartXAxis', () => {
     const xAxis = getByTestId('testxAxis');
     expect(xAxis).toBeInTheDocument();
   });
+
+  it('renders formatted tick labels', () => {
+    const { getByText } = render(
+      <BarChartContext.Provider value={CONTEXT}>
+        <BarChart.XAxis
+          tickLine={{}}
+          tickText={{ fontSize: 12 }}
+          valueFormatter={value => `Label ${value}`}
+        />
+      </BarChartContext.Provider>
+    );
+
+    expect(getByText('Label 1')).toBeInTheDocument();
+    expect(getByText('Label 2')).toBeInTheDocument();
+    expect(getByText('Label 3')).toBeInTheDocument();
+  });
 });

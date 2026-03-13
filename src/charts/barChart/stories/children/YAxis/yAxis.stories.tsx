@@ -4,16 +4,19 @@ import { BarOrientation } from '@/components/bar/bar.type';
 import { Note } from '@/storybook/components/note/note';
 import { DefaultCanvasConfig } from '@/types/canvas.type';
 import { Positions } from '@/types/position.enum';
+import type { ValueFormatter } from '@/types/valueFormatter.type';
 
 import { BarChart } from '../../../barChart';
 import type { BarChartYAxisProps } from '../../../barChart.type';
-import { BarChartYAxis } from '../../../fragments/barChartYAxis';
 import { simplifiedData } from '../../templates/data';
 import { yAxisArgTypes } from './yAxis.argtypes';
 
+type YAxisStoryArgs = Omit<BarChartYAxisProps, 'valueFormatter'> & {
+  valueFormatter?: ValueFormatter | string;
+};
+
 const meta = {
   argTypes: yAxisArgTypes(),
-  component: BarChartYAxis,
   decorators: [
     (Story: React.ComponentType) => (
       <>
@@ -29,6 +32,11 @@ const meta = {
             <></>,
             <>
               <strong>Key Features:</strong>
+            </>,
+            <>
+              • <strong>valueFormatter</strong> - Format tick labels using a callback function{' '}
+              <code>(val) =&gt; string</code>. The dropdown below shows preset examples, but in your
+              code you'll pass actual functions.
             </>,
             <>
               • <strong>position</strong> - Axis placement (left or right, refresh story after
@@ -68,10 +76,30 @@ const meta = {
   ],
   tags: ['autodocs'],
   title: 'Charts/BarChart/Child Components/BarChartYAxis',
-} satisfies Meta<typeof BarChartYAxis>;
+} satisfies Meta<YAxisStoryArgs>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<YAxisStoryArgs>;
+
+const getValueFormatter = (formatterType: string) => {
+  switch (formatterType) {
+    case 'currency':
+      return val => `$${val}`;
+    case 'percentage':
+      return val => `${val}%`;
+    case 'thousands':
+      return val => `${val}K`;
+    case 'millions':
+      return val => `${val}M`;
+    case 'units':
+      return val => `${val}k`;
+    case 'custom':
+      return val => `[${val}]`;
+    case 'none':
+    default:
+      return undefined;
+  }
+};
 
 export const YAxisCustomization: Story = {
   args: {
@@ -161,11 +189,17 @@ export const YAxisCustomization: Story = {
         step: 1,
       },
     },
+    valueFormatter: 'currency',
 
     transform: undefined,
   },
 
-  render: (args: BarChartYAxisProps) => {
+  render: (args: YAxisStoryArgs) => {
+    const actualArgs = {
+      ...args,
+      valueFormatter: getValueFormatter(args.valueFormatter as string),
+    };
+
     const chartData = simplifiedData;
 
     const barConfigs = [
@@ -203,7 +237,7 @@ export const YAxisCustomization: Story = {
         orientation={BarOrientation.HORIZONTAL}
         pKey="year"
       >
-        <BarChart.YAxis {...args} />
+        <BarChart.YAxis {...actualArgs} />
 
         {chartData.map((dataPoint, index) => (
           <BarChart.Path

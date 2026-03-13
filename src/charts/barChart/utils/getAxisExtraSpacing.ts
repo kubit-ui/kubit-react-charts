@@ -26,16 +26,17 @@ const handleBarChartXAxis = (
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  const { position, tickText, tickValues } = child.props as any;
+  const { position, tickText, tickValues, valueFormatter } = child.props;
   const fontSize = tickText?.fontSize ?? 0;
   const spaceFontSize = fontSize * ajustedX;
 
   const xData = tickValues
     ? (getBarDataValues(tickValues) as string[])
     : (data.map(d => d[pKey]) as string[]);
+  const formattedXData: string[] = valueFormatter ? xData.map(valueFormatter) : xData;
   const fontSpacing = textBound({
     bound: 'width',
-    data: xData,
+    data: formattedXData,
     fontSize,
     svgHeight: `${canvasHeight}`,
     svgWidth: `${canvasWidth}`,
@@ -71,7 +72,7 @@ const handleBarChartYAxis = (
   canvasHeight: number,
   canvasWidth: number
 ) => {
-  const { position, tickText, tickValues } = child.props as any;
+  const { position, tickText, tickValues, valueFormatter } = child.props;
   const fontSize = tickText?.fontSize ?? 0;
   const spaceFontSize = fontSize * ajustedY; //! review
 
@@ -79,11 +80,12 @@ const handleBarChartYAxis = (
     tickValues ||
     buildTickValues([...new Set(getBarKeyRoundMaxValue(data, pKey) as unknown as string[])]);
   const yData = getBarDataValues(dataValues) as string[];
+  const formattedYData: string[] = valueFormatter ? yData.map(valueFormatter) : yData;
 
   const securityYSpace = (() => (barSpacing > spaceFontSize ? barSpacing : spaceFontSize))();
   const textWidth = textBound({
     bound: 'width',
-    data: yData,
+    data: formattedYData,
     fontSize,
     svgHeight: `${canvasHeight}`,
     svgWidth: `${canvasWidth}`,
@@ -154,9 +156,9 @@ export const getAxisExtraSpacing = ({
 
   Children.forEach(children, (child: React.ReactNode) => {
     if (isValidElement(child)) {
-      if (child.type === BarChartPath && !reviews.includes((child.props as any).order)) {
-        reviews.push((child.props as any).order);
-        barsSpacing += (child.props as any).barConfig.barWidth ?? 0;
+      if (child.type === BarChartPath && !reviews.includes(child.props.order)) {
+        reviews.push(child.props.order);
+        barsSpacing += child.props.barConfig.barWidth ?? 0;
       }
       if (child.type === BarChartXAxis) {
         const securitySpace = orientation === BarOrientation.VERTICAL ? barsSpacing : 0;

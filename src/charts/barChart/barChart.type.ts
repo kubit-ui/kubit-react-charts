@@ -8,6 +8,7 @@ import type { TickData } from '@/components/tick/tick.types';
 import type { CanvasConfig } from '@/types/canvas.type';
 import type { ChartError, ChartErrorCollection, ErrorType } from '@/types/errors.type';
 import type { Positions } from '@/types/position.enum';
+import type { ValueFormatter } from '@/types/valueFormatter.type';
 
 export type BarChartChildrenType = ReactNode | ReactElement<PathProps | XAxisProps | YAxisProps>;
 
@@ -121,6 +122,7 @@ export interface BarChartXAxisProps extends Omit<XAxisProps, OmitProps>, React.A
    */
   ariaLabel?: string;
   tickValues?: BarChartTickValuesAxisProps;
+  valueFormatter?: ValueFormatter<string>;
 }
 export interface BarChartYAxisProps extends Omit<YAxisProps, OmitProps>, React.AriaAttributes {
   /**
@@ -128,6 +130,7 @@ export interface BarChartYAxisProps extends Omit<YAxisProps, OmitProps>, React.A
    */
   ariaLabel?: string;
   tickValues?: BarChartTickValuesAxisProps;
+  valueFormatter?: ValueFormatter<string>;
 }
 export interface BarChartSeparatorProps {
   topSeparator?: StyleProps;
