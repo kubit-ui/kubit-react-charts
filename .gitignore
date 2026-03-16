@@ -1,6 +1,5 @@
 node_modules
 dist
-yarn.lock
 __reports__
 bundle
 .DS_Store
@@ -8,3 +7,12 @@ bundle
 .idea
 *.log
 storybook-static/
+pnpm-lock.yaml
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+.yarnrc.yml

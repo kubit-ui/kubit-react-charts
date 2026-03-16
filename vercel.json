@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm build-storybook",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "yarn build-storybook",
+  "installCommand": "yarn install --immutable",
   "outputDirectory": "storybook-static"
 }

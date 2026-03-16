@@ -43,27 +43,28 @@ jobs:
           node-version: '22'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Enable Corepack
+        run: corepack enable
 
-      - name: Get pnpm store directory
+      - name: Get Yarn cache directory
+        id: yarn-cache
         shell: bash
         run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          echo "CACHE_DIR=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
 
-      - name: Setup pnpm cache
+      - name: Setup Yarn cache
         uses: actions/cache@v4
         with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ steps.yarn-cache.outputs.CACHE_DIR }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         run: |
-          echo "Installing dependencies with pnpm..."
-          pnpm --version
-          pnpm install --frozen-lockfile
+          echo "Installing dependencies with yarn..."
+          yarn --version
+          yarn install --immutable
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -104,7 +105,7 @@ jobs:
           # Check if already in pre mode
           if [ -f ".changeset/pre.json" ]; then
             echo "⚠️ Already in prerelease mode, exiting first..."
-            pnpm changeset pre exit
+            yarn changeset pre exit
 
             # Commit the exit
             git config --global user.name "github-actions[bot]"
@@ -116,12 +117,12 @@ jobs:
           fi
 
           echo "📦 Entering canary prerelease mode..."
-          pnpm changeset pre enter canary
+          yarn changeset pre enter canary
 
       - name: Version packages
         run: |
           echo "📦 Versioning packages for canary..."
-          pnpm changeset:version
+          yarn changeset:version
 
           # Append commit SHA to canary version
           COMMIT_SHA="${{ steps.commit.outputs.sha }}"
@@ -150,14 +151,14 @@ jobs:
       - name: Build packages
         run: |
           echo "🏗️ Building packages..."
-          pnpm dist
+          yarn dist
         env:
           NODE_ENV: production
 
       - name: Publish canary to NPM
         run: |
           echo "🚀 Publishing canary to NPM..."
-          pnpm changeset:publish
+          yarn changeset:publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -165,7 +166,7 @@ jobs:
       - name: Exit prerelease mode
         run: |
           echo "📦 Exiting canary prerelease mode..."
-          pnpm changeset pre exit
+          yarn changeset pre exit
 
           git add .
           if git diff --staged --quiet; then
@@ -199,5 +200,5 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Install canary version:" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`sh" >> $GITHUB_STEP_SUMMARY
-          echo "pnpm add @kubit-ui-web/react-charts@$VERSION" >> $GITHUB_STEP_SUMMARY
+          echo "npm install @kubit-ui-web/react-charts@$VERSION" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
