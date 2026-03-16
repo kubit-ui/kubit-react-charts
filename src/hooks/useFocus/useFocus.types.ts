@@ -1,4 +1,4 @@
-import type { FocusEvent } from 'react';
+import type { FocusEvent } from "react";
 
 /**
  * Defines a generic focus event handler function type.

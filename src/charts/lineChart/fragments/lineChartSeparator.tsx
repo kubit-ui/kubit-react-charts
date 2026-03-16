@@ -1,4 +1,4 @@
-import { type FC, type ReactElement, useContext, useEffect } from 'react';
+import { type FC, type ReactElement, useContext, useEffect } from "react";
 
 import {
   BuildError,
@@ -7,11 +7,11 @@ import {
   buildSeparatorXOutOfRangeError,
   buildSeparatorYBreakAxisError,
   buildSeparatorYOutOfRangeError,
-} from '@/utils/buildErrors/buildErrors';
-import { getPoints } from '@/utils/getPoints/getPoints';
+} from "@/utils/buildErrors/buildErrors";
+import { getPoints } from "@/utils/getPoints/getPoints";
 
-import { LineChartContext } from '../context/lineChartContext';
-import type { LineChartSeparatorProps } from '../lineChart.type';
+import { LineChartContext } from "../context/lineChartContext";
+import type { LineChartSeparatorProps } from "../lineChart.type";
 
 export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
   areaSeparator,
@@ -31,13 +31,13 @@ export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
   // Pre-calculate numeric values for dependencies
   const xBreakNumeric =
     xBreakAxis !== undefined
-      ? typeof xBreakAxis === 'string'
+      ? typeof xBreakAxis === "string"
         ? parseFloat(xBreakAxis)
         : xBreakAxis
       : undefined;
   const yBreakNumeric =
     yBreakAxis !== undefined
-      ? typeof yBreakAxis === 'string'
+      ? typeof yBreakAxis === "string"
         ? parseFloat(yBreakAxis)
         : yBreakAxis
       : undefined;
@@ -46,18 +46,18 @@ export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
   useEffect(() => {
     // xBreakAxis validation
     if (xBreakAxis !== undefined) {
-      const xValues = xTickValues.map(tick => tick.value);
+      const xValues = xTickValues.map((tick) => tick.value);
 
       if (xBreakNumeric === undefined || isNaN(xBreakNumeric)) {
-        addError?.('LINE_CHART_SEPARATOR_ERROR', {
+        addError?.("LINE_CHART_SEPARATOR_ERROR", {
           error: buildSeparatorXBreakAxisError(xBreakAxis),
         });
       } else {
-        const minX = Math.min(...xValues.map(v => (typeof v === 'string' ? parseFloat(v) : v)));
-        const maxX = Math.max(...xValues.map(v => (typeof v === 'string' ? parseFloat(v) : v)));
+        const minX = Math.min(...xValues.map((v) => (typeof v === "string" ? parseFloat(v) : v)));
+        const maxX = Math.max(...xValues.map((v) => (typeof v === "string" ? parseFloat(v) : v)));
 
         if (xBreakNumeric < minX || xBreakNumeric > maxX) {
-          addError?.('LINE_CHART_SEPARATOR_ERROR', {
+          addError?.("LINE_CHART_SEPARATOR_ERROR", {
             error: buildSeparatorXOutOfRangeError(xBreakNumeric, minX, maxX),
           });
         }
@@ -66,18 +66,18 @@ export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
 
     // yBreakAxis validation
     if (yBreakAxis !== undefined) {
-      const yValues = yTickValues.map(tick => tick.value);
+      const yValues = yTickValues.map((tick) => tick.value);
 
       if (yBreakNumeric === undefined || isNaN(yBreakNumeric)) {
-        addError?.('LINE_CHART_SEPARATOR_ERROR', {
+        addError?.("LINE_CHART_SEPARATOR_ERROR", {
           error: buildSeparatorYBreakAxisError(yBreakAxis),
         });
       } else {
-        const minY = Math.min(...yValues.map(v => (typeof v === 'string' ? parseFloat(v) : v)));
-        const maxY = Math.max(...yValues.map(v => (typeof v === 'string' ? parseFloat(v) : v)));
+        const minY = Math.min(...yValues.map((v) => (typeof v === "string" ? parseFloat(v) : v)));
+        const maxY = Math.max(...yValues.map((v) => (typeof v === "string" ? parseFloat(v) : v)));
 
         if (yBreakNumeric < minY || yBreakNumeric > maxY) {
-          addError?.('LINE_CHART_SEPARATOR_ERROR', {
+          addError?.("LINE_CHART_SEPARATOR_ERROR", {
             error: buildSeparatorYOutOfRangeError(yBreakNumeric, minY, maxY),
           });
         }
@@ -102,7 +102,7 @@ export const LineChartSeparator: FC<LineChartSeparatorProps> = ({
   // Separator positioning validation
   useEffect(() => {
     if (xStart === xEnd && yStart === yEnd) {
-      addError?.('LINE_CHART_SEPARATOR_ERROR', {
+      addError?.("LINE_CHART_SEPARATOR_ERROR", {
         error: buildError(BuildError.LINE_CHART_SEPARATOR_INVALID_COORDINATES),
       });
     }

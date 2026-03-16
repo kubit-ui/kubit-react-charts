@@ -24,14 +24,14 @@ export interface FocusConfig {
   innerStrokeWidth?: number;
   /** Gap in viewBox coordinate units (not pixels). Only applicable when variant is 'bounding-box' */
   gap?: number;
-  variant?: 'adaptive' | 'bounding-box';
+  variant?: "adaptive" | "bounding-box";
 }
 
 export const FOCUS_DEFAULT = {
   /** Focus ring color */
-  FOCUS_COLOR: '#0078D4',
+  FOCUS_COLOR: "#0078D4",
   /** Focus ring inner border */
-  FOCUS_INNER: '#ffffff',
+  FOCUS_INNER: "#ffffff",
   /** Focus ring inner stroke width (viewBox-relative units) */
   INNER_FOCUS_STROKE_WIDTH: 2,
   /** Focus ring outer stroke width (viewBox-relative units) */
@@ -39,7 +39,7 @@ export const FOCUS_DEFAULT = {
   /** Gap between element and outlines in viewBox-relative units (only applies in bounding-box variant) */
   OUTLINES_GAP: 0,
   /** Focus ring rendering variant */
-  VARIANT: 'adaptive' as const,
+  VARIANT: "adaptive" as const,
 } as const;
 
 /**

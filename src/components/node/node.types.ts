@@ -1,4 +1,4 @@
-import type { HTMLAttributes } from 'react';
+import type { HTMLAttributes } from "react";
 
 /**
  * Enum for node types.
@@ -10,13 +10,13 @@ import type { HTMLAttributes } from 'react';
  * @enum {string}
  */
 export const NodeType = {
-  Circle: 'circle', // Represents a circle node.
-  Hexagon: 'hexagon', // Represents a hexagon node.
-  Pentagon: 'pentagon', // Represents a pentagon node.
-  Square: 'square', // Represents a square node.
-  Star: 'star', // Represents a star node.
-  Straight: 'straight', // Represents a straight node.
-  Triangle: 'triangle', // Represents a triangle node.
+  Circle: "circle", // Represents a circle node.
+  Hexagon: "hexagon", // Represents a hexagon node.
+  Pentagon: "pentagon", // Represents a pentagon node.
+  Square: "square", // Represents a square node.
+  Star: "star", // Represents a star node.
+  Straight: "straight", // Represents a straight node.
+  Triangle: "triangle", // Represents a triangle node.
 } as const;
 
 /**
@@ -58,7 +58,7 @@ export interface NodeProps {
     xKey?: string;
     nodePosition?: { x: number; y: number };
   };
-  role?: HTMLAttributes<SVGElement>['role'];
+  role?: HTMLAttributes<SVGElement>["role"];
   // TODO - Enrich events with data, stop using extra parameters for callbacks
   onClick?: (
     event: React.MouseEvent<SVGPathElement, MouseEvent>,
@@ -69,24 +69,24 @@ export interface NodeProps {
       xKey?: string;
       nodePosition?: { x: number; y: number };
     },
-    autoClick?: boolean
+    autoClick?: boolean,
   ) => void;
   onDoubleClick?: (
     event: React.MouseEvent<SVGPathElement, MouseEvent>,
-    data?: { index?: number; dataValue?: any; dataKey?: string; xKey?: string }
+    data?: { index?: number; dataValue?: any; dataKey?: string; xKey?: string },
   ) => void;
   onKeyDown?: (
     event: React.KeyboardEvent<SVGPathElement>,
-    data?: { index?: number; dataValue?: any; dataKey?: string; xKey?: string }
+    data?: { index?: number; dataValue?: any; dataKey?: string; xKey?: string },
   ) => void;
   onFocus?: (
     event: React.FocusEvent<SVGPathElement>,
-    data?: { index?: number; dataValue?: any; dataKey?: string; xKey?: string }
+    data?: { index?: number; dataValue?: any; dataKey?: string; xKey?: string },
   ) => void;
   onBlur?: (event: React.FocusEvent<SVGPathElement>) => void;
   onMouseEnter?: (
     event: React.MouseEvent<SVGPathElement, MouseEvent>,
-    data?: { index?: number; dataValue?: any; dataKey?: string; xKey?: string }
+    data?: { index?: number; dataValue?: any; dataKey?: string; xKey?: string },
   ) => void;
   onMouseLeave?: (event: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
 }

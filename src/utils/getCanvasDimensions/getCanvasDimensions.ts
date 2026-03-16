@@ -1,5 +1,5 @@
-import { safeDocument, safeGetComputedStyle } from '../ssr/ssr';
-import { Unit } from '@/types/unit.enum';
+import { safeDocument, safeGetComputedStyle } from "../ssr/ssr";
+import { Unit } from "@/types/unit.enum";
 
 /**
  * A mapping of string representations of units to their corresponding `Unit` enum values.
@@ -23,8 +23,8 @@ const stringToUnit: Record<string, (typeof Unit)[keyof typeof Unit]> = {
  * @property {string} HEIGHT - Represents the height dimension ('HEIGHT').
  */
 const Dimension = {
-  HEIGHT: 'HEIGHT',
-  WIDTH: 'WIDTH',
+  HEIGHT: "HEIGHT",
+  WIDTH: "WIDTH",
 } as const;
 
 const UNIT_VALUE_REGEX = /^(\d+(\.\d+)?)(px|rem|%)?$/;
@@ -38,9 +38,9 @@ const MATCH_UNIT_INDEX = 3;
  * @returns An object containing the numeric value and the unit as a string.
  */
 const parseDimensionValue = (
-  value: string | number
+  value: string | number,
 ): { value: number; unit: (typeof Unit)[keyof typeof Unit] | undefined } => {
-  if (typeof value === 'number') {
+  if (typeof value === "number") {
     return { unit: undefined, value };
   }
   const match = value.match(UNIT_VALUE_REGEX);
@@ -66,7 +66,7 @@ const parseDimensionValue = (
 const calculatePercentage = (
   value: number,
   dimension: keyof typeof Dimension,
-  svgElement: SVGSVGElement
+  svgElement: SVGSVGElement,
 ) => {
   const svgContainer = svgElement.parentElement;
   if (!svgContainer) {

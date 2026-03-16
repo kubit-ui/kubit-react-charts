@@ -1,15 +1,15 @@
-import { BarChartErrors, BarChartErrorsRecord } from './constants/errors/barChartErrors';
-import { LineChartErrors, LineChartErrorsRecord } from './constants/errors/lineChartErrors';
-import { PieChartErrors, PieChartErrorsRecord } from './constants/errors/pieChartErrors';
+import { BarChartErrors, BarChartErrorsRecord } from "./constants/errors/barChartErrors";
+import { LineChartErrors, LineChartErrorsRecord } from "./constants/errors/lineChartErrors";
+import { PieChartErrors, PieChartErrorsRecord } from "./constants/errors/pieChartErrors";
 
 export const BuildError = {
-  INVALID_X_TICK: 'INVALID_X_TICK',
+  INVALID_X_TICK: "INVALID_X_TICK",
   ...BarChartErrors,
   ...LineChartErrors,
   ...PieChartErrors,
 } as const;
 
-const INVALID_X_TICK_ERROR = '[getXTicks] Invalid X tick values calculated';
+const INVALID_X_TICK_ERROR = "[getXTicks] Invalid X tick values calculated";
 
 export const ErrorsRecord: Record<(typeof BuildError)[keyof typeof BuildError], Error> = {
   ...BarChartErrorsRecord,
@@ -32,7 +32,7 @@ export const buildDataKeyNotFoundError = (dataKey: string): Error =>
  */
 export const buildCanvasDimensionsError = (width: number, height: number): Error =>
   new Error(
-    `Canvas dimensions validation failed: width=${width}, height=${height} (both must be > 0)`
+    `Canvas dimensions validation failed: width=${width}, height=${height} (both must be > 0)`,
   );
 
 /**
@@ -65,7 +65,7 @@ export {
   buildBarNegativeValueError,
   buildBarDataKeyNotFoundError,
   buildBarDistributionError,
-} from './charts/buildBarChartErrors';
+} from "./charts/buildBarChartErrors";
 
 // Re-export pie chart error builders
 export {
@@ -78,4 +78,4 @@ export {
   buildInvalidRadiusError,
   buildInvalidInnerRadiusError,
   buildInnerRadiusOutOfRangeError,
-} from './charts/buildPieChartErrors';
+} from "./charts/buildPieChartErrors";

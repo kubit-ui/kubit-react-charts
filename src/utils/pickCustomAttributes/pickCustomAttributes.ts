@@ -32,7 +32,7 @@
  */
 export const pickCustomAttributes = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  attributes?: Record<string, any>
+  attributes?: Record<string, any>,
 ): Record<string, string> => {
   if (!attributes) {
     return {};
@@ -41,7 +41,7 @@ export const pickCustomAttributes = (
   return Object.entries(attributes).reduce(
     (acc, [key, value]) => {
       if (
-        (key.startsWith('aria-') || key.startsWith('data-') || key === 'role') &&
+        (key.startsWith("aria-") || key.startsWith("data-") || key === "role") &&
         value !== null &&
         value !== undefined
       ) {
@@ -49,6 +49,6 @@ export const pickCustomAttributes = (
       }
       return acc;
     },
-    {} as Record<string, string>
+    {} as Record<string, string>,
   );
 };

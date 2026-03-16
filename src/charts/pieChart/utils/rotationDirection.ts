@@ -12,8 +12,8 @@ interface RotateDirectionProps {
 }
 
 export const RotateDirection = {
-  CLOCKWISE: 'CLOCKWISE',
-  COUNTER_CLOCKWISE: 'COUNTER_CLOCKWISE',
+  CLOCKWISE: "CLOCKWISE",
+  COUNTER_CLOCKWISE: "COUNTER_CLOCKWISE",
 } as const;
 
 export const rotationDirection = ({

@@ -1,1 +1,1 @@
-export * from './customBackgroundChart';
+export * from "./customBackgroundChart";

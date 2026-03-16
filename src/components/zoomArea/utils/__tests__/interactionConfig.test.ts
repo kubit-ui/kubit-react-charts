@@ -1,8 +1,8 @@
-import { getInteractionConfig } from '../interactionConfig';
+import { getInteractionConfig } from "../interactionConfig";
 
-describe('interactionConfig', () => {
-  describe('getInteractionConfig', () => {
-    it('should return default values when no config is provided', () => {
+describe("interactionConfig", () => {
+  describe("getInteractionConfig", () => {
+    it("should return default values when no config is provided", () => {
       const result = getInteractionConfig();
 
       expect(result).toEqual({
@@ -12,7 +12,7 @@ describe('interactionConfig', () => {
       });
     });
 
-    it('should return default values when undefined config is provided', () => {
+    it("should return default values when undefined config is provided", () => {
       const result = getInteractionConfig(undefined);
 
       expect(result).toEqual({
@@ -22,7 +22,7 @@ describe('interactionConfig', () => {
       });
     });
 
-    it('should merge user config with defaults for partial overrides', () => {
+    it("should merge user config with defaults for partial overrides", () => {
       const partialConfig = {
         keyboardStep: 0.05,
         minHandlerDistance: 0.2,
@@ -37,7 +37,7 @@ describe('interactionConfig', () => {
       });
     });
 
-    it('should handle complete config overrides and edge cases', () => {
+    it("should handle complete config overrides and edge cases", () => {
       // Test all values overridden
       const completeConfig = {
         keyboardFastStep: 0.8,

@@ -1,13 +1,13 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 
-import { FocusRingInline } from './components/FocusRingInline';
-import { FocusRingSeparate } from './components/FocusRingSeparate';
-import './focusRing.css';
-import type { FocusRingProps } from './focusRing.types';
+import { FocusRingInline } from "./components/FocusRingInline";
+import { FocusRingSeparate } from "./components/FocusRingSeparate";
+import "./focusRing.css";
+import type { FocusRingProps } from "./focusRing.types";
 
 const FocusRingComponent: FC<FocusRingProps> = ({
   children,
-  dataTestId = 'focus-ring',
+  dataTestId = "focus-ring",
   disabled = false,
   focusConfig,
   isFocused,

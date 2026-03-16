@@ -1,9 +1,9 @@
-import { buildL } from '../buildL';
+import { buildL } from "../buildL";
 
 // app/src/charts/pieChart/utils/buildL.test.ts
 
-describe('buildL', () => {
-  it('should return undefined when singleStroke is true', () => {
+describe("buildL", () => {
+  it("should return undefined when singleStroke is true", () => {
     const result = buildL({
       center: { x: 0, y: 0 },
       innerEnd: { x: 5, y: 5 },
@@ -20,7 +20,7 @@ describe('buildL', () => {
       innerRadius: 10,
       singleStroke: false,
     });
-    expect(result).toBe('L 5,5');
+    expect(result).toBe("L 5,5");
   });
 
   it('should return "L center.x,center.y" when innerRadius is 0', () => {
@@ -30,7 +30,7 @@ describe('buildL', () => {
       innerRadius: 0,
       singleStroke: false,
     });
-    expect(result).toBe('L 0,0');
+    expect(result).toBe("L 0,0");
   });
 
   it('should return "L center.x,center.y" when innerRadius is negative', () => {
@@ -40,6 +40,6 @@ describe('buildL', () => {
       innerRadius: -5,
       singleStroke: false,
     });
-    expect(result).toBe('L 0,0');
+    expect(result).toBe("L 0,0");
   });
 });

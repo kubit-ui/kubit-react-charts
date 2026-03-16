@@ -1,10 +1,10 @@
-import type { AriaAttributes, HTMLAttributes } from 'react';
+import type { AriaAttributes, HTMLAttributes } from "react";
 
-import type { StyleProps } from '@/components/path/path.types';
+import type { StyleProps } from "@/components/path/path.types";
 
 export const BarOrientation = {
-  HORIZONTAL: 'HORIZONTAL',
-  VERTICAL: 'VERTICAL',
+  HORIZONTAL: "HORIZONTAL",
+  VERTICAL: "VERTICAL",
 } as const;
 
 interface DataAttributes {
@@ -15,8 +15,8 @@ export interface BarChartColor extends AriaAttributes, DataAttributes {
   color: string;
   coverage: number;
   title?: string;
-  role?: HTMLAttributes<SVGElement>['role'];
-  tabIndex?: HTMLAttributes<SVGElement>['tabIndex'];
+  role?: HTMLAttributes<SVGElement>["role"];
+  tabIndex?: HTMLAttributes<SVGElement>["tabIndex"];
 }
 
 export interface BarChartStyles {
@@ -57,6 +57,6 @@ export interface BarProps {
   yData?: string | number;
 }
 
-export interface BarChartSegmentProps extends Omit<BarProps, 'colorPalette'> {
+export interface BarChartSegmentProps extends Omit<BarProps, "colorPalette"> {
   color: string;
 }

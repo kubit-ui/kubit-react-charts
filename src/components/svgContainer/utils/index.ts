@@ -1,1 +1,1 @@
-export * from './buildViewBox/buildViewBox';
+export * from "./buildViewBox/buildViewBox";

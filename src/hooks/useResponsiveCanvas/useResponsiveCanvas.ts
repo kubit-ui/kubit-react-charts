@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
 
-import { buildViewBox } from '@/components/svgContainer/utils/buildViewBox/buildViewBox';
-import type { CanvasConfig } from '@/types/canvas.type';
-import { getCanvasDimensions } from '@/utils/getCanvasDimensions/getCanvasDimensions';
-import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
-import { isBrowser, safeQuerySelector } from '@/utils/ssr/ssr';
+import { buildViewBox } from "@/components/svgContainer/utils/buildViewBox/buildViewBox";
+import type { CanvasConfig } from "@/types/canvas.type";
+import { getCanvasDimensions } from "@/utils/getCanvasDimensions/getCanvasDimensions";
+import { parseStringToNumberPx } from "@/utils/parseStringToNumberPx.ts/parseStringToNumberPx";
+import { isBrowser, safeQuerySelector } from "@/utils/ssr/ssr";
 
 /**
  * Universal responsive canvas hook for chart components.
@@ -128,7 +128,7 @@ export const useResponsiveCanvas = ({
       });
 
       // Only update state when dimensions actually change to prevent unnecessary re-renders
-      setParsedCanvas(prev => {
+      setParsedCanvas((prev) => {
         if (prev.height === parsedCanvasHeight && prev.width === parsedCanvasWidth) {
           return prev;
         }
@@ -159,7 +159,7 @@ export const useResponsiveCanvas = ({
     const calculatedViewBox = buildViewBox(
       parsedCanvas.width,
       parsedCanvas.height,
-      parsedCanvasExtraSpace
+      parsedCanvasExtraSpace,
     );
 
     return calculatedViewBox;

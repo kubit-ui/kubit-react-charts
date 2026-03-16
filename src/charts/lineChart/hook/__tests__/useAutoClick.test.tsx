@@ -1,12 +1,12 @@
-import { act, render } from '@testing-library/react';
-import { type ForwardedRef, createRef, forwardRef } from 'react';
+import { act, render } from "@testing-library/react";
+import { type ForwardedRef, createRef, forwardRef } from "react";
 
-import { useAutoClick } from '../useAutoClick';
+import { useAutoClick } from "../useAutoClick";
 
 const TestComponent = forwardRef(
   (
     { onClick }: { onClick: (autoClick: boolean) => void },
-    ref: ForwardedRef<HTMLButtonElement>
+    ref: ForwardedRef<HTMLButtonElement>,
   ) => {
     const [buttonRef, autoClick] = useAutoClick<HTMLButtonElement>(ref);
 
@@ -19,18 +19,18 @@ const TestComponent = forwardRef(
         Click me
       </button>
     );
-  }
+  },
 );
-TestComponent.displayName = 'TestComponent';
+TestComponent.displayName = "TestComponent";
 
-describe('useAutoClick', () => {
-  it('should set autoClick to true when autoClick event is triggered', () => {
+describe("useAutoClick", () => {
+  it("should set autoClick to true when autoClick event is triggered", () => {
     const onClick = vi.fn();
     const ref = createRef<HTMLButtonElement>();
     render(<TestComponent ref={ref} onClick={onClick} />);
 
     act(() => {
-      const event = new MouseEvent('click', { bubbles: true }) as MouseEvent & {
+      const event = new MouseEvent("click", { bubbles: true }) as MouseEvent & {
         autoClick?: boolean;
       };
       event.autoClick = true;
@@ -39,13 +39,13 @@ describe('useAutoClick', () => {
 
     expect(onClick).toHaveBeenCalledWith(true);
   });
-  it('should set autoClick to false when autoClick event is not triggered', () => {
+  it("should set autoClick to false when autoClick event is not triggered", () => {
     const onClick = vi.fn();
     const ref = createRef<HTMLButtonElement>();
     render(<TestComponent ref={ref} onClick={onClick} />);
 
     act(() => {
-      const event = new MouseEvent('click', { bubbles: true });
+      const event = new MouseEvent("click", { bubbles: true });
       ref.current?.dispatchEvent(event);
     });
 

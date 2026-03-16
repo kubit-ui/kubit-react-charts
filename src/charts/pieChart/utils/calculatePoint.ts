@@ -8,7 +8,7 @@
 export const calculatePoint = (
   center: { x: number; y: number },
   radius: number,
-  angle: number
+  angle: number,
 ): { x: number; y: number } => {
   return {
     x: center.x + radius * Math.cos(angle),

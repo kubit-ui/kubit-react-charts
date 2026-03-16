@@ -8,4 +8,4 @@ export {
   createSVGElement,
   safeGetComputedStyle,
   safeQuerySelector,
-} from './ssr';
+} from "./ssr";

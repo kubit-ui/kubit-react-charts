@@ -64,7 +64,7 @@ export const roundEndIndex = (index: number, maxIndex: number): number => {
  */
 export const getRangeIndices = (
   range: { start: number; end: number },
-  dataLength: number
+  dataLength: number,
 ): { startIndex: number; endIndex: number } => {
   const maxIndex = Math.max(0, dataLength - 1);
 

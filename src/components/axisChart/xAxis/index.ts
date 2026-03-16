@@ -1,2 +1,2 @@
-export * from './xAxis';
-export * from './xAxis.types';
+export * from "./xAxis";
+export * from "./xAxis.types";

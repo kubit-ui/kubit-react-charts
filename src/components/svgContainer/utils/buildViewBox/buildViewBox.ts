@@ -14,7 +14,7 @@
 export const buildViewBox = (
   width: number | string,
   height: number | string,
-  extraSpace: number | string = 0
+  extraSpace: number | string = 0,
 ): string => {
   const minX = -extraSpace;
   const minY = -extraSpace;

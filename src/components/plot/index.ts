@@ -1,2 +1,2 @@
-export * from './plot';
-export * from './plot.types';
+export * from "./plot";
+export * from "./plot.types";

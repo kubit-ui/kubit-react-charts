@@ -1,17 +1,17 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { BarOrientation } from '@/components/bar/bar.type';
-import { Note } from '@/storybook/components/note/note';
-import { DefaultCanvasConfig } from '@/types/canvas.type';
-import { Positions } from '@/types/position.enum';
-import type { ValueFormatter } from '@/types/valueFormatter.type';
+import { BarOrientation } from "@/components/bar/bar.type";
+import { Note } from "@/storybook/components/note/note";
+import { DefaultCanvasConfig } from "@/types/canvas.type";
+import { Positions } from "@/types/position.enum";
+import type { ValueFormatter } from "@/types/valueFormatter.type";
 
-import { BarChart } from '../../../barChart';
-import type { BarChartYAxisProps } from '../../../barChart.type';
-import { simplifiedData } from '../../templates/data';
-import { yAxisArgTypes } from './yAxis.argtypes';
+import { BarChart } from "../../../barChart";
+import type { BarChartYAxisProps } from "../../../barChart.type";
+import { simplifiedData } from "../../templates/data";
+import { yAxisArgTypes } from "./yAxis.argtypes";
 
-type YAxisStoryArgs = Omit<BarChartYAxisProps, 'valueFormatter'> & {
+type YAxisStoryArgs = Omit<BarChartYAxisProps, "valueFormatter"> & {
   valueFormatter?: ValueFormatter | string;
 };
 
@@ -34,7 +34,7 @@ const meta = {
               <strong>Key Features:</strong>
             </>,
             <>
-              • <strong>valueFormatter</strong> - Format tick labels using a callback function{' '}
+              • <strong>valueFormatter</strong> - Format tick labels using a callback function{" "}
               <code>(val) =&gt; string</code>. The dropdown below shows preset examples, but in your
               code you'll pass actual functions.
             </>,
@@ -74,8 +74,8 @@ const meta = {
       </>
     ),
   ],
-  tags: ['autodocs'],
-  title: 'Charts/BarChart/Child Components/BarChartYAxis',
+  tags: ["autodocs"],
+  title: "Charts/BarChart/Child Components/BarChartYAxis",
 } satisfies Meta<YAxisStoryArgs>;
 
 export default meta;
@@ -83,19 +83,19 @@ type Story = StoryObj<YAxisStoryArgs>;
 
 const getValueFormatter = (formatterType: string) => {
   switch (formatterType) {
-    case 'currency':
-      return val => `$${val}`;
-    case 'percentage':
-      return val => `${val}%`;
-    case 'thousands':
-      return val => `${val}K`;
-    case 'millions':
-      return val => `${val}M`;
-    case 'units':
-      return val => `${val}k`;
-    case 'custom':
-      return val => `[${val}]`;
-    case 'none':
+    case "currency":
+      return (val) => `$${val}`;
+    case "percentage":
+      return (val) => `${val}%`;
+    case "thousands":
+      return (val) => `${val}K`;
+    case "millions":
+      return (val) => `${val}M`;
+    case "units":
+      return (val) => `${val}k`;
+    case "custom":
+      return (val) => `[${val}]`;
+    case "none":
     default:
       return undefined;
   }
@@ -118,8 +118,8 @@ export const YAxisCustomization: Story = {
     // === TICK CONFIGURATION ===
     showTickLines: true,
     // === AXIS LINE STYLING ===
-    stroke: '#666666',
-    strokeDasharray: '3,3',
+    stroke: "#666666",
+    strokeDasharray: "3,3",
     strokeDashoffset: undefined,
     strokeLinecap: undefined,
     strokeLinejoin: undefined,
@@ -135,8 +135,8 @@ export const YAxisCustomization: Story = {
       className: undefined,
       dataTestId: undefined,
       opacity: 1,
-      stroke: '#999999',
-      strokeDasharray: '1,1',
+      stroke: "#999999",
+      strokeDasharray: "1,1",
       strokeDashoffset: undefined,
       strokeLinecap: undefined,
       strokeLinejoin: undefined,
@@ -152,7 +152,7 @@ export const YAxisCustomization: Story = {
       className: undefined,
       direction: undefined,
       // Color and appearance
-      fill: '#333333',
+      fill: "#333333",
       fillOpacity: undefined,
       // Font properties
       fontFamily: undefined,
@@ -173,7 +173,7 @@ export const YAxisCustomization: Story = {
       // React/DOM properties
       style: undefined,
       tabIndex: undefined,
-      textAnchor: 'middle',
+      textAnchor: "middle",
       textDecoration: undefined,
       textLength: undefined,
       unicodeBidi: undefined,
@@ -189,7 +189,7 @@ export const YAxisCustomization: Story = {
         step: 1,
       },
     },
-    valueFormatter: 'currency',
+    valueFormatter: "currency",
 
     transform: undefined,
   },
@@ -204,28 +204,28 @@ export const YAxisCustomization: Story = {
 
     const barConfigs = [
       {
-        color: '#FFB366',
+        color: "#FFB366",
         coverage: 100,
-        ['aria-label']: '{{yKey}}:{{yData}} - {{xData}}',
-        role: 'img',
+        ["aria-label"]: "{{yKey}}:{{yData}} - {{xData}}",
+        role: "img",
       },
       {
-        color: '#66B3FF',
+        color: "#66B3FF",
         coverage: 100,
-        ['aria-label']: '{{yKey}}:{{yData}} - {{xData}}',
-        role: 'img',
+        ["aria-label"]: "{{yKey}}:{{yData}} - {{xData}}",
+        role: "img",
       },
       {
-        color: '#66D9B3',
+        color: "#66D9B3",
         coverage: 100,
-        ['aria-label']: '{{yKey}}:{{yData}} - {{xData}}',
-        role: 'img',
+        ["aria-label"]: "{{yKey}}:{{yData}} - {{xData}}",
+        role: "img",
       },
       {
-        color: '#B366FF',
+        color: "#B366FF",
         coverage: 100,
-        ['aria-label']: '{{yKey}}:{{yData}} - {{xData}}',
-        role: 'img',
+        ["aria-label"]: "{{yKey}}:{{yData}} - {{xData}}",
+        role: "img",
       },
     ];
 

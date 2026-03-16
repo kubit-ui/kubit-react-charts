@@ -1,9 +1,9 @@
-import type { ChartError, ChartErrorCollection, ErrorType } from '@/types/errors.type';
+import type { ChartError, ChartErrorCollection, ErrorType } from "@/types/errors.type";
 
 export const createErrorAccumulator = (
-  onErrors?: (errors: ChartErrorCollection) => void
+  onErrors?: (errors: ChartErrorCollection) => void,
 ): {
-  addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => void;
+  addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => void;
   getAccumulatedErrors: () => ChartErrorCollection;
   clearErrors: () => void;
 } => {
@@ -20,7 +20,7 @@ export const createErrorAccumulator = (
     return result;
   };
 
-  const addError = (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => {
+  const addError = (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => {
     if (!error) {
       return;
     }

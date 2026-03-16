@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import type { MouseEvent } from "react";
 
 /**
  * Defines a generic hover event handler function type.

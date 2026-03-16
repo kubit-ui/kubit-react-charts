@@ -1,15 +1,15 @@
-import { BarOrientation } from '../../bar.type';
-import { getSegments } from '../getSegments';
+import { BarOrientation } from "../../bar.type";
+import { getSegments } from "../getSegments";
 
-describe('getSegments', () => {
-  it('should calculate segments for horizontal orientation', () => {
+describe("getSegments", () => {
+  it("should calculate segments for horizontal orientation", () => {
     const result = getSegments({
       barConfig: {
         barWidth: 5,
         gap: 2,
         singleConfig: [
-          { color: 'red', coverage: 50 },
-          { color: 'pink', coverage: 50 },
+          { color: "red", coverage: 50 },
+          { color: "pink", coverage: 50 },
         ],
       },
       orientation: BarOrientation.HORIZONTAL,
@@ -25,14 +25,14 @@ describe('getSegments', () => {
     ]);
   });
 
-  it('should calculate segments for vertical orientation', () => {
+  it("should calculate segments for vertical orientation", () => {
     const result = getSegments({
       barConfig: {
         barWidth: 5,
         gap: 4,
         singleConfig: [
-          { color: 'blue', coverage: 30 },
-          { color: 'green', coverage: 70 },
+          { color: "blue", coverage: 30 },
+          { color: "green", coverage: 70 },
         ],
       },
       orientation: BarOrientation.VERTICAL,
@@ -48,7 +48,7 @@ describe('getSegments', () => {
     ]);
   });
 
-  it('should handle empty singleConfig', () => {
+  it("should handle empty singleConfig", () => {
     const result = getSegments({
       barConfig: {
         barWidth: 5,
@@ -65,12 +65,12 @@ describe('getSegments', () => {
     expect(result).toEqual([]);
   });
 
-  it('should handle 100% coverage for a single segment', () => {
+  it("should handle 100% coverage for a single segment", () => {
     const result = getSegments({
       barConfig: {
         barWidth: 5,
         gap: 0,
-        singleConfig: [{ color: 'yellow', coverage: 100 }],
+        singleConfig: [{ color: "yellow", coverage: 100 }],
       },
       orientation: BarOrientation.HORIZONTAL,
       x1: 0,
@@ -82,14 +82,14 @@ describe('getSegments', () => {
     expect(result).toEqual([[0, 100]]);
   });
 
-  it('should handle negative barStart and barEnd values', () => {
+  it("should handle negative barStart and barEnd values", () => {
     const result = getSegments({
       barConfig: {
         barWidth: 5,
         gap: 2,
         singleConfig: [
-          { color: 'pink', coverage: 50 },
-          { color: 'red', coverage: 50 },
+          { color: "pink", coverage: 50 },
+          { color: "red", coverage: 50 },
         ],
       },
       orientation: BarOrientation.HORIZONTAL,

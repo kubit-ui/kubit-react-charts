@@ -8,8 +8,8 @@
 const GRID_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400">
   <rect fill="#fafafa" width="500" height="400"/>
   <g stroke="#eee" stroke-width="0.5">
-    ${[50, 100, 150, 200, 250, 300, 350, 400, 450].map(x => `<line x1="${x}" y1="0" x2="${x}" y2="400"/>`).join('')}
-    ${[50, 100, 150, 200, 250, 300, 350].map(y => `<line x1="0" y1="${y}" x2="500" y2="${y}"/>`).join('')}
+    ${[50, 100, 150, 200, 250, 300, 350, 400, 450].map((x) => `<line x1="${x}" y1="0" x2="${x}" y2="400"/>`).join("")}
+    ${[50, 100, 150, 200, 250, 300, 350].map((y) => `<line x1="0" y1="${y}" x2="500" y2="${y}"/>`).join("")}
   </g>
   <g stroke="#ddd" stroke-width="1">
     <line x1="0" y1="0" x2="0" y2="400"/><line x1="500" y1="0" x2="500" y2="400"/>

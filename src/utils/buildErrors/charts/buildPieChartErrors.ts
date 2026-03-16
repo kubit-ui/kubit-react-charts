@@ -34,10 +34,10 @@ export const buildInvalidTotalError = (dataKey: string, total: number): Error =>
 export const buildInvalidGroupError = (
   dataKey: string,
   index: number,
-  missingProp: string
+  missingProp: string,
 ): Error =>
   new Error(
-    `Invalid group at index ${index} in "${dataKey}": missing required property "${missingProp}"`
+    `Invalid group at index ${index} in "${dataKey}": missing required property "${missingProp}"`,
   );
 
 /**
@@ -57,5 +57,5 @@ export const buildInvalidInnerRadiusError = (innerRadius: unknown): Error =>
  */
 export const buildInnerRadiusOutOfRangeError = (innerRadius: number, radius: number): Error =>
   new Error(
-    `innerRadius (${innerRadius}) must be less than radius (${radius}) for donut chart rendering`
+    `innerRadius (${innerRadius}) must be less than radius (${radius}) for donut chart rendering`,
   );

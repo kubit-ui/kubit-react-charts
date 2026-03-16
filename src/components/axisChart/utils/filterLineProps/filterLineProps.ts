@@ -1,4 +1,4 @@
-import type { LineProps } from '@/components/line/line.types';
+import type { LineProps } from "@/components/line/line.types";
 
 /**
  * Filters and extracts line-related properties from a given object.

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 
 interface UseHoverProps {
   canvasHeight: number;
@@ -28,7 +28,7 @@ export const useHover = ({ canvasHeight, canvasWidth }: UseHoverProps): UseHover
       // save the positions
       setCursor([xPosition, yPosition]);
     },
-    [canvasWidth, canvasHeight]
+    [canvasWidth, canvasHeight],
   );
 
   const startTouch = (e: TouchEvent) => {
@@ -38,15 +38,15 @@ export const useHover = ({ canvasHeight, canvasWidth }: UseHoverProps): UseHover
   const svgRef = useCallback(
     (node: SVGSVGElement | null) => {
       if (node) {
-        node.addEventListener('touchstart', startTouch);
-        node.addEventListener('touchmove', e => getCursor(e.touches[0], node));
-        node.addEventListener('mousemove', e => getCursor(e, node));
+        node.addEventListener("touchstart", startTouch);
+        node.addEventListener("touchmove", (e) => getCursor(e.touches[0], node));
+        node.addEventListener("mousemove", (e) => getCursor(e, node));
       }
-      node?.removeEventListener('touchstart', startTouch);
-      node?.removeEventListener('touchmove', e => getCursor(e.touches[0], node));
-      node?.removeEventListener('mousemove', e => getCursor(e, node));
+      node?.removeEventListener("touchstart", startTouch);
+      node?.removeEventListener("touchmove", (e) => getCursor(e.touches[0], node));
+      node?.removeEventListener("mousemove", (e) => getCursor(e, node));
     },
-    [canvasHeight, canvasWidth]
+    [canvasHeight, canvasWidth],
   );
 
   return { svgRef, xCursor, yCursor };

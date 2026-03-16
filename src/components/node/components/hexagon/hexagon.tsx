@@ -1,11 +1,11 @@
-import { type ForwardRefRenderFunction, type ForwardedRef, forwardRef } from 'react';
+import { type ForwardRefRenderFunction, type ForwardedRef, forwardRef } from "react";
 
-import type { NodeProps } from '../../node.types';
-import { calculateShapePoints } from '../../utils/calculateShapePoints/calculateShapePoints';
+import type { NodeProps } from "../../node.types";
+import { calculateShapePoints } from "../../utils/calculateShapePoints/calculateShapePoints";
 
 const HexagonComponent: ForwardRefRenderFunction<SVGPolygonElement, NodeProps> = (
   { dataTestId, position = { x: 0, y: 0 }, size = 1, ...props },
-  ref
+  ref,
 ): React.JSX.Element => {
   const hexagonPoints = calculateShapePoints(position.x, position.y, 6, size / 2, size / 2);
   return (
@@ -16,5 +16,5 @@ const HexagonComponent: ForwardRefRenderFunction<SVGPolygonElement, NodeProps> =
 export const Hexagon = forwardRef(HexagonComponent) as (
   props: NodeProps & {
     ref?: ForwardedRef<SVGSVGElement>;
-  }
+  },
 ) => React.JSX.Element;

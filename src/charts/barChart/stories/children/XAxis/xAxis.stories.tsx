@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { BarOrientation } from '@/components/bar/bar.type';
-import { Note } from '@/storybook/components/note/note';
-import { DefaultCanvasConfig } from '@/types/canvas.type';
-import { Positions } from '@/types/position.enum';
-import type { ValueFormatter } from '@/types/valueFormatter.type';
+import { BarOrientation } from "@/components/bar/bar.type";
+import { Note } from "@/storybook/components/note/note";
+import { DefaultCanvasConfig } from "@/types/canvas.type";
+import { Positions } from "@/types/position.enum";
+import type { ValueFormatter } from "@/types/valueFormatter.type";
 
-import { BarChart } from '../../../barChart';
-import type { BarChartXAxisProps } from '../../../barChart.type';
-import { xAxisArgTypes } from './xAxis.argtypes';
+import { BarChart } from "../../../barChart";
+import type { BarChartXAxisProps } from "../../../barChart.type";
+import { xAxisArgTypes } from "./xAxis.argtypes";
 
-type XAxisStoryArgs = Omit<BarChartXAxisProps, 'valueFormatter'> & {
+type XAxisStoryArgs = Omit<BarChartXAxisProps, "valueFormatter"> & {
   valueFormatter?: ValueFormatter | string;
 };
 
@@ -37,7 +37,7 @@ const meta = {
               format
             </>,
             <>
-              • <strong>valueFormatter</strong> - Format tick labels using a callback function{' '}
+              • <strong>valueFormatter</strong> - Format tick labels using a callback function{" "}
               <code>(val) =&gt; string</code>. The dropdown below shows preset examples, but in your
               code you'll pass actual functions.
             </>,
@@ -67,8 +67,8 @@ const meta = {
       </>
     ),
   ],
-  tags: ['autodocs'],
-  title: 'Charts/BarChart/Child Components/BarChartXAxis',
+  tags: ["autodocs"],
+  title: "Charts/BarChart/Child Components/BarChartXAxis",
 } satisfies Meta<XAxisStoryArgs>;
 
 export default meta;
@@ -76,17 +76,17 @@ type Story = StoryObj<XAxisStoryArgs>;
 
 const getValueFormatter = (formatterType: string) => {
   switch (formatterType) {
-    case 'currency':
-      return val => `$${val}`;
-    case 'percentage':
-      return val => `${val}%`;
-    case 'thousands':
-      return val => `${val}K`;
-    case 'millions':
-      return val => `${val}M`;
-    case 'custom':
-      return val => `[${val}]`;
-    case 'none':
+    case "currency":
+      return (val) => `$${val}`;
+    case "percentage":
+      return (val) => `${val}%`;
+    case "thousands":
+      return (val) => `${val}K`;
+    case "millions":
+      return (val) => `${val}M`;
+    case "custom":
+      return (val) => `[${val}]`;
+    case "none":
     default:
       return undefined;
   }
@@ -114,8 +114,8 @@ export const XAxisCustomization: Story = {
     // === TICK CONFIGURATION ===
     showTickLines: true,
     // === AXIS LINE STYLING ===
-    stroke: '#666666',
-    strokeDasharray: '3,3',
+    stroke: "#666666",
+    strokeDasharray: "3,3",
     strokeDashoffset: undefined,
     strokeLinecap: undefined,
     strokeLinejoin: undefined,
@@ -133,8 +133,8 @@ export const XAxisCustomization: Story = {
       className: undefined,
       dataTestId: undefined,
       opacity: 1,
-      stroke: '#999999',
-      strokeDasharray: '1,1',
+      stroke: "#999999",
+      strokeDasharray: "1,1",
       strokeDashoffset: undefined,
       strokeLinecap: undefined,
       strokeLinejoin: undefined,
@@ -152,7 +152,7 @@ export const XAxisCustomization: Story = {
       className: undefined,
       direction: undefined,
       // Font properties
-      fill: '#333333',
+      fill: "#333333",
       fillOpacity: undefined,
       fontFamily: undefined,
       fontSize: 2.5,
@@ -170,7 +170,7 @@ export const XAxisCustomization: Story = {
       style: undefined,
       tabIndex: undefined,
       // Text positioning and alignment
-      textAnchor: 'middle',
+      textAnchor: "middle",
       textDecoration: undefined,
       textLength: undefined,
       top: 0.5,
@@ -182,10 +182,10 @@ export const XAxisCustomization: Story = {
 
     tickValues: {
       custom: {
-        values: ['2001', '2002', '2003', '2004'],
+        values: ["2001", "2002", "2003", "2004"],
       },
     },
-    valueFormatter: 'thousands',
+    valueFormatter: "thousands",
 
     transform: undefined,
   },
@@ -207,28 +207,28 @@ export const XAxisCustomization: Story = {
     // Solid bar configurations with unique soft colors per year
     const barConfigs = [
       {
-        color: '#FFB366',
+        color: "#FFB366",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#66B3FF',
+        color: "#66B3FF",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#66D9B3',
+        color: "#66D9B3",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#B366FF',
+        color: "#B366FF",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
     ];
 

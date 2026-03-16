@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 
-import type { MouseHandler, UseHoverReturn } from './useHover.types';
+import type { MouseHandler, UseHoverReturn } from "./useHover.types";
 
 /**
  * A custom hook that manages hover state and provides event handlers for mouse enter and leave events,
@@ -14,7 +14,7 @@ import type { MouseHandler, UseHoverReturn } from './useHover.types';
  */
 export const useHover = <T extends HTMLElement | SVGElement>(
   onMouseEnter?: MouseHandler<T>,
-  onMouseLeave?: MouseHandler<T>
+  onMouseLeave?: MouseHandler<T>,
 ): UseHoverReturn<T> => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -23,7 +23,7 @@ export const useHover = <T extends HTMLElement | SVGElement>(
       setIsHovered(true);
       onMouseEnter?.(event);
     },
-    [onMouseEnter]
+    [onMouseEnter],
   );
 
   const handleMouseLeave = useCallback(
@@ -31,7 +31,7 @@ export const useHover = <T extends HTMLElement | SVGElement>(
       setIsHovered(false);
       onMouseLeave?.(event);
     },
-    [onMouseLeave]
+    [onMouseLeave],
   );
 
   return {

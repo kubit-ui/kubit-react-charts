@@ -8,7 +8,15 @@
   border-left: 4px solid var(--kbt-note-border-color, #0066cc);
   background-color: var(--kbt-note-bg, #f0f8ff);
   transition: grid-template-rows 0.3s ease-in-out;
-  font-family: 'Nunito Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    "Nunito Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
 }
 
 /* Collapsed state */

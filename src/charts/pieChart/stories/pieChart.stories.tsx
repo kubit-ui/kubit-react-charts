@@ -1,22 +1,22 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Note } from '@/storybook/components/note/note';
+import { Note } from "@/storybook/components/note/note";
 
-import { PieChart as StoryPieChart } from '../pieChart';
-import { argtypes } from './argtypes';
-import { BASIC_TEMPLATE } from './templates/basic';
-import { DATA, SINGLE_DATA } from './templates/data';
-import { HALF_CHART_TEMPLATE } from './templates/halfChart';
-import { MULTIPLE_TEMPLATE } from './templates/multiple';
-import { SINGLE_TEMPLATE } from './templates/onlyOneValue';
-import './templates/styles.css';
-import { PieChartWithErrorHandlingWithHooks } from './templates/withErrorHandling';
+import { PieChart as StoryPieChart } from "../pieChart";
+import { argtypes } from "./argtypes";
+import { BASIC_TEMPLATE } from "./templates/basic";
+import { DATA, SINGLE_DATA } from "./templates/data";
+import { HALF_CHART_TEMPLATE } from "./templates/halfChart";
+import { MULTIPLE_TEMPLATE } from "./templates/multiple";
+import { SINGLE_TEMPLATE } from "./templates/onlyOneValue";
+import "./templates/styles.css";
+import { PieChartWithErrorHandlingWithHooks } from "./templates/withErrorHandling";
 
 const meta = {
   argTypes: argtypes(),
   component: StoryPieChart,
-  tags: ['autodocs'],
-  title: 'Charts/PieChart/PieChart Examples',
+  tags: ["autodocs"],
+  title: "Charts/PieChart/PieChart Examples",
 } satisfies Meta<typeof StoryPieChart>;
 
 export default meta;
@@ -27,9 +27,9 @@ type Story = StoryObj<typeof meta> & { args: { themeArgs?: object } } & {
 
 const args = {
   canvasConfig: { extraSpace: 0, height: 200, width: 200 },
-  caption: 'Pie chart',
-  height: '100%',
-  width: '500px',
+  caption: "Pie chart",
+  height: "100%",
+  width: "500px",
 };
 
 // Reusable decorator for customization examples
@@ -101,19 +101,19 @@ export const PieChartMultiple: Story = {
                 <h4>🔧 Radius Coordination:</h4>
                 <ul>
                   <li>
-                    <strong>Outer ring</strong>:{' '}
+                    <strong>Outer ring</strong>:{" "}
                     <code>
                       innerRadius={80}, radius={100}
                     </code>
                   </li>
                   <li>
-                    <strong>Middle ring</strong>:{' '}
+                    <strong>Middle ring</strong>:{" "}
                     <code>
                       innerRadius={60}, radius={70}
                     </code>
                   </li>
                   <li>
-                    <strong>Inner ring</strong>:{' '}
+                    <strong>Inner ring</strong>:{" "}
                     <code>
                       innerRadius={40}, radius={50}
                     </code>
@@ -122,7 +122,7 @@ export const PieChartMultiple: Story = {
                 <h4>⚠️ Key Requirements:</h4>
                 <ul>
                   <li>
-                    Each ring's <code>innerRadius</code> must be larger than the previous ring's{' '}
+                    Each ring's <code>innerRadius</code> must be larger than the previous ring's{" "}
                     <code>radius</code>
                   </li>
                   <li>
@@ -147,9 +147,9 @@ export const PieChartWithCustomAnimation: Story = {
   args: {
     ...args,
     children: BASIC_TEMPLATE,
-    classNames: 'pie-chart-styles',
+    classNames: "pie-chart-styles",
     data: DATA,
-    segmentClassNames: 'custom-animation',
+    segmentClassNames: "custom-animation",
   },
   decorators: [
     (Story: React.ComponentType): React.JSX.Element => {
@@ -162,18 +162,18 @@ export const PieChartWithCustomAnimation: Story = {
             text={[
               <div key="custom-animation-explanation">
                 <p>
-                  This example demonstrates how to create and apply{' '}
+                  This example demonstrates how to create and apply{" "}
                   <strong>custom CSS animation classes</strong> for more personalized chart
                   interactions.
                 </p>
                 <h4>🎯 Custom Classes Used:</h4>
                 <ul>
                   <li>
-                    <strong>pie-chart-styles</strong> - Applied to the main chart container via{' '}
+                    <strong>pie-chart-styles</strong> - Applied to the main chart container via{" "}
                     <code>classNames</code> prop
                   </li>
                   <li>
-                    <strong>custom-animation</strong> - Applied to individual segments via{' '}
+                    <strong>custom-animation</strong> - Applied to individual segments via{" "}
                     <code>segmentClassNames</code> prop
                   </li>
                 </ul>
@@ -220,7 +220,7 @@ export const HalfChart: Story = {
     children: HALF_CHART_TEMPLATE,
     data: DATA,
     halfChart: true,
-    radius: '0%',
+    radius: "0%",
   },
   decorators: [
     (Story: React.ComponentType): React.JSX.Element => {
@@ -233,7 +233,7 @@ export const HalfChart: Story = {
             text={[
               <div key="half-chart-explanation">
                 <p>
-                  This example demonstrates how to create a{' '}
+                  This example demonstrates how to create a{" "}
                   <strong>half chart (semi-circle)</strong> using the PieChart component. This is
                   useful for gauge-like visualizations or when you need to save vertical space.
                 </p>
@@ -255,10 +255,10 @@ export const HalfChart: Story = {
                 <h4>💻 Implementation:</h4>
                 <pre
                   style={{
-                    background: '#f5f5f5',
-                    borderRadius: '4px',
-                    fontSize: '0.85em',
-                    padding: '12px',
+                    background: "#f5f5f5",
+                    borderRadius: "4px",
+                    fontSize: "0.85em",
+                    padding: "12px",
                   }}
                 >
                   {`<PieChart

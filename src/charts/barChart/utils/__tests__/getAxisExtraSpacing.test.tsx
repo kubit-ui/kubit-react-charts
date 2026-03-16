@@ -1,10 +1,10 @@
-import { BarOrientation } from '@/components/bar/bar.type';
-import { Positions } from '@/types/position.enum';
+import { BarOrientation } from "@/components/bar/bar.type";
+import { Positions } from "@/types/position.enum";
 
-import { BarChartPath } from '../../fragments/barChartPath';
-import { BarChartXAxis } from '../../fragments/barChartXAxis';
-import { BarChartYAxis } from '../../fragments/barChartYAxis';
-import { getAxisExtraSpacing } from '../getAxisExtraSpacing';
+import { BarChartPath } from "../../fragments/barChartPath";
+import { BarChartXAxis } from "../../fragments/barChartXAxis";
+import { BarChartYAxis } from "../../fragments/barChartYAxis";
+import { getAxisExtraSpacing } from "../getAxisExtraSpacing";
 
 declare global {
   interface SVGElement {
@@ -12,17 +12,17 @@ declare global {
   }
 }
 
-describe('getAxisExtraSpacing', () => {
+describe("getAxisExtraSpacing", () => {
   const singleConfig = {
     barWidth: 3,
     gap: 1,
-    singleConfig: [{ color: 'pink', coverage: 100 }],
+    singleConfig: [{ color: "pink", coverage: 100 }],
   };
 
   const mockData = [
-    { key: 'A', value: 10 },
-    { key: 'B', value: 20 },
-    { key: 'C', value: 30 },
+    { key: "A", value: 10 },
+    { key: "B", value: 20 },
+    { key: "C", value: 30 },
   ];
 
   beforeEach(() => {
@@ -44,12 +44,12 @@ describe('getAxisExtraSpacing', () => {
       key="x-axis"
       position={Positions.BOTTOM}
       tickText={{ fontSize: 12, top: 5 }}
-      tickValues={{ custom: { values: ['A', 'B', 'C'] } }}
+      tickValues={{ custom: { values: ["A", "B", "C"] } }}
     />,
     <BarChartYAxis key="y-axis" position={Positions.LEFT} tickText={{ fontSize: 10, right: 5 }} />,
   ];
 
-  it('should calculate the extra spacing for a vertical chart', () => {
+  it("should calculate the extra spacing for a vertical chart", () => {
     const result = getAxisExtraSpacing({
       ajustedX: 1,
       ajustedY: 1,
@@ -59,8 +59,8 @@ describe('getAxisExtraSpacing', () => {
       data: mockData,
       gapBetweenBars: 5,
       orientation: BarOrientation.VERTICAL,
-      pKey: 'key',
-      viewBox: '0 0 100, 80',
+      pKey: "key",
+      viewBox: "0 0 100, 80",
     });
 
     expect(result).toEqual({
@@ -74,14 +74,14 @@ describe('getAxisExtraSpacing', () => {
       securityYSpace: 10,
       xAxisText: 0,
       xBreakAxis: 0,
-      xData: ['A', 'B', 'C'],
+      xData: ["A", "B", "C"],
       yAxisText: 100,
       yBreakAxis: 0,
-      yData: ['10', '20', '30'],
+      yData: ["10", "20", "30"],
     });
   });
 
-  it('should calculate the extra spacing for horizontal chart', () => {
+  it("should calculate the extra spacing for horizontal chart", () => {
     const result = getAxisExtraSpacing({
       ajustedX: 1,
       ajustedY: 1,
@@ -91,8 +91,8 @@ describe('getAxisExtraSpacing', () => {
       data: mockData,
       gapBetweenBars: 5,
       orientation: BarOrientation.HORIZONTAL,
-      pKey: 'key',
-      viewBox: '0 0 100, 80',
+      pKey: "key",
+      viewBox: "0 0 100, 80",
     });
 
     expect(result).toEqual({
@@ -106,14 +106,14 @@ describe('getAxisExtraSpacing', () => {
       securityYSpace: 10,
       xAxisText: 0,
       xBreakAxis: 0,
-      xData: ['A', 'B', 'C'],
+      xData: ["A", "B", "C"],
       yAxisText: 100,
       yBreakAxis: 0,
-      yData: ['10', '20', '30'],
+      yData: ["10", "20", "30"],
     });
   });
 
-  it('should handle children without a valid type', () => {
+  it("should handle children without a valid type", () => {
     const invalidChildren = [<div key="invalid">Elemento no válido</div>, ...mockChildren];
 
     const result = getAxisExtraSpacing({
@@ -125,8 +125,8 @@ describe('getAxisExtraSpacing', () => {
       data: mockData,
       gapBetweenBars: 5,
       orientation: BarOrientation.VERTICAL,
-      pKey: 'key',
-      viewBox: '0 0 100, 80',
+      pKey: "key",
+      viewBox: "0 0 100, 80",
     });
 
     expect(result).toEqual({
@@ -140,14 +140,14 @@ describe('getAxisExtraSpacing', () => {
       securityYSpace: 10,
       xAxisText: 0,
       xBreakAxis: 0,
-      xData: ['A', 'B', 'C'],
+      xData: ["A", "B", "C"],
       yAxisText: 100,
       yBreakAxis: 0,
-      yData: ['10', '20', '30'],
+      yData: ["10", "20", "30"],
     });
   });
 
-  it('should manage a chart without any children', () => {
+  it("should manage a chart without any children", () => {
     const result = getAxisExtraSpacing({
       ajustedX: 1,
       ajustedY: 1,
@@ -157,8 +157,8 @@ describe('getAxisExtraSpacing', () => {
       data: mockData,
       gapBetweenBars: 5,
       orientation: BarOrientation.VERTICAL,
-      pKey: 'key',
-      viewBox: '0 0 100, 80',
+      pKey: "key",
+      viewBox: "0 0 100, 80",
     });
 
     expect(result).toEqual({
@@ -179,11 +179,11 @@ describe('getAxisExtraSpacing', () => {
     });
   });
 
-  it('should use formatted X axis labels to calculate spacing while preserving raw xData', () => {
+  it("should use formatted X axis labels to calculate spacing while preserving raw xData", () => {
     SVGElement.prototype.getBBox = vi.fn(function (this: SVGElement) {
       return {
         height: 50,
-        width: (this.textContent ?? '').length * 10,
+        width: (this.textContent ?? "").length * 10,
         x: 0,
         y: 0,
       };
@@ -195,8 +195,8 @@ describe('getAxisExtraSpacing', () => {
         key="x-axis"
         position={Positions.BOTTOM}
         tickText={{ fontSize: 12, top: 5 }}
-        tickValues={{ custom: { values: ['A', 'B', 'C'] } }}
-        valueFormatter={value => `Long ${value}`}
+        tickValues={{ custom: { values: ["A", "B", "C"] } }}
+        valueFormatter={(value) => `Long ${value}`}
       />,
     ];
 
@@ -209,19 +209,19 @@ describe('getAxisExtraSpacing', () => {
       data: mockData,
       gapBetweenBars: 5,
       orientation: BarOrientation.VERTICAL,
-      pKey: 'key',
-      viewBox: '0 0 100, 80',
+      pKey: "key",
+      viewBox: "0 0 100, 80",
     });
 
     expect(result.securityXSpace).toBe(60);
-    expect(result.xData).toEqual(['A', 'B', 'C']);
+    expect(result.xData).toEqual(["A", "B", "C"]);
   });
 
-  it('should use formatted Y axis labels to calculate spacing while preserving raw yData', () => {
+  it("should use formatted Y axis labels to calculate spacing while preserving raw yData", () => {
     SVGElement.prototype.getBBox = vi.fn(function (this: SVGElement) {
       return {
         height: 50,
-        width: (this.textContent ?? '').length * 10,
+        width: (this.textContent ?? "").length * 10,
         x: 0,
         y: 0,
       };
@@ -233,7 +233,7 @@ describe('getAxisExtraSpacing', () => {
         key="y-axis"
         position={Positions.LEFT}
         tickText={{ fontSize: 10, right: 5 }}
-        valueFormatter={value => `${value}% growth`}
+        valueFormatter={(value) => `${value}% growth`}
       />,
     ];
 
@@ -246,12 +246,12 @@ describe('getAxisExtraSpacing', () => {
       data: mockData,
       gapBetweenBars: 5,
       orientation: BarOrientation.HORIZONTAL,
-      pKey: 'key',
-      viewBox: '0 0 100, 80',
+      pKey: "key",
+      viewBox: "0 0 100, 80",
     });
 
     expect(result.extraSpaceLeftX).toBe(105);
     expect(result.yAxisText).toBe(100);
-    expect(result.yData).toEqual(['10', '20', '30']);
+    expect(result.yData).toEqual(["10", "20", "30"]);
   });
 });

@@ -1,9 +1,9 @@
-import type { IZoomAreaDataPoint, ScreenReaderConfig, ZoomRange } from '../zoomArea.type';
-import { getRangeIndices } from './indexRounding';
+import type { IZoomAreaDataPoint, ScreenReaderConfig, ZoomRange } from "../zoomArea.type";
+import { getRangeIndices } from "./indexRounding";
 
 // Template keys for accessibility labels
-const ACCESSIBILITY_START_VALUE_KEY = '{{startValue}}';
-const ACCESSIBILITY_END_VALUE_KEY = '{{endValue}}';
+const ACCESSIBILITY_START_VALUE_KEY = "{{startValue}}";
+const ACCESSIBILITY_END_VALUE_KEY = "{{endValue}}";
 
 /**
  * Extracts the X-axis value from data at a specific index.
@@ -29,14 +29,14 @@ export const getXAxisValue = (data: IZoomAreaDataPoint[], xKey: string, index: n
 const buildScreenReaderText = (
   template: string | undefined,
   startValue: string,
-  endValue: string
+  endValue: string,
 ): string | undefined => {
   if (!template) {
     return template;
   }
 
-  const startValueRegExp = new RegExp(ACCESSIBILITY_START_VALUE_KEY, 'g');
-  const endValueRegExp = new RegExp(ACCESSIBILITY_END_VALUE_KEY, 'g');
+  const startValueRegExp = new RegExp(ACCESSIBILITY_START_VALUE_KEY, "g");
+  const endValueRegExp = new RegExp(ACCESSIBILITY_END_VALUE_KEY, "g");
 
   return template.replace(startValueRegExp, startValue).replace(endValueRegExp, endValue);
 };
@@ -57,7 +57,7 @@ export const generateAccessibilityLabels = (
   data: IZoomAreaDataPoint[],
   xKey: string,
   currentRange: ZoomRange,
-  config?: ScreenReaderConfig
+  config?: ScreenReaderConfig,
 ): {
   startHandler: string;
   endHandler: string;

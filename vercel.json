@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm build-storybook",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "corepack yarn build-storybook",
+  "installCommand": "corepack yarn install",
   "outputDirectory": "storybook-static"
 }

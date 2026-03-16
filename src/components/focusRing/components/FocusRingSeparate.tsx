@@ -1,9 +1,9 @@
-import type { RefObject } from 'react';
+import type { RefObject } from "react";
 
-import type { FocusConfig } from '@/types/focusConfig.type';
+import type { FocusConfig } from "@/types/focusConfig.type";
 
-import { useFocusRingData } from '../hooks/useFocusRingData';
-import { FocusRingRenderer } from './FocusRingRenderer';
+import { useFocusRingData } from "../hooks/useFocusRingData";
+import { FocusRingRenderer } from "./FocusRingRenderer";
 
 export interface FocusRingSeparateProps {
   targetRef: RefObject<SVGGraphicsElement>;
@@ -43,7 +43,7 @@ export interface FocusRingSeparateProps {
  * ```
  */
 export const FocusRingSeparate: React.FC<FocusRingSeparateProps> = ({
-  dataTestId = 'focus-ring',
+  dataTestId = "focus-ring",
   disabled = false,
   focusConfig,
   isFocused,

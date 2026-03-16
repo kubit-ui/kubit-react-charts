@@ -1,13 +1,13 @@
-import { type RefObject, useEffect, useMemo, useState } from 'react';
+import { type RefObject, useEffect, useMemo, useState } from "react";
 
-import { type FocusConfig, getFocusConfig } from '@/types/focusConfig.type';
+import { type FocusConfig, getFocusConfig } from "@/types/focusConfig.type";
 
 import {
   SVG_GEOMETRIC_ATTRIBUTES,
   createAdaptiveFocusRings,
-} from '../utils/createAdaptiveFocusRings';
-import { createBoundingBoxFocusRings } from '../utils/createBoundingBoxFocusRings';
-import type { FocusRingLayers } from '../utils/utils.types';
+} from "../utils/createAdaptiveFocusRings";
+import { createBoundingBoxFocusRings } from "../utils/createBoundingBoxFocusRings";
+import type { FocusRingLayers } from "../utils/utils.types";
 
 export interface UseFocusRingDataOptions {
   elementRef: RefObject<SVGGraphicsElement>;
@@ -57,13 +57,13 @@ export function useFocusRingData({
     // Function to calculate focus ring layers from current DOM state
     const calculateRings = () => {
       // Strategy 1: Adaptive variant - generate layers from DOM element
-      if (resolvedConfig.variant === 'adaptive') {
+      if (resolvedConfig.variant === "adaptive") {
         const adaptiveLayers = createAdaptiveFocusRings(element, resolvedConfig);
         setLayers(adaptiveLayers);
       }
 
       // Strategy 2: Bounding-box variant - detect bounds and calculate layers
-      if (resolvedConfig.variant === 'bounding-box') {
+      if (resolvedConfig.variant === "bounding-box") {
         const boundingBoxLayers = createBoundingBoxFocusRings(element, resolvedConfig);
         setLayers(boundingBoxLayers);
       }
@@ -74,11 +74,11 @@ export function useFocusRingData({
 
     // Set up MutationObserver to detect changes in geometric attributes
     // This ensures focus ring updates automatically when the element moves or resizes
-    const observer = new MutationObserver(mutations => {
+    const observer = new MutationObserver((mutations) => {
       const hasGeometricChanges = mutations.some(
-        mutation =>
-          mutation.type === 'attributes' &&
-          SVG_GEOMETRIC_ATTRIBUTES.includes(mutation.attributeName ?? '')
+        (mutation) =>
+          mutation.type === "attributes" &&
+          SVG_GEOMETRIC_ATTRIBUTES.includes(mutation.attributeName ?? ""),
       );
 
       if (hasGeometricChanges) {

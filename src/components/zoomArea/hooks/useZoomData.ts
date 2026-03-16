@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { getRangeIndices } from '../utils/indexRounding';
-import { createDefaultRange } from '../utils/rangeAndPositions';
-import type { IZoomAreaDataPoint, ZoomRange } from '../zoomArea.type';
+import { getRangeIndices } from "../utils/indexRounding";
+import { createDefaultRange } from "../utils/rangeAndPositions";
+import type { IZoomAreaDataPoint, ZoomRange } from "../zoomArea.type";
 
 /**
  * Custom hook for managing zoom data state and filtering logic.
@@ -47,7 +47,9 @@ export const useZoomData = ({
 
   // Filter data based on current range and emit changes
   const filterData = (range: ZoomRange) => {
-    if (!onDataChange || data.length === 0) {return;}
+    if (!onDataChange || data.length === 0) {
+      return;
+    }
 
     // Use centralized rounding logic to ensure consistency with accessibility labels
     const { endIndex, startIndex } = getRangeIndices(range, data.length);

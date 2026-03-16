@@ -1,4 +1,4 @@
-import type { BarChartIDataPoint } from '../barChart.type';
+import type { BarChartIDataPoint } from "../barChart.type";
 
 /**
  * Returns an array of rounded maximum values for each yKey in the given data.
@@ -7,9 +7,9 @@ import type { BarChartIDataPoint } from '../barChart.type';
  * @returns An array of rounded maximum values.
  */
 export const getBarKeyRoundMaxValue = (data: BarChartIDataPoint[], Key: string): number[] => {
-  return data.flatMap(point =>
+  return data.flatMap((point) =>
     Object.keys(point)
-      .filter(k => k !== Key && typeof point[k] === 'number')
-      .map(k => Number(point[k]))
+      .filter((k) => k !== Key && typeof point[k] === "number")
+      .map((k) => Number(point[k])),
   );
 };

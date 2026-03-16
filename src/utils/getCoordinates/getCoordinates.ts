@@ -1,4 +1,4 @@
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
 interface GetCoordinatesProps {
   position: (typeof Positions)[keyof typeof Positions];

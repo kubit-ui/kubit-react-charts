@@ -1,6 +1,6 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 
-import type { ForeignObjectProps } from './foreignObject.types';
+import type { ForeignObjectProps } from "./foreignObject.types";
 
 export const ForeignObject: FC<ForeignObjectProps> = ({
   children,

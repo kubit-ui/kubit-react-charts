@@ -1,1 +1,1 @@
-export * from './useResponsiveCanvas';
+export * from "./useResponsiveCanvas";

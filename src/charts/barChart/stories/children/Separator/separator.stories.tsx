@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { BarOrientation } from '@/components/bar/bar.type';
-import { Note } from '@/storybook/components/note/note';
-import { DefaultCanvasConfig } from '@/types/canvas.type';
-import { Positions } from '@/types/position.enum';
+import { BarOrientation } from "@/components/bar/bar.type";
+import { Note } from "@/storybook/components/note/note";
+import { DefaultCanvasConfig } from "@/types/canvas.type";
+import { Positions } from "@/types/position.enum";
 
-import { BarChart } from '../../../barChart';
-import type { BarChartSeparatorProps } from '../../../barChart.type';
-import { BarChartSeparator } from '../../../fragments/barChartSeparator';
-import { separatorArgTypes } from './separator.argtypes';
+import { BarChart } from "../../../barChart";
+import type { BarChartSeparatorProps } from "../../../barChart.type";
+import { BarChartSeparator } from "../../../fragments/barChartSeparator";
+import { separatorArgTypes } from "./separator.argtypes";
 
 const meta = {
   argTypes: separatorArgTypes(),
@@ -86,8 +86,8 @@ const meta = {
       </>
     ),
   ],
-  tags: ['autodocs'],
-  title: 'Charts/BarChart/Child Components/BarChartSeparator',
+  tags: ["autodocs"],
+  title: "Charts/BarChart/Child Components/BarChartSeparator",
 } satisfies Meta<typeof BarChart>;
 
 export default meta;
@@ -98,15 +98,15 @@ type Story = StoryObj<typeof meta>;
 export const HorizontalSeparator: Story = {
   args: {
     areaSeparator: {
-      fill: 'rgba(255, 107, 107, 0.1)',
+      fill: "rgba(255, 107, 107, 0.1)",
     },
-    dataTestId: 'horizontal-separator',
+    dataTestId: "horizontal-separator",
     topSeparator: {
-      stroke: '#ff6b6b',
-      strokeDasharray: '5,5',
-      strokeWidth: '0.5',
+      stroke: "#ff6b6b",
+      strokeDasharray: "5,5",
+      strokeWidth: "0.5",
     },
-    yBreakAxis: '50',
+    yBreakAxis: "50",
   },
 
   render: (args: BarChartSeparatorProps) => {
@@ -119,28 +119,28 @@ export const HorizontalSeparator: Story = {
 
     const barConfigs = [
       {
-        color: '#FFB366',
+        color: "#FFB366",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#66B3FF',
+        color: "#66B3FF",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#66D9B3',
+        color: "#66D9B3",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#B366FF',
+        color: "#B366FF",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
     ];
 
@@ -177,7 +177,7 @@ export const HorizontalSeparator: Story = {
           strokeWidth="0.1"
           tickText={{
             fontSize: 1,
-            textAnchor: 'middle',
+            textAnchor: "middle",
           }}
           tickValues={{ numeric: { max: 2004, min: 2001, step: 1 } }}
         />
@@ -190,7 +190,7 @@ export const HorizontalSeparator: Story = {
           strokeWidth="0.1"
           tickText={{
             fontSize: 1,
-            textAnchor: 'middle',
+            textAnchor: "middle",
           }}
           tickValues={{ numeric: { max: 80, min: 0, step: 20 } }}
         />
@@ -202,15 +202,15 @@ export const HorizontalSeparator: Story = {
 export const VerticalSeparator: Story = {
   args: {
     areaSeparator: {
-      fill: 'rgba(78, 205, 196, 0.1)',
+      fill: "rgba(78, 205, 196, 0.1)",
     },
-    dataTestId: 'vertical-separator',
+    dataTestId: "vertical-separator",
     rightSeparator: {
-      stroke: '#4ecdc4',
-      strokeDasharray: '3,3',
-      strokeWidth: '0.5',
+      stroke: "#4ecdc4",
+      strokeDasharray: "3,3",
+      strokeWidth: "0.5",
     },
-    xBreakAxis: '2003',
+    xBreakAxis: "2003",
   },
 
   render: (args: BarChartSeparatorProps) => {
@@ -223,28 +223,28 @@ export const VerticalSeparator: Story = {
 
     const barConfigs = [
       {
-        color: '#FF9999',
+        color: "#FF9999",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#99D6FF',
+        color: "#99D6FF",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#99FFB3',
+        color: "#99FFB3",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#E699FF',
+        color: "#E699FF",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
     ];
 
@@ -281,7 +281,7 @@ export const VerticalSeparator: Story = {
           strokeWidth="0.1"
           tickText={{
             fontSize: 1,
-            textAnchor: 'middle',
+            textAnchor: "middle",
           }}
           tickValues={{ numeric: { max: 2004, min: 2001, step: 1 } }}
         />
@@ -294,7 +294,7 @@ export const VerticalSeparator: Story = {
           strokeWidth="0.1"
           tickText={{
             fontSize: 1,
-            textAnchor: 'middle',
+            textAnchor: "middle",
           }}
           tickValues={{ numeric: { max: 80, min: 0, step: 20 } }}
         />
@@ -306,19 +306,19 @@ export const VerticalSeparator: Story = {
 export const CombinedSeparators: Story = {
   args: {
     areaSeparator: {
-      fill: 'rgba(136, 132, 216, 0.15)',
+      fill: "rgba(136, 132, 216, 0.15)",
     },
-    dataTestId: 'combined-separators',
+    dataTestId: "combined-separators",
     rightSeparator: {
-      stroke: '#82ca9d',
-      strokeWidth: '1',
+      stroke: "#82ca9d",
+      strokeWidth: "1",
     },
     topSeparator: {
-      stroke: '#8884d8',
-      strokeWidth: '1',
+      stroke: "#8884d8",
+      strokeWidth: "1",
     },
-    xBreakAxis: '2002',
-    yBreakAxis: '60',
+    xBreakAxis: "2002",
+    yBreakAxis: "60",
   },
 
   render: (args: BarChartSeparatorProps) => {
@@ -331,28 +331,28 @@ export const CombinedSeparators: Story = {
 
     const barConfigs = [
       {
-        color: '#FFCC99',
+        color: "#FFCC99",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#99CCFF',
+        color: "#99CCFF",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#B3FFB3',
+        color: "#B3FFB3",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
       {
-        color: '#D9B3FF',
+        color: "#D9B3FF",
         coverage: 100,
-        ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-        role: 'img',
+        ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+        role: "img",
       },
     ];
 
@@ -389,7 +389,7 @@ export const CombinedSeparators: Story = {
           strokeWidth="0.1"
           tickText={{
             fontSize: 1,
-            textAnchor: 'middle',
+            textAnchor: "middle",
           }}
           tickValues={{ numeric: { max: 2004, min: 2001, step: 1 } }}
         />
@@ -402,7 +402,7 @@ export const CombinedSeparators: Story = {
           strokeWidth="0.1"
           tickText={{
             fontSize: 1,
-            textAnchor: 'middle',
+            textAnchor: "middle",
           }}
           tickValues={{ numeric: { max: 80, min: 0, step: 20 } }}
         />

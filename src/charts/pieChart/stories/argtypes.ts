@@ -1,87 +1,87 @@
-import type { ArgTypes } from 'storybook/internal/types';
+import type { ArgTypes } from "storybook/internal/types";
 
-import { CATEGORY_CONTROL } from '@/storybook';
+import { CATEGORY_CONTROL } from "@/storybook";
 
-import type { PieChartProps } from '../pieChart.type';
+import type { PieChartProps } from "../pieChart.type";
 
 export const argtypes = (): ArgTypes<PieChartProps> => {
   return {
     // === ACCESSIBILITY ===
     ariaHidden: {
-      control: 'boolean',
+      control: "boolean",
       description:
-        'When true, hides the chart from screen readers. Use only when chart is decorative or when alternative accessible content is provided.',
+        "When true, hides the chart from screen readers. Use only when chart is decorative or when alternative accessible content is provided.",
       table: {
         category: CATEGORY_CONTROL.ACCESIBILITY,
-        defaultValue: { summary: 'false' },
-        type: { summary: 'boolean' },
+        defaultValue: { summary: "false" },
+        type: { summary: "boolean" },
       },
     },
     ariaLabel: {
-      control: 'text',
+      control: "text",
       description:
         'Accessible name for screen readers. Should describe the chart purpose and data overview (e.g., "Pie chart showing budget distribution by department").',
       table: {
         category: CATEGORY_CONTROL.ACCESIBILITY,
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'string' },
+        defaultValue: { summary: "undefined" },
+        type: { summary: "string" },
       },
     },
     // === CONFIGURATION AND DIMENSIONS ===
     canvasConfig: {
-      control: 'object',
+      control: "object",
       description:
-        'Configuration object for chart dimensions and spacing. Controls internal chart area size, margins, and padding.',
+        "Configuration object for chart dimensions and spacing. Controls internal chart area size, margins, and padding.",
       table: {
         category: CATEGORY_CONTROL.MODIFIERS,
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'CanvasConfig' },
+        defaultValue: { summary: "undefined" },
+        type: { summary: "CanvasConfig" },
       },
     },
     caption: {
-      control: 'text',
+      control: "text",
       description:
-        'Visible caption displayed with the chart. Provides context and description for all users, not just screen readers.',
+        "Visible caption displayed with the chart. Provides context and description for all users, not just screen readers.",
       table: {
         category: CATEGORY_CONTROL.ACCESIBILITY,
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'string' },
+        defaultValue: { summary: "undefined" },
+        type: { summary: "string" },
       },
     },
     // === INTERNAL PROPERTIES (DISABLED IN CONTROLS) ===
     children: {
       description:
-        'Chart components (segments, labels, etc.). Managed internally by the chart structure.',
+        "Chart components (segments, labels, etc.). Managed internally by the chart structure.",
       table: {
         disable: true,
       },
     },
 
     classNames: {
-      control: 'text',
+      control: "text",
       description:
-        'Optional class names to apply to the pie chart container. Use for custom styling of the overall chart component.',
+        "Optional class names to apply to the pie chart container. Use for custom styling of the overall chart component.",
       table: {
         category: CATEGORY_CONTROL.CUSTOMIZATION,
-        defaultValue: { summary: 'pie-chart' },
-        type: { summary: 'string' },
+        defaultValue: { summary: "pie-chart" },
+        type: { summary: "string" },
       },
     },
 
     // === DATA ===
     data: {
-      control: 'object',
+      control: "object",
       description:
-        'Data points to be used by the chart. Object with keys containing arrays of segments with name, value, and optional color properties.',
+        "Data points to be used by the chart. Object with keys containing arrays of segments with name, value, and optional color properties.",
       table: {
         category: CATEGORY_CONTROL.DATA,
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'DataItem' },
+        defaultValue: { summary: "undefined" },
+        type: { summary: "DataItem" },
       },
     },
     dataTestId: {
-      control: 'text',
-      description: 'Optional test ID for the component. Used for automated testing.',
+      control: "text",
+      description: "Optional test ID for the component. Used for automated testing.",
       table: {
         category: CATEGORY_CONTROL.TESTING,
         disable: true,
@@ -89,148 +89,148 @@ export const argtypes = (): ArgTypes<PieChartProps> => {
     },
     // === CUSTOMIZATION ===
     halfChart: {
-      control: 'boolean',
+      control: "boolean",
       description:
-        'When true, renders as a half pie chart (semicircle). Useful for gauge-like visualizations or when space is limited.',
+        "When true, renders as a half pie chart (semicircle). Useful for gauge-like visualizations or when space is limited.",
       table: {
         category: CATEGORY_CONTROL.CUSTOMIZATION,
-        defaultValue: { summary: 'false' },
-        type: { summary: 'boolean' },
+        defaultValue: { summary: "false" },
+        type: { summary: "boolean" },
       },
     },
 
     height: {
-      control: 'text',
+      control: "text",
       description:
         'Height of the component, can be a string (e.g., "100vh") or a number. Controls the overall chart container height.',
       table: {
         category: CATEGORY_CONTROL.MODIFIERS,
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'string' },
+        defaultValue: { summary: "undefined" },
+        type: { summary: "string" },
       },
     },
     // === CALLBACK FUNCTIONS ===
     onBlur: {
-      action: 'blurred',
-      description: 'Callback function triggered when the chart loses focus.',
+      action: "blurred",
+      description: "Callback function triggered when the chart loses focus.",
       table: {
         category: CATEGORY_CONTROL.FUNCTIONS,
-        type: { summary: '(event: React.FocusEvent<SVGElement>) => void' },
+        type: { summary: "(event: React.FocusEvent<SVGElement>) => void" },
       },
     },
     onClick: {
-      action: 'clicked',
-      description: 'Callback function triggered when the chart is clicked.',
+      action: "clicked",
+      description: "Callback function triggered when the chart is clicked.",
       table: {
         category: CATEGORY_CONTROL.FUNCTIONS,
-        type: { summary: '(event: React.MouseEvent<SVGElement, MouseEvent>) => void' },
+        type: { summary: "(event: React.MouseEvent<SVGElement, MouseEvent>) => void" },
       },
     },
     onDoubleClick: {
-      action: 'double-clicked',
-      description: 'Callback function triggered when the chart is double-clicked.',
+      action: "double-clicked",
+      description: "Callback function triggered when the chart is double-clicked.",
       table: {
         category: CATEGORY_CONTROL.FUNCTIONS,
-        type: { summary: '(event: React.MouseEvent<SVGElement, MouseEvent>) => void' },
+        type: { summary: "(event: React.MouseEvent<SVGElement, MouseEvent>) => void" },
       },
     },
     onErrors: {
-      action: 'error-occurred',
+      action: "error-occurred",
       description:
-        'Callback function triggered when errors are detected in the chart. Receives a collection of validation errors from chart components (context, paths, segments). Use this to handle data validation errors, display error messages, or provide fallback UI.',
+        "Callback function triggered when errors are detected in the chart. Receives a collection of validation errors from chart components (context, paths, segments). Use this to handle data validation errors, display error messages, or provide fallback UI.",
       table: {
         category: CATEGORY_CONTROL.FUNCTIONS,
-        type: { summary: '(errors: ChartErrorCollection) => void' },
+        type: { summary: "(errors: ChartErrorCollection) => void" },
       },
     },
     onFocus: {
-      action: 'focused',
-      description: 'Callback function triggered when the chart receives focus.',
+      action: "focused",
+      description: "Callback function triggered when the chart receives focus.",
       table: {
         category: CATEGORY_CONTROL.FUNCTIONS,
-        type: { summary: '(event: React.FocusEvent<SVGElement>) => void' },
+        type: { summary: "(event: React.FocusEvent<SVGElement>) => void" },
       },
     },
     onKeyDown: {
-      action: 'key-down',
-      description: 'Callback function triggered when a key is pressed down while chart has focus.',
+      action: "key-down",
+      description: "Callback function triggered when a key is pressed down while chart has focus.",
       table: {
         category: CATEGORY_CONTROL.FUNCTIONS,
-        type: { summary: '(event: React.KeyboardEvent<SVGSVGElement>) => void' },
+        type: { summary: "(event: React.KeyboardEvent<SVGSVGElement>) => void" },
       },
     },
     onKeyUp: {
-      action: 'key-up',
-      description: 'Callback function triggered when a key is released while chart has focus.',
+      action: "key-up",
+      description: "Callback function triggered when a key is released while chart has focus.",
       table: {
         category: CATEGORY_CONTROL.FUNCTIONS,
-        type: { summary: '(event: React.KeyboardEvent<SVGSVGElement>) => void' },
+        type: { summary: "(event: React.KeyboardEvent<SVGSVGElement>) => void" },
       },
     },
     onMouseEnter: {
-      action: 'mouse-enter',
-      description: 'Callback function triggered when the mouse cursor enters the chart area.',
+      action: "mouse-enter",
+      description: "Callback function triggered when the mouse cursor enters the chart area.",
       table: {
         category: CATEGORY_CONTROL.FUNCTIONS,
-        type: { summary: '(event: React.MouseEvent<SVGElement, MouseEvent>) => void' },
+        type: { summary: "(event: React.MouseEvent<SVGElement, MouseEvent>) => void" },
       },
     },
     onMouseLeave: {
-      action: 'mouse-leave',
-      description: 'Callback function triggered when the mouse cursor leaves the chart area.',
+      action: "mouse-leave",
+      description: "Callback function triggered when the mouse cursor leaves the chart area.",
       table: {
         category: CATEGORY_CONTROL.FUNCTIONS,
-        type: { summary: '(event: React.MouseEvent<SVGElement, MouseEvent>) => void' },
+        type: { summary: "(event: React.MouseEvent<SVGElement, MouseEvent>) => void" },
       },
     },
     radius: {
-      control: 'text',
+      control: "text",
       description:
         'Radius of the pie chart as a percentage (e.g., "80%") or absolute value. Controls the size of the pie relative to the canvas.',
       table: {
         category: CATEGORY_CONTROL.CUSTOMIZATION,
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'string' },
+        defaultValue: { summary: "undefined" },
+        type: { summary: "string" },
       },
     },
     role: {
-      control: 'text',
+      control: "text",
       description:
         'ARIA role for the chart element. Typically "img" for charts representing data visualizations.',
       table: {
         category: CATEGORY_CONTROL.ACCESIBILITY,
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'string' },
+        defaultValue: { summary: "undefined" },
+        type: { summary: "string" },
       },
     },
     segmentClassNames: {
-      control: 'text',
+      control: "text",
       description:
-        'Optional class names to apply to individual pie segments. Use for styling all segments uniformly (e.g., animations, hover effects).',
+        "Optional class names to apply to individual pie segments. Use for styling all segments uniformly (e.g., animations, hover effects).",
       table: {
         category: CATEGORY_CONTROL.CUSTOMIZATION,
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'string' },
+        defaultValue: { summary: "undefined" },
+        type: { summary: "string" },
       },
     },
     tabIndex: {
-      control: 'number',
+      control: "number",
       description:
-        'Tab index for keyboard navigation. Set to 0 to make chart focusable, -1 to remove from tab order.',
+        "Tab index for keyboard navigation. Set to 0 to make chart focusable, -1 to remove from tab order.",
       table: {
         category: CATEGORY_CONTROL.ACCESIBILITY,
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'number' },
+        defaultValue: { summary: "undefined" },
+        type: { summary: "number" },
       },
     },
     width: {
-      control: 'text',
+      control: "text",
       description:
         'Width of the component, can be a string (e.g., "100%") or a number. Controls the overall chart container width.',
       table: {
         category: CATEGORY_CONTROL.MODIFIERS,
-        defaultValue: { summary: 'undefined' },
-        type: { summary: 'string' },
+        defaultValue: { summary: "undefined" },
+        type: { summary: "string" },
       },
     },
   };

@@ -1,23 +1,23 @@
-import { type FC, type ReactElement, useContext, useEffect, useRef } from 'react';
+import { type FC, type ReactElement, useContext, useEffect, useRef } from "react";
 
-import { Line } from '@/components/line/line';
-import { Node } from '@/components/node/node';
-import { Path } from '@/components/path/path';
-import { BuildError, buildDataKeyNotFoundError, buildError } from '@/utils/buildErrors/buildErrors';
-import { getPoints } from '@/utils/getPoints/getPoints';
-import { pickCustomAttributes } from '@/utils/pickCustomAttributes/pickCustomAttributes';
+import { Line } from "@/components/line/line";
+import { Node } from "@/components/node/node";
+import { Path } from "@/components/path/path";
+import { BuildError, buildDataKeyNotFoundError, buildError } from "@/utils/buildErrors/buildErrors";
+import { getPoints } from "@/utils/getPoints/getPoints";
+import { pickCustomAttributes } from "@/utils/pickCustomAttributes/pickCustomAttributes";
 
-import { LineChartContext } from '../context/lineChartContext';
-import { useIndicator } from '../hook/useIndicator';
-import type { IDataPoint, LineChartPathProps } from '../lineChart.type';
-import { findClosestNumber, findSurroundingNumber } from '../utils/findSurroundingNumber';
-import { getPathData } from '../utils/getPathData';
-import { handleNodesFocus } from '../utils/handleNodesFocus';
-import './lineChartPath.css';
-import { LineChartProjection } from './lineChartProjection';
+import { LineChartContext } from "../context/lineChartContext";
+import { useIndicator } from "../hook/useIndicator";
+import type { IDataPoint, LineChartPathProps } from "../lineChart.type";
+import { findClosestNumber, findSurroundingNumber } from "../utils/findSurroundingNumber";
+import { getPathData } from "../utils/getPathData";
+import { handleNodesFocus } from "../utils/handleNodesFocus";
+import "./lineChartPath.css";
+import { LineChartProjection } from "./lineChartProjection";
 
 const getAxisData = (data: IDataPoint[], key: string) => {
-  return data.map(dt => dt[key]);
+  return data.map((dt) => dt[key]);
 };
 
 export const LineChartPath: FC<LineChartPathProps> = ({
@@ -46,8 +46,8 @@ export const LineChartPath: FC<LineChartPathProps> = ({
   // Path error validations
   useEffect(() => {
     // Invalid dataKey validation
-    if (!dataKey || typeof dataKey !== 'string') {
-      addError?.('LINE_CHART_PATH_ERROR', {
+    if (!dataKey || typeof dataKey !== "string") {
+      addError?.("LINE_CHART_PATH_ERROR", {
         error: buildError(BuildError.LINE_CHART_PATH_INVALID_DATAKEY),
       });
       return;
@@ -55,7 +55,7 @@ export const LineChartPath: FC<LineChartPathProps> = ({
 
     // Check if dataKey exists in dataset
     if (hasData && !hasDataKey) {
-      addError?.('LINE_CHART_PATH_ERROR', {
+      addError?.("LINE_CHART_PATH_ERROR", {
         error: buildDataKeyNotFoundError(dataKey),
       });
       return;
@@ -63,7 +63,7 @@ export const LineChartPath: FC<LineChartPathProps> = ({
 
     // Curved path calculation errors
     if (curved && dataLength < 2) {
-      addError?.('LINE_CHART_PATH_ERROR', {
+      addError?.("LINE_CHART_PATH_ERROR", {
         error: buildError(BuildError.LINE_CHART_PATH_INSUFFICIENT_POINTS),
       });
       return;
@@ -71,8 +71,8 @@ export const LineChartPath: FC<LineChartPathProps> = ({
 
     // Path rendering errors - validate coordinates
     const yData = getAxisData(context.data, dataKey);
-    if (yData.length > 0 && yData.every(val => val === null || val === undefined)) {
-      addError?.('LINE_CHART_PATH_ERROR', {
+    if (yData.length > 0 && yData.every((val) => val === null || val === undefined)) {
+      addError?.("LINE_CHART_PATH_ERROR", {
         error: buildError(BuildError.LINE_CHART_PATH_ALL_VALUES_NULL),
       });
     }
@@ -140,7 +140,7 @@ export const LineChartPath: FC<LineChartPathProps> = ({
       const { idx, match } = findSurroundingNumber(xPoints, context.xCursor);
       if (match && idx !== pressedRef.current) {
         pressedRef.current = idx;
-        const evt = new MouseEvent('click', { bubbles: true }) as MouseEvent & {
+        const evt = new MouseEvent("click", { bubbles: true }) as MouseEvent & {
           autoClick: boolean;
         };
         evt.autoClick = true;
@@ -160,7 +160,7 @@ export const LineChartPath: FC<LineChartPathProps> = ({
     onClick?.(data);
     if (closestClick) {
       const closest = findClosestNumber(xPoints, context.xCursor);
-      const evt = new MouseEvent('click', { bubbles: true }) as MouseEvent & { autoClick: boolean };
+      const evt = new MouseEvent("click", { bubbles: true }) as MouseEvent & { autoClick: boolean };
       evt.autoClick = false;
       innerRefs.current?.node?.[closest]?.dispatchEvent(evt);
     }
@@ -172,7 +172,7 @@ export const LineChartPath: FC<LineChartPathProps> = ({
     ...props,
     ...customAttributes,
     // Handle deprecated ariaLabel - give precedence to ariaLabel for backward compatibility
-    ...(ariaLabel && { 'aria-label': ariaLabel }),
+    ...(ariaLabel && { "aria-label": ariaLabel }),
   };
 
   return (

@@ -6,6 +6,6 @@
  * @property {string} REM - Represents a rem unit ('rem')
  */
 export const Unit = {
-  PERCENTAGE: '%',
-  REM: 'rem',
+  PERCENTAGE: "%",
+  REM: "rem",
 } as const;

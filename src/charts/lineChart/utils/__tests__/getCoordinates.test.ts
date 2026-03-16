@@ -1,6 +1,6 @@
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
-import { getXCoordinates, getYCoordinates } from '../getCoordinates';
+import { getXCoordinates, getYCoordinates } from "../getCoordinates";
 
 const baseProps = {
   canvasHeight: 200,
@@ -16,9 +16,9 @@ const baseProps = {
   yAxisBottomSpacing: 20,
 };
 
-describe('getXCoordinates', () => {
-  describe('when lineChartXPosition is TOP', () => {
-    it('should return correct coordinates when lineChartYPosition is LEFT', () => {
+describe("getXCoordinates", () => {
+  describe("when lineChartXPosition is TOP", () => {
+    it("should return correct coordinates when lineChartYPosition is LEFT", () => {
       const result = getXCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.TOP,
@@ -33,7 +33,7 @@ describe('getXCoordinates', () => {
       });
     });
 
-    it('should return correct coordinates when lineChartYPosition is RIGHT', () => {
+    it("should return correct coordinates when lineChartYPosition is RIGHT", () => {
       const result = getXCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.TOP,
@@ -49,8 +49,8 @@ describe('getXCoordinates', () => {
     });
   });
 
-  describe('when lineChartXPosition is CENTER', () => {
-    it('should return correct coordinates when lineChartYPosition is LEFT', () => {
+  describe("when lineChartXPosition is CENTER", () => {
+    it("should return correct coordinates when lineChartYPosition is LEFT", () => {
       const result = getXCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.CENTER,
@@ -65,7 +65,7 @@ describe('getXCoordinates', () => {
       });
     });
 
-    it('should return correct coordinates when lineChartYPosition is RIGHT', () => {
+    it("should return correct coordinates when lineChartYPosition is RIGHT", () => {
       const result = getXCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.CENTER,
@@ -81,8 +81,8 @@ describe('getXCoordinates', () => {
     });
   });
 
-  describe('when lineChartXPosition is CUSTOM', () => {
-    it('should return correct coordinates with custom break axis', () => {
+  describe("when lineChartXPosition is CUSTOM", () => {
+    it("should return correct coordinates with custom break axis", () => {
       const result = getXCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.CUSTOM,
@@ -98,8 +98,8 @@ describe('getXCoordinates', () => {
     });
   });
 
-  describe('when lineChartXPosition is BOTTOM', () => {
-    it('should return correct coordinates when lineChartYPosition is LEFT', () => {
+  describe("when lineChartXPosition is BOTTOM", () => {
+    it("should return correct coordinates when lineChartYPosition is LEFT", () => {
       const result = getXCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.BOTTOM,
@@ -114,7 +114,7 @@ describe('getXCoordinates', () => {
       });
     });
 
-    it('should return correct coordinates when lineChartYPosition is RIGHT', () => {
+    it("should return correct coordinates when lineChartYPosition is RIGHT", () => {
       const result = getXCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.BOTTOM,
@@ -131,9 +131,9 @@ describe('getXCoordinates', () => {
   });
 });
 
-describe('getYCoordinates', () => {
-  describe('when lineChartYPosition is RIGHT', () => {
-    it('should return correct coordinates when lineChartXPosition is TOP', () => {
+describe("getYCoordinates", () => {
+  describe("when lineChartYPosition is RIGHT", () => {
+    it("should return correct coordinates when lineChartXPosition is TOP", () => {
       const result = getYCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.TOP,
@@ -148,7 +148,7 @@ describe('getYCoordinates', () => {
       });
     });
 
-    it('should return correct coordinates when lineChartXPosition is BOTTOM', () => {
+    it("should return correct coordinates when lineChartXPosition is BOTTOM", () => {
       const result = getYCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.BOTTOM,
@@ -164,8 +164,8 @@ describe('getYCoordinates', () => {
     });
   });
 
-  describe('when lineChartYPosition is CENTER', () => {
-    it('should return correct coordinates when lineChartXPosition is TOP', () => {
+  describe("when lineChartYPosition is CENTER", () => {
+    it("should return correct coordinates when lineChartXPosition is TOP", () => {
       const result = getYCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.TOP,
@@ -180,7 +180,7 @@ describe('getYCoordinates', () => {
       });
     });
 
-    it('should return correct coordinates when lineChartXPosition is BOTTOM', () => {
+    it("should return correct coordinates when lineChartXPosition is BOTTOM", () => {
       const result = getYCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.BOTTOM,
@@ -196,8 +196,8 @@ describe('getYCoordinates', () => {
     });
   });
 
-  describe('when lineChartYPosition is CUSTOM', () => {
-    it('should return correct coordinates with custom break axis', () => {
+  describe("when lineChartYPosition is CUSTOM", () => {
+    it("should return correct coordinates with custom break axis", () => {
       const result = getYCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.TOP,
@@ -213,8 +213,8 @@ describe('getYCoordinates', () => {
     });
   });
 
-  describe('when lineChartYPosition is LEFT', () => {
-    it('should return correct coordinates when lineChartXPosition is TOP', () => {
+  describe("when lineChartYPosition is LEFT", () => {
+    it("should return correct coordinates when lineChartXPosition is TOP", () => {
       const result = getYCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.TOP,
@@ -229,7 +229,7 @@ describe('getYCoordinates', () => {
       });
     });
 
-    it('should return correct coordinates when lineChartXPosition is BOTTOM', () => {
+    it("should return correct coordinates when lineChartXPosition is BOTTOM", () => {
       const result = getYCoordinates({
         ...baseProps,
         lineChartXPosition: Positions.BOTTOM,

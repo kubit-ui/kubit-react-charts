@@ -1,6 +1,6 @@
-import type { FocusConfig } from '@/types/focusConfig.type';
+import type { FocusConfig } from "@/types/focusConfig.type";
 
-import type { ElementBounds, FocusRingLayers, RectangleFocusOutline } from './utils.types';
+import type { ElementBounds, FocusRingLayers, RectangleFocusOutline } from "./utils.types";
 
 /**
  * Calculates the dimensions of the focus outlines (outer and inner) for a bounding-box.
@@ -17,7 +17,7 @@ export const calculateBoundingBoxFocusRings = (
     outlineStrokeWidth: number;
     innerStrokeWidth: number;
     gap: number;
-  }
+  },
 ): RectangleFocusOutline => {
   const { elementHeight, elementPosition, elementStrokeWidth, elementWidth } = bounds;
   const { gap, innerStrokeWidth, outlineStrokeWidth } = config;
@@ -69,7 +69,7 @@ function detectElementBoundsFromDOM(element: SVGGraphicsElement): ElementBounds 
     }
 
     const computedStyle = window.getComputedStyle(element);
-    const strokeWidth = parseFloat(computedStyle.strokeWidth || '0');
+    const strokeWidth = parseFloat(computedStyle.strokeWidth || "0");
 
     return {
       elementHeight: bbox.height,
@@ -102,7 +102,7 @@ function detectElementBoundsFromDOM(element: SVGGraphicsElement): ElementBounds 
  */
 export function createBoundingBoxFocusRings(
   element: SVGGraphicsElement,
-  focusConfig: Required<FocusConfig>
+  focusConfig: Required<FocusConfig>,
 ): FocusRingLayers | undefined {
   // Detect element bounds from DOM
   const bounds = detectElementBoundsFromDOM(element);
@@ -120,8 +120,8 @@ export function createBoundingBoxFocusRings(
   return {
     innerRing: {
       props: {
-        className: 'focus-ring-inner',
-        fill: 'none',
+        className: "focus-ring-inner",
+        fill: "none",
         height: dimensions.inner.height,
         stroke: focusConfig.innerColor,
         strokeWidth: focusConfig.innerStrokeWidth,
@@ -129,12 +129,12 @@ export function createBoundingBoxFocusRings(
         x: dimensions.inner.x,
         y: dimensions.inner.y,
       },
-      type: 'rect',
+      type: "rect",
     },
     outerRing: {
       props: {
-        className: 'focus-ring-outer',
-        fill: 'none',
+        className: "focus-ring-outer",
+        fill: "none",
         height: dimensions.outer.height,
         stroke: focusConfig.outlineColor,
         strokeWidth: focusConfig.outlineStrokeWidth,
@@ -142,7 +142,7 @@ export function createBoundingBoxFocusRings(
         x: dimensions.outer.x,
         y: dimensions.outer.y,
       },
-      type: 'rect',
+      type: "rect",
     },
   };
 }

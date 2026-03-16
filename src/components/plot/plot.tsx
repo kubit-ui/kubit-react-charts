@@ -1,14 +1,14 @@
-import { type ForwardedRef, forwardRef } from 'react';
+import { type ForwardedRef, forwardRef } from "react";
 
-import { FocusRing } from '@/components/focusRing/focusRing';
-import { useFocus } from '@/hooks/useFocus/useFocus';
-import { useHover } from '@/hooks/useHover/useHover';
+import { FocusRing } from "@/components/focusRing/focusRing";
+import { useFocus } from "@/hooks/useFocus/useFocus";
+import { useHover } from "@/hooks/useHover/useHover";
 
-import { Circle } from './components/circle/circle';
-import { Square } from './components/square/square';
-import { Triangle } from './components/triangle/triangle';
-import './plot.css';
-import { PLOT_SIZE_MAP, type PlotProps, PlotSize, PlotType } from './plot.types';
+import { Circle } from "./components/circle/circle";
+import { Square } from "./components/square/square";
+import { Triangle } from "./components/triangle/triangle";
+import "./plot.css";
+import { PLOT_SIZE_MAP, type PlotProps, PlotSize, PlotType } from "./plot.types";
 
 // The centroid of a triangle is at 1/3 of the height from the base.
 // When scaling, we need to compensate by (scaledSize - originalSize) / 6 to align centroids.
@@ -21,11 +21,11 @@ const Component = {
   [PlotType.TRIANGLE]: Triangle,
 };
 
-const PlotComponent = <T = string,>(
+const PlotComponent = <T = string>(
   {
     className,
     data,
-    dataTestId = 'plot',
+    dataTestId = "plot",
     fill,
     fillOpacity,
     focusConfig,
@@ -48,13 +48,13 @@ const PlotComponent = <T = string,>(
     type = PlotType.CIRCLE,
     ...props
   }: PlotProps<T>,
-  ref: ForwardedRef<SVGElement>
+  ref: ForwardedRef<SVGElement>,
 ) => {
   const { handleMouseEnter, handleMouseLeave, isHovered } = useHover(onMouseEnter, onMouseLeave);
   const { handleBlur, handleFocus, isFocused } = useFocus(onFocus, onBlur);
 
-  const handleKeyDown: React.KeyboardEventHandler<SVGElement> = event => {
-    if (onClick && (event.key === 'Enter' || event.key === ' ')) {
+  const handleKeyDown: React.KeyboardEventHandler<SVGElement> = (event) => {
+    if (onClick && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
       onClick(event as unknown as React.MouseEvent<SVGElement>);
     }
@@ -71,13 +71,13 @@ const PlotComponent = <T = string,>(
   } = hoverConfig || {};
 
   // Calculate size in pixels
-  const sizeInPixels = typeof size === 'number' ? size : PLOT_SIZE_MAP[size];
+  const sizeInPixels = typeof size === "number" ? size : PLOT_SIZE_MAP[size];
 
   // Properties for the main plot shape - focus handlers managed by FocusRing
   const plotShapeProps = {
     ...props,
-    ['aria-label']: label,
-    className: `plot ${className || ''}`,
+    ["aria-label"]: label,
+    className: `plot ${className || ""}`,
     dataTestId,
     fill, // Maintains original fill color
     fillOpacity, // Maintains original opacity
@@ -90,7 +90,7 @@ const PlotComponent = <T = string,>(
     onMouseLeave: handleMouseLeave,
     opacity, // Maintains original overall opacity
     position,
-    role: 'button',
+    role: "button",
     size: sizeInPixels,
     stroke, // Maintains original stroke color
     strokeWidth: hasHoverEffect && isHovered && !isFocused ? 0 : strokeWidth,
@@ -128,7 +128,7 @@ const PlotComponent = <T = string,>(
       {/* Main plot component wrapped with FocusRing */}
       <FocusRing
         dataTestId={dataTestId}
-        focusConfig={{ ...focusConfig, variant: focusConfig?.variant ?? 'bounding-box' }}
+        focusConfig={{ ...focusConfig, variant: focusConfig?.variant ?? "bounding-box" }}
         isFocused={isFocused}
       >
         <PlotShape ref={ref} {...plotShapeProps} />
@@ -172,5 +172,5 @@ const PlotComponent = <T = string,>(
 export const Plot = forwardRef(PlotComponent) as <T = string>(
   props: PlotProps<T> & {
     ref?: ForwardedRef<SVGElement>;
-  }
+  },
 ) => React.JSX.Element;

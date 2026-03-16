@@ -1,7 +1,7 @@
-import { NodeType } from '@/components/node/node.types';
-import { Positions } from '@/types/position.enum';
+import { NodeType } from "@/components/node/node.types";
+import { Positions } from "@/types/position.enum";
 
-import { LineChart } from '../../lineChart';
+import { LineChart } from "../../lineChart";
 
 export const divergentTemplate = ({
   cb,
@@ -15,14 +15,14 @@ export const divergentTemplate = ({
       closestClick={true}
       dataKey="cats"
       nodeConfig={{
-        fill: 'white',
+        fill: "white",
         hasHalo: true,
         onClick: (_e, data) => {
           cb(data?.nodePosition);
         },
         size: 0,
-        stroke: 'red',
-        strokeWidth: '0.2',
+        stroke: "red",
+        strokeWidth: "0.2",
         type: NodeType.Circle,
       }}
       stroke="#0074d9"
@@ -39,7 +39,7 @@ export const divergentTemplate = ({
       strokeWidth="0.1"
       tickText={{
         fontSize: 1,
-        textAnchor: 'middle',
+        textAnchor: "middle",
         top: 1,
       }}
     />,
@@ -54,7 +54,7 @@ export const divergentTemplate = ({
       tickText={{
         fontSize: 1,
         right: 1,
-        textAnchor: 'middle',
+        textAnchor: "middle",
       }}
     />,
   ];

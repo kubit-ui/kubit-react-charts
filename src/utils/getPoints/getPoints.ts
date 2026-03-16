@@ -1,4 +1,4 @@
-import type { TickData } from '@/components/tick/tick.types';
+import type { TickData } from "@/components/tick/tick.types";
 
 /**
  * Calculates the positions of data points on the chart based on tick values and data values.
@@ -8,10 +8,10 @@ import type { TickData } from '@/components/tick/tick.types';
  * @returns An array of numbers representing the positions of the data points.
  */
 export const getPoints = (tickValues: TickData[], data: string[], xAxis?: boolean): number[] => {
-  return data.map(dt => {
+  return data.map((dt) => {
     // IF NOT A NUMBER, FIND THE POSITION OF THE TICK
     if (isNaN(Number(dt))) {
-      const located = tickValues.find(tick => String(tick.value) === String(dt));
+      const located = tickValues.find((tick) => String(tick.value) === String(dt));
       return located ? located.position : 0;
     }
     // FIND THE CLOSEST TICK
@@ -22,13 +22,13 @@ export const getPoints = (tickValues: TickData[], data: string[], xAxis?: boolea
           ? { index: tickiIndex, tick: curr }
           : prev;
       },
-      { index: 0, tick: tickValues[0] }
+      { index: 0, tick: tickValues[0] },
     );
 
     const dtNumber = Number(dt);
     const tickValueNumber = Number(tick.value);
     if (dtNumber !== tickValueNumber) {
-      const currentAxisValues = tickValues.map(tickVal => Number(tickVal.value));
+      const currentAxisValues = tickValues.map((tickVal) => Number(tickVal.value));
       const min = Math.min(...currentAxisValues);
       const max = Math.max(...currentAxisValues);
       if (dtNumber < min) {

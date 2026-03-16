@@ -1,1 +1,1 @@
-export * from './constants/categoryControl';
+export * from "./constants/categoryControl";

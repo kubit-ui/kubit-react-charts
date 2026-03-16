@@ -1,6 +1,6 @@
-import { calculatePoint } from './calculatePoint';
-import { drawSegmentPath } from './drawSegmentPath';
-import { type RotateDirection, rotationDirection } from './rotationDirection';
+import { calculatePoint } from "./calculatePoint";
+import { drawSegmentPath } from "./drawSegmentPath";
+import { type RotateDirection, rotationDirection } from "./rotationDirection";
 
 interface CalculateSegmanentPathProps {
   value: number;
@@ -68,7 +68,7 @@ export const calculateSegmentPath = ({
   startAngle.current = carryAngle;
   const segmentAngle = (maxAngle * value) / segmentTotal;
 
-  const largeArcFlag = segmentAngle - gapAngle <= Math.PI ? '0' : '1';
+  const largeArcFlag = segmentAngle - gapAngle <= Math.PI ? "0" : "1";
 
   const innerStart = calculatePoint(center, innerRadius, initialAngle);
   const innerEnd = calculatePoint(center, innerRadius, finalAngle);

@@ -1,4 +1,4 @@
-import { Children, type ReactNode, isValidElement } from 'react';
+import { Children, type ReactNode, isValidElement } from "react";
 
 interface GetChildrenAttrProps {
   attrName: string;
@@ -13,7 +13,7 @@ export const getChildrenAttr = ({
   originalValue,
   updateValue,
 }: GetChildrenAttrProps): void => {
-  let combineString = '';
+  let combineString = "";
   Children.toArray(children).forEach((child: React.ReactNode) => {
     if (isValidElement(child)) {
       const attrValue = (child.props as any)[attrName];

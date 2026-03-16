@@ -1,4 +1,4 @@
-import type { TickData } from '@/components/tick/tick.types';
+import type { TickData } from "@/components/tick/tick.types";
 
 interface GetTickProps {
   tickValues: string[];

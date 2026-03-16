@@ -1,5 +1,5 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
-import type { PieChartContextType } from '../pieChart.type';
+import type { PieChartContextType } from "../pieChart.type";
 
 export const PieChartContext = createContext({} as PieChartContextType);

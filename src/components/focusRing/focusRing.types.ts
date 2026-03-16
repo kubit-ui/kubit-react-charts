@@ -1,8 +1,8 @@
-import type { ReactElement, RefObject } from 'react';
+import type { ReactElement, RefObject } from "react";
 
-import type { FocusConfig } from '@/types/focusConfig.type';
+import type { FocusConfig } from "@/types/focusConfig.type";
 
-import type { FocusRingLayers } from './utils/utils.types';
+import type { FocusRingLayers } from "./utils/utils.types";
 
 export interface FocusRingProps {
   /**

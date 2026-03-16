@@ -1,23 +1,23 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef } from "react";
 
-import { SvgContainer } from '@/components/svgContainer/svgContainer';
-import { useResponsiveCanvas } from '@/hooks/useResponsiveCanvas/useResponsiveCanvas';
-import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
+import { SvgContainer } from "@/components/svgContainer/svgContainer";
+import { useResponsiveCanvas } from "@/hooks/useResponsiveCanvas/useResponsiveCanvas";
+import { getDataFingerprint } from "@/utils/getDataFingerprint/getDataFingerprint";
 
-import { FocusRing } from '../focusRing/focusRing';
-import { LineRenderer } from './components/LineRenderer';
-import { SelectionArea } from './components/SelectionArea';
-import { ZoomHandler } from './components/ZoomHandler';
-import { useDragInteraction } from './hooks/useDragInteraction';
-import { useKeyboardNavigation } from './hooks/useKeyboardNavigation';
-import { useZoomAreaFocus } from './hooks/useZoomAreaFocus';
-import { useZoomData } from './hooks/useZoomData';
-import { generateAccessibilityLabels } from './utils/accessibilityLabels';
-import { getInteractionConfig } from './utils/interactionConfig';
-import { calculateLinesPathData } from './utils/pathGeneration';
-import { calculateHandlerPositions } from './utils/rangeAndPositions';
-import { getSelectionConfig } from './utils/selectionConfig';
-import { ZoomAreaElements, type ZoomAreaProps } from './zoomArea.type';
+import { FocusRing } from "../focusRing/focusRing";
+import { LineRenderer } from "./components/LineRenderer";
+import { SelectionArea } from "./components/SelectionArea";
+import { ZoomHandler } from "./components/ZoomHandler";
+import { useDragInteraction } from "./hooks/useDragInteraction";
+import { useKeyboardNavigation } from "./hooks/useKeyboardNavigation";
+import { useZoomAreaFocus } from "./hooks/useZoomAreaFocus";
+import { useZoomData } from "./hooks/useZoomData";
+import { generateAccessibilityLabels } from "./utils/accessibilityLabels";
+import { getInteractionConfig } from "./utils/interactionConfig";
+import { calculateLinesPathData } from "./utils/pathGeneration";
+import { calculateHandlerPositions } from "./utils/rangeAndPositions";
+import { getSelectionConfig } from "./utils/selectionConfig";
+import { ZoomAreaElements, type ZoomAreaProps } from "./zoomArea.type";
 
 /**
  * `ZoomArea` component that renders a scaled chart with draggable zoom handlers for interactive data filtering.
@@ -38,7 +38,7 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
   data,
   focusConfig,
   handlerConfig,
-  height = '40px', // 2.5rem, defined by size_400 token in Figma
+  height = "40px", // 2.5rem, defined by size_400 token in Figma
   initialRange,
   interactionConfig,
   lines,
@@ -46,11 +46,11 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
   role,
   screenReaderTextConfig,
   selectionConfig,
-  width = '100%',
+  width = "100%",
   xKey,
   ...eventHandlers
 }) => {
-  const dataTestId = 'zoom-area';
+  const dataTestId = "zoom-area";
 
   // Resolve interaction config with defaults
   const resolvedInteractionConfig = getInteractionConfig(interactionConfig);
@@ -84,7 +84,7 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
     data,
     xKey,
     currentRange,
-    screenReaderTextConfig
+    screenReaderTextConfig,
   );
 
   // Memoize expensive line calculations
@@ -95,7 +95,7 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
   // Memoize handler positions calculation
   const { endX, startX } = useMemo(
     () => calculateHandlerPositions(currentRange, data.length, parsedCanvas.width),
-    [currentRange, dataFingerprint, parsedCanvas.width]
+    [currentRange, dataFingerprint, parsedCanvas.width],
   );
 
   // Interaction hooks
@@ -195,7 +195,7 @@ export const ZoomArea: React.FC<ZoomAreaProps> = ({
       {/* Selection area focus ring - rendered above handlers for correct z-order */}
       <FocusRing
         dataTestId="selection-area-focus"
-        focusConfig={{ ...focusConfig, variant: 'bounding-box' }}
+        focusConfig={{ ...focusConfig, variant: "bounding-box" }}
         isFocused={isFocused(ZoomAreaElements.SELECTION_AREA)}
         targetRef={selectionAreaRef as React.RefObject<SVGGraphicsElement>}
       />

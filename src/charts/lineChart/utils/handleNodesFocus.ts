@@ -22,14 +22,14 @@ export const handleNodesFocus = ({
   ref,
 }: HandleNodesFocusProps): HandleNodesFocusReturn => {
   let currentNode: number | undefined = undefined;
-  const g = ref.querySelector('[data-draw]');
+  const g = ref.querySelector("[data-draw]");
 
   const handleKeyDown = (e: KeyboardEvent) => {
     let newCurrentNode: number | undefined = undefined;
-    if (e.key === 'ArrowRight') {
+    if (e.key === "ArrowRight") {
       newCurrentNode =
         currentNode === undefined || currentNode === nodes.length - 1 ? 0 : currentNode + 1;
-    } else if (e.key === 'ArrowLeft') {
+    } else if (e.key === "ArrowLeft") {
       newCurrentNode =
         currentNode === undefined || currentNode === 0 ? nodes.length - 1 : currentNode - 1;
     }
@@ -47,12 +47,12 @@ export const handleNodesFocus = ({
   };
 
   const mount = () => {
-    g?.addEventListener('focus', handleFocus);
-    ref.addEventListener('keydown', (e: Event) => handleKeyDown(e as KeyboardEvent));
+    g?.addEventListener("focus", handleFocus);
+    ref.addEventListener("keydown", (e: Event) => handleKeyDown(e as KeyboardEvent));
   };
   const unmount = () => {
-    g?.removeEventListener('focus', handleFocus);
-    ref.removeEventListener('keydown', (e: Event) => handleKeyDown(e as KeyboardEvent));
+    g?.removeEventListener("focus", handleFocus);
+    ref.removeEventListener("keydown", (e: Event) => handleKeyDown(e as KeyboardEvent));
   };
 
   return { mount, unmount };

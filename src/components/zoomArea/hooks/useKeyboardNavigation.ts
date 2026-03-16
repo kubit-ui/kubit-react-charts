@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-import { clampRange } from '../utils/rangeAndPositions';
-import { ZoomAreaElements, type ZoomAreaInteractionConfig, type ZoomRange } from '../zoomArea.type';
+import { clampRange } from "../utils/rangeAndPositions";
+import { ZoomAreaElements, type ZoomAreaInteractionConfig, type ZoomRange } from "../zoomArea.type";
 
 /**
  * Parameters for the useKeyboardNavigation hook
@@ -23,7 +23,7 @@ interface UseKeyboardNavigationParams {
 interface UseKeyboardNavigationReturn {
   /** Handler for keyboard events on different elements */
   handleKeyDown: (
-    target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements]
+    target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements],
   ) => (event: React.KeyboardEvent) => void;
 }
 
@@ -34,7 +34,7 @@ const handleArrowLeft = (
   target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements],
   currentRange: ZoomRange,
   step: number,
-  interactionConfig: Required<ZoomAreaInteractionConfig>
+  interactionConfig: Required<ZoomAreaInteractionConfig>,
 ): ZoomRange => {
   const newRange = { ...currentRange };
 
@@ -43,7 +43,7 @@ const handleArrowLeft = (
   } else if (target === ZoomAreaElements.END_HANDLER) {
     newRange.end = Math.max(
       currentRange.start + interactionConfig.minHandlerDistance,
-      currentRange.end - step
+      currentRange.end - step,
     );
   } else if (target === ZoomAreaElements.SELECTION_AREA) {
     // Move entire selection left
@@ -64,14 +64,14 @@ const handleArrowRight = (
   currentRange: ZoomRange,
   step: number,
   dataLength: number,
-  interactionConfig: Required<ZoomAreaInteractionConfig>
+  interactionConfig: Required<ZoomAreaInteractionConfig>,
 ): ZoomRange => {
   const newRange = { ...currentRange };
 
   if (target === ZoomAreaElements.START_HANDLER) {
     newRange.start = Math.min(
       currentRange.end - interactionConfig.minHandlerDistance,
-      currentRange.start + step
+      currentRange.start + step,
     );
   } else if (target === ZoomAreaElements.END_HANDLER) {
     newRange.end = Math.min(dataLength - 1, currentRange.end + step);
@@ -92,7 +92,7 @@ const handleArrowRight = (
 const handleHome = (
   target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements],
   currentRange: ZoomRange,
-  dataLength: number
+  dataLength: number,
 ): ZoomRange => {
   const newRange = { ...currentRange };
 
@@ -116,7 +116,7 @@ const handleEnd = (
   target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements],
   currentRange: ZoomRange,
   dataLength: number,
-  interactionConfig: Required<ZoomAreaInteractionConfig>
+  interactionConfig: Required<ZoomAreaInteractionConfig>,
 ): ZoomRange => {
   const newRange = { ...currentRange };
 
@@ -140,7 +140,7 @@ const handleEnd = (
  * @returns Object with keyboard event handlers
  */
 export const useKeyboardNavigation = (
-  params: UseKeyboardNavigationParams
+  params: UseKeyboardNavigationParams,
 ): UseKeyboardNavigationReturn => {
   const { currentRange, dataLength, interactionConfig, onRangeChange } = params;
   const handleKeyDown = useCallback(
@@ -154,21 +154,21 @@ export const useKeyboardNavigation = (
         let newRange: typeof currentRange;
 
         switch (event.key) {
-          case 'ArrowLeft':
-          case 'ArrowDown':
+          case "ArrowLeft":
+          case "ArrowDown":
             event.preventDefault();
             newRange = handleArrowLeft(target, currentRange, step, interactionConfig);
             break;
-          case 'ArrowRight':
-          case 'ArrowUp':
+          case "ArrowRight":
+          case "ArrowUp":
             event.preventDefault();
             newRange = handleArrowRight(target, currentRange, step, dataLength, interactionConfig);
             break;
-          case 'Home':
+          case "Home":
             event.preventDefault();
             newRange = handleHome(target, currentRange, dataLength);
             break;
-          case 'End':
+          case "End":
             event.preventDefault();
             newRange = handleEnd(target, currentRange, dataLength, interactionConfig);
             break;
@@ -180,7 +180,7 @@ export const useKeyboardNavigation = (
         onRangeChange(clampedRange);
       };
     },
-    [currentRange, dataLength, onRangeChange, interactionConfig]
+    [currentRange, dataLength, onRangeChange, interactionConfig],
   );
 
   return { handleKeyDown };

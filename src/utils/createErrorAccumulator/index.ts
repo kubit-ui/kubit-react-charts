@@ -1,1 +1,1 @@
-export { createErrorAccumulator } from './createErrorAccumulator';
+export { createErrorAccumulator } from "./createErrorAccumulator";

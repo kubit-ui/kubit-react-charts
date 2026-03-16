@@ -1,10 +1,10 @@
-import type { ShadowSvgProps } from './shadowSvg.types';
+import type { ShadowSvgProps } from "./shadowSvg.types";
 
 export const ShadowSvg = ({
-  height = '140%',
-  width = '140%',
-  x = '-20%',
-  y = '-20%',
+  height = "140%",
+  width = "140%",
+  x = "-20%",
+  y = "-20%",
   ...props
 }: ShadowSvgProps): React.JSX.Element => {
   return (

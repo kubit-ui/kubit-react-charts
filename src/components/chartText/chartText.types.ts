@@ -14,17 +14,17 @@ export interface ChartTextProps {
   dx?: number | string;
   dy?: number | string;
   textLength?: number | string;
-  lengthAdjust?: 'spacing' | 'spacingAndGlyphs';
+  lengthAdjust?: "spacing" | "spacingAndGlyphs";
   rotate?: number;
-  textAnchor?: 'start' | 'middle' | 'end';
+  textAnchor?: "start" | "middle" | "end";
   startOffset?: number;
-  direction?: 'ltr' | 'rtl';
+  direction?: "ltr" | "rtl";
   kerning?: number;
   letterSpacing?: number;
   wordSpacing?: number;
-  textDecoration?: 'none' | 'underline' | 'overline' | 'line-through' | 'blink';
-  unicodeBidi?: 'normal' | 'embed' | 'bidi-override';
-  writingMode?: 'lr-tb' | 'rl-tb' | 'tb-rl' | 'lr' | 'rl' | 'tb';
+  textDecoration?: "none" | "underline" | "overline" | "line-through" | "blink";
+  unicodeBidi?: "normal" | "embed" | "bidi-override";
+  writingMode?: "lr-tb" | "rl-tb" | "tb-rl" | "lr" | "rl" | "tb";
   fill?: string;
   fillOpacity?: number;
   stroke?: string;
@@ -46,8 +46,8 @@ export interface ChartTextProps {
    * fontSize: "12px"
    */
   fontSize?: number;
-  fontStyle?: 'normal' | 'italic' | 'oblique';
-  fontWeight?: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
+  fontStyle?: "normal" | "italic" | "oblique";
+  fontWeight?: "normal" | "bold" | "bolder" | "lighter" | number;
   opacity?: number;
   transform?: string;
   style?: React.CSSProperties;

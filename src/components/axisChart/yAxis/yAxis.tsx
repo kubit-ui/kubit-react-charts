@@ -1,13 +1,13 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 
-import { Line } from '@/components/line/line';
-import { Tick } from '@/components/tick/tick';
-import { Positions } from '@/types/position.enum';
-import { isNear } from '@/utils/cursorNear/isNear';
-import { pickCustomAttributes } from '@/utils/pickCustomAttributes/pickCustomAttributes';
+import { Line } from "@/components/line/line";
+import { Tick } from "@/components/tick/tick";
+import { Positions } from "@/types/position.enum";
+import { isNear } from "@/utils/cursorNear/isNear";
+import { pickCustomAttributes } from "@/utils/pickCustomAttributes/pickCustomAttributes";
 
-import { filterLineProps } from '../utils/filterLineProps/filterLineProps';
-import type { YAxisProps } from './yAxis.types';
+import { filterLineProps } from "../utils/filterLineProps/filterLineProps";
+import type { YAxisProps } from "./yAxis.types";
 
 /**
  * Renders a Y-axis for a chart, including tick marks and labels.
@@ -42,7 +42,7 @@ export const YAxis: FC<YAxisProps> = ({
           const overrideTickLine = isNear(cursor, tick.position) && tickLineHover;
           const tickLineProps = overrideTickLine ? { ...tickLine, ...tickLineHover } : tickLine;
           const rotate =
-            tickText?.transform === 'rotate'
+            tickText?.transform === "rotate"
               ? `rotate(-30, ${tickText.x}, ${tick.position})`
               : undefined;
           return (

@@ -1,34 +1,34 @@
-import type { ReactElement } from 'react';
+import type { ReactElement } from "react";
 
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
-import { BarChart } from '../../barChart';
-import { MIXED_DATA } from './data';
+import { BarChart } from "../../barChart";
+import { MIXED_DATA } from "./data";
 
 const rabbitsBarConfig = {
   barWidth: 3,
   gap: 1,
   singleConfig: [
     {
-      color: 'pink',
+      color: "pink",
       coverage: 45,
-      ['aria-label']:
-        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+      role: "img",
     },
     {
-      color: 'red',
+      color: "red",
       coverage: 25,
-      ['aria-label']:
-        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+      role: "img",
     },
     {
-      color: 'blue',
+      color: "blue",
       coverage: 30,
-      ['aria-label']:
-        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+      role: "img",
     },
   ],
 };
@@ -37,25 +37,25 @@ const dogsBarConfig = {
   gap: 1,
   singleConfig: [
     {
-      color: 'yellow',
+      color: "yellow",
       coverage: 20,
-      ['aria-label']:
-        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+      role: "img",
     },
     {
-      color: 'orange',
+      color: "orange",
       coverage: 25,
-      ['aria-label']:
-        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+      role: "img",
     },
     {
-      color: 'green',
+      color: "green",
       coverage: 55,
-      ['aria-label']:
-        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+      role: "img",
     },
   ],
 };
@@ -64,25 +64,25 @@ const birdsBarConfig = {
   gap: 1,
   singleConfig: [
     {
-      color: 'gray',
+      color: "gray",
       coverage: 10,
-      ['aria-label']:
-        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+      role: "img",
     },
     {
-      color: 'grey',
+      color: "grey",
       coverage: 30,
-      ['aria-label']:
-        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+      role: "img",
     },
     {
-      color: 'black',
+      color: "black",
       coverage: 60,
-      ['aria-label']:
-        '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+      role: "img",
     },
   ],
 };
@@ -126,7 +126,7 @@ export const AXIS_VERTICAL_MIXED_BARS = [
     strokeWidth="0.1"
     tickText={{
       fontSize: 1,
-      textAnchor: 'middle',
+      textAnchor: "middle",
     }}
     tickValues={{ numeric: { max: 2005, min: 2000, step: 1 } }}
   />,
@@ -140,7 +140,7 @@ export const AXIS_VERTICAL_MIXED_BARS = [
     strokeWidth="0.1"
     tickText={{
       fontSize: 1,
-      textAnchor: 'middle',
+      textAnchor: "middle",
     }}
     tickValues={{ numeric: { max: 120, min: -120, step: 30 } }}
   />,

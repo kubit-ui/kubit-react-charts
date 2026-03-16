@@ -29,14 +29,14 @@ This project follows the **fork-based contribution model** to:
    git fetch upstream
    ```
 
-4. **Install Dependencies**: This project uses **pnpm** as package manager.
+4. **Install Dependencies**: This project uses **Yarn Berry** as package manager.
 
    ```sh
-   # Install pnpm if you don't have it
-   npm install -g pnpm
+   # Enable Corepack (ships with Node.js)
+   corepack enable
 
    # Install dependencies
-   pnpm install
+   yarn install
    ```
 
 5. **Create a Feature Branch**: Always create a new branch for your changes. Use proper branch naming conventions for automatic version detection.
@@ -70,19 +70,19 @@ This project follows the **fork-based contribution model** to:
 
    ```sh
    # Run Storybook for development
-   pnpm start
+   yarn start
 
    # Build the package
-   pnpm dist
+   yarn dist
 
    # Run tests
-   pnpm test
+   yarn test
 
    # Run linting
-   pnpm eslint
+   yarn eslint
 
    # Format code
-   pnpm prettier
+   yarn format
    ```
 
 7. **Commit Changes**: Use **conventional commit** messages for automatic versioning.
@@ -312,12 +312,12 @@ When you open a PR, automated checks will validate:
 
 ```sh
 # Run all checks before pushing
-pnpm test
+yarn test
 
 # Or run individual checks
-pnpm eslint          # Linting
-pnpm vitest          # Tests
-pnpm dist            # Build
+yarn eslint          # Linting
+yarn vitest          # Tests
+yarn dist            # Build
 ```
 
 ---
@@ -327,14 +327,14 @@ pnpm dist            # Build
 Before contributing, ensure you have:
 
 - **Node.js**: v22.x or higher
-- **pnpm**: v10.x or higher
+- **Yarn**: v4.x or higher (via Corepack)
 - **Git**: Latest version
 
 Check your versions:
 
 ```sh
 node --version  # Should show v22.x.x
-pnpm --version  # Should show 10.x.x
+yarn --version  # Should show 4.x.x
 ```
 
 ---

@@ -16,11 +16,14 @@ interface TickNumeric {
 export const getDivisor = (number: number): number => {
   if (number % 3 === 0) {
     return 3;
-  } if (number % 4 === 0) {
+  }
+  if (number % 4 === 0) {
     return 4;
-  } if (number % 5 === 0) {
+  }
+  if (number % 5 === 0) {
     return 5;
-  } if (number % 2 === 0) {
+  }
+  if (number % 2 === 0) {
     return 2;
   }
   return 1;
@@ -39,8 +42,8 @@ export const buildTickValues = (data: string[]): { numeric: TickNumeric } => {
     return { numeric: { max: 2, min: 0, step: 1 } };
   }
 
-  const yMin = Math.min(...data.map(d => parseFloat(d)));
-  const yMax = Math.max(...data.map(d => parseFloat(d)));
+  const yMin = Math.min(...data.map((d) => parseFloat(d)));
+  const yMax = Math.max(...data.map((d) => parseFloat(d)));
 
   const yRange = Math.abs(yMax - yMin);
   const step = yRange / 2;

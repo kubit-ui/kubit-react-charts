@@ -1,16 +1,16 @@
-import { type FC, type ReactElement, useContext, useEffect, useRef } from 'react';
+import { type FC, type ReactElement, useContext, useEffect, useRef } from "react";
 
-import type { PathProps } from '@/components/path/path.types';
+import type { PathProps } from "@/components/path/path.types";
 import {
   buildEmptyDataArrayError,
   buildInvalidTotalError,
   buildPieDataKeyNotFoundError,
-} from '@/utils/buildErrors/buildErrors';
-import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
+} from "@/utils/buildErrors/buildErrors";
+import { parseStringToNumberPx } from "@/utils/parseStringToNumberPx.ts/parseStringToNumberPx";
 
-import { PieChartContext } from '../context/pieChartContext';
-import { buildAriaLabel } from '../utils/accessibility';
-import { PieChartSegment } from './pieChartSegment';
+import { PieChartContext } from "../context/pieChartContext";
+import { buildAriaLabel } from "../utils/accessibility";
+import { PieChartSegment } from "./pieChartSegment";
 
 /**
  * Renders the path for a pie chart.
@@ -25,7 +25,7 @@ import { PieChartSegment } from './pieChartSegment';
  */
 export const PieChartPath: FC<PathProps> = ({
   ariaLabel: deprecatedAriaLabel,
-  ['aria-label']: ariaLabel,
+  ["aria-label"]: ariaLabel,
   dataKey,
   fill,
   gap,
@@ -47,7 +47,7 @@ export const PieChartPath: FC<PathProps> = ({
   useEffect(() => {
     // Validate dataKey exists in dataset
     if (!hasDataKey) {
-      addError?.('PIE_CHART_PATH_ERROR', {
+      addError?.("PIE_CHART_PATH_ERROR", {
         error: buildPieDataKeyNotFoundError(key),
       });
       return;
@@ -55,7 +55,7 @@ export const PieChartPath: FC<PathProps> = ({
 
     // Validate data array exists and is not empty
     if (!dataArray || dataArray.length === 0) {
-      addError?.('PIE_CHART_PATH_ERROR', {
+      addError?.("PIE_CHART_PATH_ERROR", {
         error: buildEmptyDataArrayError(key),
       });
       return;
@@ -64,7 +64,7 @@ export const PieChartPath: FC<PathProps> = ({
     // Calculate total and validate
     const calculatedTotal = dataArray.reduce((acc, group) => acc + group.value, 0);
     if (calculatedTotal <= 0 || isNaN(calculatedTotal)) {
-      addError?.('PIE_CHART_PATH_ERROR', {
+      addError?.("PIE_CHART_PATH_ERROR", {
         error: buildInvalidTotalError(key, calculatedTotal),
       });
     }

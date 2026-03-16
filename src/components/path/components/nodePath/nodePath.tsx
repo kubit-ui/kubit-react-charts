@@ -1,12 +1,12 @@
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
 
-import { processAccessibilityTemplate } from '@/charts/lineChart/utils/accessibilityTemplateProcessor';
+import { processAccessibilityTemplate } from "@/charts/lineChart/utils/accessibilityTemplateProcessor";
 
-import { pickCustomAttributes } from '../../../../utils/pickCustomAttributes/pickCustomAttributes';
-import { Node } from '../../../node/node';
-import type { NodePathProps } from '../../path.types';
+import { pickCustomAttributes } from "../../../../utils/pickCustomAttributes/pickCustomAttributes";
+import { Node } from "../../../node/node";
+import type { NodePathProps } from "../../path.types";
 
-const NODE_PATH_FOCUS_BORDER = 'node-path-focus-border';
+const NODE_PATH_FOCUS_BORDER = "node-path-focus-border";
 /**
  * NodePathComponent renders a Node with custom attributes including processed aria-label templates.
  *
@@ -33,13 +33,13 @@ const NodePathComponent: React.ForwardRefRenderFunction<
 
   // Process aria-label template if it exists and contains placeholders
   if (
-    customAttributes['aria-label'] &&
+    customAttributes["aria-label"] &&
     data &&
-    typeof customAttributes['aria-label'] === 'string'
+    typeof customAttributes["aria-label"] === "string"
   ) {
-    const ariaLabelValue = customAttributes['aria-label'];
+    const ariaLabelValue = customAttributes["aria-label"];
 
-    if (ariaLabelValue.includes('{{')) {
+    if (ariaLabelValue.includes("{{")) {
       const processedAriaLabel = processAccessibilityTemplate(
         ariaLabelValue,
         {
@@ -48,10 +48,10 @@ const NodePathComponent: React.ForwardRefRenderFunction<
           index: data.index ?? 0,
           xKey: data.xKey,
         },
-        data.dataValue
+        data.dataValue,
       );
       if (processedAriaLabel) {
-        customAttributes['aria-label'] = processedAriaLabel;
+        customAttributes["aria-label"] = processedAriaLabel;
       }
     }
   }

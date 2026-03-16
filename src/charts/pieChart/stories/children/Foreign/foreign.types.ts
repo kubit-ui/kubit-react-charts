@@ -15,7 +15,7 @@ export interface ForeignStoryEnhancedProps {
   fontSize?: number;
   textContent?: string;
 
-  // Icon props (when children is "icon") 
+  // Icon props (when children is "icon")
   iconColor?: string;
   iconSize?: number;
 

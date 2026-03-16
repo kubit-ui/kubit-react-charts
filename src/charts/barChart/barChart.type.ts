@@ -1,14 +1,14 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from "react";
 
-import type { XAxisProps } from '@/components/axisChart/xAxis/xAxis.types';
-import type { YAxisProps } from '@/components/axisChart/yAxis/yAxis.types';
-import type { BarChartStyles, BarOrientation } from '@/components/bar/bar.type';
-import type { PathProps, StyleProps } from '@/components/path/path.types';
-import type { TickData } from '@/components/tick/tick.types';
-import type { CanvasConfig } from '@/types/canvas.type';
-import type { ChartError, ChartErrorCollection, ErrorType } from '@/types/errors.type';
-import type { Positions } from '@/types/position.enum';
-import type { ValueFormatter } from '@/types/valueFormatter.type';
+import type { XAxisProps } from "@/components/axisChart/xAxis/xAxis.types";
+import type { YAxisProps } from "@/components/axisChart/yAxis/yAxis.types";
+import type { BarChartStyles, BarOrientation } from "@/components/bar/bar.type";
+import type { PathProps, StyleProps } from "@/components/path/path.types";
+import type { TickData } from "@/components/tick/tick.types";
+import type { CanvasConfig } from "@/types/canvas.type";
+import type { ChartError, ChartErrorCollection, ErrorType } from "@/types/errors.type";
+import type { Positions } from "@/types/position.enum";
+import type { ValueFormatter } from "@/types/valueFormatter.type";
 
 export type BarChartChildrenType = ReactNode | ReactElement<PathProps | XAxisProps | YAxisProps>;
 
@@ -46,12 +46,12 @@ export interface BarChartExtraSpacings {
 }
 
 type OmitLineProps =
-  | 'barChartXPosition'
-  | 'barChartYPosition'
-  | 'xData'
-  | 'yData'
-  | 'xBreakAxis'
-  | 'yBreakAxis';
+  | "barChartXPosition"
+  | "barChartYPosition"
+  | "xData"
+  | "yData"
+  | "xBreakAxis"
+  | "yBreakAxis";
 
 export type BarChartContextType = Omit<BarChartExtraSpacings, OmitLineProps> & {
   data: BarChartIDataPoint[];
@@ -68,7 +68,7 @@ export type BarChartContextType = Omit<BarChartExtraSpacings, OmitLineProps> & {
   gapBetweenBars?: number;
   orientation: (typeof BarOrientation)[keyof typeof BarOrientation];
   error?: ChartError;
-  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => void;
+  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => void;
 };
 
 export interface BarChartProps {
@@ -115,7 +115,7 @@ export interface BarChartTickValuesAxisProps {
   custom?: BarChartTickCustom;
   numeric?: BarChartTickNumeric;
 }
-type OmitProps = 'x1' | 'x2' | 'y1' | 'y2' | 'tickValues' | 'cursor' | 'ariaLabel';
+type OmitProps = "x1" | "x2" | "y1" | "y2" | "tickValues" | "cursor" | "ariaLabel";
 export interface BarChartXAxisProps extends Omit<XAxisProps, OmitProps>, React.AriaAttributes {
   /**
    * @deprecated Use aria-label instead for better accessibility standards

@@ -1,28 +1,28 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
 
-import { Line } from '@/components/line/line';
-import { Node } from '@/components/node/node';
-import { NodeType } from '@/components/node/node.types';
-import { Note } from '@/storybook/components/note/note';
+import { Line } from "@/components/line/line";
+import { Node } from "@/components/node/node";
+import { NodeType } from "@/components/node/node.types";
+import { Note } from "@/storybook/components/note/note";
 
-import { type LineChartCoordinates, LineChart as LineChartStory } from '../lineChart';
-import { argtypes } from './parent/argtypes';
-import { BASIC_NODES_TEMPLATE } from './templates/basicNodes';
-import { COMPLEX_TEMPLATE } from './templates/complex';
-import { DATA, FULL_CUSTOM_DATA, FULL_CUSTOM_DATA_NEGATIVE } from './templates/data';
-import { divergentTemplate } from './templates/divergentTemplate';
-import { FULL_CUSTOM_TEMPLATE } from './templates/fullCustom';
-import { FULL_CUSTOM_TEMPLATE_NEGATIVE } from './templates/fullCustomNegative';
-import { LineChartWithErrorHandlingWithHooks } from './templates/withErrorHandling';
-import { WITH_INDICATORS } from './templates/withIndicators';
-import { WITH_ZOOM_AREA_TEMPLATE, ZOOM_INTEGRATION_DATA } from './templates/withZoomArea';
+import { type LineChartCoordinates, LineChart as LineChartStory } from "../lineChart";
+import { argtypes } from "./parent/argtypes";
+import { BASIC_NODES_TEMPLATE } from "./templates/basicNodes";
+import { COMPLEX_TEMPLATE } from "./templates/complex";
+import { DATA, FULL_CUSTOM_DATA, FULL_CUSTOM_DATA_NEGATIVE } from "./templates/data";
+import { divergentTemplate } from "./templates/divergentTemplate";
+import { FULL_CUSTOM_TEMPLATE } from "./templates/fullCustom";
+import { FULL_CUSTOM_TEMPLATE_NEGATIVE } from "./templates/fullCustomNegative";
+import { LineChartWithErrorHandlingWithHooks } from "./templates/withErrorHandling";
+import { WITH_INDICATORS } from "./templates/withIndicators";
+import { WITH_ZOOM_AREA_TEMPLATE, ZOOM_INTEGRATION_DATA } from "./templates/withZoomArea";
 
 const meta = {
   argTypes: argtypes(),
   component: LineChartStory,
-  tags: ['autodocs'],
-  title: 'Charts/LineChart/LineChart Examples',
+  tags: ["autodocs"],
+  title: "Charts/LineChart/LineChart Examples",
 } satisfies Meta<typeof LineChartStory>;
 
 export default meta;
@@ -33,7 +33,7 @@ type Story = StoryObj<typeof meta> & { args: { themeArgs?: object } } & {
 
 const args = {
   ariaHidden: false,
-  ariaLabel: 'Line chart showing data trends over time',
+  ariaLabel: "Line chart showing data trends over time",
 
   // === CANVAS CONFIGURATION ===
   canvasConfig: {
@@ -42,20 +42,20 @@ const args = {
     width: 100,
   },
 
-  caption: 'Line chart',
+  caption: "Line chart",
   classNames: undefined,
   // === FUNDAMENTAL DATA ===
   data: DATA,
 
   // === TESTING IDENTIFIERS ===
-  dataTestId: 'line-chart',
-  height: '100%',
+  dataTestId: "line-chart",
+  height: "100%",
   // === ACCESSIBILITY AND SEMANTICS ===
-  role: 'application',
+  role: "application",
   // === DIMENSIONS AND LAYOUT ===
-  width: '70%',
+  width: "70%",
 
-  xKey: 'year',
+  xKey: "year",
 };
 
 // Reusable decorator for customization examples
@@ -69,7 +69,7 @@ const withCustomizationNote = (Story: React.ComponentType): React.JSX.Element =>
         text={[
           <div key="customization-explanation">
             <p>
-              This example demonstrates various customization options available for{' '}
+              This example demonstrates various customization options available for{" "}
               <strong>LineChart</strong> child components including paths, axes, and visual styling.
             </p>
             <p>
@@ -133,7 +133,7 @@ export const LineChartAccessibility: Story = {
                     <strong>Axis Labels:</strong> Custom aria-labels for X and Y axes
                   </li>
                   <li>
-                    <strong>Custom Attributes:</strong> Both paths and nodes accept all{' '}
+                    <strong>Custom Attributes:</strong> Both paths and nodes accept all{" "}
                     <code>aria-*</code> and <code>data-*</code> attributes for enhanced
                     accessibility and testing
                   </li>
@@ -145,26 +145,26 @@ export const LineChartAccessibility: Story = {
                 <h4> 📒 Template Placeholders for Node Labels:</h4>
                 <ul>
                   <li>
-                    <code>{'{{dataKey}}'}</code> - Data series key (e.g., &quot;cats&quot;)
+                    <code>{"{{dataKey}}"}</code> - Data series key (e.g., &quot;cats&quot;)
                   </li>
                   <li>
-                    <code>{'{{xValue}}'}</code> - X-axis value for the data point
+                    <code>{"{{xValue}}"}</code> - X-axis value for the data point
                   </li>
                   <li>
-                    <code>{'{{yValue}}'}</code> - Y-axis value for the data point
+                    <code>{"{{yValue}}"}</code> - Y-axis value for the data point
                   </li>
                   <li>
-                    <code>{'{{index}}'}</code> - Index of the data point (1-based)
+                    <code>{"{{index}}"}</code> - Index of the data point (1-based)
                   </li>
                 </ul>
                 <h4>🔧 Custom Attributes Support:</h4>
                 <ul>
                   <li>
-                    <strong>Path level:</strong> Pass any <code>aria-*</code> or <code>data-*</code>{' '}
+                    <strong>Path level:</strong> Pass any <code>aria-*</code> or <code>data-*</code>{" "}
                     attributes directly to <code>LineChart.Path</code>
                   </li>
                   <li>
-                    <strong>Node level:</strong> Pass any <code>aria-*</code> or <code>data-*</code>{' '}
+                    <strong>Node level:</strong> Pass any <code>aria-*</code> or <code>data-*</code>{" "}
                     attributes within the <code>nodeConfig</code> object
                   </li>
                 </ul>
@@ -172,10 +172,10 @@ export const LineChartAccessibility: Story = {
                 <h4>💻 Code Example:</h4>
                 <pre
                   style={{
-                    background: '#f5f5f5',
-                    borderRadius: '4px',
-                    fontSize: '0.85em',
-                    padding: '12px',
+                    background: "#f5f5f5",
+                    borderRadius: "4px",
+                    fontSize: "0.85em",
+                    padding: "12px",
                   }}
                 >
                   {`<LineChart.Path
@@ -218,7 +218,7 @@ export const LineChartFullCustom: Story = {
     ...args,
     children: FULL_CUSTOM_TEMPLATE,
     data: FULL_CUSTOM_DATA,
-    xKey: 'step',
+    xKey: "step",
   },
   decorators: [withCustomizationNote],
 };
@@ -228,7 +228,7 @@ export const LineChartFullCustomNegative: Story = {
     ...args,
     children: FULL_CUSTOM_TEMPLATE_NEGATIVE,
     data: FULL_CUSTOM_DATA_NEGATIVE,
-    xKey: 'step',
+    xKey: "step",
   },
   decorators: [withCustomizationNote],
 };
@@ -238,7 +238,7 @@ export const LineChartWithIndicator: Story = {
     ...args,
     children: WITH_INDICATORS,
     data: FULL_CUSTOM_DATA,
-    xKey: 'step',
+    xKey: "step",
   },
   decorators: [withCustomizationNote],
 };
@@ -248,11 +248,11 @@ const LineChartWithNodeDivergentWithHooks = () => {
   const [viewCoord, setViewCoord] = useState<LineChartCoordinates | undefined>(undefined);
 
   const nodeProps = {
-    fill: 'white',
+    fill: "white",
     hasHalo: true,
     size: 1.3,
-    stroke: 'red',
-    strokeWidth: '0.2',
+    stroke: "red",
+    strokeWidth: "0.2",
     type: NodeType.Circle,
   };
 
@@ -309,7 +309,7 @@ export const LineChartWithNodeDivergent: Story = {
             text={[
               <div key="divergent-explanation">
                 <p>
-                  This demonstration shows how to create{' '}
+                  This demonstration shows how to create{" "}
                   <strong>interactive reference lines</strong> that appear dynamically when clicking
                   on chart nodes.
                 </p>
@@ -490,7 +490,7 @@ export const LineChartWithErrorHandling: Story = {
   parameters: {
     docs: {
       source: {
-        code: 'See withErrorHandling.tsx template for complete implementation',
+        code: "See withErrorHandling.tsx template for complete implementation",
       },
     },
   },
@@ -513,9 +513,9 @@ export const LineChartWithZoomArea: Story = {
             heading="LineChart + ZoomArea Integration"
             text={[
               <span key="integration-explanation">
-                This example demonstrates seamless integration between <code>LineChart</code> and{' '}
+                This example demonstrates seamless integration between <code>LineChart</code> and{" "}
                 <code>ZoomArea</code>. The <code>ZoomArea</code> automatically filters the data and
-                passes it to the <code>LineChart</code> through the <code>onDataChange</code>{' '}
+                passes it to the <code>LineChart</code> through the <code>onDataChange</code>{" "}
                 callback. Drag the handlers in the zoom area below to see real-time updates in the
                 main chart.
               </span>,
@@ -617,7 +617,7 @@ export const LineChartWithZoomArea: Story = {
             </div>
           );
         };`,
-        language: 'tsx',
+        language: "tsx",
       },
     },
   },

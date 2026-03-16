@@ -62,22 +62,16 @@
 
 ## Installation
 
-### pnpm (Recommended)
+### Yarn (Recommended)
 
 ```bash
-pnpm add @kubit-ui-web/react-charts
+yarn add @kubit-ui-web/react-charts
 ```
 
 ### NPM
 
 ```bash
 npm install @kubit-ui-web/react-charts
-```
-
-### Yarn
-
-```bash
-yarn add @kubit-ui-web/react-charts
 ```
 
 ### Peer Dependencies
@@ -383,28 +377,28 @@ This pattern enables:
 
 ```bash
 # Start Storybook in development mode
-pnpm start
+yarn start
 
 # Build library for production
-pnpm dist
+yarn dist
 
 # Run tests with coverage
-pnpm test
+yarn test
 
 # Lint code with ESLint
-pnpm eslint
+yarn eslint
 
 # Format code
-pnpm prettier
+yarn format
 
 # Build Storybook for production
-pnpm build
+yarn build
 
 # Changeset commands (for maintainers)
-pnpm changeset              # Create a changeset manually
-pnpm changeset:version      # Version packages
-pnpm changeset:publish      # Publish to NPM
-pnpm changeset:status       # Check changeset status
+yarn changeset              # Create a changeset manually
+yarn changeset:version      # Version packages
+yarn changeset:publish      # Publish to NPM
+yarn changeset:status       # Check changeset status
 
 # Run accessibility tests
 yarn storybook:axe

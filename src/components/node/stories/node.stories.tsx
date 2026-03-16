@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { type NodeProps, NodeType } from '@/components/node/node.types';
-import { Note } from '@/storybook/components/note/note';
+import { type NodeProps, NodeType } from "@/components/node/node.types";
+import { Note } from "@/storybook/components/note/note";
 
-import { Node as NodeStory } from '../node';
-import { argtypes } from './argtypes';
+import { Node as NodeStory } from "../node";
+import { argtypes } from "./argtypes";
 
 const meta = {
   argTypes: argtypes(),
@@ -25,8 +25,8 @@ const meta = {
       </svg>
     );
   },
-  tags: ['autodocs'],
-  title: 'Internal Components/Node',
+  tags: ["autodocs"],
+  title: "Internal Components/Node",
 } satisfies Meta<typeof NodeStory>;
 
 export default meta;
@@ -36,7 +36,7 @@ type Story = StoryObj<typeof meta> & { args: { themeArgs?: object } } & {
 };
 
 const args: NodeProps = {
-  fill: '#FFFFFF',
+  fill: "#FFFFFF",
   // Complete haloConfig with all available fields for better Storybook controls
   haloConfig: {
     fill: undefined,
@@ -47,7 +47,7 @@ const args: NodeProps = {
   },
   hasHalo: true,
   size: 20,
-  stroke: '#09A182',
+  stroke: "#09A182",
   tabIndex: 0,
   type: NodeType.Circle,
 };
@@ -94,8 +94,8 @@ export const Node: Story = {
                   </li>
                 </ul>
                 <p>
-                  <em>💡 Context:</em> Node components are primarily used internally within{' '}
-                  <strong>LineChart</strong> as interactive data points through the{' '}
+                  <em>💡 Context:</em> Node components are primarily used internally within{" "}
+                  <strong>LineChart</strong> as interactive data points through the{" "}
                   <code>nodeConfig</code> property. They provide visual markers on line paths with
                   configurable shapes, hover effects, and event handling for enhanced user
                   interaction.

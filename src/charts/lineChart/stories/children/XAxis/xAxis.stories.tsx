@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Note } from '@/storybook/components/note/note';
+import { Note } from "@/storybook/components/note/note";
 
-import { LineChart } from '../../../lineChart';
-import type { LineChartXAxisProps } from '../../../lineChart.type';
-import { SUBCOMPONENT_DEMO_DATA } from '../../templates/data';
-import { xAxisArgTypes } from './xAxis.argtypes';
-import type { XAxisStoryArgs } from './xAxis.types';
+import { LineChart } from "../../../lineChart";
+import type { LineChartXAxisProps } from "../../../lineChart.type";
+import { SUBCOMPONENT_DEMO_DATA } from "../../templates/data";
+import { xAxisArgTypes } from "./xAxis.argtypes";
+import type { XAxisStoryArgs } from "./xAxis.types";
 
 const meta = {
   argTypes: xAxisArgTypes(),
@@ -31,7 +31,7 @@ const meta = {
               format
             </>,
             <>
-              • <strong>valueFormatter</strong> - Format tick labels using a callback function{' '}
+              • <strong>valueFormatter</strong> - Format tick labels using a callback function{" "}
               <code>(val) =&gt; string</code>. The dropdown below shows preset examples, but in your
               code you'll pass actual functions.
             </>,
@@ -57,8 +57,8 @@ const meta = {
       </>
     ),
   ],
-  tags: ['autodocs'],
-  title: 'Charts/LineChart/Child Components/LineChartXAxis',
+  tags: ["autodocs"],
+  title: "Charts/LineChart/Child Components/LineChartXAxis",
 } satisfies Meta<XAxisStoryArgs<LineChartXAxisProps>>;
 
 export default meta;
@@ -69,17 +69,17 @@ type Story = StoryObj<XAxisStoryArgs<LineChartXAxisProps>>;
 // <LineChart.XAxis valueFormatter={(val) => `$${val}`} />
 const getValueFormatter = (formatterType: string) => {
   switch (formatterType) {
-    case 'currency':
-      return val => `$${val}`;
-    case 'percentage':
-      return val => `${val}%`;
-    case 'thousands':
-      return val => `${val}K`;
-    case 'millions':
-      return val => `${val}M`;
-    case 'custom':
-      return val => `[${val}]`;
-    case 'none':
+    case "currency":
+      return (val) => `$${val}`;
+    case "percentage":
+      return (val) => `${val}%`;
+    case "thousands":
+      return (val) => `${val}K`;
+    case "millions":
+      return (val) => `${val}M`;
+    case "custom":
+      return (val) => `[${val}]`;
+    case "none":
     default:
       return undefined;
   }
@@ -98,13 +98,13 @@ export const XAxisCustomization: Story = {
     },
 
     // === POSITIONING & LAYOUT ===
-    position: 'BOTTOM',
+    position: "BOTTOM",
     // === TICK CONFIGURATION ===
     showTickLines: true,
     // === AXIS LINE STYLING ===
-    stroke: '#666666',
+    stroke: "#666666",
 
-    strokeDasharray: '5,5', // e.g., "5,5" for dashed line
+    strokeDasharray: "5,5", // e.g., "5,5" for dashed line
 
     strokeOpacity: 1,
 
@@ -116,8 +116,8 @@ export const XAxisCustomization: Story = {
       className: undefined,
       dataTestId: undefined,
       opacity: 1,
-      stroke: '#999999',
-      strokeDasharray: '1,1',
+      stroke: "#999999",
+      strokeDasharray: "1,1",
       strokeDashoffset: undefined,
       strokeLinecap: undefined,
       strokeLinejoin: undefined,
@@ -132,7 +132,7 @@ export const XAxisCustomization: Story = {
       className: undefined,
       dataTestId: undefined,
       opacity: undefined,
-      stroke: '#333333',
+      stroke: "#333333",
       strokeDasharray: undefined,
       strokeDashoffset: undefined,
       strokeLinecap: undefined,
@@ -152,7 +152,7 @@ export const XAxisCustomization: Story = {
       direction: undefined,
 
       // Color and appearance
-      fill: '#333333',
+      fill: "#333333",
       fillOpacity: undefined,
       fontFamily: undefined,
       // Font properties
@@ -173,7 +173,7 @@ export const XAxisCustomization: Story = {
       style: undefined,
       tabIndex: undefined,
       // Text positioning and alignment
-      textAnchor: 'middle',
+      textAnchor: "middle",
       textDecoration: undefined,
       // Advanced text properties
       textLength: undefined,
@@ -186,8 +186,8 @@ export const XAxisCustomization: Story = {
     },
 
     // === DATA CONFIGURATION ===
-    tickValues: { custom: { values: ['0', '1', '3', '5'] } }, // Custom tick positions - shows only x values: 0, 2, and 4 from data range [0-5]
-    valueFormatter: 'thousands', // Default to "Thousands (K)" formatter - user can change via dropdown
+    tickValues: { custom: { values: ["0", "1", "3", "5"] } }, // Custom tick positions - shows only x values: 0, 2, and 4 from data range [0-5]
+    valueFormatter: "thousands", // Default to "Thousands (K)" formatter - user can change via dropdown
   },
   render: (args: XAxisStoryArgs<LineChartXAxisProps>) => {
     // Convert the formatter string to actual function and filter out Storybook-only props

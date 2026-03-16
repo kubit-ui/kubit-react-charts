@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Note } from '@/storybook/components/note/note';
+import { Note } from "@/storybook/components/note/note";
 
-import { LineChartSeparator } from '../../../fragments/lineChartSeparator';
-import { LineChart } from '../../../lineChart';
-import type { LineChartSeparatorProps } from '../../../lineChart.type';
-import { FULL_CUSTOM_DATA } from '../../templates/data';
-import { separatorArgTypes } from './separator.argtypes';
+import { LineChartSeparator } from "../../../fragments/lineChartSeparator";
+import { LineChart } from "../../../lineChart";
+import type { LineChartSeparatorProps } from "../../../lineChart.type";
+import { FULL_CUSTOM_DATA } from "../../templates/data";
+import { separatorArgTypes } from "./separator.argtypes";
 
 const meta = {
   argTypes: separatorArgTypes(),
@@ -65,8 +65,8 @@ const meta = {
       </>
     ),
   ],
-  tags: ['autodocs'],
-  title: 'Charts/LineChart/Child Components/LineChartSeparator',
+  tags: ["autodocs"],
+  title: "Charts/LineChart/Child Components/LineChartSeparator",
 } satisfies Meta<typeof LineChart>;
 
 export default meta;
@@ -77,22 +77,22 @@ type Story = StoryObj<typeof meta>;
 export const HorizontalSeparator: Story = {
   args: {
     areaSeparator: {
-      fill: 'rgba(255, 107, 107, 0.1)',
+      fill: "rgba(255, 107, 107, 0.1)",
     },
-    dataTestId: 'horizontal-separator',
+    dataTestId: "horizontal-separator",
     topSeparator: {
-      stroke: '#ff6b6b',
-      strokeDasharray: '5,5',
-      strokeWidth: '0.5',
+      stroke: "#ff6b6b",
+      strokeDasharray: "5,5",
+      strokeWidth: "0.5",
     },
-    yBreakAxis: '0',
+    yBreakAxis: "0",
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          'Demonstrates **horizontal separators** using `topSeparator` and `yBreakAxis`. The separator creates a horizontal line at y=0 (baseline) with a dashed red style and subtle background fill. Perfect for highlighting baseline values or creating horizontal zones.',
+          "Demonstrates **horizontal separators** using `topSeparator` and `yBreakAxis`. The separator creates a horizontal line at y=0 (baseline) with a dashed red style and subtle background fill. Perfect for highlighting baseline values or creating horizontal zones.",
       },
     },
   },
@@ -113,7 +113,7 @@ export const HorizontalSeparator: Story = {
           stroke="black"
           strokeWidth="0.1"
           tickValues={{
-            custom: { values: ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6'] },
+            custom: { values: ["step 1", "step 2", "step 3", "step 4", "step 5", "step 6"] },
           }}
         />
         <LineChart.YAxis
@@ -131,15 +131,15 @@ export const HorizontalSeparator: Story = {
 export const VerticalSeparator: Story = {
   args: {
     areaSeparator: {
-      fill: 'rgba(78, 205, 196, 0.1)',
+      fill: "rgba(78, 205, 196, 0.1)",
     },
-    dataTestId: 'vertical-separator',
+    dataTestId: "vertical-separator",
     rightSeparator: {
-      stroke: '#4ecdc4',
-      strokeDasharray: '3,3',
-      strokeWidth: '0.5',
+      stroke: "#4ecdc4",
+      strokeDasharray: "3,3",
+      strokeWidth: "0.5",
     },
-    xBreakAxis: 'step 3',
+    xBreakAxis: "step 3",
   },
 
   render: (args: LineChartSeparatorProps) => {
@@ -156,7 +156,7 @@ export const VerticalSeparator: Story = {
           stroke="black"
           strokeWidth="0.1"
           tickValues={{
-            custom: { values: ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6'] },
+            custom: { values: ["step 1", "step 2", "step 3", "step 4", "step 5", "step 6"] },
           }}
         />
         <LineChart.YAxis
@@ -174,19 +174,19 @@ export const VerticalSeparator: Story = {
 export const CombinedSeparators: Story = {
   args: {
     areaSeparator: {
-      fill: 'rgba(136, 132, 216, 0.15)',
+      fill: "rgba(136, 132, 216, 0.15)",
     },
-    dataTestId: 'combined-separators',
+    dataTestId: "combined-separators",
     rightSeparator: {
-      stroke: '#82ca9d',
-      strokeWidth: '1',
+      stroke: "#82ca9d",
+      strokeWidth: "1",
     },
     topSeparator: {
-      stroke: '#8884d8',
-      strokeWidth: '1',
+      stroke: "#8884d8",
+      strokeWidth: "1",
     },
-    xBreakAxis: 'step 4',
-    yBreakAxis: '60',
+    xBreakAxis: "step 4",
+    yBreakAxis: "60",
   },
 
   render: (args: LineChartSeparatorProps) => {
@@ -203,7 +203,7 @@ export const CombinedSeparators: Story = {
           stroke="black"
           strokeWidth="0.1"
           tickValues={{
-            custom: { values: ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6'] },
+            custom: { values: ["step 1", "step 2", "step 3", "step 4", "step 5", "step 6"] },
           }}
         />
         <LineChart.YAxis

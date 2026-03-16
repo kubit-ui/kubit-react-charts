@@ -1,2 +1,2 @@
-export * from './tick';
-export * from './tick.types';
+export * from "./tick";
+export * from "./tick.types";

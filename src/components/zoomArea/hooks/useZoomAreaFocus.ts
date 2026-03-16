@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 
-import type { ZoomAreaElements } from '../zoomArea.type';
+import type { ZoomAreaElements } from "../zoomArea.type";
 
 /**
  * Return value for the useZoomAreaFocus hook
@@ -39,7 +39,7 @@ export const useZoomAreaFocus = (): UseZoomAreaFocusReturn => {
     (target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements]) => {
       return focusedElement === target;
     },
-    [focusedElement]
+    [focusedElement],
   );
 
   return {

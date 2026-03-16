@@ -1,6 +1,6 @@
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
-import { getXCoordinates, getYCoordinates } from '../getCoordinates';
+import { getXCoordinates, getYCoordinates } from "../getCoordinates";
 
 const baseProps = {
   canvasHeight: 80,
@@ -13,8 +13,8 @@ const baseProps = {
   securityYSpace: 0,
 };
 
-describe('getXCoordinates', () => {
-  it('should return the correct values when the position is TOP', () => {
+describe("getXCoordinates", () => {
+  it("should return the correct values when the position is TOP", () => {
     const result = getXCoordinates({ ...baseProps, position: Positions.TOP });
 
     expect(result).toEqual({
@@ -25,7 +25,7 @@ describe('getXCoordinates', () => {
     });
   });
 
-  it('should return the correct values when the position is CENTER', () => {
+  it("should return the correct values when the position is CENTER", () => {
     const result = getXCoordinates({ ...baseProps, position: Positions.CENTER });
 
     expect(result).toEqual({
@@ -36,7 +36,7 @@ describe('getXCoordinates', () => {
     });
   });
 
-  it('should return the correct values when the position is CUSTOM', () => {
+  it("should return the correct values when the position is CUSTOM", () => {
     const result = getXCoordinates({ ...baseProps, position: Positions.CUSTOM });
 
     expect(result).toEqual({
@@ -47,7 +47,7 @@ describe('getXCoordinates', () => {
     });
   });
 
-  it('should return the correct values when the position is BOTTOM', () => {
+  it("should return the correct values when the position is BOTTOM", () => {
     const result = getXCoordinates({ ...baseProps, position: Positions.BOTTOM });
 
     expect(result).toEqual({
@@ -59,8 +59,8 @@ describe('getXCoordinates', () => {
   });
 });
 
-describe('getYCoordinates', () => {
-  it('should return the correct values when the position is RIGTH', () => {
+describe("getYCoordinates", () => {
+  it("should return the correct values when the position is RIGTH", () => {
     const result = getYCoordinates({ ...baseProps, position: Positions.RIGHT });
 
     expect(result).toEqual({
@@ -71,7 +71,7 @@ describe('getYCoordinates', () => {
     });
   });
 
-  it('should return the correct values when the position is CENTER', () => {
+  it("should return the correct values when the position is CENTER", () => {
     const result = getYCoordinates({ ...baseProps, position: Positions.CENTER });
 
     expect(result).toEqual({
@@ -82,7 +82,7 @@ describe('getYCoordinates', () => {
     });
   });
 
-  it('should return the correct values when the position is CUSTOM', () => {
+  it("should return the correct values when the position is CUSTOM", () => {
     const result = getYCoordinates({ ...baseProps, position: Positions.CUSTOM });
 
     expect(result).toEqual({
@@ -93,7 +93,7 @@ describe('getYCoordinates', () => {
     });
   });
 
-  it('should return the correct values when the position is LEFT', () => {
+  it("should return the correct values when the position is LEFT", () => {
     const result = getYCoordinates({ ...baseProps, position: Positions.LEFT });
 
     expect(result).toEqual({

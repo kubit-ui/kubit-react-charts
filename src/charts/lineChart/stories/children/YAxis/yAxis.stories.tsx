@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Note } from '@/storybook/components/note/note';
+import { Note } from "@/storybook/components/note/note";
 
-import { LineChart } from '../../../lineChart';
-import type { LineChartYAxisProps } from '../../../lineChart.type';
-import { SUBCOMPONENT_DEMO_DATA } from '../../templates/data';
-import { yAxisArgTypes } from './yAxis.argtypes';
-import type { YAxisStoryArgs } from './yAxis.types';
+import { LineChart } from "../../../lineChart";
+import type { LineChartYAxisProps } from "../../../lineChart.type";
+import { SUBCOMPONENT_DEMO_DATA } from "../../templates/data";
+import { yAxisArgTypes } from "./yAxis.argtypes";
+import type { YAxisStoryArgs } from "./yAxis.types";
 
 const meta = {
   argTypes: yAxisArgTypes(),
@@ -27,7 +27,7 @@ const meta = {
               <strong>Key Features:</strong>
             </>,
             <>
-              • <strong>valueFormatter</strong> - Format tick labels using a callback function{' '}
+              • <strong>valueFormatter</strong> - Format tick labels using a callback function{" "}
               <code>(val) =&gt; string</code>. The dropdown below shows preset examples, but in your
               code you'll pass actual functions.
             </>,
@@ -56,8 +56,8 @@ const meta = {
       </>
     ),
   ],
-  tags: ['autodocs'],
-  title: 'Charts/LineChart/Child Components/LineChartYAxis',
+  tags: ["autodocs"],
+  title: "Charts/LineChart/Child Components/LineChartYAxis",
 } satisfies Meta<YAxisStoryArgs<LineChartYAxisProps>>;
 
 export default meta;
@@ -68,17 +68,17 @@ type Story = StoryObj<YAxisStoryArgs<LineChartYAxisProps>>;
 // <LineChart.XAxis valueFormatter={(val) => `$${val}`} />
 const getValueFormatter = (formatterType: string) => {
   switch (formatterType) {
-    case 'currency':
-      return val => `$${val}`;
-    case 'percentage':
-      return val => `${val}%`;
-    case 'thousands':
-      return val => `${val}K`;
-    case 'millions':
-      return val => `${val}M`;
-    case 'custom':
-      return val => `[${val}]`;
-    case 'none':
+    case "currency":
+      return (val) => `$${val}`;
+    case "percentage":
+      return (val) => `${val}%`;
+    case "thousands":
+      return (val) => `${val}K`;
+    case "millions":
+      return (val) => `${val}M`;
+    case "custom":
+      return (val) => `[${val}]`;
+    case "none":
     default:
       return undefined;
   }
@@ -98,14 +98,14 @@ export const YAxisCustomization: Story = {
 
     opacity: 1,
     // === POSITIONING & LAYOUT ===
-    position: 'LEFT',
+    position: "LEFT",
     // === TICK CONFIGURATION ===
     showTickLines: true,
 
     // === AXIS LINE STYLING ===
-    stroke: '#666666',
+    stroke: "#666666",
 
-    strokeDasharray: '5,3', // e.g., "5,5" for dashed line
+    strokeDasharray: "5,3", // e.g., "5,5" for dashed line
 
     strokeLinecap: undefined,
 
@@ -120,8 +120,8 @@ export const YAxisCustomization: Story = {
       className: undefined,
       dataTestId: undefined,
       opacity: 1,
-      stroke: '#999999',
-      strokeDasharray: '1,1',
+      stroke: "#999999",
+      strokeDasharray: "1,1",
       strokeDashoffset: undefined,
       strokeLinecap: undefined,
       strokeLinejoin: undefined,
@@ -137,7 +137,7 @@ export const YAxisCustomization: Story = {
       className: undefined,
       dataTestId: undefined,
       opacity: undefined,
-      stroke: '#333333',
+      stroke: "#333333",
       strokeDasharray: undefined,
       strokeDashoffset: undefined,
       strokeLinecap: undefined,
@@ -154,7 +154,7 @@ export const YAxisCustomization: Story = {
       className: undefined,
       direction: undefined,
       // Color and appearance
-      fill: '#333333',
+      fill: "#333333",
 
       fillOpacity: undefined,
       fontFamily: undefined,
@@ -178,7 +178,7 @@ export const YAxisCustomization: Story = {
       style: undefined,
       tabIndex: undefined,
       // Text positioning and alignment
-      textAnchor: 'middle',
+      textAnchor: "middle",
       textDecoration: undefined,
       // Advanced text properties
       textLength: undefined,
@@ -191,7 +191,7 @@ export const YAxisCustomization: Story = {
     transform: undefined,
     // === DATA CONFIGURATION ===
     // NOTE: tickValues is NOT IMPLEMENTED for YAxis - component uses auto-generated values
-    valueFormatter: 'currency', // Default to "Currency ($)" formatter - user can change via dropdown
+    valueFormatter: "currency", // Default to "Currency ($)" formatter - user can change via dropdown
   },
 
   render: (args: YAxisStoryArgs<LineChartYAxisProps>) => {
@@ -214,41 +214,41 @@ export const YAxisTextUseAsOrigin: Story = {
   args: {
     opacity: 1,
     // === POSITIONING & LAYOUT ===
-    position: 'LEFT',
+    position: "LEFT",
     // === TICK CONFIGURATION ===
     showTickLines: true,
     // === AXIS LINE STYLING ===
-    stroke: '#666666',
-    strokeDasharray: '5,3', // e.g., "5,5" for dashed line
+    stroke: "#666666",
+    strokeDasharray: "5,3", // e.g., "5,5" for dashed line
     strokeOpacity: 1,
     strokeWidth: 0.5,
     tickLine: {
       opacity: 1,
-      stroke: '#999999',
-      strokeDasharray: '1,1',
+      stroke: "#999999",
+      strokeDasharray: "1,1",
       strokeOpacity: 1,
       strokeWidth: 0.25,
     },
     tickLineHover: {
-      stroke: '#333333',
+      stroke: "#333333",
       strokeWidth: 0.25,
     },
     // === TICK TEXT STYLING ===
     tickText: {
       // Color and appearance
-      fill: '#333333',
+      fill: "#333333",
       // Font properties
       fontSize: 1.5,
       left: 0.5, // YAxis specific: distance from right side when position=LEFT
       // React/DOM properties
       // Text positioning and alignment
-      textAnchor: 'end',
+      textAnchor: "end",
       useAxisAsOrigin: true, // ← Use axis line as origin for left/right spacing
       // Advanced text properties
     },
     // === DATA CONFIGURATION ===
     // NOTE: tickValues is NOT IMPLEMENTED for YAxis - component uses auto-generated values
-    valueFormatter: 'currency', // Default to "Currency ($)" formatter - user can change via dropdown
+    valueFormatter: "currency", // Default to "Currency ($)" formatter - user can change via dropdown
   },
 
   render: (args: YAxisStoryArgs<LineChartYAxisProps>) => {
@@ -265,7 +265,7 @@ export const YAxisTextUseAsOrigin: Story = {
           heading="🎯 useAxisAsOrigin: Axis-Relative Text Positioning"
           text={[
             <>
-              This story demonstrates the <code>useAxisAsOrigin</code> property, which changes how{' '}
+              This story demonstrates the <code>useAxisAsOrigin</code> property, which changes how{" "}
               <code>left</code> and <code>right</code> spacing values are calculated for tick text.
             </>,
             <></>,

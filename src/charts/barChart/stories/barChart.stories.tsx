@@ -1,24 +1,24 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { BarOrientation } from '@/components/bar/bar.type';
-import { Note } from '@/storybook/components/note/note';
-import { DefaultCanvasConfig } from '@/types/canvas.type';
+import { BarOrientation } from "@/components/bar/bar.type";
+import { Note } from "@/storybook/components/note/note";
+import { DefaultCanvasConfig } from "@/types/canvas.type";
 
-import { BarChart as BarChartStory } from '../barChart';
-import { argtypes } from './parent/argtypes';
-import { AXIS_HORIZONTAL_MIXED_BARS } from './templates/axisHorizontalMixedBars';
-import { AXIS_VERTICAL_MIXED_BARS } from './templates/axisVerticalMixedBars';
-import { AXIS_WITH_HORIZONTAL_BARS } from './templates/axisWithHorizontalBars';
-import { AXIS_WITH_VERTICAL_BARS } from './templates/axisWithVericalBars';
-import { COMPARATIVE_DATA, MIXED_DATA } from './templates/data';
-import { BarChartWithErrorHandlingWithHooks } from './templates/withErrorHandling';
-import { BarChartHorizontalWithTooltip, BarChartWithTooltip } from './templates/withTooltip';
+import { BarChart as BarChartStory } from "../barChart";
+import { argtypes } from "./parent/argtypes";
+import { AXIS_HORIZONTAL_MIXED_BARS } from "./templates/axisHorizontalMixedBars";
+import { AXIS_VERTICAL_MIXED_BARS } from "./templates/axisVerticalMixedBars";
+import { AXIS_WITH_HORIZONTAL_BARS } from "./templates/axisWithHorizontalBars";
+import { AXIS_WITH_VERTICAL_BARS } from "./templates/axisWithVericalBars";
+import { COMPARATIVE_DATA, MIXED_DATA } from "./templates/data";
+import { BarChartWithErrorHandlingWithHooks } from "./templates/withErrorHandling";
+import { BarChartHorizontalWithTooltip, BarChartWithTooltip } from "./templates/withTooltip";
 
 const meta = {
   argTypes: argtypes(),
   component: BarChartStory,
-  tags: ['autodocs'],
-  title: 'Charts/BarChart/BarChart Examples',
+  tags: ["autodocs"],
+  title: "Charts/BarChart/BarChart Examples",
 } satisfies Meta<typeof BarChartStory>;
 
 export default meta;
@@ -29,11 +29,11 @@ type Story = StoryObj<typeof meta> & { args: { themeArgs?: object } } & {
 
 const complexArgs = {
   canvasConfig: DefaultCanvasConfig,
-  caption: 'Bar chart',
+  caption: "Bar chart",
   gapBetweenBars: 1,
-  height: '100%',
-  pKey: 'year',
-  width: '70%',
+  height: "100%",
+  pKey: "year",
+  width: "70%",
 };
 
 // Reusable decorator for customization examples
@@ -47,7 +47,7 @@ const withCustomizationNote = (Story: React.ComponentType): React.JSX.Element =>
         text={[
           <div key="customization-explanation">
             <p>
-              This example demonstrates various customization options available for{' '}
+              This example demonstrates various customization options available for{" "}
               <strong>BarChart</strong> child components including bars, axes, orientations, and
               visual styling.
             </p>
@@ -70,7 +70,7 @@ const withCustomizationNote = (Story: React.ComponentType): React.JSX.Element =>
               </li>
             </ul>
             <p>
-              <strong>⚠️ Important:</strong> Always declare <code>BarChart.Path</code> components{' '}
+              <strong>⚠️ Important:</strong> Always declare <code>BarChart.Path</code> components{" "}
               <em>before</em> axis components for proper <code>gapBetweenBars</code> functionality.
             </p>
           </div>,
@@ -176,7 +176,7 @@ export const BarChartWithErrorHandling: Story = {
   parameters: {
     docs: {
       source: {
-        code: 'See withErrorHandling.tsx template for complete implementation',
+        code: "See withErrorHandling.tsx template for complete implementation",
       },
     },
   },
@@ -201,7 +201,7 @@ export const WithTooltip: Story = {
             text={[
               <div key="tooltip-explanation">
                 <p>
-                  This example demonstrates how to implement <strong>interactive tooltips</strong>{' '}
+                  This example demonstrates how to implement <strong>interactive tooltips</strong>{" "}
                   for the BarChart component using the new hover event callbacks.
                 </p>
                 <h4>🎯 Key Features:</h4>
@@ -244,7 +244,7 @@ export const WithTooltip: Story = {
   parameters: {
     docs: {
       source: {
-        code: 'See withTooltip.tsx template for complete implementation',
+        code: "See withTooltip.tsx template for complete implementation",
       },
     },
   },
@@ -293,7 +293,7 @@ export const WithTooltipHorizontal: Story = {
   parameters: {
     docs: {
       source: {
-        code: 'See withTooltip.tsx template for complete implementation',
+        code: "See withTooltip.tsx template for complete implementation",
       },
     },
   },

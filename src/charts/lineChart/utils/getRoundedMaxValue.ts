@@ -1,4 +1,4 @@
-import type { IDataPoint } from '../lineChart.type';
+import type { IDataPoint } from "../lineChart.type";
 
 /**
  * Extracts the maximum value from the data points that do not correspond to the provided key.
@@ -8,10 +8,10 @@ import type { IDataPoint } from '../lineChart.type';
  * @returns The rounded maximum value.
  */
 export const getRoundedMaxValue = (data: IDataPoint[], key: string): number => {
-  const values = data.flatMap(point =>
+  const values = data.flatMap((point) =>
     Object.keys(point)
-      .filter(k => k !== key && typeof point[k] === 'number')
-      .map(k => point[k])
+      .filter((k) => k !== key && typeof point[k] === "number")
+      .map((k) => point[k]),
   );
 
   const maxNumber = Math.max(...values);
@@ -25,9 +25,9 @@ export const getRoundedMaxValue = (data: IDataPoint[], key: string): number => {
  * @returns An array of rounded maximum values.
  */
 export const getYKeyRoundMaxValue = (data: IDataPoint[], xKey: string): number[] => {
-  return data.flatMap(point =>
+  return data.flatMap((point) =>
     Object.keys(point)
-      .filter(k => k !== xKey && typeof point[k] === 'number')
-      .map(k => point[k])
+      .filter((k) => k !== xKey && typeof point[k] === "number")
+      .map((k) => point[k]),
   );
 };

@@ -15,7 +15,7 @@ export const buildBarValueError = (value: unknown, dataKey: string): Error =>
  */
 export const buildBarNegativeValueError = (value: number, dataKey: string): Error =>
   new Error(
-    `Negative value ${value} not allowed for bar with dataKey "${dataKey}" in current configuration`
+    `Negative value ${value} not allowed for bar with dataKey "${dataKey}" in current configuration`,
   );
 
 /**

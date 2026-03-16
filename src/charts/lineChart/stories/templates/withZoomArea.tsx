@@ -1,10 +1,10 @@
-import { type FC, useState } from 'react';
+import { type FC, useState } from "react";
 
-import { ZoomArea } from '@/components/zoomArea/zoomArea';
-import type { IZoomAreaDataPoint } from '@/components/zoomArea/zoomArea.type';
-import { Positions } from '@/types/position.enum';
+import { ZoomArea } from "@/components/zoomArea/zoomArea";
+import type { IZoomAreaDataPoint } from "@/components/zoomArea/zoomArea.type";
+import { Positions } from "@/types/position.enum";
 
-import { LineChart } from '../../lineChart';
+import { LineChart } from "../../lineChart";
 
 export const ZOOM_INTEGRATION_DATA = [
   { birds: 35, cats: 25, dogs: 15, year: 2015 },
@@ -24,31 +24,31 @@ export const ZOOM_INTEGRATION_DATA = [
 export const LINE_CONFIGS = [
   {
     curved: true,
-    dataKey: 'dogs',
-    ['aria-label']: 'Line chart for dogs data series',
+    dataKey: "dogs",
+    ["aria-label"]: "Line chart for dogs data series",
     // fill: '#0074d9',
     fillOpacity: 0.1,
-    stroke: '#0074d9',
+    stroke: "#0074d9",
     strokeWidth: 2,
-    yKey: 'dogs',
+    yKey: "dogs",
   },
   {
-    dataKey: 'cats',
-    ['aria-label']: 'Line chart for cats data series',
+    dataKey: "cats",
+    ["aria-label"]: "Line chart for cats data series",
     // fill: '#ff4136',
     fillOpacity: 0.1,
-    stroke: '#ff4136',
+    stroke: "#ff4136",
     strokeWidth: 2,
-    yKey: 'cats',
+    yKey: "cats",
   },
   {
-    dataKey: 'birds',
-    ['aria-label']: 'Line chart for birds data series',
+    dataKey: "birds",
+    ["aria-label"]: "Line chart for birds data series",
     // fill: '#2ecc40',
     fillOpacity: 0.1,
-    stroke: '#2ecc40',
+    stroke: "#2ecc40",
     strokeWidth: 2,
-    yKey: 'birds',
+    yKey: "birds",
   },
 ];
 
@@ -62,7 +62,7 @@ export const LineChartWithZoomAreaTemplate: FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       {/* LineChart that receives filtered data */}
       <LineChart
         caption="Line Chart with Zoom Integration"
@@ -71,10 +71,10 @@ export const LineChartWithZoomAreaTemplate: FC = () => {
         width="50%"
         xKey="year"
       >
-        {LINE_CONFIGS.map(config => (
+        {LINE_CONFIGS.map((config) => (
           <LineChart.Path
             key={config.dataKey}
-            aria-label={config['aria-label']}
+            aria-label={config["aria-label"]}
             curved={config.curved}
             dataKey={config.dataKey}
             // nodeConfig={{
@@ -99,7 +99,7 @@ export const LineChartWithZoomAreaTemplate: FC = () => {
           strokeWidth="0.1"
           tickText={{
             fontSize: 1,
-            textAnchor: 'middle',
+            textAnchor: "middle",
             top: 1,
           }}
         />
@@ -114,7 +114,7 @@ export const LineChartWithZoomAreaTemplate: FC = () => {
           tickText={{
             fontSize: 1,
             left: 1,
-            textAnchor: 'middle',
+            textAnchor: "middle",
           }}
         />
       </LineChart>
@@ -126,7 +126,7 @@ export const LineChartWithZoomAreaTemplate: FC = () => {
         data={ZOOM_INTEGRATION_DATA}
         height="70px"
         initialRange={{ end: ZOOM_INTEGRATION_DATA.length - 3, start: 2 }}
-        lines={LINE_CONFIGS.map(config => ({
+        lines={LINE_CONFIGS.map((config) => ({
           curved: config.curved,
           dataKey: config.dataKey,
           fillOpacity: config.fillOpacity,
@@ -135,9 +135,9 @@ export const LineChartWithZoomAreaTemplate: FC = () => {
           yKey: config.yKey,
         }))}
         screenReaderTextConfig={{
-          endHandler: 'Custom screenreader Date to {{endValue}}',
-          selectionArea: 'Custom screenreader Date from {{startValue}} to {{endValue}}',
-          startHandler: 'Custom screenreader Date from {{startValue}}',
+          endHandler: "Custom screenreader Date to {{endValue}}",
+          selectionArea: "Custom screenreader Date from {{startValue}} to {{endValue}}",
+          startHandler: "Custom screenreader Date from {{startValue}}",
         }}
         width="50%"
         xKey="year"

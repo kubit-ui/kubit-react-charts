@@ -1,8 +1,8 @@
-import { createSVGElement, isBrowser, safeDocument } from '../ssr/ssr';
+import { createSVGElement, isBrowser, safeDocument } from "../ssr/ssr";
 
 interface TextBoundProps {
   data: string[];
-  bound: 'width' | 'height';
+  bound: "width" | "height";
   viewBox: string;
   fontSize: string;
   svgWidth: string;
@@ -27,26 +27,26 @@ export const textBound = ({
     return 0;
   }
 
-  const svgContainer = createSVGElement('svg');
+  const svgContainer = createSVGElement("svg");
   if (!svgContainer) {
     return 0;
   }
 
   svgContainer.setAttribute(
-    'style',
-    'position: absolute; visibility: hidden; top: -9999px; left: -9999px;'
+    "style",
+    "position: absolute; visibility: hidden; top: -9999px; left: -9999px;",
   );
-  svgContainer.setAttribute('viewBox', viewBox);
-  svgContainer.setAttribute('width', svgWidth);
-  svgContainer.setAttribute('height', svgHeight);
+  svgContainer.setAttribute("viewBox", viewBox);
+  svgContainer.setAttribute("width", svgWidth);
+  svgContainer.setAttribute("height", svgHeight);
   doc.body.appendChild(svgContainer);
 
   const sizes = data.map((d: string) => {
-    const text = createSVGElement('text');
+    const text = createSVGElement("text");
     if (!text) {
       return 0;
     }
-    text.setAttribute('font-size', fontSize);
+    text.setAttribute("font-size", fontSize);
     text.textContent = d;
     svgContainer.appendChild(text);
     const size = text.getBBox()[bound];

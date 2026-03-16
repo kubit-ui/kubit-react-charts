@@ -1,6 +1,6 @@
-import type { BarChartIDataPoint } from '@/charts/barChart/barChart.type';
-import type { IDataPoint } from '@/charts/lineChart/lineChart.type';
-import type { DataItem } from '@/charts/pieChart/pieChart.type';
+import type { BarChartIDataPoint } from "@/charts/barChart/barChart.type";
+import type { IDataPoint } from "@/charts/lineChart/lineChart.type";
+import type { DataItem } from "@/charts/pieChart/pieChart.type";
 
 type ChartDataType = IDataPoint[] | BarChartIDataPoint[] | DataItem;
 

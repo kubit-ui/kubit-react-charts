@@ -1,2 +1,2 @@
-export * from './path';
-export * from './path.types';
+export * from "./path";
+export * from "./path.types";

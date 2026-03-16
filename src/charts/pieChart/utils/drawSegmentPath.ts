@@ -1,5 +1,5 @@
-import { buildL } from './buildL';
-import { RotateDirection } from './rotationDirection';
+import { buildL } from "./buildL";
+import { RotateDirection } from "./rotationDirection";
 
 interface CoordinatesType {
   x: number;
@@ -49,7 +49,7 @@ export const drawSegmentPath = ({
     AR = `A ${radius},${radius} 0 ${largeArcFlag} 0 ${outerEnd.x},${outerEnd.y}`;
     AAR = `A ${innerRadius},${innerRadius} 0 ${largeArcFlag} 1 ${innerStart.x},${innerStart.y}`;
 
-    Z = singleStroke ? undefined : 'Z';
+    Z = singleStroke ? undefined : "Z";
   } else {
     M = `M ${outerStart.x} ${outerStart.y}`;
     A = `A ${radius},${radius} 0 ${largeArcFlag},0 ${outerEnd.x}, ${outerEnd.y}`;
@@ -66,11 +66,11 @@ export const drawSegmentPath = ({
     AR = `A ${radius},${radius} 0 ${largeArcFlag} 1 ${outerEnd.x},${outerEnd.y}`;
     AAR = `A ${innerRadius},${innerRadius} 0 ${largeArcFlag} 0 ${innerStart.x},${innerStart.y}`;
 
-    Z = singleStroke ? undefined : 'Z';
+    Z = singleStroke ? undefined : "Z";
   }
 
   // values
   const base = [M, A, L, m, AA, Z];
   const mirror = singleStroke ? [MR, AR, mR, AAR] : [];
-  return base.concat(mirror).filter(Boolean).join(' ');
+  return base.concat(mirror).filter(Boolean).join(" ");
 };

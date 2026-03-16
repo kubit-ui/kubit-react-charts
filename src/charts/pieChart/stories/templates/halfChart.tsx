@@ -1,6 +1,6 @@
-import { ICONS } from '@/assets/storybook/icons/icons';
+import { ICONS } from "@/assets/storybook/icons/icons";
 
-import { PieChart } from '../../pieChart';
+import { PieChart } from "../../pieChart";
 
 export const HALF_CHART_TEMPLATE = [
   <PieChart.Path
@@ -18,24 +18,24 @@ export const HALF_CHART_TEMPLATE = [
   <PieChart.Foreign key="foreign-object">
     <div
       style={{
-        alignItems: 'center',
-        display: 'flex',
-        height: '100%',
-        justifyContent: 'center',
-        width: '100%',
+        alignItems: "center",
+        display: "flex",
+        height: "100%",
+        justifyContent: "center",
+        width: "100%",
       }}
     >
       <svg
         aria-label="Foreing content example with kubit logo"
         role="img"
         style={{
-          backgroundColor: '#001E30',
-          height: '36px',
+          backgroundColor: "#001E30",
+          height: "36px",
           maskImage: `url("${ICONS.ICON_PLACEHOLDER}")`,
-          maskPosition: 'center',
-          maskRepeat: 'no-repeat',
-          maskSize: 'contain',
-          width: '36px',
+          maskPosition: "center",
+          maskRepeat: "no-repeat",
+          maskSize: "contain",
+          width: "36px",
         }}
       />
     </div>

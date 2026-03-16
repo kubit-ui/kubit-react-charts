@@ -1,17 +1,17 @@
-import type { ZoomAreaSelectionConfig } from '../zoomArea.type';
+import type { ZoomAreaSelectionConfig } from "../zoomArea.type";
 
 /**
  * Default configuration for ZoomArea selection area
  */
 const DEFAULT_SELECTION_CONFIG = {
   /** Selection area background color */
-  FILL: '#0078d4',
+  FILL: "#0078d4",
   /** Selection area fill opacity */
   FILL_OPACITY: 0.5,
   /** Hide overlay when full range is selected */
   HIDE_OVERLAY_ON_FULL_RANGE: true,
   /** Selection area border color */
-  STROKE: '#0078d4',
+  STROKE: "#0078d4",
   /** Selection area border width */
   STROKE_WIDTH: 0,
 } as const;
@@ -24,7 +24,7 @@ const DEFAULT_SELECTION_CONFIG = {
  * @returns Complete selection configuration with defaults applied
  */
 export const getSelectionConfig = (
-  config?: ZoomAreaSelectionConfig
+  config?: ZoomAreaSelectionConfig,
 ): Required<ZoomAreaSelectionConfig> => ({
   fill: config?.fill ?? DEFAULT_SELECTION_CONFIG.FILL,
   fillOpacity: config?.fillOpacity ?? DEFAULT_SELECTION_CONFIG.FILL_OPACITY,

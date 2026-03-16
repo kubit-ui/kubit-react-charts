@@ -1,4 +1,4 @@
-import type { ZoomAreaInteractionConfig } from '../zoomArea.type';
+import type { ZoomAreaInteractionConfig } from "../zoomArea.type";
 
 /**
  * Default configuration for ZoomArea interactions
@@ -20,7 +20,7 @@ const DEFAULT_INTERACTION_CONFIG = {
  * @returns Complete interaction configuration with defaults applied
  */
 export const getInteractionConfig = (
-  config?: ZoomAreaInteractionConfig
+  config?: ZoomAreaInteractionConfig,
 ): Required<ZoomAreaInteractionConfig> => ({
   keyboardFastStep: config?.keyboardFastStep ?? DEFAULT_INTERACTION_CONFIG.KEYBOARD_FAST_STEP,
   keyboardStep: config?.keyboardStep ?? DEFAULT_INTERACTION_CONFIG.KEYBOARD_STEP,

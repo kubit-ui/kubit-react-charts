@@ -1,4 +1,4 @@
-import type { HTMLAttributes } from 'react';
+import type { HTMLAttributes } from "react";
 
 /**
  * Props for the `Line` component, defining the visual appearance and behavior of a line element.
@@ -30,8 +30,8 @@ export interface LineProps {
   stroke?: string;
   strokeWidth?: number | string;
   strokeOpacity?: number;
-  strokeLinecap?: 'butt' | 'round' | 'square';
-  strokeLinejoin?: 'miter' | 'round' | 'bevel';
+  strokeLinecap?: "butt" | "round" | "square";
+  strokeLinejoin?: "miter" | "round" | "bevel";
   strokeDasharray?: string;
   strokeDashoffset?: number;
   opacity?: number;
@@ -40,6 +40,6 @@ export interface LineProps {
   className?: string;
   tabIndex?: number;
   ariaLabel?: string;
-  role?: HTMLAttributes<SVGElement>['role'];
+  role?: HTMLAttributes<SVGElement>["role"];
   dataTestId?: string;
 }

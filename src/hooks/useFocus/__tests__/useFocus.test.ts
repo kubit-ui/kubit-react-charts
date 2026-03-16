@@ -1,10 +1,10 @@
-import { act, renderHook } from '@testing-library/react';
-import type { FocusEvent } from 'react';
+import { act, renderHook } from "@testing-library/react";
+import type { FocusEvent } from "react";
 
-import { useFocus } from '../useFocus';
+import { useFocus } from "../useFocus";
 
-describe('useFocus hook', () => {
-  it('should handle focus and blur events correctly', () => {
+describe("useFocus hook", () => {
+  it("should handle focus and blur events correctly", () => {
     const onFocus = vi.fn();
     const onBlur = vi.fn();
 

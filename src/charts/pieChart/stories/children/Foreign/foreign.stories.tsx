@@ -1,19 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import type { ForeignObjectProps } from '@/components/foreignObject/foreignObject.types';
+import type { ForeignObjectProps } from "@/components/foreignObject/foreignObject.types";
 
-import { ICONS } from '../../../../../assets/storybook/icons/icons';
-import { Note } from '../../../../../storybook/components/note/note';
-import { PieChartForeign } from '../../../fragments/pieChartForeign';
-import { PieChart } from '../../../pieChart';
-import { PERCENTAGE_DATA } from '../../templates/data';
-import { foreignArgTypes } from './foreign.argtypes';
-import type { ForeignStoryArgs } from './foreign.types';
+import { ICONS } from "../../../../../assets/storybook/icons/icons";
+import { Note } from "../../../../../storybook/components/note/note";
+import { PieChartForeign } from "../../../fragments/pieChartForeign";
+import { PieChart } from "../../../pieChart";
+import { PERCENTAGE_DATA } from "../../templates/data";
+import { foreignArgTypes } from "./foreign.argtypes";
+import type { ForeignStoryArgs } from "./foreign.types";
 
 const meta = {
   argTypes: foreignArgTypes(),
-  tags: ['autodocs'],
-  title: 'Charts/PieChart/Child Components/PieChartForeign',
+  tags: ["autodocs"],
+  title: "Charts/PieChart/Child Components/PieChartForeign",
 } satisfies Meta<ForeignStoryArgs<ForeignObjectProps>>;
 
 export default meta;
@@ -22,18 +22,18 @@ type Story = StoryObj<ForeignStoryArgs<ForeignObjectProps>>;
 export const ForeignObjectCustomization: Story = {
   args: {
     // === CONTENT ===
-    children: 'gif',
+    children: "gif",
     // === TESTING ===
-    dataTestId: 'pie-foreign-interactive',
+    dataTestId: "pie-foreign-interactive",
     fontSize: 80,
     gifSize: 120,
-    gifUrl: '/assets/KubitoJumping.gif',
+    gifUrl: "/assets/KubitoJumping.gif",
     height: 400,
-    iconColor: '#001E30',
+    iconColor: "#001E30",
     iconSize: 100,
     imageSize: 100,
-    imageUrl: '/assets/kubito.png',
-    textContent: '75%',
+    imageUrl: "/assets/kubito.png",
+    textContent: "75%",
     width: 400,
     x: 50,
 
@@ -97,34 +97,34 @@ export const ForeignObjectCustomization: Story = {
     // Helper function to render different content types based on children prop
     const renderContent = () => {
       switch (args.children) {
-        case 'text':
+        case "text":
           return (
             <div
               style={{
-                alignItems: 'center',
-                color: '#333',
-                display: 'flex',
+                alignItems: "center",
+                color: "#333",
+                display: "flex",
                 fontSize: `${args.fontSize}px`,
-                fontWeight: 'bold',
-                height: '100%',
-                justifyContent: 'center',
-                textAlign: 'center',
-                width: '100%',
+                fontWeight: "bold",
+                height: "100%",
+                justifyContent: "center",
+                textAlign: "center",
+                width: "100%",
               }}
             >
               <span>{args.textContent}</span>
             </div>
           );
 
-        case 'icon':
+        case "icon":
           return (
             <div
               style={{
-                alignItems: 'center',
-                display: 'flex',
-                height: '100%',
-                justifyContent: 'center',
-                width: '100%',
+                alignItems: "center",
+                display: "flex",
+                height: "100%",
+                justifyContent: "center",
+                width: "100%",
               }}
             >
               <svg
@@ -134,57 +134,57 @@ export const ForeignObjectCustomization: Story = {
                   backgroundColor: args.iconColor,
                   height: `${args.iconSize}px`,
                   maskImage: `url("${ICONS.ICON_PLACEHOLDER}")`,
-                  maskPosition: 'center',
-                  maskRepeat: 'no-repeat',
-                  maskSize: 'contain',
+                  maskPosition: "center",
+                  maskRepeat: "no-repeat",
+                  maskSize: "contain",
                   width: `${args.iconSize}px`,
                 }}
               />
             </div>
           );
 
-        case 'image':
+        case "image":
           return (
             <div
               style={{
-                alignItems: 'center',
-                display: 'flex',
-                height: '100%',
-                justifyContent: 'center',
-                width: '100%',
+                alignItems: "center",
+                display: "flex",
+                height: "100%",
+                justifyContent: "center",
+                width: "100%",
               }}
             >
               <img
                 alt="Custom content"
-                src={args.imageUrl || '/assets/kubito.png'}
+                src={args.imageUrl || "/assets/kubito.png"}
                 style={{
-                  borderRadius: '8px',
+                  borderRadius: "8px",
                   height: `${args.imageSize}px`,
-                  objectFit: 'cover',
+                  objectFit: "cover",
                   width: `${args.imageSize}px`,
                 }}
               />
             </div>
           );
 
-        case 'gif':
+        case "gif":
           return (
             <div
               style={{
-                alignItems: 'center',
-                display: 'flex',
-                height: '100%',
-                justifyContent: 'center',
-                width: '100%',
+                alignItems: "center",
+                display: "flex",
+                height: "100%",
+                justifyContent: "center",
+                width: "100%",
               }}
             >
               <img
                 alt="Animated GIF content"
-                src={args.gifUrl || '/assets/KubitoJumping.gif'}
+                src={args.gifUrl || "/assets/KubitoJumping.gif"}
                 style={{
-                  borderRadius: '8px',
+                  borderRadius: "8px",
                   height: `${args.gifSize}px`,
-                  objectFit: 'cover',
+                  objectFit: "cover",
                   width: `${args.gifSize}px`,
                 }}
               />

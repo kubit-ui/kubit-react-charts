@@ -5,18 +5,18 @@ import {
   type KeyboardEvent,
   type MouseEvent,
   forwardRef,
-} from 'react';
+} from "react";
 
-import { useAutoClick } from '@/charts/lineChart/hook';
+import { useAutoClick } from "@/charts/lineChart/hook";
 
-import { Circle } from './components/circle/circle';
-import { Hexagon } from './components/hexagon/hexagon';
-import { Pentagon } from './components/pentagon/pentagon';
-import { Square } from './components/square/square';
-import { Star } from './components/star/star';
-import { Straight } from './components/straight/straight';
-import { Triangle } from './components/triangle/triangle';
-import { type NodeProps, NodeType } from './node.types';
+import { Circle } from "./components/circle/circle";
+import { Hexagon } from "./components/hexagon/hexagon";
+import { Pentagon } from "./components/pentagon/pentagon";
+import { Square } from "./components/square/square";
+import { Star } from "./components/star/star";
+import { Straight } from "./components/straight/straight";
+import { Triangle } from "./components/triangle/triangle";
+import { type NodeProps, NodeType } from "./node.types";
 
 const Component = {
   [NodeType.Circle]: Circle,
@@ -58,7 +58,7 @@ const Component = {
 
 const NodeComponent: ForwardRefRenderFunction<SVGSVGElement, NodeProps> = (
   {
-    dataTestId = 'node',
+    dataTestId = "node",
     haloConfig,
     hasHalo = false,
     onBlur,
@@ -73,7 +73,7 @@ const NodeComponent: ForwardRefRenderFunction<SVGSVGElement, NodeProps> = (
     type = NodeType.Circle,
     ...props
   },
-  ref
+  ref,
 ) => {
   // It needed to recovery the autoClick info into js event, because the react event can't be modified or handle custom properties
   const [clickRef, autoClick] = useAutoClick<SVGSVGElement>(ref);
@@ -88,7 +88,7 @@ const NodeComponent: ForwardRefRenderFunction<SVGSVGElement, NodeProps> = (
   };
 
   const handleKeyDown = (event: KeyboardEvent<SVGPathElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       onKeyDown?.(event, props.data);
     }
   };
@@ -158,5 +158,5 @@ const NodeComponent: ForwardRefRenderFunction<SVGSVGElement, NodeProps> = (
 export const Node = forwardRef(NodeComponent) as (
   props: NodeProps & {
     ref?: ForwardedRef<SVGSVGElement>;
-  }
+  },
 ) => React.JSX.Element;

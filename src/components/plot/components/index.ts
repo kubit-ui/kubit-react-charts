@@ -1,3 +1,3 @@
-export * from './circle/circle';
-export * from './square/square';
-export * from './triangle/triangle';
+export * from "./circle/circle";
+export * from "./square/square";
+export * from "./triangle/triangle";

@@ -1,7 +1,7 @@
-import { RotateDirection, rotationDirection } from '../rotationDirection';
+import { RotateDirection, rotationDirection } from "../rotationDirection";
 
-describe('rotationDirection', () => {
-  it('should calculate correctly the angles in closewise direction', () => {
+describe("rotationDirection", () => {
+  it("should calculate correctly the angles in closewise direction", () => {
     const props = {
       angleEquivalent: 90,
       direction: RotateDirection.CLOCKWISE,
@@ -18,7 +18,7 @@ describe('rotationDirection', () => {
     });
   });
 
-  it('should calculate correctly the angles in counter closewise direction', () => {
+  it("should calculate correctly the angles in counter closewise direction", () => {
     const props = {
       angleEquivalent: 90,
       direction: RotateDirection.COUNTER_CLOCKWISE,
@@ -35,7 +35,7 @@ describe('rotationDirection', () => {
     });
   });
 
-  it('should handler correctly a gapAngle equal 0', () => {
+  it("should handler correctly a gapAngle equal 0", () => {
     const props = {
       angleEquivalent: 45,
       direction: RotateDirection.CLOCKWISE,
@@ -52,7 +52,7 @@ describe('rotationDirection', () => {
     });
   });
 
-  it('should handler a angle equivalent equal 0 correctly', () => {
+  it("should handler a angle equivalent equal 0 correctly", () => {
     const props = {
       angleEquivalent: 0,
       direction: RotateDirection.COUNTER_CLOCKWISE,
@@ -69,7 +69,7 @@ describe('rotationDirection', () => {
     });
   });
 
-  it('should handler a negative start angle', () => {
+  it("should handler a negative start angle", () => {
     const props = {
       angleEquivalent: 45,
       direction: RotateDirection.CLOCKWISE,

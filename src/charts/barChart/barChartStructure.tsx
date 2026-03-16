@@ -1,19 +1,19 @@
-import { Children, useMemo } from 'react';
+import { Children, useMemo } from "react";
 
-import { SvgContainer } from '@/components/svgContainer/svgContainer';
-import { useId } from '@/hooks/useId/useId';
-import { useResponsiveCanvas } from '@/hooks/useResponsiveCanvas/useResponsiveCanvas';
-import { DefaultCanvasConfig } from '@/types/canvas.type';
-import type { ChartError, ErrorType } from '@/types/errors.type';
-import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
-import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
+import { SvgContainer } from "@/components/svgContainer/svgContainer";
+import { useId } from "@/hooks/useId/useId";
+import { useResponsiveCanvas } from "@/hooks/useResponsiveCanvas/useResponsiveCanvas";
+import { DefaultCanvasConfig } from "@/types/canvas.type";
+import type { ChartError, ErrorType } from "@/types/errors.type";
+import { createErrorAccumulator } from "@/utils/createErrorAccumulator";
+import { getDataFingerprint } from "@/utils/getDataFingerprint/getDataFingerprint";
 
-import type { BarChartProps } from './barChart.type';
-import { BarChartContext } from './context/barChartContext';
-import { buildBarContextValue } from './context/buildBarContextValues';
-import { BarChartXAxis } from './fragments/barChartXAxis';
-import { BarChartYAxis } from './fragments/barChartYAxis';
-import { countBarChildren } from './utils/countBarChildren';
+import type { BarChartProps } from "./barChart.type";
+import { BarChartContext } from "./context/barChartContext";
+import { buildBarContextValue } from "./context/buildBarContextValues";
+import { BarChartXAxis } from "./fragments/barChartXAxis";
+import { BarChartYAxis } from "./fragments/barChartYAxis";
+import { countBarChildren } from "./utils/countBarChildren";
 
 export const BarChartStructure: React.FC<BarChartProps> = ({
   canvasConfig = DefaultCanvasConfig,
@@ -21,15 +21,15 @@ export const BarChartStructure: React.FC<BarChartProps> = ({
   children,
   classNames,
   data,
-  dataTestId: dataTestIdProp = 'bar-chart',
+  dataTestId: dataTestIdProp = "bar-chart",
   gapBetweenBars = 0,
-  height = '100%',
+  height = "100%",
   onErrors,
   orientation,
   pKey,
   role,
   tabIndex,
-  width = '100%',
+  width = "100%",
   ...props
 }): React.ReactElement => {
   const dataTestId = useId(dataTestIdProp);
@@ -72,7 +72,7 @@ export const BarChartStructure: React.FC<BarChartProps> = ({
     errorAccumulator.clearErrors();
 
     return buildBarContextValue({
-      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => {
+      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => {
         errorAccumulator.addError(errorType, error);
       },
       ajustedX,

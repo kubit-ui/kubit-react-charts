@@ -1,1 +1,1 @@
-export { adaptLegacyFocusConfig } from './adaptLegacyFocusConfig';
+export { adaptLegacyFocusConfig } from "./adaptLegacyFocusConfig";

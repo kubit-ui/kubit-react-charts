@@ -1,13 +1,13 @@
-import { createElement } from 'react';
+import { createElement } from "react";
 
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
-import { LineChartXAxis } from '../../fragments/lineChartXAxis';
-import { LineChartYAxis } from '../../fragments/lineChartYAxis';
-import type { IDataPoint } from '../../lineChart.type';
-import { getExtraSpacing } from '../getExtraSpacing';
+import { LineChartXAxis } from "../../fragments/lineChartXAxis";
+import { LineChartYAxis } from "../../fragments/lineChartYAxis";
+import type { IDataPoint } from "../../lineChart.type";
+import { getExtraSpacing } from "../getExtraSpacing";
 
 declare global {
   interface SVGElement {
@@ -15,11 +15,11 @@ declare global {
   }
 }
 
-describe('getExtraSpacing', () => {
+describe("getExtraSpacing", () => {
   const mockData: IDataPoint[] = [
-    { x: '0', y: 10 },
-    { x: '1', y: 20 },
-    { x: '2', y: 30 },
+    { x: "0", y: 10 },
+    { x: "1", y: 20 },
+    { x: "2", y: 30 },
   ];
 
   beforeEach(() => {
@@ -35,12 +35,12 @@ describe('getExtraSpacing', () => {
     vi.restoreAllMocks();
   });
 
-  it('should return default spacings when no axis children are provided', () => {
+  it("should return default spacings when no axis children are provided", () => {
     const result = getExtraSpacing({
       children: null,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -65,21 +65,21 @@ describe('getExtraSpacing', () => {
     });
   });
 
-  it('should calculate spacings for X axis at bottom position', () => {
+  it("should calculate spacings for X axis at bottom position", () => {
     const xAxisChild = createElement(LineChartXAxis, {
       position: Positions.BOTTOM,
       tickText: {
         fontSize: 12,
         top: 5,
-        textAnchor: 'middle' as const,
+        textAnchor: "middle" as const,
       },
     });
 
     const result = getExtraSpacing({
       children: xAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -87,24 +87,24 @@ describe('getExtraSpacing', () => {
     expect(result.xAxisBottomSpacing).toBe(25);
     expect(result.xAxisTopSpacing).toBe(0);
     expect(result.lineChartXPosition).toBe(Positions.BOTTOM);
-    expect(result.xData).toEqual(['0', '1', '2']);
+    expect(result.xData).toEqual(["0", "1", "2"]);
   });
 
-  it('should calculate spacings for X axis at top position', () => {
+  it("should calculate spacings for X axis at top position", () => {
     const xAxisChild = createElement(LineChartXAxis, {
       position: Positions.TOP,
       tickText: {
         fontSize: 12,
         bottom: 8,
-        textAnchor: 'middle' as const,
+        textAnchor: "middle" as const,
       },
     });
 
     const result = getExtraSpacing({
       children: xAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -114,7 +114,7 @@ describe('getExtraSpacing', () => {
     expect(result.lineChartXPosition).toBe(Positions.TOP);
   });
 
-  it('should calculate spacings for Y axis at left position', () => {
+  it("should calculate spacings for Y axis at left position", () => {
     const yAxisChild = createElement(LineChartYAxis, {
       position: Positions.LEFT,
       tickText: {
@@ -126,8 +126,8 @@ describe('getExtraSpacing', () => {
     const result = getExtraSpacing({
       children: yAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -139,7 +139,7 @@ describe('getExtraSpacing', () => {
     expect(result.yData.length).toBeGreaterThan(0);
   });
 
-  it('should calculate spacings for Y axis at right position', () => {
+  it("should calculate spacings for Y axis at right position", () => {
     const yAxisChild = createElement(LineChartYAxis, {
       position: Positions.RIGHT,
       tickText: {
@@ -151,8 +151,8 @@ describe('getExtraSpacing', () => {
     const result = getExtraSpacing({
       children: yAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -162,7 +162,7 @@ describe('getExtraSpacing', () => {
     expect(result.lineChartYPosition).toBe(Positions.RIGHT);
   });
 
-  it('should handle both X and Y axes together', () => {
+  it("should handle both X and Y axes together", () => {
     const children = [
       createElement(LineChartXAxis, {
         position: Positions.BOTTOM,
@@ -183,19 +183,19 @@ describe('getExtraSpacing', () => {
     const result = getExtraSpacing({
       children,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
 
     expect(result.xAxisBottomSpacing).toBeGreaterThan(0);
     expect(result.yAxisLeftSpacing).toBeGreaterThan(0);
-    expect(result.xData).toEqual(['0', '1', '2']);
+    expect(result.xData).toEqual(["0", "1", "2"]);
     expect(result.yData.length).toBeGreaterThan(0);
   });
 
-  it('should apply valueFormatter to X axis data', () => {
+  it("should apply valueFormatter to X axis data", () => {
     const valueFormatter = (value: string) => `Label ${value}`;
     const xAxisChild = createElement(LineChartXAxis, {
       position: Positions.BOTTOM,
@@ -208,16 +208,16 @@ describe('getExtraSpacing', () => {
     const result = getExtraSpacing({
       children: xAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
 
-    expect(result.xData).toEqual(['0', '1', '2']);
+    expect(result.xData).toEqual(["0", "1", "2"]);
   });
 
-  it('should apply valueFormatter to Y axis data', () => {
+  it("should apply valueFormatter to Y axis data", () => {
     const valueFormatter = (value: string) => `${value}%`;
     const yAxisChild = createElement(LineChartYAxis, {
       position: Positions.LEFT,
@@ -230,8 +230,8 @@ describe('getExtraSpacing', () => {
     const result = getExtraSpacing({
       children: yAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -239,10 +239,10 @@ describe('getExtraSpacing', () => {
     expect(result.yData.length).toBeGreaterThan(0);
   });
 
-  it('should use tickValues for X axis when provided', () => {
+  it("should use tickValues for X axis when provided", () => {
     const tickValues = {
       custom: {
-        values: ['A', 'B', 'C'],
+        values: ["A", "B", "C"],
       },
     };
 
@@ -257,29 +257,29 @@ describe('getExtraSpacing', () => {
     const result = getExtraSpacing({
       children: xAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
 
-    expect(result.xData).toEqual(['A', 'B', 'C']);
+    expect(result.xData).toEqual(["A", "B", "C"]);
   });
 
-  it('should handle text anchor start for X axis', () => {
+  it("should handle text anchor start for X axis", () => {
     const xAxisChild = createElement(LineChartXAxis, {
       position: Positions.BOTTOM,
       tickText: {
         fontSize: 12,
-        textAnchor: 'start' as const,
+        textAnchor: "start" as const,
       },
     });
 
     const result = getExtraSpacing({
       children: xAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -288,20 +288,20 @@ describe('getExtraSpacing', () => {
     expect(result.xAxisRightSpacing).toBeGreaterThan(0);
   });
 
-  it('should handle text anchor end for X axis', () => {
+  it("should handle text anchor end for X axis", () => {
     const xAxisChild = createElement(LineChartXAxis, {
       position: Positions.BOTTOM,
       tickText: {
         fontSize: 12,
-        textAnchor: 'end' as const,
+        textAnchor: "end" as const,
       },
     });
 
     const result = getExtraSpacing({
       children: xAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -310,7 +310,7 @@ describe('getExtraSpacing', () => {
     expect(result.xAxisRightSpacing).toBe(0);
   });
 
-  it('should handle empty data array', () => {
+  it("should handle empty data array", () => {
     const xAxisChild = createElement(LineChartXAxis, {
       position: Positions.BOTTOM,
       tickText: {
@@ -321,8 +321,8 @@ describe('getExtraSpacing', () => {
     const result = getExtraSpacing({
       children: xAxisChild,
       data: [],
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -330,7 +330,7 @@ describe('getExtraSpacing', () => {
     expect(result.xData).toEqual([]);
   });
 
-  it('should handle zero font size', () => {
+  it("should handle zero font size", () => {
     const xAxisChild = createElement(LineChartXAxis, {
       position: Positions.BOTTOM,
       tickText: {
@@ -341,8 +341,8 @@ describe('getExtraSpacing', () => {
     const result = getExtraSpacing({
       children: xAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -350,7 +350,7 @@ describe('getExtraSpacing', () => {
     expect(result.xAxisBottomSpacing).toBe(20);
   });
 
-  it('should handle missing tickText properties', () => {
+  it("should handle missing tickText properties", () => {
     const xAxisChild = createElement(LineChartXAxis, {
       position: Positions.BOTTOM,
       tickText: undefined,
@@ -359,8 +359,8 @@ describe('getExtraSpacing', () => {
     const result = getExtraSpacing({
       children: xAxisChild,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
@@ -368,9 +368,9 @@ describe('getExtraSpacing', () => {
     expect(result.xAxisBottomSpacing).toBe(20);
   });
 
-  it('should ignore non-axis children', () => {
+  it("should ignore non-axis children", () => {
     const children = [
-      createElement('div', { key: '1' }, 'Not an axis'),
+      createElement("div", { key: "1" }, "Not an axis"),
       createElement(LineChartXAxis, {
         position: Positions.BOTTOM,
         tickText: {
@@ -382,12 +382,12 @@ describe('getExtraSpacing', () => {
     const result = getExtraSpacing({
       children,
       data: mockData,
-      xKey: 'x',
-      viewBox: '0 0 800 400',
+      xKey: "x",
+      viewBox: "0 0 800 400",
       canvasHeight: 400,
       canvasWidth: 800,
     });
 
-    expect(result.xData).toEqual(['0', '1', '2']);
+    expect(result.xData).toEqual(["0", "1", "2"]);
   });
 });

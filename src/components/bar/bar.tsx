@@ -1,10 +1,10 @@
-import type { FC, ReactElement } from 'react';
+import type { FC, ReactElement } from "react";
 
-import { Path } from '../path/path';
-import type { BarProps } from './bar.type';
-import { buildAriaLabel } from './utils/accessibility';
-import { buildD } from './utils/buildD';
-import { getSegments } from './utils/getSegments';
+import { Path } from "../path/path";
+import type { BarProps } from "./bar.type";
+import { buildAriaLabel } from "./utils/accessibility";
+import { buildD } from "./utils/buildD";
+import { getSegments } from "./utils/getSegments";
 
 export const Bar: FC<BarProps> = ({
   barConfig,
@@ -12,7 +12,7 @@ export const Bar: FC<BarProps> = ({
   endRounded,
   extraSpacing = 0,
   focusConfig = {
-    stroke: '#0078D4',
+    stroke: "#0078D4",
     strokeWidth: 0.2,
   },
   onBlur,
@@ -37,16 +37,16 @@ export const Bar: FC<BarProps> = ({
 }): ReactElement => {
   const { barWidth, singleConfig } = barConfig;
   const segments = getSegments({ barConfig, orientation, x1, x2, y1, y2 });
-  
+
   // Create event handlers that match Path component signatures
   const handlePathMouseEnter = (e: React.MouseEvent<SVGPathElement, MouseEvent>) => {
     onMouseEnter?.(e);
   };
-  
+
   const handlePathMouseLeave = (e: React.MouseEvent<SVGPathElement, MouseEvent>) => {
     onMouseLeave?.(e);
   };
-  
+
   const handlePathClick = () => {
     // Path's onClick expects dataValue, but we'll trigger the bar's onClick with a synthetic event
     if (onClick) {
@@ -54,12 +54,12 @@ export const Bar: FC<BarProps> = ({
       onClick(syntheticEvent);
     }
   };
-  
+
   return (
     <g>
-      {singleConfig.map(({ color, 'aria-label': ariaLabel, ...singleProps }, index) => {
-        const [segmentX1, segmentX2] = orientation === 'HORIZONTAL' ? segments[index] : [x1, x2];
-        const [segmentY1, segmentY2] = orientation === 'VERTICAL' ? segments[index] : [y1, y2];
+      {singleConfig.map(({ color, "aria-label": ariaLabel, ...singleProps }, index) => {
+        const [segmentX1, segmentX2] = orientation === "HORIZONTAL" ? segments[index] : [x1, x2];
+        const [segmentY1, segmentY2] = orientation === "VERTICAL" ? segments[index] : [y1, y2];
         const d = buildD({
           barWidth,
           currentBars,
@@ -90,8 +90,8 @@ export const Bar: FC<BarProps> = ({
             fill={color}
             focusConfig={focusConfig}
             hoverConfig={{
-              stroke: 'transparent',
-              strokeWidth: '0',
+              stroke: "transparent",
+              strokeWidth: "0",
             }}
             stroke="transparent"
             tabIndex={tabIndex}

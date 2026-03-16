@@ -1,20 +1,20 @@
-import { Children, type ReactNode, isValidElement } from 'react';
+import { Children, type ReactNode, isValidElement } from "react";
 
-import type { PathProps } from '@/components/path/path.types';
-import type { ChartError, ErrorType } from '@/types/errors.type';
-import { buildCanvasDimensionsError } from '@/utils/buildErrors/buildErrors';
-import { parseStringToNumberPx } from '@/utils/parseStringToNumberPx.ts/parseStringToNumberPx';
+import type { PathProps } from "@/components/path/path.types";
+import type { ChartError, ErrorType } from "@/types/errors.type";
+import { buildCanvasDimensionsError } from "@/utils/buildErrors/buildErrors";
+import { parseStringToNumberPx } from "@/utils/parseStringToNumberPx.ts/parseStringToNumberPx";
 
-import { CHART_CANVAS_DEFAULTS } from '../../constants/chartDefaults';
-import { PieChartPath } from '../fragments/pieChartPath';
-import type { PieChartChildrenType, PieChartContextType } from '../pieChart.type';
+import { CHART_CANVAS_DEFAULTS } from "../../constants/chartDefaults";
+import { PieChartPath } from "../fragments/pieChartPath";
+import type { PieChartChildrenType, PieChartContextType } from "../pieChart.type";
 
 interface BuildPieContextValueProps {
   children: PieChartChildrenType;
   canvasWidth: number;
   canvasHeight: number;
   halfChart?: boolean;
-  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => void;
+  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => void;
 }
 
 /**
@@ -32,11 +32,11 @@ export const buildPieContextValue = ({
   halfChart,
 }: BuildPieContextValueProps): Omit<
   PieChartContextType,
-  'canvasHeight' | 'canvasWidth' | 'data'
+  "canvasHeight" | "canvasWidth" | "data"
 > => {
   // Validate canvas dimensions
   if (canvasWidth <= 0 || canvasHeight <= 0) {
-    addError?.('PIE_CHART_CONTEXT_ERROR', {
+    addError?.("PIE_CHART_CONTEXT_ERROR", {
       error: buildCanvasDimensionsError(canvasWidth, canvasHeight),
     });
   }

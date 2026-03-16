@@ -1,6 +1,6 @@
 /**
  * Logger utility for @kubit/web-ui-charts
- * 
+ *
  * Provides a centralized logging system that:
  * - Respects NODE_ENV (disabled in production builds)
  * - Supports different log levels
@@ -8,7 +8,7 @@
  * - Will be stripped out in production builds via terser
  */
 
-type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+type LogLevel = "debug" | "info" | "warn" | "error";
 
 interface LoggerConfig {
   enabled: boolean;
@@ -22,9 +22,9 @@ interface LoggerConfig {
  */
 const isProduction = (): boolean => {
   // Check if globalThis.process exists (Node/SSR environments)
-  if (typeof globalThis !== 'undefined' && 'process' in globalThis) {
+  if (typeof globalThis !== "undefined" && "process" in globalThis) {
     const proc = (globalThis as any).process;
-    return proc?.env?.NODE_ENV === 'production';
+    return proc?.env?.NODE_ENV === "production";
   }
   // In browser or other environments, assume development unless explicitly set
   return false;
@@ -32,8 +32,8 @@ const isProduction = (): boolean => {
 
 const DEFAULT_CONFIG: LoggerConfig = {
   enabled: !isProduction(),
-  minLevel: 'info',
-  prefix: '[Kubit Charts]',
+  minLevel: "info",
+  prefix: "[Kubit Charts]",
 };
 
 let config: LoggerConfig = { ...DEFAULT_CONFIG };
@@ -48,12 +48,12 @@ const LOG_LEVELS: Record<LogLevel, number> = {
 /**
  * Configure the logger behavior
  * @param newConfig - Partial configuration to merge with current settings
- * 
+ *
  * @example
  * ```ts
  * // Disable all logging
  * configureLogger({ enabled: false });
- * 
+ *
  * // Enable debug logs in development
  * configureLogger({ minLevel: 'debug' });
  * ```
@@ -89,14 +89,14 @@ const formatMessage = (message: string): string => {
 /**
  * Log debug messages (development only)
  * Useful for detailed debugging information
- * 
+ *
  * @example
  * ```ts
  * logger.debug('Chart dimensions calculated', { width: 400, height: 300 });
  * ```
  */
 const debug = (message: string, ...args: unknown[]): void => {
-  if (shouldLog('debug')) {
+  if (shouldLog("debug")) {
     // eslint-disable-next-line no-console
     console.debug(formatMessage(message), ...args);
   }
@@ -104,14 +104,14 @@ const debug = (message: string, ...args: unknown[]): void => {
 
 /**
  * Log informational messages
- * 
+ *
  * @example
  * ```ts
  * logger.info('Chart rendered successfully');
  * ```
  */
 const info = (message: string, ...args: unknown[]): void => {
-  if (shouldLog('info')) {
+  if (shouldLog("info")) {
     // eslint-disable-next-line no-console
     console.info(formatMessage(message), ...args);
   }
@@ -120,14 +120,14 @@ const info = (message: string, ...args: unknown[]): void => {
 /**
  * Log warning messages
  * Use for non-breaking issues that developers should be aware of
- * 
+ *
  * @example
  * ```ts
  * logger.warn('Invalid gradient angle, falling back to default', angle);
  * ```
  */
 const warn = (message: string, ...args: unknown[]): void => {
-  if (shouldLog('warn')) {
+  if (shouldLog("warn")) {
     // eslint-disable-next-line no-console
     console.warn(formatMessage(message), ...args);
   }
@@ -136,14 +136,14 @@ const warn = (message: string, ...args: unknown[]): void => {
 /**
  * Log error messages
  * Use for errors that don't prevent execution but indicate problems
- * 
+ *
  * @example
  * ```ts
  * logger.error('Failed to calculate text bounds, using fallback', error);
  * ```
  */
 const error = (message: string, ...args: unknown[]): void => {
-  if (shouldLog('error')) {
+  if (shouldLog("error")) {
     // eslint-disable-next-line no-console
     console.error(formatMessage(message), ...args);
   }

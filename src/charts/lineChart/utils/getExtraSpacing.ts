@@ -1,20 +1,20 @@
-import { Children, type ReactElement, type ReactNode, isValidElement } from 'react';
+import { Children, type ReactElement, type ReactNode, isValidElement } from "react";
 
-import { Positions } from '@/types/position.enum';
-import { buildTickValues } from '@/utils/buildTickValues/buildTickValues';
+import { Positions } from "@/types/position.enum";
+import { buildTickValues } from "@/utils/buildTickValues/buildTickValues";
 
-import { textBound } from '../../../utils/textBound/textBound';
-import { LineChartXAxis } from '../fragments/lineChartXAxis';
-import { LineChartYAxis } from '../fragments/lineChartYAxis';
-import type { ChildrenType, IDataPoint, LineChartExtraSpacings } from '../lineChart.type';
-import { getDataValues } from './getDataValues';
-import { getYKeyRoundMaxValue } from './getRoundedMaxValue';
+import { textBound } from "../../../utils/textBound/textBound";
+import { LineChartXAxis } from "../fragments/lineChartXAxis";
+import { LineChartYAxis } from "../fragments/lineChartYAxis";
+import type { ChildrenType, IDataPoint, LineChartExtraSpacings } from "../lineChart.type";
+import { getDataValues } from "./getDataValues";
+import { getYKeyRoundMaxValue } from "./getRoundedMaxValue";
 import {
   getXAxisLeftTextSpacing,
   getXAxisRightTextSpacing,
   getYAxisLeftTextSpacing,
   getYAxisRightTextSpacing,
-} from './tickTextPosition';
+} from "./tickTextPosition";
 
 const getBreakAxis = ({ tickValues, tickText }: { tickValues?: any; tickText?: any }) => {
   if (tickValues?.numeric) {
@@ -29,18 +29,18 @@ const handleLineChartXAxis = (
   xKey: string,
   viewBox: string,
   canvasHeight: number,
-  canvasWidth: number
+  canvasWidth: number,
 ) => {
   const { position = Positions.BOTTOM, tickText, tickValues, valueFormatter } = child.props as any;
   const fontSize = tickText?.fontSize ?? 0;
 
-  const xData = tickValues ? (getDataValues(tickValues) as string[]) : data.map(d => d[xKey]);
+  const xData = tickValues ? (getDataValues(tickValues) as string[]) : data.map((d) => d[xKey]);
 
   // Apply the valueFormatter if provided to get the actual rendered text width
   const formattedXData: string[] = valueFormatter ? xData.map(valueFormatter) : xData;
 
   const textWidth = textBound({
-    bound: 'width',
+    bound: "width",
     data: formattedXData,
     fontSize,
     svgHeight: `${canvasHeight}`,
@@ -48,7 +48,7 @@ const handleLineChartXAxis = (
     viewBox,
   });
   const textHeight = textBound({
-    bound: 'height',
+    bound: "height",
     data: formattedXData,
     fontSize,
     svgHeight: `${canvasHeight}`,
@@ -84,7 +84,7 @@ const handleLineChartYAxis = (
   xKey: string,
   viewBox: string,
   canvasHeight: number,
-  canvasWidth: number
+  canvasWidth: number,
 ) => {
   const { position = Positions.LEFT, tickText, tickValues, valueFormatter } = child.props as any;
   const fontSize = tickText?.fontSize ?? 0;
@@ -99,7 +99,7 @@ const handleLineChartYAxis = (
   const formattedYData: string[] = valueFormatter ? yData.map(valueFormatter) : yData;
 
   const yAxisText = textBound({
-    bound: 'width',
+    bound: "width",
     data: formattedYData,
     fontSize: fontSize,
     svgHeight: `${canvasHeight}`,
@@ -107,7 +107,7 @@ const handleLineChartYAxis = (
     viewBox,
   });
   const textHeight = textBound({
-    bound: 'height',
+    bound: "height",
     data: formattedYData,
     fontSize,
     svgHeight: `${canvasHeight}`,
