@@ -14,3 +14,5 @@ pnpm-lock.yaml
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+.yarnrc.yml
