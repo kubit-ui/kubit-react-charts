@@ -178,4 +178,80 @@ describe('getAxisExtraSpacing', () => {
       yData: [],
     });
   });
+
+  it('should use formatted X axis labels to calculate spacing while preserving raw xData', () => {
+    SVGElement.prototype.getBBox = vi.fn(function (this: SVGElement) {
+      return {
+        height: 50,
+        width: (this.textContent ?? '').length * 10,
+        x: 0,
+        y: 0,
+      };
+    });
+
+    const children = [
+      <BarChartPath key="path-1" barConfig={singleConfig} dataIdx={0} dataKey="value" order={1} />,
+      <BarChartXAxis
+        key="x-axis"
+        position={Positions.BOTTOM}
+        tickText={{ fontSize: 12, top: 5 }}
+        tickValues={{ custom: { values: ['A', 'B', 'C'] } }}
+        valueFormatter={value => `Long ${value}`}
+      />,
+    ];
+
+    const result = getAxisExtraSpacing({
+      ajustedX: 1,
+      ajustedY: 1,
+      canvasHeight: 100,
+      canvasWidth: 70,
+      children,
+      data: mockData,
+      gapBetweenBars: 5,
+      orientation: BarOrientation.VERTICAL,
+      pKey: 'key',
+      viewBox: '0 0 100, 80',
+    });
+
+    expect(result.securityXSpace).toBe(60);
+    expect(result.xData).toEqual(['A', 'B', 'C']);
+  });
+
+  it('should use formatted Y axis labels to calculate spacing while preserving raw yData', () => {
+    SVGElement.prototype.getBBox = vi.fn(function (this: SVGElement) {
+      return {
+        height: 50,
+        width: (this.textContent ?? '').length * 10,
+        x: 0,
+        y: 0,
+      };
+    });
+
+    const children = [
+      <BarChartPath key="path-1" barConfig={singleConfig} dataIdx={0} dataKey="value" order={1} />,
+      <BarChartYAxis
+        key="y-axis"
+        position={Positions.LEFT}
+        tickText={{ fontSize: 10, right: 5 }}
+        valueFormatter={value => `${value}% growth`}
+      />,
+    ];
+
+    const result = getAxisExtraSpacing({
+      ajustedX: 1,
+      ajustedY: 1,
+      canvasHeight: 100,
+      canvasWidth: 70,
+      children,
+      data: mockData,
+      gapBetweenBars: 5,
+      orientation: BarOrientation.HORIZONTAL,
+      pKey: 'key',
+      viewBox: '0 0 100, 80',
+    });
+
+    expect(result.extraSpaceLeftX).toBe(105);
+    expect(result.yAxisText).toBe(100);
+    expect(result.yData).toEqual(['10', '20', '30']);
+  });
 });

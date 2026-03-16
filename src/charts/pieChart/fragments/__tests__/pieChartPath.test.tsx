@@ -109,4 +109,28 @@ describe('PieChartPath', () => {
     const pathsFinal = segmentsFinal.map(s => s.getAttribute('d'));
     expect(pathsFinal).toEqual(pathsBefore);
   });
+
+  it('renders a single halfChart segment without mirrored singleStroke fallback', () => {
+    const data = {
+      testKey: [{ name: 'Empty', value: 400, color: '#d9d9d9' }],
+    };
+
+    const { getByTestId } = render(
+      <PieChartContext.Provider
+        value={{
+          canvasHeight: 100,
+          canvasWidth: 100,
+          data,
+          dataTestId: 'test',
+          halfChart: true,
+        }}
+      >
+        <PieChart.Path dataKey="testKey" gap={0} innerRadius={0} radius={50} />
+      </PieChartContext.Provider>
+    );
+
+    expect(getByTestId('testpath-0').getAttribute('d')).toBe(
+      'M 100 100 A 50,50 0 0,0 0, 100 L 50,100 Z'
+    );
+  });
 });

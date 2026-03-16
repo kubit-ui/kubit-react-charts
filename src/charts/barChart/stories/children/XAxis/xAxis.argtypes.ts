@@ -181,6 +181,26 @@ export const xAxisArgTypes = (): ArgTypes<BarChartXAxisProps> => {
       },
     },
 
+    valueFormatter: {
+      control: {
+        labels: {
+          currency: 'Currency ($)',
+          custom: 'Custom Format [val]',
+          millions: 'Millions (M)',
+          none: 'None (no formatting)',
+          percentage: 'Percentage (%)',
+          thousands: 'Thousands (K)',
+        },
+        type: 'select',
+      },
+      description: 'Select a formatting style for tick labels in this story.',
+      options: ['none', 'currency', 'percentage', 'thousands', 'millions', 'custom'],
+      table: {
+        category: CATEGORY_CONTROL.DATA,
+        type: { summary: 'ValueFormatter | undefined' },
+      },
+    },
+
     transform: {
       control: { type: 'text' },
       description: 'SVG transform attribute for positioning and scaling.',

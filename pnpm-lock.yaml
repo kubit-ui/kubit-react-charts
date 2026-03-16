@@ -48,6 +48,9 @@ importers:
       '@storybook/addon-themes':
         specifier: 10.2.10
         version: 10.2.10(storybook@10.2.10(@testing-library/dom@9.3.4)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
+      '@storybook/react':
+        specifier: 10.2.10
+        version: 10.2.10(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.2.10(@testing-library/dom@9.3.4)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@5.9.3)
       '@storybook/react-vite':
         specifier: 10.2.10
         version: 10.2.10(esbuild@0.27.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(rollup@4.57.1)(storybook@10.2.10(@testing-library/dom@9.3.4)(prettier@3.8.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@5.9.3)(vite@8.0.0-beta.10(@types/node@25.2.0)(esbuild@0.27.2)(terser@5.46.0))
@@ -3368,6 +3371,7 @@ packages:
     resolution: {integrity: sha512-/baBXDqkfW8x0UlqfYAfRCkmVWiH8qFZ4uhT6yLVBLssiypDTbe78W6lNBse7huBFv1ipR5PG9evkxEnIXDxjA==}
     peerDependencies:
       eslint: '>= 5'
+    bundledDependencies: []
 
   eslint-plugin-compat@6.1.0:
     resolution: {integrity: sha512-xiwHz7mj6+Zj7NWOO/uaWdrQ6zP0zL5CPyKVCNlB4JaoUFeYPYwejf5toqyHGlXzhuPUdCpg31uBRiWqcgiS0A==}

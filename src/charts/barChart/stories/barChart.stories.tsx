@@ -12,10 +12,7 @@ import { AXIS_WITH_HORIZONTAL_BARS } from './templates/axisWithHorizontalBars';
 import { AXIS_WITH_VERTICAL_BARS } from './templates/axisWithVericalBars';
 import { COMPARATIVE_DATA, MIXED_DATA } from './templates/data';
 import { BarChartWithErrorHandlingWithHooks } from './templates/withErrorHandling';
-import {
-  BarChartWithTooltip,
-  BarChartHorizontalWithTooltip,
-} from './templates/withTooltip';
+import { BarChartHorizontalWithTooltip, BarChartWithTooltip } from './templates/withTooltip';
 
 const meta = {
   argTypes: argtypes(),
@@ -272,8 +269,8 @@ export const WithTooltipHorizontal: Story = {
             text={[
               <div key="tooltip-horizontal-explanation">
                 <p>
-                  This example shows a <strong>horizontal bar chart</strong> with a fixed info
-                  panel that displays details about the hovered bar.
+                  This example shows a <strong>horizontal bar chart</strong> with a fixed info panel
+                  that displays details about the hovered bar.
                 </p>
                 <p>
                   Instead of a floating tooltip, this pattern uses a persistent panel that updates
