@@ -1,5 +1,5 @@
-import type { CanvasConfig } from '@/types/canvas.type';
-import type { FocusConfig } from '@/types/focusConfig.type';
+import type { CanvasConfig } from "@/types/canvas.type";
+import type { FocusConfig } from "@/types/focusConfig.type";
 
 /**
  * Represents a single data point for the ZoomArea component.
@@ -22,9 +22,9 @@ export interface ZoomRange {
  * Target enumeration for zoom area elements
  */
 export const ZoomAreaElements = {
-  END_HANDLER: 'END_HANDLER',
-  SELECTION_AREA: 'SELECTION_AREA',
-  START_HANDLER: 'START_HANDLER',
+  END_HANDLER: "END_HANDLER",
+  SELECTION_AREA: "SELECTION_AREA",
+  START_HANDLER: "START_HANDLER",
 } as const;
 
 /**
@@ -130,7 +130,7 @@ export interface ZoomAreaProps {
   /** Custom selection area configuration */
   selectionConfig?: ZoomAreaSelectionConfig;
   /** Custom focus configuration applied to all focusable elements */
-  focusConfig?: Omit<FocusConfig, 'variant'>;
+  focusConfig?: Omit<FocusConfig, "variant">;
   /** Configuration for interaction behavior (keyboard navigation, handler distances) */
   interactionConfig?: ZoomAreaInteractionConfig;
   /** Configuration for accessibility label templates */

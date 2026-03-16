@@ -6,7 +6,7 @@
  * Consider creating a shared AxisStoryTypes file if more axis stories are added.
  * Currently duplicated to maintain co-location with specific story usage.
  */
-import type { ValueFormatter } from '@/types/valueFormatter.type';
+import type { ValueFormatter } from "@/types/valueFormatter.type";
 
 /**
  * Enhanced props for YAxis stories to support valueFormatter dropdown controls

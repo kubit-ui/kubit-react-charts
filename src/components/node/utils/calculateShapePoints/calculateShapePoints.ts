@@ -3,9 +3,9 @@ export const calculateShapePoints = (
   centerY: number,
   points: number,
   outerRadius: number,
-  innerRadius: number
+  innerRadius: number,
 ): string => {
-  let result = '';
+  let result = "";
 
   // Determine whether drawing a regular shape or a star
   const isRegularShape = outerRadius === innerRadius;

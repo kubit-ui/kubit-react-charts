@@ -1,9 +1,9 @@
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
-import { LineChart } from '../../lineChart';
+import { LineChart } from "../../lineChart";
 
 export const FULL_CUSTOM_TEMPLATE = [
-  <LineChart.Separator key="1" areaSeparator={{ fill: 'rgba(0,0,0,0.1)' }} />,
+  <LineChart.Separator key="1" areaSeparator={{ fill: "rgba(0,0,0,0.1)" }} />,
   <LineChart.Path
     key="2"
     aria-label="Line chart for lions data series"
@@ -49,12 +49,12 @@ export const FULL_CUSTOM_TEMPLATE = [
     strokeWidth="0.1"
     tickText={{
       fontSize: 1,
-      textAnchor: 'middle',
+      textAnchor: "middle",
       top: 1,
-      transform: 'rotate',
+      transform: "rotate",
     }}
     tickValues={{
-      custom: { values: ['step 1', 'step 2', 'step 3', 'step 4', 'step 5', 'step 6'] },
+      custom: { values: ["step 1", "step 2", "step 3", "step 4", "step 5", "step 6"] },
     }}
   />,
   <LineChart.YAxis
@@ -67,7 +67,7 @@ export const FULL_CUSTOM_TEMPLATE = [
     strokeWidth="0.1"
     tickText={{
       fontSize: 1,
-      textAnchor: 'middle',
+      textAnchor: "middle",
     }}
     tickValues={{ numeric: { max: 120, min: -120, step: 30 } }}
   />,

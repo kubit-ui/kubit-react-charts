@@ -1,14 +1,14 @@
 export const ajustedTextSpace = (
-  textAnchor: 'middle' | 'start' | 'end' | undefined,
+  textAnchor: "middle" | "start" | "end" | undefined,
   value: number,
-  extra: number
+  extra: number,
 ): number => {
   let ajusted: number;
   switch (textAnchor) {
-    case 'middle':
+    case "middle":
       ajusted = value / 2 + extra;
       break;
-    case 'end':
+    case "end":
       ajusted = value + extra;
       break;
     default:

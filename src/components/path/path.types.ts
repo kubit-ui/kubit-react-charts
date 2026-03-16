@@ -1,8 +1,8 @@
-import type { AriaAttributes } from 'react';
+import type { AriaAttributes } from "react";
 
-import type { ShadowSvgConfig } from '@/utils/shadowSvg/shadowSvg.types';
+import type { ShadowSvgConfig } from "@/utils/shadowSvg/shadowSvg.types";
 
-import type { NodeProps } from '../node/node.types';
+import type { NodeProps } from "../node/node.types";
 
 interface IDataPoint {
   [key: string]: any;
@@ -11,15 +11,15 @@ interface IDataPoint {
 export interface StyleProps {
   fill?: string;
   fillOpacity?: number | string;
-  fillRule?: 'nonzero' | 'evenodd';
+  fillRule?: "nonzero" | "evenodd";
   opacity?: number | string;
   orientation?: number | string;
   rotate?: number | string;
   stroke?: string;
   strokeDasharray?: string | number;
   strokeDashoffset?: string | number;
-  strokeLinecap?: 'butt' | 'round' | 'square';
-  strokeLinejoin?: 'miter' | 'round' | 'bevel';
+  strokeLinecap?: "butt" | "round" | "square";
+  strokeLinejoin?: "miter" | "round" | "bevel";
   strokeMiterlimit?: number | string;
   strokeOpacity?: number | string;
   strokeWidth?: number | string;
@@ -35,9 +35,7 @@ export interface DataAttributes {
 }
 
 export interface NodePathProps
-  extends Omit<NodeProps, 'position' | 'data' | 'ariaLabel'>,
-    AriaAttributes,
-    DataAttributes {}
+  extends Omit<NodeProps, "position" | "data" | "ariaLabel">, AriaAttributes, DataAttributes {}
 export type DataValueType = string | number | IDataPoint[];
 
 /**
@@ -88,7 +86,7 @@ export interface PathProps extends StyleProps, AriaAttributes, DataAttributes {
   onClick?: (dataValue?: DataValueType) => void;
   onDoubleClick?: (
     event: React.MouseEvent<SVGPathElement, MouseEvent>,
-    dataValue?: DataValueType
+    dataValue?: DataValueType,
   ) => void;
   onMouseEnter?: (event: React.MouseEvent<SVGPathElement, MouseEvent>) => void;
   onMouseLeave?: (event: React.MouseEvent<SVGPathElement, MouseEvent>) => void;

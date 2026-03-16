@@ -1,16 +1,16 @@
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook } from "@testing-library/react";
 
-import { ZoomAreaElements } from '../../zoomArea.type';
-import { useDragInteraction } from '../useDragInteraction';
+import { ZoomAreaElements } from "../../zoomArea.type";
+import { useDragInteraction } from "../useDragInteraction";
 
-vi.mock('../../utils/rangeAndPositions', () => ({
-  clampRange: vi.fn(range => range),
+vi.mock("../../utils/rangeAndPositions", () => ({
+  clampRange: vi.fn((range) => range),
   mouseToDataIndex: vi.fn((mouseX: number, width: number, dataLength: number) => {
     return (mouseX / width) * (dataLength - 1);
   }),
 }));
 
-describe('useDragInteraction', () => {
+describe("useDragInteraction", () => {
   const mockOnRangeChange = vi.fn();
   const defaultParams = {
     currentRange: { end: 7, start: 2 },
@@ -26,10 +26,10 @@ describe('useDragInteraction', () => {
 
   const setupDragTest = () => {
     const listeners: { [key: string]: (event: any) => void } = {};
-    vi.spyOn(document, 'addEventListener').mockImplementation((event: string, listener: any) => {
+    vi.spyOn(document, "addEventListener").mockImplementation((event: string, listener: any) => {
       listeners[event] = listener;
     });
-    vi.spyOn(document, 'removeEventListener').mockImplementation((event: string) => {
+    vi.spyOn(document, "removeEventListener").mockImplementation((event: string) => {
       delete listeners[event];
     });
 
@@ -43,11 +43,11 @@ describe('useDragInteraction', () => {
     return {
       result,
       triggerEnd: (isTouch = false) => {
-        const eventType = isTouch ? 'touchend' : 'mouseup';
+        const eventType = isTouch ? "touchend" : "mouseup";
         listeners[eventType]?.({});
       },
       triggerMove: (clientX: number, isTouch = false) => {
-        const eventType = isTouch ? 'touchmove' : 'mousemove';
+        const eventType = isTouch ? "touchmove" : "mousemove";
         const event = isTouch ? { preventDefault: vi.fn(), touches: [{ clientX }] } : { clientX };
         listeners[eventType]?.(event);
       },
@@ -63,15 +63,15 @@ describe('useDragInteraction', () => {
     vi.restoreAllMocks();
   });
 
-  it('should initialize with expected API', () => {
+  it("should initialize with expected API", () => {
     const { result } = renderHook(() => useDragInteraction(defaultParams));
 
     expect(result.current.isDragging).toBe(null);
-    expect(typeof result.current.handleMouseDown).toBe('function');
-    expect(typeof result.current.handleTouchStart).toBe('function');
+    expect(typeof result.current.handleMouseDown).toBe("function");
+    expect(typeof result.current.handleTouchStart).toBe("function");
   });
 
-  it('should handle complete drag lifecycle for mouse and touch', () => {
+  it("should handle complete drag lifecycle for mouse and touch", () => {
     const { result, triggerEnd, triggerMove } = setupDragTest();
 
     // Test mouse drag
@@ -84,7 +84,7 @@ describe('useDragInteraction', () => {
       triggerMove(150);
     });
     expect(mockOnRangeChange).toHaveBeenCalledWith(
-      expect.objectContaining({ start: expect.any(Number) })
+      expect.objectContaining({ start: expect.any(Number) }),
     );
 
     act(() => {
@@ -104,7 +104,7 @@ describe('useDragInteraction', () => {
       triggerMove(350, true);
     });
     expect(mockOnRangeChange).toHaveBeenCalledWith(
-      expect.objectContaining({ end: expect.any(Number) })
+      expect.objectContaining({ end: expect.any(Number) }),
     );
 
     act(() => {
@@ -113,7 +113,7 @@ describe('useDragInteraction', () => {
     expect(result.current.isDragging).toBe(null);
   });
 
-  it('should preserve selection width when dragging selection area', () => {
+  it("should preserve selection width when dragging selection area", () => {
     const { result, triggerMove } = setupDragTest();
 
     act(() => {
@@ -131,8 +131,8 @@ describe('useDragInteraction', () => {
     expect(newWidth).toBeCloseTo(originalWidth, 1);
   });
 
-  it('should cleanup event listeners on unmount', () => {
-    const removeSpy = vi.spyOn(document, 'removeEventListener');
+  it("should cleanup event listeners on unmount", () => {
+    const removeSpy = vi.spyOn(document, "removeEventListener");
     const { result, unmount } = renderHook(() => useDragInteraction(defaultParams));
 
     // Start drag to activate listeners
@@ -143,7 +143,7 @@ describe('useDragInteraction', () => {
     removeSpy.mockClear();
     unmount();
 
-    expect(removeSpy).toHaveBeenCalledWith('mousemove', expect.any(Function));
-    expect(removeSpy).toHaveBeenCalledWith('touchmove', expect.any(Function));
+    expect(removeSpy).toHaveBeenCalledWith("mousemove", expect.any(Function));
+    expect(removeSpy).toHaveBeenCalledWith("touchmove", expect.any(Function));
   });
 });

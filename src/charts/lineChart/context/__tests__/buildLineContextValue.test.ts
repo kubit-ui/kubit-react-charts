@@ -1,42 +1,42 @@
-import type { Mock } from 'vitest';
+import type { Mock } from "vitest";
 
-import { Positions } from '@/types/position.enum';
-import { getPoints } from '@/utils/getPoints/getPoints';
+import { Positions } from "@/types/position.enum";
+import { getPoints } from "@/utils/getPoints/getPoints";
 
-import { getXCoordinates, getYCoordinates } from '../../utils/getCoordinates';
-import { getExtraSpacing } from '../../utils/getExtraSpacing';
-import { getXTicks, getYTicks } from '../../utils/getTicks';
-import { buildLineContextValue } from '../buildLineContextValue';
+import { getXCoordinates, getYCoordinates } from "../../utils/getCoordinates";
+import { getExtraSpacing } from "../../utils/getExtraSpacing";
+import { getXTicks, getYTicks } from "../../utils/getTicks";
+import { buildLineContextValue } from "../buildLineContextValue";
 
-vi.mock('../../utils/getExtraSpacing', () => ({
+vi.mock("../../utils/getExtraSpacing", () => ({
   getExtraSpacing: vi.fn(),
 }));
 
-vi.mock('../../utils/getTicks', () => ({
+vi.mock("../../utils/getTicks", () => ({
   getXTicks: vi.fn(),
   getYTicks: vi.fn(),
 }));
 
-vi.mock('@/utils/getPoints/getPoints', () => ({
+vi.mock("@/utils/getPoints/getPoints", () => ({
   getPoints: vi.fn(),
 }));
 
-vi.mock('../../utils/getCoordinates', () => ({
+vi.mock("../../utils/getCoordinates", () => ({
   getXCoordinates: vi.fn(),
   getYCoordinates: vi.fn(),
 }));
 
-describe('buildLineContextValue', () => {
+describe("buildLineContextValue", () => {
   const mockChildren: React.ReactElement[] = [];
   const mockData = [
     { x: 1, y: 10 },
     { x: 2, y: 20 },
     { x: 3, y: 30 },
   ];
-  const mockXKey = 'x';
+  const mockXKey = "x";
   const mockCanvasHeight = 500;
   const mockCanvasWidth = 800;
-  const mockViewBox = '0 0 800 500';
+  const mockViewBox = "0 0 800 500";
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -52,10 +52,10 @@ describe('buildLineContextValue', () => {
       yAxisBottomSpacing: 0,
       lineChartXPosition: Positions.BOTTOM,
       lineChartYPosition: Positions.LEFT,
-      xAxisText: 'X Axis',
+      xAxisText: "X Axis",
       xBreakAxis: 0,
       xData: [1, 2, 3],
-      yAxisText: 'Y Axis',
+      yAxisText: "Y Axis",
       yBreakAxis: 0,
       yData: [10, 20, 30],
     });
@@ -75,7 +75,7 @@ describe('buildLineContextValue', () => {
     (getYCoordinates as Mock).mockReturnValue({ x1: 10, x2: 390, y1: 0, y2: 50 });
   });
 
-  it('should build the context with right values', () => {
+  it("should build the context with right values", () => {
     const result = buildLineContextValue({
       canvasHeight: mockCanvasHeight,
       canvasWidth: mockCanvasWidth,
@@ -105,7 +105,7 @@ describe('buildLineContextValue', () => {
           { position: 790, value: 3 },
         ],
       },
-      xAxisText: 'X Axis',
+      xAxisText: "X Axis",
       yAxisCoordinates: {
         coordinates: { x1: 10, x2: 390, y1: 0, y2: 50 },
         tickValues: [
@@ -114,7 +114,7 @@ describe('buildLineContextValue', () => {
           { position: 0, value: 30 },
         ],
       },
-      yAxisText: 'Y Axis',
+      yAxisText: "Y Axis",
     });
 
     expect(getExtraSpacing).toHaveBeenCalledWith({
@@ -134,7 +134,7 @@ describe('buildLineContextValue', () => {
     expect(getYCoordinates).toHaveBeenCalled();
   });
 
-  it('should handler the cross axis correctly', () => {
+  it("should handler the cross axis correctly", () => {
     (getExtraSpacing as Mock).mockReturnValue({
       xAxisLeftSpacing: 0,
       xAxisTopSpacing: 0,
@@ -146,10 +146,10 @@ describe('buildLineContextValue', () => {
       yAxisBottomSpacing: 0,
       lineChartXPosition: Positions.LEFT,
       lineChartYPosition: Positions.TOP,
-      xAxisText: 'X Axis',
+      xAxisText: "X Axis",
       xBreakAxis: 0,
       xData: [1, 2, 3],
-      yAxisText: 'Y Axis',
+      yAxisText: "Y Axis",
       yBreakAxis: 0,
       yData: [10, 20, 30],
     });

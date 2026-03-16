@@ -1,27 +1,27 @@
-import { getCanvasDimensions } from '../getCanvasDimensions';
+import { getCanvasDimensions } from "../getCanvasDimensions";
 
-describe('getCanvasDimensions', () => {
+describe("getCanvasDimensions", () => {
   let svgElement: SVGSVGElement;
 
   beforeEach(() => {
-    svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg') as SVGSVGElement;
-    const parentElement = document.createElement('div');
+    svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg") as SVGSVGElement;
+    const parentElement = document.createElement("div");
 
-    Object.defineProperty(parentElement, 'clientWidth', { configurable: true, value: 500 });
-    Object.defineProperty(parentElement, 'clientHeight', { configurable: true, value: 400 });
+    Object.defineProperty(parentElement, "clientWidth", { configurable: true, value: 500 });
+    Object.defineProperty(parentElement, "clientHeight", { configurable: true, value: 400 });
 
     document.body.appendChild(parentElement);
     parentElement.appendChild(svgElement);
   });
 
   afterEach(() => {
-    document.body.innerHTML = '';
+    document.body.innerHTML = "";
   });
 
-  it('should calculate dimensions with pixel values', () => {
+  it("should calculate dimensions with pixel values", () => {
     const result = getCanvasDimensions({
-      canvasHeight: '200px',
-      canvasWidth: '300px',
+      canvasHeight: "200px",
+      canvasWidth: "300px",
       svgElement,
     });
 
@@ -31,10 +31,10 @@ describe('getCanvasDimensions', () => {
     });
   });
 
-  it('should calculate dimensions with percentage values', () => {
+  it("should calculate dimensions with percentage values", () => {
     const result = getCanvasDimensions({
-      canvasHeight: '50%',
-      canvasWidth: '60%',
+      canvasHeight: "50%",
+      canvasWidth: "60%",
       svgElement,
     });
 
@@ -44,12 +44,12 @@ describe('getCanvasDimensions', () => {
     });
   });
 
-  it('should calculate dimensions with rem values', () => {
-    document.documentElement.style.fontSize = '16px';
+  it("should calculate dimensions with rem values", () => {
+    document.documentElement.style.fontSize = "16px";
 
     const result = getCanvasDimensions({
-      canvasHeight: '2rem',
-      canvasWidth: '3rem',
+      canvasHeight: "2rem",
+      canvasWidth: "3rem",
       svgElement,
     });
 
@@ -59,10 +59,10 @@ describe('getCanvasDimensions', () => {
     });
   });
 
-  it('should calculate dimensions with mixed units', () => {
+  it("should calculate dimensions with mixed units", () => {
     const result = getCanvasDimensions({
-      canvasHeight: '50%',
-      canvasWidth: '300px',
+      canvasHeight: "50%",
+      canvasWidth: "300px",
       svgElement,
     });
 
@@ -72,15 +72,15 @@ describe('getCanvasDimensions', () => {
     });
   });
 
-  it('should return 0 for percentage values if parent element is missing', () => {
+  it("should return 0 for percentage values if parent element is missing", () => {
     // Eliminar el elemento padre del svgElement
     if (svgElement.parentElement) {
       svgElement.parentElement.removeChild(svgElement);
     }
 
     const result = getCanvasDimensions({
-      canvasHeight: '50%',
-      canvasWidth: '60%',
+      canvasHeight: "50%",
+      canvasWidth: "60%",
       svgElement,
     });
 
@@ -90,17 +90,17 @@ describe('getCanvasDimensions', () => {
     });
   });
 
-  it('should throw an error for invalid string formats', () => {
+  it("should throw an error for invalid string formats", () => {
     expect(() =>
       getCanvasDimensions({
-        canvasHeight: 'invalid',
-        canvasWidth: '300px',
+        canvasHeight: "invalid",
+        canvasWidth: "300px",
         svgElement,
-      })
+      }),
     ).toThrow('Invalid string format: "invalid"');
   });
 
-  it('should handle numeric values directly', () => {
+  it("should handle numeric values directly", () => {
     const result = getCanvasDimensions({
       canvasHeight: 200,
       canvasWidth: 300,

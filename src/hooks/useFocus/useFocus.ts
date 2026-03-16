@@ -1,6 +1,6 @@
-import { type FocusEvent, useCallback, useState } from 'react';
+import { type FocusEvent, useCallback, useState } from "react";
 
-import type { FocusHandler, UseFocusReturn } from './useFocus.types';
+import type { FocusHandler, UseFocusReturn } from "./useFocus.types";
 
 /**
  * Custom React hook to manage focus state and handle focus/blur events for an element.
@@ -16,7 +16,7 @@ import type { FocusHandler, UseFocusReturn } from './useFocus.types';
  */
 export const useFocus = <T extends HTMLElement | SVGElement>(
   onFocus?: FocusHandler<T>,
-  onBlur?: FocusHandler<T>
+  onBlur?: FocusHandler<T>,
 ): UseFocusReturn<T> => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -25,7 +25,7 @@ export const useFocus = <T extends HTMLElement | SVGElement>(
       setIsFocused(true);
       onFocus?.(event);
     },
-    [onFocus]
+    [onFocus],
   );
 
   const handleBlur = useCallback(
@@ -33,7 +33,7 @@ export const useFocus = <T extends HTMLElement | SVGElement>(
       setIsFocused(false);
       onBlur?.(event);
     },
-    [onBlur]
+    [onBlur],
   );
 
   return { handleBlur, handleFocus, isFocused };

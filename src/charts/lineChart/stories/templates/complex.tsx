@@ -1,7 +1,7 @@
-import { NodeType } from '@/components/node/node.types';
-import { Positions } from '@/types/position.enum';
+import { NodeType } from "@/components/node/node.types";
+import { Positions } from "@/types/position.enum";
 
-import { LineChart } from '../../lineChart';
+import { LineChart } from "../../lineChart";
 
 export const COMPLEX_TEMPLATE = [
   <LineChart.Path
@@ -18,11 +18,11 @@ export const COMPLEX_TEMPLATE = [
     curved={false}
     dataKey="cats"
     nodeConfig={{
-      fill: 'white',
+      fill: "white",
       hasHalo: true,
       size: 1.3,
-      stroke: 'red',
-      strokeWidth: '0.2',
+      stroke: "red",
+      strokeWidth: "0.2",
       type: NodeType.Circle,
     }}
     stroke="green"
@@ -44,11 +44,11 @@ export const COMPLEX_TEMPLATE = [
     curved={true}
     dataKey="rabbits"
     nodeConfig={{
-      fill: 'white',
+      fill: "white",
       hasHalo: true,
       size: 1.3,
-      stroke: 'green',
-      strokeWidth: '0.2',
+      stroke: "green",
+      strokeWidth: "0.2",
       type: NodeType.Square,
     }}
     stroke="red"
@@ -64,17 +64,17 @@ export const COMPLEX_TEMPLATE = [
     stroke="black"
     strokeWidth="0.1"
     tickLine={{
-      stroke: '#bbb',
-      strokeDasharray: '0.3',
-      strokeWidth: '0.1',
+      stroke: "#bbb",
+      strokeDasharray: "0.3",
+      strokeWidth: "0.1",
     }}
     tickLineHover={{
-      stroke: '#000',
-      strokeDasharray: '0',
+      stroke: "#000",
+      strokeDasharray: "0",
     }}
     tickText={{
       fontSize: 1,
-      textAnchor: 'start',
+      textAnchor: "start",
       top: 1,
     }}
   />,
@@ -87,17 +87,17 @@ export const COMPLEX_TEMPLATE = [
     stroke="black"
     strokeWidth="0.1"
     tickLine={{
-      stroke: '#bbb',
-      strokeDasharray: '0.3',
-      strokeWidth: '0.1',
+      stroke: "#bbb",
+      strokeDasharray: "0.3",
+      strokeWidth: "0.1",
     }}
     tickLineHover={{
-      stroke: '#000',
-      strokeDasharray: '0',
+      stroke: "#000",
+      strokeDasharray: "0",
     }}
     tickText={{
       fontSize: 1,
-      textAnchor: 'end',
+      textAnchor: "end",
       left: 0.3,
       useAxisAsOrigin: true,
     }}

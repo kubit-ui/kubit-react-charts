@@ -1,9 +1,9 @@
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
-import { LineChart } from '../../lineChart';
+import { LineChart } from "../../lineChart";
 
 export const FULL_CUSTOM_TEMPLATE_NEGATIVE = [
-  <LineChart.Separator key="1" areaSeparator={{ fill: 'rgba(0,0,0,0.1)' }} />,
+  <LineChart.Separator key="1" areaSeparator={{ fill: "rgba(0,0,0,0.1)" }} />,
   <LineChart.Path
     key="2"
     aria-label="Line chart for cats data series"
@@ -49,7 +49,7 @@ export const FULL_CUSTOM_TEMPLATE_NEGATIVE = [
     strokeWidth="0.1"
     tickText={{
       fontSize: 1,
-      textAnchor: 'middle',
+      textAnchor: "middle",
       top: 0,
     }}
     tickValues={{ numeric: { breakAxis: 0, max: 10, min: -6, step: 2 } }}
@@ -64,7 +64,7 @@ export const FULL_CUSTOM_TEMPLATE_NEGATIVE = [
     strokeWidth="0.1"
     tickText={{
       fontSize: 1,
-      textAnchor: 'middle',
+      textAnchor: "middle",
     }}
     tickValues={{ numeric: { breakAxis: 0, max: 120, min: -30, step: 30 } }}
   />,

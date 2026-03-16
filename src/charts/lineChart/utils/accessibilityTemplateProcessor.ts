@@ -1,9 +1,9 @@
 // Template keys for accessibility labels
 export const TEMPLATE_KEYS = {
-  DATA_KEY: '{{dataKey}}',
-  INDEX: '{{index}}',
-  X_VALUE: '{{xValue}}',
-  Y_VALUE: '{{yValue}}',
+  DATA_KEY: "{{dataKey}}",
+  INDEX: "{{index}}",
+  X_VALUE: "{{xValue}}",
+  Y_VALUE: "{{yValue}}",
 } as const;
 
 export interface NodeTemplateData {
@@ -33,11 +33,11 @@ export interface NodeTemplateData {
  */
 const extractValuesFromDataPoint = (
   dataPoint: Record<string, unknown> | undefined,
-  nodeData: NodeTemplateData
+  nodeData: NodeTemplateData,
 ) => {
-  const xValue = dataPoint && nodeData.xKey ? (dataPoint[nodeData.xKey]?.toString() ?? '') : '';
+  const xValue = dataPoint && nodeData.xKey ? (dataPoint[nodeData.xKey]?.toString() ?? "") : "";
   const yValue =
-    dataPoint && nodeData.dataKey ? (dataPoint[nodeData.dataKey]?.toString() ?? '') : '';
+    dataPoint && nodeData.dataKey ? (dataPoint[nodeData.dataKey]?.toString() ?? "") : "";
   return { xValue, yValue };
 };
 
@@ -45,20 +45,20 @@ const replaceTemplatePlaceholders = (
   template: string,
   nodeData: NodeTemplateData,
   xValue: string,
-  yValue: string
+  yValue: string,
 ): string => {
   let result = template;
 
   if (nodeData.dataKey !== undefined) {
-    result = result.replace(new RegExp(TEMPLATE_KEYS.DATA_KEY, 'g'), nodeData.dataKey);
+    result = result.replace(new RegExp(TEMPLATE_KEYS.DATA_KEY, "g"), nodeData.dataKey);
   }
 
   // Always replace xValue and yValue placeholders, even with empty strings
-  result = result.replace(new RegExp(TEMPLATE_KEYS.X_VALUE, 'g'), xValue);
-  result = result.replace(new RegExp(TEMPLATE_KEYS.Y_VALUE, 'g'), yValue);
+  result = result.replace(new RegExp(TEMPLATE_KEYS.X_VALUE, "g"), xValue);
+  result = result.replace(new RegExp(TEMPLATE_KEYS.Y_VALUE, "g"), yValue);
 
   if (nodeData.index !== undefined) {
-    result = result.replace(new RegExp(TEMPLATE_KEYS.INDEX, 'g'), (nodeData.index + 1).toString());
+    result = result.replace(new RegExp(TEMPLATE_KEYS.INDEX, "g"), (nodeData.index + 1).toString());
   }
 
   return result;
@@ -67,9 +67,11 @@ const replaceTemplatePlaceholders = (
 export const processAccessibilityTemplate = (
   template: string,
   nodeData: NodeTemplateData,
-  dataValue?: string | number | Array<Record<string, unknown>>
+  dataValue?: string | number | Array<Record<string, unknown>>,
 ): string | undefined => {
-  if (!template) {return undefined;}
+  if (!template) {
+    return undefined;
+  }
   // Use provided dataValue or fall back to nodeData.dataValue
   const actualDataValue = dataValue ?? nodeData.dataValue;
 

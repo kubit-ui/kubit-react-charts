@@ -1,20 +1,20 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { BarOrientation } from '@/components/bar/bar.type';
-import { Note } from '@/storybook/components/note/note';
-import { Positions } from '@/types/position.enum';
+import { BarOrientation } from "@/components/bar/bar.type";
+import { Note } from "@/storybook/components/note/note";
+import { Positions } from "@/types/position.enum";
 
-import { BarChart } from '../../../barChart';
-import type { BarChartPathProps } from '../../../barChart.type';
-import { BarChartPath } from '../../../fragments/barChartPath';
-import { COMPARATIVE_DATA } from '../../templates/data';
-import { pathArgTypes } from './path.argtypes';
+import { BarChart } from "../../../barChart";
+import type { BarChartPathProps } from "../../../barChart.type";
+import { BarChartPath } from "../../../fragments/barChartPath";
+import { COMPARATIVE_DATA } from "../../templates/data";
+import { pathArgTypes } from "./path.argtypes";
 
 const meta = {
   argTypes: pathArgTypes(),
   component: BarChartPath,
-  tags: ['autodocs'],
-  title: 'Charts/BarChart/Child Components/BarChartPath',
+  tags: ["autodocs"],
+  title: "Charts/BarChart/Child Components/BarChartPath",
 } satisfies Meta<typeof BarChartPath>;
 
 export default meta;
@@ -23,7 +23,7 @@ type Story = StoryObj<typeof meta>;
 // Adjusted focusConfig for BarChart's small viewBox (100x80)
 // Values are scaled down to compensate for viewBox-to-container scaling (~6x)
 const FOCUS_CONFIG = {
-  stroke: '#0078D4',
+  stroke: "#0078D4",
   strokeWidth: 0.3,
 };
 
@@ -31,10 +31,10 @@ const baseBarConfig = {
   barWidth: 15,
   singleConfig: [
     {
-      color: '#0078D4',
+      color: "#0078D4",
       coverage: 100,
-      ['aria-label']: '{{xKey}}:{{xData}} - {{yData}}',
-      role: 'img',
+      ["aria-label"]: "{{xKey}}:{{xData}} - {{yData}}",
+      role: "img",
     },
   ],
 };
@@ -45,7 +45,7 @@ export const PathCustomization: Story = {
     barConfig: baseBarConfig,
     dataIdx: 3,
     // === PATH CORE PROPERTIES ===
-    dataKey: 'birds',
+    dataKey: "birds",
 
     endRounded: 4,
     order: 0,
@@ -95,7 +95,7 @@ export const PathCustomization: Story = {
   ],
 
   render: (args: BarChartPathProps): React.JSX.Element => (
-    <div style={{ height: '400px', width: '600px' }}>
+    <div style={{ height: "400px", width: "600px" }}>
       <BarChart
         data={COMPARATIVE_DATA}
         height="100%"
@@ -142,30 +142,30 @@ export const StackedBars: Story = {
       gap: 2,
       singleConfig: [
         {
-          color: '#0078D4',
+          color: "#0078D4",
           coverage: 50,
-          ['aria-label']:
-            '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-          role: 'img',
+          ["aria-label"]:
+            "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+          role: "img",
         },
         {
-          color: '#107C10',
+          color: "#107C10",
           coverage: 30,
-          ['aria-label']:
-            '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-          role: 'img',
+          ["aria-label"]:
+            "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+          role: "img",
         },
         {
-          color: '#FFB900',
+          color: "#FFB900",
           coverage: 20,
-          ['aria-label']:
-            '{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})',
-          role: 'img',
+          ["aria-label"]:
+            "{{xKey}}:{{xData}} - Segment {{index}} - {{coverage}}% of the total ({{yData}})",
+          role: "img",
         },
       ],
     },
     dataIdx: 3,
-    dataKey: 'birds',
+    dataKey: "birds",
     endRounded: 6,
     order: 0,
     startRounded: 0,
@@ -218,7 +218,7 @@ export const StackedBars: Story = {
   ],
 
   render: (args: BarChartPathProps): React.JSX.Element => (
-    <div style={{ height: '400px', width: '600px' }}>
+    <div style={{ height: "400px", width: "600px" }}>
       <BarChart
         data={COMPARATIVE_DATA}
         height="100%"

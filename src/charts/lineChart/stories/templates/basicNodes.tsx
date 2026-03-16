@@ -1,12 +1,12 @@
-import { NodeType } from '@/components/node/node.types';
-import { Positions } from '@/types/position.enum';
+import { NodeType } from "@/components/node/node.types";
+import { Positions } from "@/types/position.enum";
 
-import { LineChart } from '../../lineChart';
+import { LineChart } from "../../lineChart";
 
 // Adjusted focusConfig for LineChart's small viewBox (100x80)
 // Values are scaled down to compensate for viewBox-to-container scaling (~6x)
 const FOCUS_CONFIG = {
-  stroke: '#0078D4',
+  stroke: "#0078D4",
   strokeWidth: 0.3,
 };
 
@@ -18,34 +18,34 @@ export const BASIC_NODES_TEMPLATE = [
     focusConfig={FOCUS_CONFIG}
     nodeConfig={{
       // Example custom aria attributes
-      'aria-label': 'Data point {{index}}: {{dataKey}} has value {{yValue}} at {{xValue}}',
-      'role': 'img',
+      "aria-label": "Data point {{index}}: {{dataKey}} has value {{yValue}} at {{xValue}}",
+      role: "img",
       // Example custom data attributes
-      'data-chart-type': 'line',
-      'data-series': 'cats',
-      'data-test-id': 'line-chart-node',
-      'fill': 'white',
-      'hasHalo': true,
-      'onClick': (_e, data) => {
+      "data-chart-type": "line",
+      "data-series": "cats",
+      "data-test-id": "line-chart-node",
+      fill: "white",
+      hasHalo: true,
+      onClick: (_e, data) => {
         window.alert(
           data?.index !== undefined &&
             data?.dataKey &&
             data?.xKey &&
-            `${data?.dataKey}: ${data?.dataValue[data?.index][data?.dataKey]} \n ${data?.xKey}: ${data?.dataValue[data?.index][data?.xKey]}`
+            `${data?.dataKey}: ${data?.dataValue[data?.index][data?.dataKey]} \n ${data?.xKey}: ${data?.dataValue[data?.index][data?.xKey]}`,
         );
       },
-      'onKeyDown': (_e, data) => {
+      onKeyDown: (_e, data) => {
         window.alert(
           data?.index !== undefined &&
             data?.dataKey &&
             data?.xKey &&
-            `${data?.dataKey}: ${data?.dataValue[data?.index][data?.dataKey]} \n ${data?.xKey}: ${data?.dataValue[data?.index][data?.xKey]}`
+            `${data?.dataKey}: ${data?.dataValue[data?.index][data?.dataKey]} \n ${data?.xKey}: ${data?.dataValue[data?.index][data?.xKey]}`,
         );
       },
-      'size': 1.3,
-      'stroke': 'red',
-      'strokeWidth': '0.2',
-      'type': NodeType.Circle,
+      size: 1.3,
+      stroke: "red",
+      strokeWidth: "0.2",
+      type: NodeType.Circle,
     }}
     stroke="#0074d9"
     strokeWidth="0.1"
@@ -61,7 +61,7 @@ export const BASIC_NODES_TEMPLATE = [
     strokeWidth="0.1"
     tickText={{
       fontSize: 1,
-      textAnchor: 'middle',
+      textAnchor: "middle",
       top: 1,
     }}
   />,
@@ -76,7 +76,7 @@ export const BASIC_NODES_TEMPLATE = [
     tickText={{
       fontSize: 1,
       right: 1,
-      textAnchor: 'middle',
+      textAnchor: "middle",
     }}
   />,
 ];

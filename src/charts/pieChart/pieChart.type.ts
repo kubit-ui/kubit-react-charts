@@ -1,8 +1,8 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from "react";
 
-import type { PathProps } from '@/components/path/path.types';
-import type { CanvasConfig } from '@/types/canvas.type';
-import type { ChartError, ChartErrorCollection, ErrorType } from '@/types/errors.type';
+import type { PathProps } from "@/components/path/path.types";
+import type { CanvasConfig } from "@/types/canvas.type";
+import type { ChartError, ChartErrorCollection, ErrorType } from "@/types/errors.type";
 
 interface Group {
   name: string;
@@ -59,7 +59,7 @@ export interface PieChartContextType {
   dataTestId?: string;
   halfChart?: boolean;
   error?: ChartError;
-  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => void;
+  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => void;
 }
 
 export type PieChartSegmentProps = PathProps & {

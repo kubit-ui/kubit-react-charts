@@ -1,11 +1,11 @@
-import { type ForwardRefRenderFunction, type ForwardedRef, forwardRef } from 'react';
+import { type ForwardRefRenderFunction, type ForwardedRef, forwardRef } from "react";
 
-import type { NodeProps } from '../../node.types';
-import { calculateShapePoints } from '../../utils/calculateShapePoints/calculateShapePoints';
+import type { NodeProps } from "../../node.types";
+import { calculateShapePoints } from "../../utils/calculateShapePoints/calculateShapePoints";
 
 const StarComponent: ForwardRefRenderFunction<SVGPolygonElement, NodeProps> = (
   { dataTestId, position = { x: 0, y: 0 }, size = 1, ...props },
-  ref
+  ref,
 ): React.JSX.Element => {
   const outerRadius = size / 2;
   const innerRadius = outerRadius / 2;
@@ -16,5 +16,5 @@ const StarComponent: ForwardRefRenderFunction<SVGPolygonElement, NodeProps> = (
 export const Star = forwardRef(StarComponent) as (
   props: NodeProps & {
     ref?: ForwardedRef<SVGSVGElement>;
-  }
+  },
 ) => React.JSX.Element;

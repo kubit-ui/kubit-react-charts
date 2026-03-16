@@ -1,8 +1,8 @@
-import { screen } from '@testing-library/react';
+import { screen } from "@testing-library/react";
 
-import { render } from '@/tests/render/render';
+import { render } from "@/tests/render/render";
 
-import { LineChart } from '../lineChart';
+import { LineChart } from "../lineChart";
 
 class ResizeObserverMock {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,7 +16,7 @@ class ResizeObserverMock {
 }
 
 beforeEach(() => {
-  vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+  vi.stubGlobal("ResizeObserver", ResizeObserverMock);
 });
 
 declare global {
@@ -25,7 +25,7 @@ declare global {
   }
 }
 
-describe('LineChart component', () => {
+describe("LineChart component", () => {
   beforeEach(() => {
     SVGElement.prototype.getBBox = vi.fn(() => ({
       height: 50,
@@ -38,16 +38,16 @@ describe('LineChart component', () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
-  it('should render correctly with default props', () => {
+  it("should render correctly with default props", () => {
     render(
       <LineChart data={[]} role="img" xKey="x">
         <div />
       </LineChart>,
-      false
+      false,
     );
 
-    const svgContainer = screen.getByRole('img');
-    expect(svgContainer).toHaveAttribute('width', '100%');
-    expect(svgContainer).toHaveAttribute('height', '100%');
+    const svgContainer = screen.getByRole("img");
+    expect(svgContainer).toHaveAttribute("width", "100%");
+    expect(svgContainer).toHaveAttribute("height", "100%");
   });
 });

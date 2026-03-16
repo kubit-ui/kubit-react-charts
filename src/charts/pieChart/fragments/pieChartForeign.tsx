@@ -1,9 +1,9 @@
-import { type FC, type ReactElement, useContext } from 'react';
+import { type FC, type ReactElement, useContext } from "react";
 
-import { ForeignObject } from '@/components/foreignObject/foreignObject';
-import type { ForeignObjectProps } from '@/components/foreignObject/foreignObject.types';
+import { ForeignObject } from "@/components/foreignObject/foreignObject";
+import type { ForeignObjectProps } from "@/components/foreignObject/foreignObject.types";
 
-import { PieChartContext } from '../context/pieChartContext';
+import { PieChartContext } from "../context/pieChartContext";
 
 export const PieChartForeign: FC<ForeignObjectProps> = ({
   children,

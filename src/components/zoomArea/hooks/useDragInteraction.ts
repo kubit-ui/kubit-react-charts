@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { clampRange, mouseToDataIndex } from '../utils/rangeAndPositions';
-import { ZoomAreaElements, type ZoomAreaInteractionConfig, type ZoomRange } from '../zoomArea.type';
+import { clampRange, mouseToDataIndex } from "../utils/rangeAndPositions";
+import { ZoomAreaElements, type ZoomAreaInteractionConfig, type ZoomRange } from "../zoomArea.type";
 
 /**
  * Parameters for the useDragInteraction hook
@@ -27,11 +27,11 @@ interface UseDragInteractionReturn {
   groupRef: React.RefObject<SVGSVGElement | null>;
   /** Handler for mouse down events on different elements */
   handleMouseDown: (
-    target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements]
+    target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements],
   ) => (event: React.MouseEvent) => void;
   /** Handler for touch start events on different elements */
   handleTouchStart: (
-    target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements]
+    target: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements],
   ) => (event: React.TouchEvent) => void;
   /** Currently dragging element, if any */
   isDragging: (typeof ZoomAreaElements)[keyof typeof ZoomAreaElements] | null;
@@ -45,26 +45,26 @@ const calculateNewRange = (
   currentRange: ZoomRange,
   dataIndex: number,
   dataLength: number,
-  interactionConfig: Required<ZoomAreaInteractionConfig>
+  interactionConfig: Required<ZoomAreaInteractionConfig>,
 ): ZoomRange => {
   const newRange = { ...currentRange };
 
   if (dragType === ZoomAreaElements.START_HANDLER) {
     newRange.start = Math.max(
       0,
-      Math.min(dataIndex, currentRange.end - interactionConfig.minHandlerDistance)
+      Math.min(dataIndex, currentRange.end - interactionConfig.minHandlerDistance),
     );
   } else if (dragType === ZoomAreaElements.END_HANDLER) {
     newRange.end = Math.min(
       dataLength - 1,
-      Math.max(dataIndex, currentRange.start + interactionConfig.minHandlerDistance)
+      Math.max(dataIndex, currentRange.start + interactionConfig.minHandlerDistance),
     );
   } else if (dragType === ZoomAreaElements.SELECTION_AREA) {
     // Moving entire selection
     const selectionWidth = currentRange.end - currentRange.start;
     const newStart = Math.max(
       0,
-      Math.min(dataLength - 1 - selectionWidth, dataIndex - selectionWidth / 2)
+      Math.min(dataLength - 1 - selectionWidth, dataIndex - selectionWidth / 2),
     );
     newRange.start = newStart;
     newRange.end = newStart + selectionWidth;
@@ -96,7 +96,7 @@ export const useDragInteraction = (params: UseDragInteractionParams): UseDragInt
         setIsDragging(target);
       };
     },
-    []
+    [],
   );
 
   const handleTouchStart = useCallback(
@@ -105,7 +105,7 @@ export const useDragInteraction = (params: UseDragInteractionParams): UseDragInt
         setIsDragging(target);
       };
     },
-    []
+    [],
   );
 
   // Common logic for handling pointer movement (mouse or touch)
@@ -133,20 +133,20 @@ export const useDragInteraction = (params: UseDragInteractionParams): UseDragInt
         currentRange,
         dataIndex,
         dataLength,
-        interactionConfig
+        interactionConfig,
       );
       const clampedRange = clampRange(newRange, dataLength, interactionConfig.minHandlerDistance);
 
       onRangeChange(clampedRange);
     },
-    [isDragging, width, dataLength, currentRange, onRangeChange, interactionConfig]
+    [isDragging, width, dataLength, currentRange, onRangeChange, interactionConfig],
   );
 
   const handleMouseMove = useCallback(
     (event: MouseEvent) => {
       handlePointerMove(event.clientX);
     },
-    [handlePointerMove]
+    [handlePointerMove],
   );
 
   const handleTouchMove = useCallback(
@@ -160,7 +160,7 @@ export const useDragInteraction = (params: UseDragInteractionParams): UseDragInt
 
       handlePointerMove(event.touches[0].clientX);
     },
-    [handlePointerMove]
+    [handlePointerMove],
   );
 
   const handleMouseUp = useCallback(() => {
@@ -175,21 +175,21 @@ export const useDragInteraction = (params: UseDragInteractionParams): UseDragInt
   useEffect(() => {
     if (isDragging) {
       // Mouse events
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
 
       // Touch events
-      document.addEventListener('touchmove', handleTouchMove, { passive: false });
-      document.addEventListener('touchend', handleTouchEnd);
+      document.addEventListener("touchmove", handleTouchMove, { passive: false });
+      document.addEventListener("touchend", handleTouchEnd);
 
       return () => {
         // Cleanup mouse events
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
 
         // Cleanup touch events
-        document.removeEventListener('touchmove', handleTouchMove);
-        document.removeEventListener('touchend', handleTouchEnd);
+        document.removeEventListener("touchmove", handleTouchMove);
+        document.removeEventListener("touchend", handleTouchEnd);
       };
     }
     return undefined;

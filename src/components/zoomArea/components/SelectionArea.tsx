@@ -1,7 +1,7 @@
-import { type KeyboardEvent, type MouseEvent, type TouchEvent, forwardRef } from 'react';
+import { type KeyboardEvent, type MouseEvent, type TouchEvent, forwardRef } from "react";
 
-import { isFullRange } from '../utils/rangeAndPositions';
-import type { ZoomAreaSelectionConfig, ZoomRange } from '../zoomArea.type';
+import { isFullRange } from "../utils/rangeAndPositions";
+import type { ZoomAreaSelectionConfig, ZoomRange } from "../zoomArea.type";
 
 /**
 
@@ -53,7 +53,7 @@ export const SelectionArea = forwardRef<SVGRectElement, SelectionAreaProps>(
       selectionConfig,
       startX,
     },
-    ref
+    ref,
   ) => {
     // Check if overlay should be hidden based on design specs:
     // "Only visible when a range is defined"
@@ -79,8 +79,8 @@ export const SelectionArea = forwardRef<SVGRectElement, SelectionAreaProps>(
           stroke={selectionConfig.stroke}
           strokeWidth={selectionConfig.strokeWidth}
           style={{
-            outline: 'none',
-            visibility: shouldHideOverlay ? 'hidden' : 'visible',
+            outline: "none",
+            visibility: shouldHideOverlay ? "hidden" : "visible",
           }}
           tabIndex={0}
           width={endX - startX}
@@ -94,7 +94,7 @@ export const SelectionArea = forwardRef<SVGRectElement, SelectionAreaProps>(
         />
       </>
     );
-  }
+  },
 );
 
-SelectionArea.displayName = 'SelectionArea';
+SelectionArea.displayName = "SelectionArea";

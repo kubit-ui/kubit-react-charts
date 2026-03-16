@@ -1,9 +1,9 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 
 /**
  * Default color for handler icons
  */
-const DEFAULT_ICON_COLOR = '#8f8f8f';
+const DEFAULT_ICON_COLOR = "#8f8f8f";
 
 /**
  * Icon offset for perfect centering (5px = ICON_SIZE / 2)
@@ -39,12 +39,12 @@ export const HandlerIcon: FC<HandlerIconProps> = ({ fill = DEFAULT_ICON_COLOR, x
       pointerEvents="none"
       transform={`translate(${x - ICON_OFFSET}, ${y - ICON_OFFSET})`}
     >
-      {/* 
+      {/*
         Icon: 10x10 pixel grip pattern with 3 vertical bars
         Paths are designed for a 10x10 coordinate system (0,0 to 10,10)
         Positioned to be perfectly centered on the handler
       */}
-      {/* 
+      {/*
         Three vertical bars creating a grip pattern
         Paths derived from Figma design for visual consistency
       */}

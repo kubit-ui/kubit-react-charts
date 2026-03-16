@@ -1,4 +1,4 @@
-import { useEffect, useImperativeHandle, useRef } from 'react';
+import { useEffect, useImperativeHandle, useRef } from "react";
 
 type CustomEvent = MouseEvent & { autoClick?: boolean };
 type UseAutoClickReturn<T> = [React.MutableRefObject<T | null>, React.MutableRefObject<boolean>];
@@ -18,9 +18,9 @@ export const useAutoClick = <T>(ref: React.ForwardedRef<T | null>): UseAutoClick
       return;
     }
     const element = innerRef.current as unknown as HTMLElement;
-    element.addEventListener('click', handleClick);
+    element.addEventListener("click", handleClick);
     // eslint-disable-next-line consistent-return
-    return () => element.removeEventListener('click', handleClick);
+    return () => element.removeEventListener("click", handleClick);
   }, []);
 
   return [innerRef, autoClick];

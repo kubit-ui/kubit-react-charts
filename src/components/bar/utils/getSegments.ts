@@ -1,6 +1,6 @@
-import { BarOrientation, type BarProps } from '../bar.type';
+import { BarOrientation, type BarProps } from "../bar.type";
 
-type GetSegmentProps = Omit<BarProps, 'barWidth' | 'currentBars' | 'position'>;
+type GetSegmentProps = Omit<BarProps, "barWidth" | "currentBars" | "position">;
 type GetSegmentReturn = [number, number][];
 
 const transformCoverage = (coveragePercent: number, maxValue: number) => {

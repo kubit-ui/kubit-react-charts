@@ -1,7 +1,7 @@
-import type { ChartTextProps } from '@/components/chartText/chartText.types';
-import type { LineProps } from '@/components/line/line.types';
-import type { TickData } from '@/components/tick/tick.types';
-import type { Positions } from '@/types/position.enum';
+import type { ChartTextProps } from "@/components/chartText/chartText.types";
+import type { LineProps } from "@/components/line/line.types";
+import type { TickData } from "@/components/tick/tick.types";
+import type { Positions } from "@/types/position.enum";
 
 /**
  * Props for the `YAxis` component, extending `LineProps` to include additional properties specific to rendering a Y-axis.
@@ -21,7 +21,7 @@ export interface YAxisProps extends LineProps {
   showTickLines?: boolean;
   tickLine?: LineProps;
   tickLineHover?: LineProps;
-  tickText?: Omit<ChartTextProps, 'dx' | 'dy'> & {
+  tickText?: Omit<ChartTextProps, "dx" | "dy"> & {
     left?: number;
     right?: number;
   };

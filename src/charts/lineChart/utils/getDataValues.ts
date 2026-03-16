@@ -1,4 +1,4 @@
-import type { TickValuesAxisProps } from '../lineChart.type';
+import type { TickValuesAxisProps } from "../lineChart.type";
 
 /**
  * Retrieves the data values from the given TickValuesAxisProps object.

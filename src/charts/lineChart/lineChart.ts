@@ -1,8 +1,8 @@
-import { LineChartPath } from './fragments/lineChartPath';
-import { LineChartSeparator } from './fragments/lineChartSeparator';
-import { LineChartXAxis } from './fragments/lineChartXAxis';
-import { LineChartYAxis } from './fragments/lineChartYAxis';
-import { LineChartStructure } from './lineChartStructure';
+import { LineChartPath } from "./fragments/lineChartPath";
+import { LineChartSeparator } from "./fragments/lineChartSeparator";
+import { LineChartXAxis } from "./fragments/lineChartXAxis";
+import { LineChartYAxis } from "./fragments/lineChartYAxis";
+import { LineChartStructure } from "./lineChartStructure";
 
 const LineChart = Object.assign(LineChartStructure, {
   Path: LineChartPath,
@@ -13,4 +13,4 @@ const LineChart = Object.assign(LineChartStructure, {
 
 export { LineChart };
 
-export * from './lineChart.type';
+export * from "./lineChart.type";

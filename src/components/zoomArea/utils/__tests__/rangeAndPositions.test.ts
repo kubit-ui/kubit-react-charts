@@ -4,11 +4,11 @@ import {
   createDefaultRange,
   isFullRange,
   mouseToDataIndex,
-} from '../rangeAndPositions';
+} from "../rangeAndPositions";
 
-describe('rangeAndPositions', () => {
-  describe('isFullRange', () => {
-    it('should correctly identify full and partial ranges', () => {
+describe("rangeAndPositions", () => {
+  describe("isFullRange", () => {
+    it("should correctly identify full and partial ranges", () => {
       // Full range cases
       expect(isFullRange({ end: 9, start: 0 }, 10)).toBe(true);
       expect(isFullRange({ end: 0, start: 0 }, 1)).toBe(true); // Single element
@@ -20,8 +20,8 @@ describe('rangeAndPositions', () => {
     });
   });
 
-  describe('calculateHandlerPositions', () => {
-    it('should calculate positions correctly for various ranges', () => {
+  describe("calculateHandlerPositions", () => {
+    it("should calculate positions correctly for various ranges", () => {
       // Full range
       const fullRange = calculateHandlerPositions({ end: 9, start: 0 }, 10, 400);
       expect(fullRange.startX).toBe(0);
@@ -39,8 +39,8 @@ describe('rangeAndPositions', () => {
     });
   });
 
-  describe('mouseToDataIndex', () => {
-    it('should convert mouse positions to data indices with rounding', () => {
+  describe("mouseToDataIndex", () => {
+    it("should convert mouse positions to data indices with rounding", () => {
       // Normal conversion with rounding
       expect(mouseToDataIndex(200, 400, 10)).toBe(5); // 200/400 * 9 = 4.5 → 5 (rounded)
 
@@ -58,8 +58,8 @@ describe('rangeAndPositions', () => {
     });
   });
 
-  describe('clampRange', () => {
-    it('should clamp ranges to bounds and enforce minimum distance', () => {
+  describe("clampRange", () => {
+    it("should clamp ranges to bounds and enforce minimum distance", () => {
       // Bound clamping
       const clampedStart = clampRange({ end: 5, start: -1 }, 10);
       expect(clampedStart.start).toBe(0);
@@ -83,8 +83,8 @@ describe('rangeAndPositions', () => {
     });
   });
 
-  describe('createDefaultRange', () => {
-    it('should create appropriate default ranges for different dataset sizes', () => {
+  describe("createDefaultRange", () => {
+    it("should create appropriate default ranges for different dataset sizes", () => {
       expect(createDefaultRange(10)).toEqual({ end: 9, start: 0 });
       expect(createDefaultRange(1)).toEqual({ end: 0, start: 0 }); // Single element
       expect(createDefaultRange(0)).toEqual({ end: 0, start: 0 }); // Empty dataset

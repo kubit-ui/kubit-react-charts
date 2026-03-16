@@ -9,10 +9,10 @@
  */
 
 export const Positions = {
-  BOTTOM: 'BOTTOM',
-  CENTER: 'CENTER',
-  CUSTOM: 'CUSTOM',
-  LEFT: 'LEFT',
-  RIGHT: 'RIGHT',
-  TOP: 'TOP',
+  BOTTOM: "BOTTOM",
+  CENTER: "CENTER",
+  CUSTOM: "CUSTOM",
+  LEFT: "LEFT",
+  RIGHT: "RIGHT",
+  TOP: "TOP",
 } as const;

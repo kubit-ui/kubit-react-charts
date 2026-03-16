@@ -20,7 +20,9 @@ export const getPathData = ({
   points,
   svgHeight,
 }: GetPathDataParamsType): string => {
-  if (points.length === 0) {return '';}
+  if (points.length === 0) {
+    return "";
+  }
 
   const [firstPoint, ...remainingPoints] = points;
   let pathData = `M ${firstPoint[0]} ${firstPoint[1]}`;
@@ -33,9 +35,9 @@ export const getPathData = ({
       const controlPoint1 = [x1 + dx, y1];
       const controlPoint2 = [x2 - dx, y2];
       return `${data} C ${controlPoint1[0]} ${controlPoint1[1]}, ${controlPoint2[0]} ${controlPoint2[1]}, ${x2} ${y2}`;
-    }, '');
+    }, "");
   } else {
-    pathData += remainingPoints.reduce((data, point) => `${data} L ${point[0]} ${point[1]}`, '');
+    pathData += remainingPoints.reduce((data, point) => `${data} L ${point[0]} ${point[1]}`, "");
   }
 
   if (extendToBottom) {

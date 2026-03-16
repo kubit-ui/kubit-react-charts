@@ -1,4 +1,4 @@
-import ICON_PLACEHOLDER from './icon_placeholder.svg';
+import ICON_PLACEHOLDER from "./icon_placeholder.svg";
 
 export const ICONS = {
   ICON_PLACEHOLDER,

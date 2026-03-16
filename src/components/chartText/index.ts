@@ -1,2 +1,2 @@
-export * from './chartText';
-export * from './chartText.types';
+export * from "./chartText";
+export * from "./chartText.types";

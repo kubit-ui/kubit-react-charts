@@ -1,6 +1,6 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect } from "react";
 
-import { Path } from '@/components/path/path';
+import { Path } from "@/components/path/path";
 import {
   buildInnerRadiusOutOfRangeError,
   buildInvalidGroupError,
@@ -8,11 +8,11 @@ import {
   buildInvalidRadiusError,
   buildSegmentNegativeValueError,
   buildSegmentValueError,
-} from '@/utils/buildErrors/buildErrors';
+} from "@/utils/buildErrors/buildErrors";
 
-import { PieChartContext } from '../context/pieChartContext';
-import type { PieChartSegmentProps } from '../pieChart.type';
-import { calculateSegmentPath } from '../utils/calculateSegmentPath';
+import { PieChartContext } from "../context/pieChartContext";
+import type { PieChartSegmentProps } from "../pieChart.type";
+import { calculateSegmentPath } from "../utils/calculateSegmentPath";
 
 /**
  * Renders a segment of a pie chart.
@@ -32,7 +32,7 @@ import { calculateSegmentPath } from '../utils/calculateSegmentPath';
 export const PieChartSegment: React.FC<PieChartSegmentProps> = ({
   canvasHeight,
   canvasWidth,
-  color = 'blue',
+  color = "blue",
   dataKey,
   gap,
   halfChart,
@@ -52,20 +52,20 @@ export const PieChartSegment: React.FC<PieChartSegmentProps> = ({
   const numericValue = Number(value);
   const numericRadius = radius !== undefined ? Number(radius) : undefined;
   const numericInnerRadius = innerRadius !== undefined ? Number(innerRadius) : undefined;
-  const trimmedName = name?.trim() || '';
+  const trimmedName = name?.trim() || "";
 
   // Segment error validations
   useEffect(() => {
     // Validate segment has non-empty name property
     if (!trimmedName) {
-      addError?.('PIE_CHART_SEGMENT_ERROR', {
-        error: buildInvalidGroupError(dataKey || 'unknown', index || 0, 'name'),
+      addError?.("PIE_CHART_SEGMENT_ERROR", {
+        error: buildInvalidGroupError(dataKey || "unknown", index || 0, "name"),
       });
     }
 
     // Validate segment value is numeric
     if (isNaN(numericValue)) {
-      addError?.('PIE_CHART_SEGMENT_ERROR', {
+      addError?.("PIE_CHART_SEGMENT_ERROR", {
         error: buildSegmentValueError(value, trimmedName || `segment-${index}`),
       });
       return;
@@ -73,7 +73,7 @@ export const PieChartSegment: React.FC<PieChartSegmentProps> = ({
 
     // Validate non-negative values
     if (numericValue < 0) {
-      addError?.('PIE_CHART_SEGMENT_ERROR', {
+      addError?.("PIE_CHART_SEGMENT_ERROR", {
         error: buildSegmentNegativeValueError(numericValue, trimmedName || `segment-${index}`),
       });
     }
@@ -81,7 +81,7 @@ export const PieChartSegment: React.FC<PieChartSegmentProps> = ({
     // Validate radius if provided
     if (numericRadius !== undefined) {
       if (isNaN(numericRadius) || numericRadius <= 0) {
-        addError?.('PIE_CHART_SEGMENT_ERROR', {
+        addError?.("PIE_CHART_SEGMENT_ERROR", {
           error: buildInvalidRadiusError(radius),
         });
       }
@@ -90,7 +90,7 @@ export const PieChartSegment: React.FC<PieChartSegmentProps> = ({
     // Validate innerRadius if provided
     if (numericInnerRadius !== undefined) {
       if (isNaN(numericInnerRadius) || numericInnerRadius < 0) {
-        addError?.('PIE_CHART_SEGMENT_ERROR', {
+        addError?.("PIE_CHART_SEGMENT_ERROR", {
           error: buildInvalidInnerRadiusError(innerRadius),
         });
       }
@@ -99,7 +99,7 @@ export const PieChartSegment: React.FC<PieChartSegmentProps> = ({
       if (numericRadius !== undefined) {
         if (!isNaN(numericRadius) && !isNaN(numericInnerRadius)) {
           if (numericInnerRadius >= numericRadius) {
-            addError?.('PIE_CHART_SEGMENT_ERROR', {
+            addError?.("PIE_CHART_SEGMENT_ERROR", {
               error: buildInnerRadiusOutOfRangeError(numericInnerRadius, numericRadius),
             });
           }

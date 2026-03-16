@@ -1,4 +1,4 @@
-import { PieChart } from '../../pieChart';
+import { PieChart } from "../../pieChart";
 
 export const MULTIPLE_TEMPLATE = [
   <PieChart.Path

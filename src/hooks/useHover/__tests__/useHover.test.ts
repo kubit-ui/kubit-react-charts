@@ -1,10 +1,10 @@
-import { act, renderHook } from '@testing-library/react';
-import type { MouseEvent } from 'react';
+import { act, renderHook } from "@testing-library/react";
+import type { MouseEvent } from "react";
 
-import { useHover } from '../useHover';
+import { useHover } from "../useHover";
 
-describe('useHover', () => {
-  it('should handle mouseEnter and mouseLeave events correctly', () => {
+describe("useHover", () => {
+  it("should handle mouseEnter and mouseLeave events correctly", () => {
     const onMouseEnter = vi.fn();
     const onMouseLeave = vi.fn();
 
@@ -17,7 +17,7 @@ describe('useHover', () => {
       cancelable: true,
       isDefaultPrevented: vi.fn(),
       isPropagationStopped: vi.fn(),
-      nativeEvent: new window.MouseEvent('mouseenter'),
+      nativeEvent: new window.MouseEvent("mouseenter"),
       persist: vi.fn(),
       view: window,
     } as unknown as MouseEvent<HTMLElement>;
@@ -34,7 +34,7 @@ describe('useHover', () => {
       cancelable: true,
       isDefaultPrevented: vi.fn(),
       isPropagationStopped: vi.fn(),
-      nativeEvent: new window.MouseEvent('mouseleave'),
+      nativeEvent: new window.MouseEvent("mouseleave"),
       persist: vi.fn(),
       view: window,
     } as unknown as MouseEvent<HTMLElement>;

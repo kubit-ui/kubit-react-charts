@@ -1,6 +1,6 @@
-import { type ForwardRefRenderFunction, type ForwardedRef, forwardRef } from 'react';
+import { type ForwardRefRenderFunction, type ForwardedRef, forwardRef } from "react";
 
-import type { SvgContainerProps } from './svgContainer.types';
+import type { SvgContainerProps } from "./svgContainer.types";
 
 /**
  * Renders an SVG container with customizable properties.
@@ -38,14 +38,14 @@ const SvgContainerComponent: ForwardRefRenderFunction<SVGSVGElement, SvgContaine
     height,
     imageSrc,
     overflow,
-    radius = '0px',
+    radius = "0px",
     role,
     tabIndex,
     viewBox,
     width,
     ...callbacks
   },
-  ref
+  ref,
 ) => {
   return (
     <svg
@@ -64,7 +64,7 @@ const SvgContainerComponent: ForwardRefRenderFunction<SVGSVGElement, SvgContaine
       tabIndex={tabIndex}
       viewBox={viewBox}
       width={width}
-      onMouseDown={e => e.preventDefault()}
+      onMouseDown={(e) => e.preventDefault()}
       {...callbacks}
     >
       {caption && <title>{caption}</title>}
@@ -77,5 +77,5 @@ const SvgContainerComponent: ForwardRefRenderFunction<SVGSVGElement, SvgContaine
 export const SvgContainer = forwardRef(SvgContainerComponent) as (
   props: SvgContainerProps & {
     ref?: ForwardedRef<SVGSVGElement>;
-  }
+  },
 ) => React.JSX.Element;

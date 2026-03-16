@@ -1,8 +1,8 @@
-import { PieChart } from '../../pieChart';
+import { PieChart } from "../../pieChart";
 
 // Shared focusConfig for visual comparison across charts
 const FOCUS_CONFIG = {
-  stroke: '#0078D4',
+  stroke: "#0078D4",
   strokeWidth: 2,
 };
 

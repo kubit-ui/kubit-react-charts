@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 interface UseIndicatorReturn {
   pathRef: React.MutableRefObject<SVGPathElement | null>;
@@ -35,8 +35,8 @@ export const useIndicator = (xPosition: number, implement: boolean): UseIndicato
 
     const point = path.getPointAtLength(end);
 
-    indicator.setAttribute('transform', `translate(${point.x}, ${point.y})`);
-    indicator.setAttribute('pointer-events', 'none');
+    indicator.setAttribute("transform", `translate(${point.x}, ${point.y})`);
+    indicator.setAttribute("pointer-events", "none");
   }, [xPosition]);
 
   return { indicatorRef, pathRef };

@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2024": true
+  },
+  "globals": {
+    "afterAll": "readonly",
+    "afterEach": "readonly",
+    "beforeAll": "readonly",
+    "beforeEach": "readonly",
+    "describe": "readonly",
+    "expect": "readonly",
+    "it": "readonly",
+    "test": "readonly",
+    "vi": "readonly"
+  },
+  "rules": {
+    "complexity": "off",
+    "react/no-array-index-key": "warn",
+    "jsx-a11y/role-has-required-aria-props": "warn"
+  },
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "coverage",
+    "*.config.*",
+    ".storybook",
+    ".changeset"
+  ]
+}

@@ -1,18 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Note } from '@/storybook/components/note/note';
+import { Note } from "@/storybook/components/note/note";
 
-import { LineChartPath } from '../../../fragments/lineChartPath';
-import { LineChart } from '../../../lineChart';
-import type { LineChartPathProps } from '../../../lineChart.type';
-import { PROJECTION_DEMO_DATA, SUBCOMPONENT_DEMO_DATA } from '../../templates/data';
-import { pathArgTypes } from './path.argtypes';
+import { LineChartPath } from "../../../fragments/lineChartPath";
+import { LineChart } from "../../../lineChart";
+import type { LineChartPathProps } from "../../../lineChart.type";
+import { PROJECTION_DEMO_DATA, SUBCOMPONENT_DEMO_DATA } from "../../templates/data";
+import { pathArgTypes } from "./path.argtypes";
 
 const meta = {
   argTypes: pathArgTypes(),
   component: LineChartPath,
-  tags: ['autodocs'],
-  title: 'Charts/LineChart/Child Components/LineChartPath',
+  tags: ["autodocs"],
+  title: "Charts/LineChart/Child Components/LineChartPath",
 } satisfies Meta<typeof LineChartPath>;
 
 export default meta;
@@ -20,127 +20,127 @@ type Story = StoryObj<typeof meta>;
 
 export const PathCustomization: Story = {
   args: {
-    'aria-hidden': false,
+    "aria-hidden": false,
 
     // === ACCESSIBILITY ===
-    'aria-label': 'Data trend line',
+    "aria-label": "Data trend line",
 
-    'classNames': '',
+    classNames: "",
 
-    'closestClick': false,
+    closestClick: false,
 
     // === PATH BEHAVIOR ===
-    'curved': true,
+    curved: true,
     // === TESTING ===
-    'data-testid': 'line-path',
+    "data-testid": "line-path",
     // === PATH CORE PROPERTIES ===
-    'dataKey': 'y',
-    'fill': '#fabada', // Required for gradient to be visible
-    'fillOpacity': 0.8,
-    'fillRule': 'nonzero',
+    dataKey: "y",
+    fill: "#fabada", // Required for gradient to be visible
+    fillOpacity: 0.8,
+    fillRule: "nonzero",
     // === ADVANCED CONFIGURATION OBJECTS ===
-    'gradient': '180, #fabada 0%, #FFF 100%', // Vertical fade from fabada to white
-    'hoverConfig': {
-      fill: '#15bedc89',
+    gradient: "180, #fabada 0%, #FFF 100%", // Vertical fade from fabada to white
+    hoverConfig: {
+      fill: "#15bedc89",
       fillOpacity: 1,
-      fillRule: 'nonzero',
+      fillRule: "nonzero",
       opacity: 1,
-      orientation: '',
-      rotate: '',
-      stroke: '#0078D4',
-      strokeDasharray: '',
-      strokeDashoffset: '',
-      strokeLinecap: 'butt',
-      strokeLinejoin: 'miter',
+      orientation: "",
+      rotate: "",
+      stroke: "#0078D4",
+      strokeDasharray: "",
+      strokeDashoffset: "",
+      strokeLinecap: "butt",
+      strokeLinejoin: "miter",
       strokeMiterlimit: 4,
       strokeOpacity: 1,
       strokeWidth: 1,
-      transform: '',
-      visibility: 'visible',
+      transform: "",
+      visibility: "visible",
     },
 
     // === INTERACTIVE FEATURES ===
-    'indicatorConfig': {
+    indicatorConfig: {
       autoClick: false,
-      className: '',
-      fill: '#0078D4',
+      className: "",
+      fill: "#0078D4",
       fillOpacity: 1,
       haloConfig: {
-        fill: '',
+        fill: "",
         fillOpacity: 0,
         opacity: 0,
-        stroke: '',
+        stroke: "",
         strokeWidth: 0,
       },
       hasHalo: false,
-      id: '',
+      id: "",
       lineIndicator: {
-        ariaLabel: '',
-        className: '',
+        ariaLabel: "",
+        className: "",
         opacity: 1,
-        stroke: '#666',
-        strokeDasharray: '',
+        stroke: "#666",
+        strokeDasharray: "",
         strokeDashoffset: 0,
-        strokeLinecap: 'butt',
-        strokeLinejoin: 'miter',
+        strokeLinecap: "butt",
+        strokeLinejoin: "miter",
         strokeOpacity: 1,
         strokeWidth: 0.5,
         tabIndex: -1,
-        transform: '',
+        transform: "",
       },
       opacity: 1,
       size: 3,
-      stroke: '#fff',
+      stroke: "#fff",
       strokeWidth: 0.5,
       tabIndex: -1,
-      type: 'circle',
+      type: "circle",
     },
 
     // === NODE CONFIGURATION (Required for closestClick and autoClick to work) ===
-    'nodeConfig': {
-      className: '',
-      fill: '#0078D4',
+    nodeConfig: {
+      className: "",
+      fill: "#0078D4",
       fillOpacity: 1,
       hasHalo: false,
-      id: '',
+      id: "",
       onClick: undefined,
       opacity: 1,
       size: 3,
-      stroke: '#fff',
+      stroke: "#fff",
       strokeWidth: 0.5,
       tabIndex: -1,
-      type: 'circle',
+      type: "circle",
     },
 
-    'role': 'img',
+    role: "img",
 
-    'shadowSvgConfig': {
+    shadowSvgConfig: {
       dx: 1,
       dy: 1,
-      floodColor: '#000000',
+      floodColor: "#000000",
       floodOpacity: 0.3,
       stdDeviation: 2,
     },
 
     // === VISUAL STYLING ===
-    'stroke': '#0078D4',
+    stroke: "#0078D4",
 
     // Direct string input for dash patterns like "5,5", "2,2", etc.
     // Example: 5px dash + 3px gap
-    'strokeDasharray': '5,3',
+    strokeDasharray: "5,3",
 
-    'strokeLinecap': 'butt',
+    strokeLinecap: "butt",
 
-    'strokeLinejoin': 'miter',
+    strokeLinejoin: "miter",
 
-    'strokeOpacity': 1,
-    'strokeWidth': 1,
-    'tabIndex': 0,
-    'title': '',
+    strokeOpacity: 1,
+    strokeWidth: 1,
+    tabIndex: 0,
+    title: "",
 
-    'transform': '', // Example: 'translate(0, -5)' to move up 5px
+    transform: "", // Example: 'translate(0, -5)' to move up 5px
 
-    'visibility': 'visible',
+    visibility: "visible",
   },
 
   decorators: [
@@ -170,7 +170,7 @@ export const PathCustomization: Story = {
             </>,
             <>
               • <strong>nodeConfig</strong> - Configure visible nodes with dynamic accessibility
-              labels using template placeholders ({'{{dataKey}}, {{xValue}}, {{yValue}}, {{index}}'}
+              labels using template placeholders ({"{{dataKey}}, {{xValue}}, {{yValue}}, {{index}}"}
               )
             </>,
             <>
@@ -191,9 +191,9 @@ export const PathCustomization: Story = {
             <></>,
             <>
               <strong>Accessibility Template Placeholders:</strong> Node labels support dynamic text
-              replacement using: <code>{'{{dataKey}}'}</code> (data series),{' '}
-              <code>{'{{xValue}}'}</code> (X-axis value), <code>{'{{yValue}}'}</code> (Y-axis
-              value), <code>{'{{index}}'}</code> (1-based point index).
+              replacement using: <code>{"{{dataKey}}"}</code> (data series),{" "}
+              <code>{"{{xValue}}"}</code> (X-axis value), <code>{"{{yValue}}"}</code> (Y-axis
+              value), <code>{"{{index}}"}</code> (1-based point index).
             </>,
             <></>,
             <>
@@ -218,13 +218,13 @@ export const PathCustomization: Story = {
           position="BOTTOM"
           stroke="#666"
           strokeWidth={0.5}
-          tickLine={{ stroke: '#999', strokeWidth: 0.25 }}
+          tickLine={{ stroke: "#999", strokeWidth: 0.25 }}
         />
         <LineChart.YAxis
           position="LEFT"
           stroke="#666"
           strokeWidth={0.5}
-          tickLine={{ stroke: '#999', strokeWidth: 0.25 }}
+          tickLine={{ stroke: "#999", strokeWidth: 0.25 }}
         />
       </LineChart>
     );
@@ -234,79 +234,79 @@ export const PathCustomization: Story = {
 export const PathWithProjections: Story = {
   args: {
     ...PathCustomization.args,
-    'aria-hidden': false,
+    "aria-hidden": false,
     // === ACCESSIBILITY ===
-    'aria-label': 'Data trend line with projections',
-    'classNames': '',
-    'closestClick': false,
-    'curved': true,
+    "aria-label": "Data trend line with projections",
+    classNames: "",
+    closestClick: false,
+    curved: true,
     // === TESTING ===
-    'data-testid': 'line-path-projections',
-    'dataKey': 'y',
-    'fill': 'none',
-    'fillOpacity': 1,
-    'fillRule': 'nonzero',
-    'gradient': '',
-    'lineProjection': {
+    "data-testid": "line-path-projections",
+    dataKey: "y",
+    fill: "none",
+    fillOpacity: 1,
+    fillRule: "nonzero",
+    gradient: "",
+    lineProjection: {
       lower: {
-        fill: 'transparent',
+        fill: "transparent",
         fillOpacity: 1,
-        fillRule: 'nonzero',
-        orientation: '',
-        rotate: '',
-        stroke: '#FFB6C1',
-        strokeDasharray: '4,2',
-        strokeDashoffset: '',
-        strokeLinecap: 'butt',
-        strokeLinejoin: 'miter',
+        fillRule: "nonzero",
+        orientation: "",
+        rotate: "",
+        stroke: "#FFB6C1",
+        strokeDasharray: "4,2",
+        strokeDashoffset: "",
+        strokeLinecap: "butt",
+        strokeLinejoin: "miter",
         strokeMiterlimit: 4,
         strokeOpacity: 0.8,
         strokeWidth: 0.2,
-        transform: '',
-        visibility: 'visible',
+        transform: "",
+        visibility: "visible",
         xProjection: 0,
         yProjection: 10,
       },
-      shapeColor: 'rgba(0, 100, 200, 0.15)',
+      shapeColor: "rgba(0, 100, 200, 0.15)",
       upper: {
-        fill: 'transparent',
+        fill: "transparent",
         fillOpacity: 1,
-        fillRule: 'nonzero',
-        orientation: '',
-        rotate: '',
-        stroke: '#90EE90',
-        strokeDasharray: '4,2',
-        strokeDashoffset: '',
-        strokeLinecap: 'butt',
-        strokeLinejoin: 'miter',
+        fillRule: "nonzero",
+        orientation: "",
+        rotate: "",
+        stroke: "#90EE90",
+        strokeDasharray: "4,2",
+        strokeDashoffset: "",
+        strokeLinecap: "butt",
+        strokeLinejoin: "miter",
         strokeMiterlimit: 4,
         strokeOpacity: 0.8,
         strokeWidth: 0.2,
-        transform: '',
-        visibility: 'visible',
+        transform: "",
+        visibility: "visible",
         xProjection: 0,
         yProjection: 10,
       },
     },
-    'role': 'img',
-    'shadowSvgConfig': {
+    role: "img",
+    shadowSvgConfig: {
       dx: 1,
       dy: 1,
-      floodColor: '#000000',
+      floodColor: "#000000",
       floodOpacity: 0.3,
       stdDeviation: 2,
     },
-    'stroke': '#e19c13ff',
-    'strokeDasharray': '', // Solid main line, projections have their own dash patterns
+    stroke: "#e19c13ff",
+    strokeDasharray: "", // Solid main line, projections have their own dash patterns
 
-    'strokeLinecap': 'butt',
-    'strokeLinejoin': 'miter',
-    'strokeOpacity': 1,
-    'strokeWidth': 0.5,
-    'tabIndex': 0,
-    'title': 'Line chart with upper and lower projection bounds',
-    'transform': '',
-    'visibility': 'visible',
+    strokeLinecap: "butt",
+    strokeLinejoin: "miter",
+    strokeOpacity: 1,
+    strokeWidth: 0.5,
+    tabIndex: 0,
+    title: "Line chart with upper and lower projection bounds",
+    transform: "",
+    visibility: "visible",
   },
 
   decorators: [

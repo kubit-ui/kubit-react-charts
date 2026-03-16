@@ -1,5 +1,5 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
-import type { LineChartContextType } from '../lineChart.type';
+import type { LineChartContextType } from "../lineChart.type";
 
 export const LineChartContext = createContext({} as LineChartContextType);

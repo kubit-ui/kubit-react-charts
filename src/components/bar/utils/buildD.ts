@@ -1,6 +1,6 @@
-import { BarOrientation, type BarProps } from '../bar.type';
+import { BarOrientation, type BarProps } from "../bar.type";
 
-type GetSegmentProps = Omit<BarProps, 'barConfig' | 'order' | 'extraSpacing'> & {
+type GetSegmentProps = Omit<BarProps, "barConfig" | "order" | "extraSpacing"> & {
   barWidth: number;
   order: number;
   extraSpacing: number;
@@ -65,7 +65,7 @@ export const buildD = ({
 }: GetSegmentProps): string => {
   // declare the variables for the path
   let start, draw1, draw2, draw3;
-  let end = 'Z';
+  let end = "Z";
   // get the reference for the start of the draw
   const startReference = locateFromPosition({
     barWidth,

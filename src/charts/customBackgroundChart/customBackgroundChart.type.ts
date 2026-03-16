@@ -1,5 +1,5 @@
-import type { PlotProps } from '@/components/plot/plot.types';
-import type { ChartError, ChartErrorCollection, ErrorType } from '@/types/errors.type';
+import type { PlotProps } from "@/components/plot/plot.types";
+import type { ChartError, ChartErrorCollection, ErrorType } from "@/types/errors.type";
 
 export interface CustomBackgroundDataPoint<T = number> {
   x: number;
@@ -40,8 +40,10 @@ export interface CustomBackgroundChartProps<T = number> {
   onKeyUp?: (event: React.KeyboardEvent<SVGSVGElement>) => void;
 }
 
-export interface CustomBackgroundChartPlotProps<T = number>
-  extends Omit<PlotProps<T>, 'position' | 'data' | 'label'> {
+export interface CustomBackgroundChartPlotProps<T = number> extends Omit<
+  PlotProps<T>,
+  "position" | "data" | "label"
+> {
   dataKey: string;
   /** Supports placeholders: {{dataKey}}, {{name}}, {{value}}, {{x}}, {{y}} */
   ariaLabel?: string;
@@ -52,5 +54,5 @@ export interface CustomBackgroundChartContextType<T = number> {
   data: CustomBackgroundData<T>;
   viewBox: ViewBoxDimensions;
   dataTestId: string;
-  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => void;
+  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => void;
 }

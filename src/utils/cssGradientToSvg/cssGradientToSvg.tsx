@@ -1,5 +1,5 @@
-import { logger } from '../logger/logger';
-import type { GradientStop } from './cssGradientToSvg.types';
+import { logger } from "../logger/logger";
+import type { GradientStop } from "./cssGradientToSvg.types";
 
 /**
  * Converts a CSS linear gradient string into an SVG linear gradient.
@@ -20,27 +20,27 @@ import type { GradientStop } from './cssGradientToSvg.types';
  *          CSS gradient string. If the angle is not supported, it returns an empty
  *          React fragment.
  */
-export const cssGradientToSVG = (cssGradient: string, id = 'gradientePath'): React.JSX.Element => {
-  const parts = cssGradient.split(',').map(part => part.trim());
+export const cssGradientToSVG = (cssGradient: string, id = "gradientePath"): React.JSX.Element => {
+  const parts = cssGradient.split(",").map((part) => part.trim());
   const angle = parseInt(parts[0], 10); // Extract the angle
-  const stops: GradientStop[] = parts.slice(1).map(part => {
-    const [color, offset] = part.split(' ');
+  const stops: GradientStop[] = parts.slice(1).map((part) => {
+    const [color, offset] = part.split(" ");
     return { color, offset };
   });
 
-  const y1 = '0%';
-  let x1 = '0%',
-    x2 = '0%',
-    y2 = '0%';
+  const y1 = "0%";
+  let x1 = "0%",
+    x2 = "0%",
+    y2 = "0%";
   switch (angle) {
     case 180:
-      y2 = '100%';
+      y2 = "100%";
       break;
     case 90:
-      x2 = '100%';
+      x2 = "100%";
       break;
     case 270:
-      x1 = '100%';
+      x1 = "100%";
       break;
     default:
       logger.warn(`Unsupported gradient angle: ${angle}°. Supported angles are 90, 180, 270.`);

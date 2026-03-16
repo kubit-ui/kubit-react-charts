@@ -10,15 +10,16 @@
  */
 export const classNames = (...args: (string | string[] | { [key: string]: boolean })[]): string => {
   return args
-    .flatMap(arg => {
-      if (typeof arg === 'string') {
+    .flatMap((arg) => {
+      if (typeof arg === "string") {
         return arg;
-      } if (Array.isArray(arg)) {
+      }
+      if (Array.isArray(arg)) {
         return arg;
       }
       return Object.entries(arg)
         .filter(([, value]) => value)
         .map(([key]) => key);
     })
-    .join(' ');
+    .join(" ");
 };

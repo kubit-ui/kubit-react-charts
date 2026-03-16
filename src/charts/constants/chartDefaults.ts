@@ -46,9 +46,9 @@ export const BREAK_AXIS_DEFAULTS = {
  */
 export const SHARED_FALLBACK_DATA = {
   /** First fallback primary key value (used for axis labels) */
-  FALLBACK_PKEY_FIRST: '0',
+  FALLBACK_PKEY_FIRST: "0",
   /** Second fallback primary key value (used for axis labels) */
-  FALLBACK_PKEY_SECOND: '1',
+  FALLBACK_PKEY_SECOND: "1",
 } as const;
 
 /**
@@ -66,7 +66,7 @@ export const BAR_CHART_FALLBACK_DATA = {
   /** Default x value for fallback data points */
   DEFAULT_X_VALUE: 0,
   /** Generic secondary key for fallback data when dataKey is needed */
-  FALLBACK_SECONDARY_KEY: 'fallbackData',
+  FALLBACK_SECONDARY_KEY: "fallbackData",
 } as const;
 
 /**
@@ -74,9 +74,9 @@ export const BAR_CHART_FALLBACK_DATA = {
  */
 export const LINE_CHART_FALLBACK_DATA = {
   /** First X value for line chart fallback data */
-  FALLBACK_X_FIRST: '0',
+  FALLBACK_X_FIRST: "0",
   /** Second X value for line chart fallback data */
-  FALLBACK_X_SECOND: '1',
+  FALLBACK_X_SECOND: "1",
   /** First Y value for line chart fallback data */
   FALLBACK_Y_FIRST: 0,
   /** Second Y value for line chart fallback data */
@@ -98,9 +98,9 @@ export const PIE_CHART_DEFAULTS = {
  */
 export const PIE_CHART_FALLBACK_DATA = {
   /** Generic data key for fallback data */
-  FALLBACK_DATA_KEY: 'fallbackSegments',
+  FALLBACK_DATA_KEY: "fallbackSegments",
   /** Default segment name for fallback data */
-  FALLBACK_SEGMENT_NAME: 'fallback',
+  FALLBACK_SEGMENT_NAME: "fallback",
   /** Default segment value for fallback data */
   FALLBACK_SEGMENT_VALUE: 100,
 } as const;

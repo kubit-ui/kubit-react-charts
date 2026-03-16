@@ -1,16 +1,16 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect } from "react";
 
-import { Bar } from '@/components/bar/bar';
-import { BarOrientation } from '@/components/bar/bar.type';
+import { Bar } from "@/components/bar/bar";
+import { BarOrientation } from "@/components/bar/bar.type";
 import {
   buildBarNegativeValueError,
   buildBarValueError,
   buildDataKeyNotFoundError,
-} from '@/utils/buildErrors/buildErrors';
-import { getPoints } from '@/utils/getPoints/getPoints';
+} from "@/utils/buildErrors/buildErrors";
+import { getPoints } from "@/utils/getPoints/getPoints";
 
-import type { BarChartPathProps } from '../barChart.type';
-import { BarChartContext } from '../context/barChartContext';
+import type { BarChartPathProps } from "../barChart.type";
+import { BarChartContext } from "../context/barChartContext";
 
 /**
  * Extracts the values for a specific key from the dataset
@@ -58,7 +58,7 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
   useEffect(() => {
     // Validate dataKey exists in dataset
     if (hasData && !hasDataKey) {
-      addError?.('BAR_CHART_PATH_ERROR', {
+      addError?.("BAR_CHART_PATH_ERROR", {
         error: buildDataKeyNotFoundError(dataKey),
       });
       return; // Stop validation if dataKey doesn't exist
@@ -66,7 +66,7 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
 
     // Validate bar value is numeric
     if (isNaN(numericYData)) {
-      addError?.('BAR_CHART_PATH_ERROR', {
+      addError?.("BAR_CHART_PATH_ERROR", {
         error: buildBarValueError(yData, dataKey),
       });
       return;
@@ -74,7 +74,7 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
 
     // Validate negative values
     if (numericYData < 0) {
-      addError?.('BAR_CHART_PATH_ERROR', {
+      addError?.("BAR_CHART_PATH_ERROR", {
         error: buildBarNegativeValueError(numericYData, dataKey),
       });
     }
@@ -100,7 +100,7 @@ export const BarChartPath: React.FC<BarChartPathProps> = ({
   // Create hover data object to pass to event handlers
   // For horizontal charts, the numeric value is in xData; for vertical charts, it's in yData
   const numericValue = isVertical ? numericYData : Number(xData);
-  
+
   const hoverData = {
     dataKey,
     dataIdx,

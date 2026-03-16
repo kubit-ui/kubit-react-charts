@@ -1,10 +1,10 @@
-import { type ReactElement, cloneElement, useRef } from 'react';
+import { type ReactElement, cloneElement, useRef } from "react";
 
-import type { FocusConfig } from '@/types/focusConfig.type';
+import type { FocusConfig } from "@/types/focusConfig.type";
 
-import { useFocusRingData } from '../hooks/useFocusRingData';
-import { composeRefs } from '../utils/composeRefs';
-import { FocusRingRenderer } from './FocusRingRenderer';
+import { useFocusRingData } from "../hooks/useFocusRingData";
+import { composeRefs } from "../utils/composeRefs";
+import { FocusRingRenderer } from "./FocusRingRenderer";
 
 export interface FocusRingInlineProps {
   children: ReactElement;
@@ -30,7 +30,7 @@ export interface FocusRingInlineProps {
  */
 export const FocusRingInline: React.FC<FocusRingInlineProps> = ({
   children,
-  dataTestId = 'focus-ring',
+  dataTestId = "focus-ring",
   disabled = false,
   focusConfig,
   isFocused,

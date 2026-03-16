@@ -1,6 +1,6 @@
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
-import { type RenderResult, render as renderTestingLibrary } from '@testing-library/react';
+import { type RenderResult, render as renderTestingLibrary } from "@testing-library/react";
 
 /**
  * Custom render function for React components, with an option to wrap the component in an SVG element.

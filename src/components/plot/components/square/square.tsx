@@ -1,10 +1,10 @@
-import { type ForwardRefRenderFunction, type ForwardedRef, forwardRef } from 'react';
+import { type ForwardRefRenderFunction, type ForwardedRef, forwardRef } from "react";
 
-import type { PlotShapeProps } from '../../plot.types';
+import type { PlotShapeProps } from "../../plot.types";
 
 const SquareComponent: ForwardRefRenderFunction<SVGRectElement, PlotShapeProps> = (
   { dataTestId, position, size, ...props },
-  ref
+  ref,
 ): React.JSX.Element => {
   return (
     <rect
@@ -22,5 +22,5 @@ const SquareComponent: ForwardRefRenderFunction<SVGRectElement, PlotShapeProps> 
 export const Square = forwardRef(SquareComponent) as (
   props: PlotShapeProps & {
     ref?: ForwardedRef<SVGElement>;
-  }
+  },
 ) => React.JSX.Element;

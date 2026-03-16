@@ -1,6 +1,6 @@
-import { createElement } from 'react';
+import { createElement } from "react";
 
-import type { FocusRingRendererProps } from '../focusRing.types';
+import type { FocusRingRendererProps } from "../focusRing.types";
 
 /**
  * Internal component that renders the actual focus ring elements.
@@ -22,11 +22,11 @@ export const FocusRingRenderer: React.FC<FocusRingRendererProps> = ({ dataTestId
     <g className="focus-ring-container" pointerEvents="none">
       {createElement(layers.outerRing.type, {
         ...layers.outerRing.props,
-        'data-testid': `${dataTestId}-focus-outer`,
+        "data-testid": `${dataTestId}-focus-outer`,
       })}
       {createElement(layers.innerRing.type, {
         ...layers.innerRing.props,
-        'data-testid': `${dataTestId}-focus-inner`,
+        "data-testid": `${dataTestId}-focus-inner`,
       })}
     </g>
   );

@@ -1,24 +1,24 @@
-import { getRangeIndices, roundEndIndex, roundStartIndex } from '../indexRounding';
+import { getRangeIndices, roundEndIndex, roundStartIndex } from "../indexRounding";
 
-describe('indexRounding utilities', () => {
-  describe('roundStartIndex', () => {
-    it('should use Math.floor and clamp to bounds', () => {
+describe("indexRounding utilities", () => {
+  describe("roundStartIndex", () => {
+    it("should use Math.floor and clamp to bounds", () => {
       expect(roundStartIndex(1.3, 10)).toBe(1);
       expect(roundStartIndex(-0.5, 10)).toBe(0); // clamp negative
       expect(roundStartIndex(11.5, 10)).toBe(10); // clamp above max
     });
   });
 
-  describe('roundEndIndex', () => {
-    it('should use Math.ceil and clamp to bounds', () => {
+  describe("roundEndIndex", () => {
+    it("should use Math.ceil and clamp to bounds", () => {
       expect(roundEndIndex(1.3, 10)).toBe(2);
       expect(roundEndIndex(-0.5, 10)).toBe(0); // clamp negative
       expect(roundEndIndex(11.5, 10)).toBe(10); // clamp above max
     });
   });
 
-  describe('getRangeIndices', () => {
-    it('should convert fractional range to integer indices', () => {
+  describe("getRangeIndices", () => {
+    it("should convert fractional range to integer indices", () => {
       const result = getRangeIndices({ end: 3.7, start: 1.3 }, 10);
       expect(result).toEqual({
         endIndex: 4, // Math.ceil(3.7)
@@ -26,7 +26,7 @@ describe('indexRounding utilities', () => {
       });
     });
 
-    it('should match the exact logic used in useZoomData.filterData', () => {
+    it("should match the exact logic used in useZoomData.filterData", () => {
       const range = { end: 2.7, start: 1.3 };
       const dataLength = 5;
 

@@ -1,4 +1,4 @@
-import type { BarChartTickValuesAxisProps } from '../barChart.type';
+import type { BarChartTickValuesAxisProps } from "../barChart.type";
 
 /**
  * Retrieves the data values from the given BarTickValuesAxisProps object.

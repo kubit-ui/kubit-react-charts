@@ -1,4 +1,4 @@
-import { Unit } from '@/types/unit.enum';
+import { Unit } from "@/types/unit.enum";
 
 const UNIT_VALUE_REGEX = /^(\d+(\.\d+)?)(px|rem|%)?$/;
 const MATCH_VALUE_INDEX = 1;
@@ -14,7 +14,7 @@ const MATCH_UNIT_INDEX = 3;
  * @throws Will throw an error if the string format is invalid.
  */
 export const parseStringToNumberPx = (value: string | number): number => {
-  if (typeof value === 'number') {
+  if (typeof value === "number") {
     return value;
   }
   //detect if the value is '2px' or '2rem' or '2'

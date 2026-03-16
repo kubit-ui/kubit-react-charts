@@ -1,13 +1,13 @@
-import { type ReactElement, useContext } from 'react';
+import { type ReactElement, useContext } from "react";
 
-import { YAxis } from '@/components/axisChart/yAxis/yAxis';
-import { TickDataUtils } from '@/components/tick/tick.types';
-import { Positions } from '@/types/position.enum';
-import { pickCustomAttributes } from '@/utils/pickCustomAttributes/pickCustomAttributes';
+import { YAxis } from "@/components/axisChart/yAxis/yAxis";
+import { TickDataUtils } from "@/components/tick/tick.types";
+import { Positions } from "@/types/position.enum";
+import { pickCustomAttributes } from "@/utils/pickCustomAttributes/pickCustomAttributes";
 
-import { LineChartContext } from '../context/lineChartContext';
-import type { LineChartYAxisProps } from '../lineChart.type';
-import { getYAxisTextXCoordinate } from '../utils/tickTextPosition';
+import { LineChartContext } from "../context/lineChartContext";
+import type { LineChartYAxisProps } from "../lineChart.type";
+import { getYAxisTextXCoordinate } from "../utils/tickTextPosition";
 
 export const LineChartYAxis: React.FC<LineChartYAxisProps> = ({
   ariaLabel,
@@ -43,13 +43,13 @@ export const LineChartYAxis: React.FC<LineChartYAxisProps> = ({
 
   // Extract custom attributes (aria-*, data-*) and handle deprecated ariaLabel
   const customAttributes = pickCustomAttributes(props);
-  const finalAriaLabel = ariaLabel || props['aria-label'];
+  const finalAriaLabel = ariaLabel || props["aria-label"];
 
   // Merge all props including custom attributes and ariaLabel precedence
   const mergedProps = {
     ...props,
     ...customAttributes,
-    ...(finalAriaLabel && { 'aria-label': finalAriaLabel }),
+    ...(finalAriaLabel && { "aria-label": finalAriaLabel }),
   };
 
   return (

@@ -1,34 +1,34 @@
-import type { ReactElement } from 'react';
+import type { ReactElement } from "react";
 
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
-import { BarChart } from '../../barChart';
-import { COMPARATIVE_DATA } from './data';
+import { BarChart } from "../../barChart";
+import { COMPARATIVE_DATA } from "./data";
 
 const rabbitsBarConfig = {
   barWidth: 3,
   gap: 1,
   singleConfig: [
     {
-      color: 'pink',
+      color: "pink",
       coverage: 45,
-      ['aria-label']:
-        '{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})",
+      role: "img",
     },
     {
-      color: 'red',
+      color: "red",
       coverage: 25,
-      ['aria-label']:
-        '{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})",
+      role: "img",
     },
     {
-      color: 'blue',
+      color: "blue",
       coverage: 30,
-      ['aria-label']:
-        '{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})",
+      role: "img",
     },
   ],
 };
@@ -37,25 +37,25 @@ const dogsBarConfig = {
   gap: 1,
   singleConfig: [
     {
-      color: 'yellow',
+      color: "yellow",
       coverage: 20,
-      ['aria-label']:
-        '{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})",
+      role: "img",
     },
     {
-      color: 'orange',
+      color: "orange",
       coverage: 25,
-      ['aria-label']:
-        '{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})",
+      role: "img",
     },
     {
-      color: 'green',
+      color: "green",
       coverage: 55,
-      ['aria-label']:
-        '{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})",
+      role: "img",
     },
   ],
 };
@@ -64,25 +64,25 @@ const birdsBarConfig = {
   gap: 1,
   singleConfig: [
     {
-      color: 'gray',
+      color: "gray",
       coverage: 10,
-      ['aria-label']:
-        '{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})",
+      role: "img",
     },
     {
-      color: 'grey',
+      color: "grey",
       coverage: 30,
-      ['aria-label']:
-        '{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})",
+      role: "img",
     },
     {
-      color: 'black',
+      color: "black",
       coverage: 60,
-      ['aria-label']:
-        '{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})',
-      role: 'img',
+      ["aria-label"]:
+        "{{yKey}}:{{yData}} - Segment {{index}} - {{coverage}}% of the total ({{xData}})",
+      role: "img",
     },
   ],
 };
@@ -129,7 +129,7 @@ export const AXIS_WITH_HORIZONTAL_BARS = [
     strokeWidth="0.1"
     tickText={{
       fontSize: 1,
-      textAnchor: 'middle',
+      textAnchor: "middle",
     }}
     tickValues={{ numeric: { max: 120, min: -120, step: 30 } }}
   />,
@@ -143,7 +143,7 @@ export const AXIS_WITH_HORIZONTAL_BARS = [
     strokeWidth="0.1"
     tickText={{
       fontSize: 1,
-      textAnchor: 'middle',
+      textAnchor: "middle",
     }}
     tickValues={{ numeric: { max: 2005, min: 2000, step: 1 } }}
   />,

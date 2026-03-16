@@ -1,7 +1,7 @@
-import type { ChartTextProps } from '@/components/chartText/chartText.types';
-import type { LineProps } from '@/components/line/line.types';
-import type { TickData } from '@/components/tick/tick.types';
-import type { Positions } from '@/types/position.enum';
+import type { ChartTextProps } from "@/components/chartText/chartText.types";
+import type { LineProps } from "@/components/line/line.types";
+import type { TickData } from "@/components/tick/tick.types";
+import type { Positions } from "@/types/position.enum";
 
 /**
  * Defines the properties for the XAxis component.
@@ -23,10 +23,10 @@ export interface XAxisProps extends LineProps {
   showTickLines?: boolean;
   tickLine?: LineProps;
   tickLineHover?: LineProps;
-  tickText?: Omit<ChartTextProps, 'dx' | 'dy' | 'transform'> & {
+  tickText?: Omit<ChartTextProps, "dx" | "dy" | "transform"> & {
     top?: number;
     bottom?: number;
-    transform?: 'rotate';
+    transform?: "rotate";
   };
 
   canvasWidth?: number;

@@ -1,20 +1,20 @@
-import { Children, type ReactElement, type ReactNode, isValidElement } from 'react';
+import { Children, type ReactElement, type ReactNode, isValidElement } from "react";
 
-import { BarOrientation } from '@/components/bar/bar.type';
-import { Positions } from '@/types/position.enum';
-import { buildTickValues } from '@/utils/buildTickValues/buildTickValues';
-import { textBound } from '@/utils/textBound/textBound';
+import { BarOrientation } from "@/components/bar/bar.type";
+import { Positions } from "@/types/position.enum";
+import { buildTickValues } from "@/utils/buildTickValues/buildTickValues";
+import { textBound } from "@/utils/textBound/textBound";
 
 import type {
   BarChartChildrenType,
   BarChartExtraSpacings,
   BarChartIDataPoint,
-} from '../barChart.type';
-import { BarChartPath } from '../fragments/barChartPath';
-import { BarChartXAxis } from '../fragments/barChartXAxis';
-import { BarChartYAxis } from '../fragments/barChartYAxis';
-import { getBarDataValues } from './getBarDataValue';
-import { getBarKeyRoundMaxValue } from './getRoundedBarMaxValue';
+} from "../barChart.type";
+import { BarChartPath } from "../fragments/barChartPath";
+import { BarChartXAxis } from "../fragments/barChartXAxis";
+import { BarChartYAxis } from "../fragments/barChartYAxis";
+import { getBarDataValues } from "./getBarDataValue";
+import { getBarKeyRoundMaxValue } from "./getRoundedBarMaxValue";
 
 const handleBarChartXAxis = (
   child: ReactElement,
@@ -24,7 +24,7 @@ const handleBarChartXAxis = (
   barsSpacing: number,
   viewBox: string,
   canvasHeight: number,
-  canvasWidth: number
+  canvasWidth: number,
 ) => {
   const { position, tickText, tickValues, valueFormatter } = child.props as any;
   const fontSize = tickText?.fontSize ?? 0;
@@ -32,10 +32,10 @@ const handleBarChartXAxis = (
 
   const xData = tickValues
     ? (getBarDataValues(tickValues) as string[])
-    : (data.map(d => d[pKey]) as string[]);
+    : (data.map((d) => d[pKey]) as string[]);
   const formattedXData: string[] = valueFormatter ? xData.map(valueFormatter) : xData;
   const fontSpacing = textBound({
-    bound: 'width',
+    bound: "width",
     data: formattedXData,
     fontSize,
     svgHeight: `${canvasHeight}`,
@@ -70,7 +70,7 @@ const handleBarChartYAxis = (
   barSpacing: number,
   viewBox: string,
   canvasHeight: number,
-  canvasWidth: number
+  canvasWidth: number,
 ) => {
   const { position, tickText, tickValues, valueFormatter } = child.props as any;
   const fontSize = tickText?.fontSize ?? 0;
@@ -84,7 +84,7 @@ const handleBarChartYAxis = (
 
   const securityYSpace = (() => (barSpacing > spaceFontSize ? barSpacing : spaceFontSize))();
   const textWidth = textBound({
-    bound: 'width',
+    bound: "width",
     data: formattedYData,
     fontSize,
     svgHeight: `${canvasHeight}`,
@@ -172,7 +172,7 @@ export const getAxisExtraSpacing = ({
             securitySpace,
             viewBox,
             canvasHeight,
-            canvasWidth
+            canvasWidth,
           ),
         };
       } else if (child.type === BarChartYAxis) {
@@ -187,7 +187,7 @@ export const getAxisExtraSpacing = ({
             securitySpace,
             viewBox,
             canvasHeight,
-            canvasWidth
+            canvasWidth,
           ),
         };
       }

@@ -1,13 +1,13 @@
-import { type FC, type ReactElement, useContext } from 'react';
+import { type FC, type ReactElement, useContext } from "react";
 
-import { XAxis } from '@/components/axisChart/xAxis/xAxis';
-import { TickDataUtils } from '@/components/tick/tick.types';
-import { Positions } from '@/types/position.enum';
-import { getTickTextYCoordinate } from '@/utils/getTickTextCoordinate/getTickTextCoordinates';
-import { pickCustomAttributes } from '@/utils/pickCustomAttributes/pickCustomAttributes';
+import { XAxis } from "@/components/axisChart/xAxis/xAxis";
+import { TickDataUtils } from "@/components/tick/tick.types";
+import { Positions } from "@/types/position.enum";
+import { getTickTextYCoordinate } from "@/utils/getTickTextCoordinate/getTickTextCoordinates";
+import { pickCustomAttributes } from "@/utils/pickCustomAttributes/pickCustomAttributes";
 
-import { LineChartContext } from '../context/lineChartContext';
-import type { LineChartXAxisProps } from '../lineChart.type';
+import { LineChartContext } from "../context/lineChartContext";
+import type { LineChartXAxisProps } from "../lineChart.type";
 
 export const LineChartXAxis: FC<LineChartXAxisProps> = ({
   ariaLabel,
@@ -27,7 +27,7 @@ export const LineChartXAxis: FC<LineChartXAxisProps> = ({
     position,
     coordinates.y1,
     Number(tickText?.fontSize),
-    tickText?.top ?? 0
+    tickText?.top ?? 0,
   );
 
   const tickValues = tickText
@@ -36,13 +36,13 @@ export const LineChartXAxis: FC<LineChartXAxisProps> = ({
 
   // Extract custom attributes (aria-*, data-*) and handle deprecated ariaLabel
   const customAttributes = pickCustomAttributes(props);
-  const finalAriaLabel = ariaLabel || props['aria-label'];
+  const finalAriaLabel = ariaLabel || props["aria-label"];
 
   // Merge all props including custom attributes and ariaLabel precedence
   const mergedProps = {
     ...props,
     ...customAttributes,
-    ...(finalAriaLabel && { 'aria-label': finalAriaLabel }),
+    ...(finalAriaLabel && { "aria-label": finalAriaLabel }),
   };
 
   return (

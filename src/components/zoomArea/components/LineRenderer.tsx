@@ -1,9 +1,9 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 
 /**
  * Default color for lines when no stroke is provided
  */
-const DEFAULT_LINE_COLOR = '#0078D4';
+const DEFAULT_LINE_COLOR = "#0078D4";
 
 /**
  * Line data for rendering

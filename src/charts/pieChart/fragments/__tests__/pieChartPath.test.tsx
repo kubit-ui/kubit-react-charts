@@ -1,50 +1,50 @@
-import { render } from '@testing-library/react';
+import { render } from "@testing-library/react";
 
-import { PieChartContext } from '../../context/pieChartContext';
-import { PieChart } from '../../pieChart';
+import { PieChartContext } from "../../context/pieChartContext";
+import { PieChart } from "../../pieChart";
 
-describe('PieChartPath', () => {
-  it('renders correctly with data', () => {
+describe("PieChartPath", () => {
+  it("renders correctly with data", () => {
     const data = {
       testKey: [
-        { name: '', value: 10 },
-        { name: '', value: 20 },
-        { name: '', value: 30 },
+        { name: "", value: 10 },
+        { name: "", value: 20 },
+        { name: "", value: 30 },
       ],
     };
 
     const { getAllByTestId } = render(
       <PieChartContext.Provider
-        value={{ canvasHeight: 500, canvasWidth: 500, data, dataTestId: 'test' }}
+        value={{ canvasHeight: 500, canvasWidth: 500, data, dataTestId: "test" }}
       >
         <PieChart.Path dataKey="testKey" gap={5} innerRadius={50} radius={100} />
-      </PieChartContext.Provider>
+      </PieChartContext.Provider>,
     );
 
     const segments = getAllByTestId(/^testpath-/);
     expect(segments).toHaveLength(3);
   });
 
-  it('renders nothing when no data', () => {
+  it("renders nothing when no data", () => {
     const data = {};
 
     const { queryByTestId } = render(
       <PieChartContext.Provider
-        value={{ canvasHeight: 500, canvasWidth: 500, data, dataTestId: 'test' }}
+        value={{ canvasHeight: 500, canvasWidth: 500, data, dataTestId: "test" }}
       >
         <PieChart.Path dataKey="testKey" gap={5} innerRadius={50} radius={100} />
-      </PieChartContext.Provider>
+      </PieChartContext.Provider>,
     );
 
     const segment = queryByTestId(/^testpath-/);
     expect(segment).not.toBeInTheDocument();
   });
 
-  it('renders consistent path data after re-render with halfChart enabled', () => {
+  it("renders consistent path data after re-render with halfChart enabled", () => {
     const data = {
       testKey: [
-        { name: 'A', value: 50 },
-        { name: 'B', value: 50 },
+        { name: "A", value: 50 },
+        { name: "B", value: 50 },
       ],
     };
 
@@ -54,16 +54,16 @@ describe('PieChartPath', () => {
           canvasHeight: 100,
           canvasWidth: 200,
           data,
-          dataTestId: 'test',
+          dataTestId: "test",
           halfChart: true,
         }}
       >
         <PieChart.Path dataKey="testKey" gap={3} innerRadius={50} radius={100} />
-      </PieChartContext.Provider>
+      </PieChartContext.Provider>,
     );
 
     const segmentsBefore = getAllByTestId(/^testpath-/);
-    const pathsBefore = segmentsBefore.map(s => s.getAttribute('d'));
+    const pathsBefore = segmentsBefore.map((s) => s.getAttribute("d"));
 
     // Simulate re-render triggered by resolution change (new canvas dimensions)
     rerender(
@@ -72,22 +72,22 @@ describe('PieChartPath', () => {
           canvasHeight: 120,
           canvasWidth: 220,
           data,
-          dataTestId: 'test',
+          dataTestId: "test",
           halfChart: true,
         }}
       >
         <PieChart.Path dataKey="testKey" gap={3} innerRadius={50} radius={100} />
-      </PieChartContext.Provider>
+      </PieChartContext.Provider>,
     );
 
     const segmentsAfter = getAllByTestId(/^testpath-/);
     expect(segmentsAfter).toHaveLength(segmentsBefore.length);
 
     // Verify segments still have valid path data (not empty or undefined)
-    segmentsAfter.forEach(segment => {
-      const d = segment.getAttribute('d');
+    segmentsAfter.forEach((segment) => {
+      const d = segment.getAttribute("d");
       expect(d).toBeTruthy();
-      expect(d).not.toBe('');
+      expect(d).not.toBe("");
     });
 
     // Re-render back to original dimensions should produce same paths
@@ -97,22 +97,22 @@ describe('PieChartPath', () => {
           canvasHeight: 100,
           canvasWidth: 200,
           data,
-          dataTestId: 'test',
+          dataTestId: "test",
           halfChart: true,
         }}
       >
         <PieChart.Path dataKey="testKey" gap={3} innerRadius={50} radius={100} />
-      </PieChartContext.Provider>
+      </PieChartContext.Provider>,
     );
 
     const segmentsFinal = getAllByTestId(/^testpath-/);
-    const pathsFinal = segmentsFinal.map(s => s.getAttribute('d'));
+    const pathsFinal = segmentsFinal.map((s) => s.getAttribute("d"));
     expect(pathsFinal).toEqual(pathsBefore);
   });
 
-  it('renders a single halfChart segment without mirrored singleStroke fallback', () => {
+  it("renders a single halfChart segment without mirrored singleStroke fallback", () => {
     const data = {
-      testKey: [{ name: 'Empty', value: 400, color: '#d9d9d9' }],
+      testKey: [{ name: "Empty", value: 400, color: "#d9d9d9" }],
     };
 
     const { getByTestId } = render(
@@ -121,16 +121,16 @@ describe('PieChartPath', () => {
           canvasHeight: 100,
           canvasWidth: 100,
           data,
-          dataTestId: 'test',
+          dataTestId: "test",
           halfChart: true,
         }}
       >
         <PieChart.Path dataKey="testKey" gap={0} innerRadius={0} radius={50} />
-      </PieChartContext.Provider>
+      </PieChartContext.Provider>,
     );
 
-    expect(getByTestId('testpath-0').getAttribute('d')).toBe(
-      'M 100 100 A 50,50 0 0,0 0, 100 L 50,100 Z'
+    expect(getByTestId("testpath-0").getAttribute("d")).toBe(
+      "M 100 100 A 50,50 0 0,0 0, 100 L 50,100 Z",
     );
   });
 });

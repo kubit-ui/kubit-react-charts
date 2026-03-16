@@ -1,2 +1,2 @@
-export * from './foreignObject';
-export * from './foreignObject.types';
+export * from "./foreignObject";
+export * from "./foreignObject.types";

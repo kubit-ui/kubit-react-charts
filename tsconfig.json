@@ -1,23 +1,28 @@
 {
   "exclude": [
+    "src/**/__mocks__",
+    "src/**/__fixtures__",
+    "src/**/__stories__",
+    "src/**/__tests__",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/**/stories",
     "dist",
-    "node_modules",
-    "**/__tests__/**",
-    "**/*.test.ts",
-    "**/*.test.tsx",
     "vitest.config.ts",
-    "vitest.setup.ts"
+    "vitest.setup.ts",
+    "rslib.config.ts"
   ],
   "compilerOptions": {
-    "noEmit": false,
     "sourceMap": false,
     "target": "ES2020",
-    "module": "es2022",
+    "module": "ESNext",
     "lib": ["DOM", "ES2020", "ES2021", "ES2022"],
     "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": false,
-    "outDir": "./dist/esm",
+    "declarationMap": false,
+    "emitDeclarationOnly": true,
+    "outDir": "./dist/types",
     "rootDir": "./src",
     "strict": true,
     "noImplicitAny": false,
@@ -32,22 +37,22 @@
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
-    "preserveSymlinks": true,
+    "preserveSymlinks": false,
     "jsx": "react-jsx",
     "composite": false,
-    "types": ["vite/client", "vitest/globals"],
-    "typeRoots": ["src/lib/types", "node_modules/@types"],
+    "types": ["vitest/globals", "node", "@testing-library/jest-dom"],
+    "typeRoots": ["src/lib/types", "node_modules/@types", "node_modules"],
     "removeComments": false,
-    "baseUrl": "./src",
     "erasableSyntaxOnly": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.d.ts",
-    "app/src/types/global.d.ts"
+    "src/**/*.d.ts"
   ]
 }

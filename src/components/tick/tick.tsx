@@ -1,9 +1,9 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 
-import { ChartText } from '@/components/chartText/chartText';
-import { Line } from '@/components/line/line';
+import { ChartText } from "@/components/chartText/chartText";
+import { Line } from "@/components/line/line";
 
-import type { TickProps } from './tick.types';
+import type { TickProps } from "./tick.types";
 
 /**
  * Functional component for rendering a tick mark in a chart or graph.

@@ -1,4 +1,4 @@
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
 type GetCoordinates = (params: {
   lineChartXPosition: (typeof Positions)[keyof typeof Positions];

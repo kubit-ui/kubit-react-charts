@@ -1,7 +1,7 @@
-import type { ValueFormatter } from '@/types/valueFormatter.type';
+import type { ValueFormatter } from "@/types/valueFormatter.type";
 
-import type { ChartTextProps } from '../chartText/chartText.types';
-import type { LineProps } from '../line/line.types';
+import type { ChartTextProps } from "../chartText/chartText.types";
+import type { LineProps } from "../line/line.types";
 
 /**
  * Represents the data structure for a single tick mark in a chart or graph.
@@ -32,7 +32,7 @@ export const TickDataUtils = {
    * // formatted: [{ value: '100 €', position: 1 }, { value: '200 €', position: 2 }]
    */
   formatTicksValues: (ticks: TickData[], formatter: ValueFormatter): TickData[] => {
-    return ticks.map(tick => ({
+    return ticks.map((tick) => ({
       ...tick,
       value: formatter(tick.value),
     }));

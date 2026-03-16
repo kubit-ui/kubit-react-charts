@@ -1,9 +1,9 @@
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
-import { getTickTextXCoordinate, getTickTextYCoordinate } from '../getTickTextCoordinates';
+import { getTickTextXCoordinate, getTickTextYCoordinate } from "../getTickTextCoordinates";
 
-describe('getTickTextXCoordinate', () => {
-  it('returns correct value for RIGHT position', () => {
+describe("getTickTextXCoordinate", () => {
+  it("returns correct value for RIGHT position", () => {
     const position = Positions.RIGHT;
     const x = 100;
     const fontSize = 12;
@@ -13,7 +13,7 @@ describe('getTickTextXCoordinate', () => {
     expect(result).toBe(x + fontSize);
   });
 
-  it('returns correct value for non-RIGHT position', () => {
+  it("returns correct value for non-RIGHT position", () => {
     const position = Positions.LEFT; // or any other non-RIGHT position
     const x = 100;
     const fontSize = 12;
@@ -24,8 +24,8 @@ describe('getTickTextXCoordinate', () => {
   });
 });
 
-describe('getTickTextYCoordinate', () => {
-  it('returns correct value for TOP position', () => {
+describe("getTickTextYCoordinate", () => {
+  it("returns correct value for TOP position", () => {
     const position = Positions.TOP;
     const y = 100;
     const fontSize = 12;
@@ -36,7 +36,7 @@ describe('getTickTextYCoordinate', () => {
     expect(result).toBe(fontSize);
   });
 
-  it('returns correct value for non-TOP position', () => {
+  it("returns correct value for non-TOP position", () => {
     const position = Positions.BOTTOM; // or any other non-TOP position
     const y = 100;
     const fontSize = 12;

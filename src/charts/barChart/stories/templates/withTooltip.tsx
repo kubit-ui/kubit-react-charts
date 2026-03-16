@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { BarOrientation } from '@/components/bar/bar.type';
+import { BarOrientation } from "@/components/bar/bar.type";
 
-import { BarChart } from '../../barChart';
-import type { BarHoverData } from '../../barChart.type';
-import { COMPARATIVE_DATA } from './data';
+import { BarChart } from "../../barChart";
+import type { BarHoverData } from "../../barChart.type";
+import { COMPARATIVE_DATA } from "./data";
 
 /**
  * Example demonstrating how to implement tooltips with BarChart
- * 
+ *
  * This component shows how to:
  * - Track hover state for individual bars
  * - Display contextual information in a tooltip
@@ -30,7 +30,7 @@ export const BarChartWithTooltip = (): React.ReactElement => {
 
   const handleBarMouseEnter = (
     event: React.MouseEvent<SVGPathElement, MouseEvent>,
-    data: BarHoverData
+    data: BarHoverData,
   ) => {
     setTooltip({
       visible: true,
@@ -50,7 +50,7 @@ export const BarChartWithTooltip = (): React.ReactElement => {
   };
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '500px' }}>
+    <div style={{ position: "relative", width: "100%", height: "500px" }}>
       <BarChart
         data={COMPARATIVE_DATA}
         gapBetweenBars={1}
@@ -64,9 +64,9 @@ export const BarChartWithTooltip = (): React.ReactElement => {
             barWidth: 6,
             singleConfig: [
               {
-                color: '#FF6B6B',
+                color: "#FF6B6B",
                 coverage: 1,
-                'aria-label': 'Birds data',
+                "aria-label": "Birds data",
               },
             ],
           }}
@@ -80,9 +80,9 @@ export const BarChartWithTooltip = (): React.ReactElement => {
             barWidth: 6,
             singleConfig: [
               {
-                color: '#4ECDC4',
+                color: "#4ECDC4",
                 coverage: 1,
-                'aria-label': 'Dogs data',
+                "aria-label": "Dogs data",
               },
             ],
           }}
@@ -96,9 +96,9 @@ export const BarChartWithTooltip = (): React.ReactElement => {
             barWidth: 6,
             singleConfig: [
               {
-                color: '#95E1D3',
+                color: "#95E1D3",
                 coverage: 1,
-                'aria-label': 'Rabbits data',
+                "aria-label": "Rabbits data",
               },
             ],
           }}
@@ -122,30 +122,30 @@ export const BarChartWithTooltip = (): React.ReactElement => {
       {tooltip.visible && tooltip.data && (
         <div
           style={{
-            position: 'fixed',
+            position: "fixed",
             left: tooltip.x + 10,
             top: tooltip.y - 10,
-            backgroundColor: 'rgba(0, 0, 0, 0.85)',
-            color: 'white',
-            padding: '12px 16px',
-            borderRadius: '8px',
-            fontSize: '14px',
-            pointerEvents: 'none',
+            backgroundColor: "rgba(0, 0, 0, 0.85)",
+            color: "white",
+            padding: "12px 16px",
+            borderRadius: "8px",
+            fontSize: "14px",
+            pointerEvents: "none",
             zIndex: 1000,
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-            minWidth: '150px',
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+            minWidth: "150px",
           }}
         >
-          <div style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '16px' }}>
+          <div style={{ fontWeight: "bold", marginBottom: "8px", fontSize: "16px" }}>
             {tooltip.data.dataKey.charAt(0).toUpperCase() + tooltip.data.dataKey.slice(1)}
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px' }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
             <span style={{ opacity: 0.8 }}>Year:</span>
-            <span style={{ fontWeight: 'bold' }}>{tooltip.data.xData}</span>
+            <span style={{ fontWeight: "bold" }}>{tooltip.data.xData}</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px' }}>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: "16px" }}>
             <span style={{ opacity: 0.8 }}>Count:</span>
-            <span style={{ fontWeight: 'bold' }}>{tooltip.data.value}</span>
+            <span style={{ fontWeight: "bold" }}>{tooltip.data.value}</span>
           </div>
         </div>
       )}
@@ -160,7 +160,7 @@ export const BarChartHorizontalWithTooltip = (): React.ReactElement => {
   const [hoveredBar, setHoveredBar] = useState<BarHoverData | null>(null);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '500px' }}>
+    <div style={{ position: "relative", width: "100%", height: "500px" }}>
       <BarChart
         data={COMPARATIVE_DATA}
         gapBetweenBars={1}
@@ -174,7 +174,7 @@ export const BarChartHorizontalWithTooltip = (): React.ReactElement => {
             barWidth: 6,
             singleConfig: [
               {
-                color: '#FF6B6B',
+                color: "#FF6B6B",
                 coverage: 1,
               },
             ],
@@ -189,7 +189,7 @@ export const BarChartHorizontalWithTooltip = (): React.ReactElement => {
             barWidth: 6,
             singleConfig: [
               {
-                color: '#4ECDC4',
+                color: "#4ECDC4",
                 coverage: 1,
               },
             ],
@@ -204,7 +204,7 @@ export const BarChartHorizontalWithTooltip = (): React.ReactElement => {
             barWidth: 6,
             singleConfig: [
               {
-                color: '#95E1D3',
+                color: "#95E1D3",
                 coverage: 1,
               },
             ],
@@ -228,37 +228,35 @@ export const BarChartHorizontalWithTooltip = (): React.ReactElement => {
       {/* Info Panel showing hovered bar data */}
       <div
         style={{
-          position: 'absolute',
-          top: '20px',
-          right: '20px',
-          backgroundColor: 'white',
-          border: '2px solid #ddd',
-          borderRadius: '8px',
-          padding: '16px',
-          minWidth: '200px',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          backgroundColor: "white",
+          border: "2px solid #ddd",
+          borderRadius: "8px",
+          padding: "16px",
+          minWidth: "200px",
+          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <h3 style={{ margin: '0 0 12px 0', fontSize: '16px', color: '#333' }}>
-          Bar Information
-        </h3>
+        <h3 style={{ margin: "0 0 12px 0", fontSize: "16px", color: "#333" }}>Bar Information</h3>
         {hoveredBar ? (
-          <div style={{ fontSize: '14px' }}>
-            <div style={{ marginBottom: '8px' }}>
+          <div style={{ fontSize: "14px" }}>
+            <div style={{ marginBottom: "8px" }}>
               <strong>Category:</strong> {hoveredBar.dataKey}
             </div>
-            <div style={{ marginBottom: '8px' }}>
+            <div style={{ marginBottom: "8px" }}>
               <strong>Year:</strong> {hoveredBar.yData}
             </div>
-            <div style={{ marginBottom: '8px' }}>
+            <div style={{ marginBottom: "8px" }}>
               <strong>Value:</strong> {hoveredBar.value}
             </div>
-            <div style={{ fontSize: '12px', color: '#666', marginTop: '12px' }}>
+            <div style={{ fontSize: "12px", color: "#666", marginTop: "12px" }}>
               <em>Hover over bars to see details</em>
             </div>
           </div>
         ) : (
-          <div style={{ fontSize: '14px', color: '#666', fontStyle: 'italic' }}>
+          <div style={{ fontSize: "14px", color: "#666", fontStyle: "italic" }}>
             Hover over a bar to see details
           </div>
         )}

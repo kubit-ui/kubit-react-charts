@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-const DEFAULT_PREFIX = '$component$';
+const DEFAULT_PREFIX = "$component$";
 const uniqueId = {};
 
 const generateUniqueId = (prefix: string): number => {

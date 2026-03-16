@@ -1,18 +1,18 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
 
-import { Note } from '@/storybook/components/note/note';
+import { Note } from "@/storybook/components/note/note";
 
-import { ZoomArea } from '../zoomArea';
-import type { IZoomAreaDataPoint, ZoomAreaProps } from '../zoomArea.type';
-import { argtypes } from './argtypes';
-import { COMPLEX_DATA, SAMPLE_DATA } from './data';
+import { ZoomArea } from "../zoomArea";
+import type { IZoomAreaDataPoint, ZoomAreaProps } from "../zoomArea.type";
+import { argtypes } from "./argtypes";
+import { COMPLEX_DATA, SAMPLE_DATA } from "./data";
 
 const meta = {
   argTypes: argtypes(),
   component: ZoomArea,
-  tags: ['autodocs'],
-  title: 'Components/ZoomArea',
+  tags: ["autodocs"],
+  title: "Components/ZoomArea",
 } satisfies Meta<typeof ZoomArea>;
 
 export default meta;
@@ -20,8 +20,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const defaultArgs: ZoomAreaProps = {
-  ariaLabel: 'Zoom area chart',
-  caption: 'Interactive zoom area for data selection',
+  ariaLabel: "Zoom area chart",
+  caption: "Interactive zoom area for data selection",
   data: SAMPLE_DATA,
   focusConfig: {
     gap: undefined,
@@ -43,7 +43,7 @@ const defaultArgs: ZoomAreaProps = {
     verticalLineStroke: undefined,
     verticalLineStrokeWidth: undefined,
   },
-  height: '60',
+  height: "60",
   initialRange: { end: 8, start: 2 },
   interactionConfig: {
     keyboardFastStep: undefined,
@@ -53,26 +53,26 @@ const defaultArgs: ZoomAreaProps = {
   lines: [
     {
       curved: false,
-      dataKey: 'main-line',
-      fill: '#0078D4',
+      dataKey: "main-line",
+      fill: "#0078D4",
       fillOpacity: 0.2,
-      stroke: '#0078D4',
+      stroke: "#0078D4",
       strokeWidth: 1,
-      yKey: 'value',
+      yKey: "value",
     },
   ],
   screenReaderTextConfig: {
-    endHandler: 'Custom screenreader {{endValue}}',
-    selectionArea: 'Custom screenreader from {{startValue}} to {{endValue}}',
-    startHandler: 'Custom screenreader {{startValue}}',
+    endHandler: "Custom screenreader {{endValue}}",
+    selectionArea: "Custom screenreader from {{startValue}} to {{endValue}}",
+    startHandler: "Custom screenreader {{startValue}}",
   },
   selectionConfig: {
     fill: undefined,
     fillOpacity: undefined,
     hideOverlayOnFullRange: undefined,
   },
-  width: '60%',
-  xKey: 'year',
+  width: "60%",
+  xKey: "year",
 };
 
 export const Basic: Story = {
@@ -95,19 +95,19 @@ export const Basic: Story = {
                   handlers or selection area rectangle for precise control.
                 </li>
                 <li key="data-callback">
-                  The component{' '}
+                  The component{" "}
                   <strong>
                     automatically returns filtered data on its <code>onDataChange</code> callback
-                  </strong>{' '}
+                  </strong>{" "}
                   when range changes and provides accessibility features.
                 </li>
                 <li key="responsive-behaviour">
-                  Define responsive dimensions by setting percentage values for <code>width</code>{' '}
+                  Define responsive dimensions by setting percentage values for <code>width</code>{" "}
                   and <code>height</code> props, no need to use <code>canvasConfig</code>
                 </li>
                 <li key="screenreader-custom">
-                  Define <strong>custom screenreader text</strong> by setting the{' '}
-                  <code>screenReaderTextConfig</code> prop with <code>startHandler</code>,{' '}
+                  Define <strong>custom screenreader text</strong> by setting the{" "}
+                  <code>screenReaderTextConfig</code> prop with <code>startHandler</code>,{" "}
                   <code>endHandler</code>, and <code>selectionArea</code> keys.
                 </li>
               </ul>,
@@ -124,37 +124,37 @@ export const Basic: Story = {
 export const Advanced: Story = {
   args: {
     ...defaultArgs,
-    caption: 'Advanced ZoomArea with multiple data series and mixed line styles',
+    caption: "Advanced ZoomArea with multiple data series and mixed line styles",
     data: COMPLEX_DATA,
     initialRange: { end: 9, start: 1 },
     lines: [
       {
         curved: true,
-        dataKey: 'sales-line',
-        fill: '#0078D4',
+        dataKey: "sales-line",
+        fill: "#0078D4",
         fillOpacity: 0.15,
-        stroke: '#0078D4',
+        stroke: "#0078D4",
         strokeWidth: 2,
-        yKey: 'sales',
+        yKey: "sales",
       },
       {
-        dataKey: 'profit-line',
-        fill: '#E74C3C',
+        dataKey: "profit-line",
+        fill: "#E74C3C",
         fillOpacity: 0.1,
-        stroke: '#E74C3C',
+        stroke: "#E74C3C",
         strokeWidth: 2,
-        yKey: 'profit',
+        yKey: "profit",
       },
       {
-        dataKey: 'expenses-line',
-        fill: '#F1C40F',
+        dataKey: "expenses-line",
+        fill: "#F1C40F",
         fillOpacity: 0.08,
-        stroke: '#F1C40F',
+        stroke: "#F1C40F",
         strokeWidth: 2,
-        yKey: 'expenses',
+        yKey: "expenses",
       },
     ],
-    xKey: 'month',
+    xKey: "month",
   },
   decorators: [
     (Story: React.ComponentType): React.JSX.Element => {
@@ -208,16 +208,16 @@ const InteractiveZoomArea = () => {
   // Calculate display info from filtered data
   const startYear = currentData[0]?.year;
   const endYear = currentData[currentData.length - 1]?.year;
-  const selectedValues = currentData.map(d => d.value);
+  const selectedValues = currentData.map((d) => d.value);
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: "20px" }}>
       <h3>Interactive Zoom Area</h3>
       <p>
         Filtered range: {startYear} to {endYear}
       </p>
-      <p>Selected data points: {currentData.map(d => d.year).join(', ')}</p>
-      <p>Selected values: {selectedValues.join(', ')}</p>
+      <p>Selected data points: {currentData.map((d) => d.year).join(", ")}</p>
+      <p>Selected values: {selectedValues.join(", ")}</p>
 
       <ZoomArea
         ariaLabel="Interactive zoom area chart"
@@ -227,12 +227,12 @@ const InteractiveZoomArea = () => {
         initialRange={{ end: 8, start: 2 }}
         lines={[
           {
-            dataKey: 'main-line',
-            fill: '#0078D4',
+            dataKey: "main-line",
+            fill: "#0078D4",
             fillOpacity: 0.2,
-            stroke: '#0078D4',
+            stroke: "#0078D4",
             strokeWidth: 1,
-            yKey: 'value',
+            yKey: "value",
           },
         ]}
         width="70%"
@@ -262,7 +262,7 @@ export const Interactive: Story = {
                 </li>
                 <li key="interactive-callback-line-chart">
                   Pass filtered data directly to the chart components <code>data</code> prop. You
-                  can see an integration with charts in{' '}
+                  can see an integration with charts in{" "}
                   <strong>LineChart With ZoomArea story</strong>
                 </li>
               </ul>,
@@ -331,42 +331,42 @@ const InteractiveZoomArea = () => {
 export const Customization: Story = {
   args: {
     ...defaultArgs,
-    backgroundColor: '#F8F9FA', // Light background to showcase the chart
-    caption: 'Fully customized ZoomArea with purple theme',
+    backgroundColor: "#F8F9FA", // Light background to showcase the chart
+    caption: "Fully customized ZoomArea with purple theme",
     // Custom focus ring styling for all focusable elements
     focusConfig: {
       gap: 5,
-      innerColor: '#FFFFFF',
+      innerColor: "#FFFFFF",
       innerStrokeWidth: 3,
-      outlineColor: '#9B59B6',
+      outlineColor: "#9B59B6",
       outlineStrokeWidth: 3,
     },
     // Custom handler appearance
     handlerConfig: {
-      fill: '#333333',
+      fill: "#333333",
       // Icon customization
-      iconColor: '#949494',
+      iconColor: "#949494",
       radius: 22,
       // Circle customization
-      stroke: '#F5F5F5',
+      stroke: "#F5F5F5",
       strokeWidth: 1,
       // Vertical line customization
-      verticalLineStroke: '#F5F5F5',
+      verticalLineStroke: "#F5F5F5",
       verticalLineStrokeWidth: 4,
     },
     lines: [
       {
-        dataKey: 'purple-line',
-        fill: '#9B59B6',
+        dataKey: "purple-line",
+        fill: "#9B59B6",
         fillOpacity: 0.25,
-        stroke: '#9B59B6', // Custom purple color
+        stroke: "#9B59B6", // Custom purple color
         strokeWidth: 3,
-        yKey: 'value',
+        yKey: "value",
       },
     ],
     // Custom selection area styling
     selectionConfig: {
-      fill: '#9B59B6',
+      fill: "#9B59B6",
       fillOpacity: 0.2,
     },
   },
@@ -380,8 +380,8 @@ export const Customization: Story = {
             heading="🎨 Customization Features"
             text={[
               <span key="customization-features">
-                This example demonstrates <strong>complete visual customization</strong> including{' '}
-                <code>selectionConfig</code>, <code>focusConfig</code>, and{' '}
+                This example demonstrates <strong>complete visual customization</strong> including{" "}
+                <code>selectionConfig</code>, <code>focusConfig</code>, and{" "}
                 <code>handlerConfig</code> properties.
               </span>,
             ]}
@@ -415,7 +415,7 @@ export const CustomInteraction: Story = {
             text={[
               <span key="keyboard-navigation">
                 Use <code>interactionConfig</code> to customize keyboard navigation steps and
-                minimum handler distance. Try <strong>Arrow keys</strong> and{' '}
+                minimum handler distance. Try <strong>Arrow keys</strong> and{" "}
                 <strong>Shift + Arrow keys</strong> for different movement speeds.
               </span>,
             ]}
@@ -440,20 +440,20 @@ export const CustomInteraction: Story = {
 export const OverlayBehavior: Story = {
   args: {
     ...defaultArgs,
-    caption: 'ZoomArea demonstrating conditional overlay visibility',
+    caption: "ZoomArea demonstrating conditional overlay visibility",
     initialRange: { end: defaultArgs.data.length - 1, start: 0 }, // Full range initially
     lines: [
       {
-        dataKey: 'main-line',
-        fill: '#0078D4',
+        dataKey: "main-line",
+        fill: "#0078D4",
         fillOpacity: 0.3,
-        stroke: '#0078D4',
+        stroke: "#0078D4",
         strokeWidth: 2,
-        yKey: 'value',
+        yKey: "value",
       },
     ],
     selectionConfig: {
-      fill: '#FF6B6B',
+      fill: "#FF6B6B",
       fillOpacity: 0.4,
       hideOverlayOnFullRange: true, // Default behavior
     },

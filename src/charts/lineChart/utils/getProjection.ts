@@ -55,7 +55,7 @@ export const getProjection = ({
 }: GetProjectionPropsType): GetProjectionReturnType => {
   const hasProjections = upperProjection || lowerProjection;
   if (points.length === 0 && !hasProjections) {
-    return { shapePath: '' };
+    return { shapePath: "" };
   }
 
   const [firstPoint, ...remainingPoints] = points;
@@ -94,7 +94,7 @@ export const getProjection = ({
       const controlPoint1 = [x1 + dx, y1];
       const controlPoint2 = [x2 - dx, y2];
       return `${data} C ${controlPoint1[0]} ${controlPoint1[1]}, ${controlPoint2[0]} ${controlPoint2[1]}, ${x2} ${y2}`;
-    }, '');
+    }, "");
     if (upPath) {
       upPath += upperData.reduce((data, point, i) => {
         const start = i === 0 ? firstPoint : upperData[i - 1];
@@ -104,7 +104,7 @@ export const getProjection = ({
         const controlPoint1 = [x1 + dx, y1];
         const controlPoint2 = [x2 - dx, y2];
         return `${data} C ${controlPoint1[0]} ${controlPoint1[1]}, ${controlPoint2[0]} ${controlPoint2[1]}, ${x2} ${y2}`;
-      }, '');
+      }, "");
     }
     if (downPath) {
       downPath += lowerData.reverse().reduce((data, point, i) => {
@@ -115,17 +115,17 @@ export const getProjection = ({
         const controlPoint1 = [x1 + dx, y1];
         const controlPoint2 = [x2 - dx, y2];
         return `${data} C ${controlPoint1[0]} ${controlPoint1[1]}, ${controlPoint2[0]} ${controlPoint2[1]}, ${x2} ${y2}`;
-      }, '');
+      }, "");
     }
   } else {
-    shapePath += combinedData.reduce((data, point) => `${data} L ${point?.[0]} ${point?.[1]}`, '');
+    shapePath += combinedData.reduce((data, point) => `${data} L ${point?.[0]} ${point?.[1]}`, "");
     if (upPath) {
-      upPath += upperData.reduce((data, point) => `${data} L ${point[0]} ${point[1]}`, '');
+      upPath += upperData.reduce((data, point) => `${data} L ${point[0]} ${point[1]}`, "");
     }
     if (downPath) {
       downPath += lowerData
         .reverse()
-        .reduce((data, point) => `${data} L ${point[0]} ${point[1]}`, '');
+        .reduce((data, point) => `${data} L ${point[0]} ${point[1]}`, "");
     }
   }
 

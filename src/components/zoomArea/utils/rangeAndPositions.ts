@@ -1,4 +1,4 @@
-import type { ZoomRange } from '../zoomArea.type';
+import type { ZoomRange } from "../zoomArea.type";
 
 /**
  * Range operations and position calculation utilities for ZoomArea
@@ -15,7 +15,7 @@ import type { ZoomRange } from '../zoomArea.type';
 export const calculateHandlerPositions = (
   currentRange: ZoomRange,
   dataLength: number,
-  width: number
+  width: number,
 ): { startX: number; endX: number } => {
   const startX = (currentRange.start / Math.max(1, dataLength - 1)) * width;
   const endX = (currentRange.end / Math.max(1, dataLength - 1)) * width;
@@ -47,7 +47,7 @@ export const mouseToDataIndex = (mouseX: number, width: number, dataLength: numb
 export const clampRange = (
   range: ZoomRange,
   dataLength: number,
-  minDistance: number = 0.1
+  minDistance: number = 0.1,
 ): ZoomRange => {
   const clampedStart = Math.max(0, Math.min(range.start, dataLength - 1 - minDistance));
   const clampedEnd = Math.min(dataLength - 1, Math.max(range.end, clampedStart + minDistance));

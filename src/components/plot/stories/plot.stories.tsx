@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Fragment } from 'react/jsx-runtime';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Fragment } from "react/jsx-runtime";
 
-import { XAxis } from '@/components/axisChart/xAxis/xAxis';
-import { YAxis } from '@/components/axisChart/yAxis/yAxis';
-import { type PlotProps, PlotSize, PlotType } from '@/components/plot/plot.types';
-import { Note } from '@/storybook/components/note/note';
-import { Positions } from '@/types/position.enum';
+import { XAxis } from "@/components/axisChart/xAxis/xAxis";
+import { YAxis } from "@/components/axisChart/yAxis/yAxis";
+import { type PlotProps, PlotSize, PlotType } from "@/components/plot/plot.types";
+import { Note } from "@/storybook/components/note/note";
+import { Positions } from "@/types/position.enum";
 
-import { Plot as PlotStory } from '../plot';
-import { argtypes } from './argtypes';
+import { Plot as PlotStory } from "../plot";
+import { argtypes } from "./argtypes";
 
 // Explicitly typing as Plot<number> to maintain consistency
 const meta = {
@@ -21,8 +21,8 @@ const meta = {
       </svg>
     );
   },
-  tags: ['autodocs'],
-  title: 'Internal Components/Plot',
+  tags: ["autodocs"],
+  title: "Internal Components/Plot",
 } satisfies Meta<typeof PlotStory>;
 
 export default meta;
@@ -40,10 +40,10 @@ type Story = StoryObj<typeof meta> & {
 // and we don't need to be that strict in the stories
 const args: PlotProps<unknown> = {
   data: {
-    category: 'Example',
+    category: "Example",
     value: 42, // This will be a number by our generic <number>
   },
-  fill: '#0074d9',
+  fill: "#0074d9",
   // Complete focusConfig with all available fields for better Storybook controls
   focusConfig: {
     gap: undefined,
@@ -61,13 +61,13 @@ const args: PlotProps<unknown> = {
     stroke: undefined,
     strokeWidth: undefined,
   },
-  label: 'Data point',
+  label: "Data point",
   onClick: () => {
-    alert('Plot clicked');
+    alert("Plot clicked");
   },
   position: { x: 75, y: 75 },
   size: PlotSize.EXTRA_LARGE,
-  stroke: '#FFFFFF',
+  stroke: "#FFFFFF",
   strokeWidth: 1,
   tabIndex: 0,
   type: PlotType.CIRCLE,
@@ -116,7 +116,7 @@ export const Plot: Story = {
                 </ul>
                 <p>
                   <em>💡 Context:</em> Plot acts as a building block for creating complex charts
-                  like scatter plots, bubble charts, and other visualizations. Use{' '}
+                  like scatter plots, bubble charts, and other visualizations. Use{" "}
                   <code>hoverConfig</code> and <code>focusConfig</code> in the controls below to
                   customize interaction states.
                 </p>
@@ -134,7 +134,7 @@ export const Plot: Story = {
 export const ScatterChart: Story = {
   args: {
     ...args,
-    source: 'Scatter Chart with Different Plot Types',
+    source: "Scatter Chart with Different Plot Types",
   },
   decorators: [
     (Story: React.ComponentType): React.JSX.Element => {
@@ -184,20 +184,20 @@ export const ScatterChart: Story = {
   render: () => {
     // Create tick values for the axes
     const xTickValues = [
-      { position: 50, value: '0' },
-      { position: 100, value: '10' },
-      { position: 150, value: '20' },
-      { position: 200, value: '30' },
-      { position: 250, value: '40' },
-      { position: 300, value: '50' },
+      { position: 50, value: "0" },
+      { position: 100, value: "10" },
+      { position: 150, value: "20" },
+      { position: 200, value: "30" },
+      { position: 250, value: "40" },
+      { position: 300, value: "50" },
     ];
 
     const yTickValues = [
-      { position: 50, value: '50' },
-      { position: 100, value: '40' },
-      { position: 150, value: '30' },
-      { position: 200, value: '20' },
-      { position: 250, value: '10' },
+      { position: 50, value: "50" },
+      { position: 100, value: "40" },
+      { position: 150, value: "30" },
+      { position: 200, value: "20" },
+      { position: 250, value: "10" },
     ];
 
     return (
@@ -210,19 +210,19 @@ export const ScatterChart: Story = {
             stroke="#000"
             strokeWidth={2}
             tickLine={{
-              stroke: '#000',
+              stroke: "#000",
               strokeWidth: 1,
               x1: 0,
               x2: -5,
             }}
             tickLineHover={{
-              stroke: '#000',
+              stroke: "#000",
               strokeWidth: 2,
             }}
             tickText={{
-              fill: '#000',
+              fill: "#000",
               fontSize: 12,
-              textAnchor: 'end',
+              textAnchor: "end",
               x: -10,
             }}
             tickValues={yTickValues}
@@ -239,19 +239,19 @@ export const ScatterChart: Story = {
             stroke="#000"
             strokeWidth={2}
             tickLine={{
-              stroke: '#000',
+              stroke: "#000",
               strokeWidth: 1,
               y1: 250,
               y2: 255,
             }}
             tickLineHover={{
-              stroke: '#ff4136',
+              stroke: "#ff4136",
               strokeWidth: 2,
             }}
             tickText={{
-              fill: '#000',
+              fill: "#000",
               fontSize: 12,
-              textAnchor: 'middle',
+              textAnchor: "middle",
               y: 270,
             }}
             tickValues={xTickValues}
@@ -333,7 +333,7 @@ export const ScatterChart: Story = {
 export const MultipleAxesChart: Story = {
   args: {
     ...args,
-    source: 'Chart with Multiple Axes and Different Plot Types',
+    source: "Chart with Multiple Axes and Different Plot Types",
   },
   decorators: [
     (Story: React.ComponentType): React.JSX.Element => {
@@ -405,32 +405,32 @@ export const MultipleAxesChart: Story = {
 
     // Tick values for the axes
     const xTickValues = [
-      { position: 50, value: 'Jan' },
-      { position: 100, value: 'Feb' },
-      { position: 150, value: 'Mar' },
-      { position: 200, value: 'Apr' },
-      { position: 250, value: 'May' },
-      { position: 300, value: 'Jun' },
+      { position: 50, value: "Jan" },
+      { position: 100, value: "Feb" },
+      { position: 150, value: "Mar" },
+      { position: 200, value: "Apr" },
+      { position: 250, value: "May" },
+      { position: 300, value: "Jun" },
     ];
 
     const yTickValuesLeft = [
-      { position: 50, value: '100' },
-      { position: 100, value: '80' },
-      { position: 150, value: '60' },
-      { position: 200, value: '40' },
-      { position: 250, value: '20' },
+      { position: 50, value: "100" },
+      { position: 100, value: "80" },
+      { position: 150, value: "60" },
+      { position: 200, value: "40" },
+      { position: 250, value: "20" },
     ];
 
     const yTickValuesRight = [
-      { position: 50, value: '500' },
-      { position: 100, value: '400' },
-      { position: 150, value: '300' },
-      { position: 200, value: '200' },
-      { position: 250, value: '100' },
+      { position: 50, value: "500" },
+      { position: 100, value: "400" },
+      { position: 150, value: "300" },
+      { position: 200, value: "200" },
+      { position: 250, value: "100" },
     ];
 
     return (
-      <svg height="350" style={{ border: '1px solid #ccc' }} width="450">
+      <svg height="350" style={{ border: "1px solid #ccc" }} width="450">
         <g transform="translate(50, 20)">
           {/* Left Y-Axis */}
           <YAxis
@@ -439,19 +439,19 @@ export const MultipleAxesChart: Story = {
             stroke="#0074d9"
             strokeWidth={2}
             tickLine={{
-              stroke: '#0074d9',
+              stroke: "#0074d9",
               strokeWidth: 1,
               x1: 0,
               x2: -5,
             }}
             tickLineHover={{
-              stroke: '#0074d9',
+              stroke: "#0074d9",
               strokeWidth: 2,
             }}
             tickText={{
-              fill: '#0074d9',
+              fill: "#0074d9",
               fontSize: 12,
-              textAnchor: 'end',
+              textAnchor: "end",
               x: -10,
             }}
             tickValues={yTickValuesLeft}
@@ -469,15 +469,15 @@ export const MultipleAxesChart: Story = {
               stroke="#ff4136"
               strokeWidth={2}
               tickLine={{
-                stroke: '#ff4136',
+                stroke: "#ff4136",
                 strokeWidth: 1,
                 x1: 0,
                 x2: 5,
               }}
               tickText={{
-                fill: '#ff4136',
+                fill: "#ff4136",
                 fontSize: 12,
-                textAnchor: 'start',
+                textAnchor: "start",
                 x: 10,
               }}
               tickValues={yTickValuesRight}
@@ -495,16 +495,16 @@ export const MultipleAxesChart: Story = {
             stroke="#000"
             strokeWidth={2}
             tickLine={{
-              stroke: '#000',
+              stroke: "#000",
               strokeWidth: 1,
               y1: 250,
               y2: 255,
             }}
             tickText={{
-              fill: '#000',
+              fill: "#000",
               fontSize: 12,
-              textAnchor: 'middle',
-              transform: 'rotate',
+              textAnchor: "middle",
+              transform: "rotate",
               y: 270,
             }}
             tickValues={xTickValues}

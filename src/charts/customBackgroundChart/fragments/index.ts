@@ -1,1 +1,1 @@
-export { CustomBackgroundChartPlot } from './customBackgroundChartPlot';
+export { CustomBackgroundChartPlot } from "./customBackgroundChartPlot";

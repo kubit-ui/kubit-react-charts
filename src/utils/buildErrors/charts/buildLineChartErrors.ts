@@ -3,7 +3,7 @@
  */
 export const buildProjectionBoundsError = (upperY: number, lowerY: number): Error =>
   new Error(
-    `Invalid projection bounds - upper projection (${upperY}) must be below lower projection (${lowerY})`
+    `Invalid projection bounds - upper projection (${upperY}) must be below lower projection (${lowerY})`,
   );
 
 /**
@@ -11,7 +11,7 @@ export const buildProjectionBoundsError = (upperY: number, lowerY: number): Erro
  */
 export const buildProjectionXOutOfRangeError = (coordinate: number, isUpper: boolean): Error =>
   new Error(
-    `${isUpper ? 'Upper' : 'Lower'} projection X coordinate (${coordinate}) is outside valid range (0-100)`
+    `${isUpper ? "Upper" : "Lower"} projection X coordinate (${coordinate}) is outside valid range (0-100)`,
   );
 
 /**
@@ -20,8 +20,8 @@ export const buildProjectionXOutOfRangeError = (coordinate: number, isUpper: boo
 export const buildProjectionYOutOfRangeError = (
   coordinate: number,
   svgHeight: number,
-  isUpper: boolean
+  isUpper: boolean,
 ): Error =>
   new Error(
-    `${isUpper ? 'Upper' : 'Lower'} projection Y coordinate (${coordinate}) is outside chart area (0-${svgHeight})`
+    `${isUpper ? "Upper" : "Lower"} projection Y coordinate (${coordinate}) is outside chart area (0-${svgHeight})`,
   );

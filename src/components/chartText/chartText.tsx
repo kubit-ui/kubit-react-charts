@@ -1,6 +1,6 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 
-import type { ChartTextProps } from './chartText.types';
+import type { ChartTextProps } from "./chartText.types";
 
 /**
  * Functional component for rendering SVG text elements in React.
@@ -16,7 +16,7 @@ import type { ChartTextProps } from './chartText.types';
  * @param {React.ReactNode} props.children - The text content to be rendered within the `<text>` element.
  * @returns {React.ReactElement} A React element representing the SVG text.
  */
-export const ChartText: FC<ChartTextProps> = ({ children, className = 'circle', ...props }) => {
+export const ChartText: FC<ChartTextProps> = ({ children, className = "circle", ...props }) => {
   return (
     <text className={className} {...props}>
       {children}

@@ -1,8 +1,8 @@
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook } from "@testing-library/react";
 
-import { useZoomData } from '../useZoomData';
+import { useZoomData } from "../useZoomData";
 
-describe('useZoomData', () => {
+describe("useZoomData", () => {
   const mockData = [
     { id: 1, value: 10 },
     { id: 2, value: 20 },
@@ -11,7 +11,7 @@ describe('useZoomData', () => {
     { id: 5, value: 50 },
   ];
 
-  it('should handle initialization, range changes, and data filtering', () => {
+  it("should handle initialization, range changes, and data filtering", () => {
     const onDataChange = vi.fn();
 
     // Test initialization with default range
@@ -35,7 +35,7 @@ describe('useZoomData', () => {
     ]);
   });
 
-  it('should handle initial range, fractional bounds, and edge cases', () => {
+  it("should handle initial range, fractional bounds, and edge cases", () => {
     const onDataChange = vi.fn();
     const initialRange = { end: 4, start: 2 };
 
@@ -45,7 +45,7 @@ describe('useZoomData', () => {
         data: mockData,
         initialRange,
         onDataChange,
-      })
+      }),
     );
 
     expect(result.current.currentRange).toEqual(initialRange);
@@ -79,7 +79,7 @@ describe('useZoomData', () => {
     expect(onDataChange).toHaveBeenCalledWith(mockData);
   });
 
-  it('should handle special cases and no callback scenarios', () => {
+  it("should handle special cases and no callback scenarios", () => {
     // Test without onDataChange callback
     const { result } = renderHook(() => useZoomData({ data: mockData }));
 
@@ -104,7 +104,7 @@ describe('useZoomData', () => {
     // Test single item data
     const singleData = [{ id: 1, value: 10 }];
     const { result: singleResult } = renderHook(() =>
-      useZoomData({ data: singleData, onDataChange })
+      useZoomData({ data: singleData, onDataChange }),
     );
 
     expect(singleResult.current.currentRange).toEqual({ end: 0, start: 0 });

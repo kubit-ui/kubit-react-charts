@@ -1,5 +1,5 @@
-import { CustomBackgroundChartStructure } from './customBackgroundChartStructure';
-import { CustomBackgroundChartPlot } from './fragments/customBackgroundChartPlot';
+import { CustomBackgroundChartStructure } from "./customBackgroundChartStructure";
+import { CustomBackgroundChartPlot } from "./fragments/customBackgroundChartPlot";
 
 const CustomBackgroundChart = Object.assign(CustomBackgroundChartStructure, {
   Plot: CustomBackgroundChartPlot,
@@ -7,4 +7,4 @@ const CustomBackgroundChart = Object.assign(CustomBackgroundChartStructure, {
 
 export { CustomBackgroundChart };
 
-export * from './customBackgroundChart.type';
+export * from "./customBackgroundChart.type";

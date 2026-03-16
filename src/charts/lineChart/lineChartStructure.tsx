@@ -1,20 +1,20 @@
-import { Children, type FC, type ReactElement, useEffect, useMemo, useState } from 'react';
+import { Children, type FC, type ReactElement, useEffect, useMemo, useState } from "react";
 
-import { SvgContainer } from '@/components/svgContainer/svgContainer';
-import { useId } from '@/hooks/useId/useId';
-import { useResponsiveCanvas } from '@/hooks/useResponsiveCanvas/useResponsiveCanvas';
-import { DefaultCanvasConfig } from '@/types/canvas.type';
-import type { ChartError, ErrorType } from '@/types/errors.type';
-import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
-import { getChildrenAttr } from '@/utils/getChildrenAttr/getChildrenAttr';
-import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
+import { SvgContainer } from "@/components/svgContainer/svgContainer";
+import { useId } from "@/hooks/useId/useId";
+import { useResponsiveCanvas } from "@/hooks/useResponsiveCanvas/useResponsiveCanvas";
+import { DefaultCanvasConfig } from "@/types/canvas.type";
+import type { ChartError, ErrorType } from "@/types/errors.type";
+import { createErrorAccumulator } from "@/utils/createErrorAccumulator";
+import { getChildrenAttr } from "@/utils/getChildrenAttr/getChildrenAttr";
+import { getDataFingerprint } from "@/utils/getDataFingerprint/getDataFingerprint";
 
-import { buildLineContextValue } from './context/buildLineContextValue';
-import { LineChartContext } from './context/lineChartContext';
-import { LineChartXAxis } from './fragments/lineChartXAxis';
-import { LineChartYAxis } from './fragments/lineChartYAxis';
-import { useHover } from './hook/useHover';
-import type { LineChartProps } from './lineChart.type';
+import { buildLineContextValue } from "./context/buildLineContextValue";
+import { LineChartContext } from "./context/lineChartContext";
+import { LineChartXAxis } from "./fragments/lineChartXAxis";
+import { LineChartYAxis } from "./fragments/lineChartYAxis";
+import { useHover } from "./hook/useHover";
+import type { LineChartProps } from "./lineChart.type";
 
 /**
  * Renders a line chart component.
@@ -53,19 +53,19 @@ export const LineChartStructure: FC<LineChartProps> = ({
   children,
   classNames,
   data,
-  dataTestId: dataTestIdProp = 'line-chart',
+  dataTestId: dataTestIdProp = "line-chart",
   getPathArea,
-  height = '100%',
+  height = "100%",
   onErrors,
   role,
   tabIndex,
-  width = '100%',
+  width = "100%",
   xKey,
   ...props
 }): ReactElement => {
   const dataTestId = useId(dataTestIdProp);
 
-  const [childrenYKeys, setChildrenYKey] = useState<string>('');
+  const [childrenYKeys, setChildrenYKey] = useState<string>("");
 
   // Use the responsive canvas hook for dimension management
   const { parsedCanvas, parsedCanvasExtraSpace, viewBox } = useResponsiveCanvas({
@@ -85,7 +85,7 @@ export const LineChartStructure: FC<LineChartProps> = ({
 
   // watch the Y childs keys
   getChildrenAttr({
-    attrName: 'dataKey',
+    attrName: "dataKey",
     children: chidrenWithDefaultAxis,
     originalValue: childrenYKeys,
     updateValue: setChildrenYKey,
@@ -99,7 +99,7 @@ export const LineChartStructure: FC<LineChartProps> = ({
     errorAccumulator.clearErrors();
 
     return buildLineContextValue({
-      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => {
+      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => {
         errorAccumulator.addError(errorType, error);
       },
       canvasHeight: parsedCanvas.height,

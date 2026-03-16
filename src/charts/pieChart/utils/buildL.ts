@@ -18,7 +18,8 @@ export const buildL = ({
 }: BuildLProps): string | undefined => {
   if (singleStroke) {
     return undefined;
-  } if (innerRadius > 0) {
+  }
+  if (innerRadius > 0) {
     return `L ${innerEnd.x},${innerEnd.y}`;
   }
 

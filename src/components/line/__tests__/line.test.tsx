@@ -1,19 +1,19 @@
-import { render } from '@/tests/render/render';
+import { render } from "@/tests/render/render";
 
-import { Line } from '../line';
+import { Line } from "../line";
 
-describe('Line component', () => {
-  it('renders with default props', () => {
+describe("Line component", () => {
+  it("renders with default props", () => {
     const { getByTestId } = render(<Line dataTestId="line" />);
-    const line = getByTestId('line');
+    const line = getByTestId("line");
 
-    expect(line).toHaveClass('line');
+    expect(line).toHaveClass("line");
   });
 
-  it('renders with custom props', () => {
+  it("renders with custom props", () => {
     const { getByTestId } = render(<Line className="custom-line" dataTestId="line" tabIndex={0} />);
-    const line = getByTestId('line');
+    const line = getByTestId("line");
 
-    expect(line).toHaveClass('custom-line');
+    expect(line).toHaveClass("custom-line");
   });
 });

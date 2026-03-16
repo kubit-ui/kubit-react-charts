@@ -1,9 +1,9 @@
-import { screen } from '@testing-library/react';
+import { screen } from "@testing-library/react";
 
-import { BarOrientation } from '@/components/bar/bar.type';
-import { render } from '@/tests/render/render';
+import { BarOrientation } from "@/components/bar/bar.type";
+import { render } from "@/tests/render/render";
 
-import { BarChart } from '../barChart';
+import { BarChart } from "../barChart";
 
 declare global {
   interface SVGElement {
@@ -23,10 +23,10 @@ class ResizeObserverMock {
 }
 
 beforeEach(() => {
-  vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+  vi.stubGlobal("ResizeObserver", ResizeObserverMock);
 });
 
-describe('BarChart component', () => {
+describe("BarChart component", () => {
   beforeEach(() => {
     SVGElement.prototype.getBBox = vi.fn(() => ({
       height: 50,
@@ -39,28 +39,28 @@ describe('BarChart component', () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
-  it('should render correctly with horizontal orientation', () => {
+  it("should render correctly with horizontal orientation", () => {
     render(
       <BarChart data={[]} orientation={BarOrientation.HORIZONTAL} pKey="x" role="img">
         <div />
       </BarChart>,
-      false
+      false,
     );
 
-    const svgContainer = screen.getByRole('img');
-    expect(svgContainer).toHaveAttribute('width', '100%');
-    expect(svgContainer).toHaveAttribute('height', '100%');
+    const svgContainer = screen.getByRole("img");
+    expect(svgContainer).toHaveAttribute("width", "100%");
+    expect(svgContainer).toHaveAttribute("height", "100%");
   });
-  it('should render correctly with vertical orientation', () => {
+  it("should render correctly with vertical orientation", () => {
     render(
       <BarChart data={[]} orientation={BarOrientation.VERTICAL} pKey="x" role="img">
         <div />
       </BarChart>,
-      false
+      false,
     );
 
-    const svgContainer = screen.getByRole('img');
-    expect(svgContainer).toHaveAttribute('width', '100%');
-    expect(svgContainer).toHaveAttribute('height', '100%');
+    const svgContainer = screen.getByRole("img");
+    expect(svgContainer).toHaveAttribute("width", "100%");
+    expect(svgContainer).toHaveAttribute("height", "100%");
   });
 });

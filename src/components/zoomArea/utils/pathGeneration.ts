@@ -1,4 +1,4 @@
-import type { IZoomAreaDataPoint, ZoomAreaLineConfig } from '../zoomArea.type';
+import type { IZoomAreaDataPoint, ZoomAreaLineConfig } from "../zoomArea.type";
 
 /**
  * Path generation utilities for ZoomArea SVG rendering
@@ -22,8 +22,12 @@ import type { IZoomAreaDataPoint, ZoomAreaLineConfig } from '../zoomArea.type';
  * ```
  */
 export const generateCurvedPath = (points: Array<[number, number]>): string => {
-  if (points.length === 0) {return '';}
-  if (points.length === 1) {return `M ${points[0][0]} ${points[0][1]}`;}
+  if (points.length === 0) {
+    return "";
+  }
+  if (points.length === 1) {
+    return `M ${points[0][0]} ${points[0][1]}`;
+  }
 
   const [firstPoint, ...remainingPoints] = points;
   let path = `M ${firstPoint[0]} ${firstPoint[1]}`;
@@ -77,13 +81,15 @@ export const calculateLinesPathData = (
   data: IZoomAreaDataPoint[],
   lines: ZoomAreaLineConfig[],
   width: number,
-  height: number
+  height: number,
 ): Array<{
   linePath: string;
   fillPath: string;
   config: ZoomAreaLineConfig;
 }> => {
-  if (data.length === 0 || lines.length === 0) {return [];}
+  if (data.length === 0 || lines.length === 0) {
+    return [];
+  }
 
   // Add padding to prevent lines from touching chart bounds (similar to LineChart behavior)
   const yPaddingPercent = 0.05; // 5% padding top and bottom
@@ -91,12 +97,12 @@ export const calculateLinesPathData = (
   const effectiveHeight = height - 2 * yPadding;
 
   // Get min/max values for scaling across all lines for consistent Y scale
-  const allYValues = lines.flatMap(line => data.map(d => Number(d[line.yKey])));
+  const allYValues = lines.flatMap((line) => data.map((d) => Number(d[line.yKey])));
   const minY = Math.min(...allYValues);
   const maxY = Math.max(...allYValues);
   const yRange = maxY - minY || 1;
 
-  return lines.map(lineConfig => {
+  return lines.map((lineConfig) => {
     // Create path points for this specific line
     const pathPoints: Array<[number, number]> = data.map((d, index) => {
       const x = (index / Math.max(1, data.length - 1)) * width;
@@ -111,10 +117,10 @@ export const calculateLinesPathData = (
     // Generate line path - curved or straight based on config
     const linePath = lineConfig.curved
       ? generateCurvedPath(pathPoints)
-      : `M ${pathPoints.map(([x, y]) => `${x},${y}`).join(' L ')}`;
+      : `M ${pathPoints.map(([x, y]) => `${x},${y}`).join(" L ")}`;
 
     // Generate fill path if needed
-    let fillPath = '';
+    let fillPath = "";
     if (lineConfig.fill) {
       // For fill, extend to the bottom of the chart (full height)
       fillPath = lineConfig.curved

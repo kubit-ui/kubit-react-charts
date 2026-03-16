@@ -1,10 +1,10 @@
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook } from "@testing-library/react";
 
-import { ZoomAreaElements } from '../../zoomArea.type';
-import { useZoomAreaFocus } from '../useZoomAreaFocus';
+import { ZoomAreaElements } from "../../zoomArea.type";
+import { useZoomAreaFocus } from "../useZoomAreaFocus";
 
-describe('useZoomAreaFocus', () => {
-  it('should handle focus management for all elements', () => {
+describe("useZoomAreaFocus", () => {
+  it("should handle focus management for all elements", () => {
     const { result } = renderHook(() => useZoomAreaFocus());
 
     // Initial state - no elements focused
@@ -40,7 +40,7 @@ describe('useZoomAreaFocus', () => {
     expect(result.current.isFocused(ZoomAreaElements.SELECTION_AREA)).toBe(true);
   });
 
-  it('should handle blur operations and edge cases', () => {
+  it("should handle blur operations and edge cases", () => {
     const { result } = renderHook(() => useZoomAreaFocus());
 
     // Focus on an element first
@@ -68,7 +68,7 @@ describe('useZoomAreaFocus', () => {
     expect(result.current.isFocused(ZoomAreaElements.START_HANDLER)).toBe(false);
   });
 
-  it('should maintain stable function references and handle different targets', () => {
+  it("should maintain stable function references and handle different targets", () => {
     const { rerender, result } = renderHook(() => useZoomAreaFocus());
 
     // Test stable function references across rerenders
@@ -85,7 +85,7 @@ describe('useZoomAreaFocus', () => {
     const endHandlerFocus = result.current.handleFocus(ZoomAreaElements.END_HANDLER);
 
     expect(startHandlerFocus).not.toBe(endHandlerFocus);
-    expect(typeof startHandlerFocus).toBe('function');
-    expect(typeof endHandlerFocus).toBe('function');
+    expect(typeof startHandlerFocus).toBe("function");
+    expect(typeof endHandlerFocus).toBe("function");
   });
 });

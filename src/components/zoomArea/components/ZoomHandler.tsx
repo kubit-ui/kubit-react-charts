@@ -1,19 +1,19 @@
-import type { KeyboardEvent, MouseEvent, TouchEvent } from 'react';
+import type { KeyboardEvent, MouseEvent, TouchEvent } from "react";
 
-import { FocusRing } from '@/components/focusRing/focusRing';
-import type { FocusConfig } from '@/types/focusConfig.type';
+import { FocusRing } from "@/components/focusRing/focusRing";
+import type { FocusConfig } from "@/types/focusConfig.type";
 
-import type { ZoomAreaElements, ZoomAreaHandlerConfig } from '../zoomArea.type';
-import { HandlerIcon } from './HandlerIcon';
+import type { ZoomAreaElements, ZoomAreaHandlerConfig } from "../zoomArea.type";
+import { HandlerIcon } from "./HandlerIcon";
 
 /**
  * Default colors for zoom handlers
  */
 const HANDLER_COLORS = {
   /** Handler background */
-  FILL: '#ffffff',
+  FILL: "#ffffff",
   /** Handler border and icons */
-  STROKE: '#8f8f8f',
+  STROKE: "#8f8f8f",
 } as const;
 
 /**
@@ -131,7 +131,7 @@ export const ZoomHandler: React.FC<ZoomHandlerProps> = ({
           role="slider"
           stroke={styles.stroke}
           strokeWidth={styles.strokeWidth}
-          style={{ outline: 'none' }}
+          style={{ outline: "none" }}
           tabIndex={0}
           onBlur={onBlur}
           onFocus={onFocus}

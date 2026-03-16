@@ -1,34 +1,34 @@
-import { render } from '@testing-library/react';
+import { render } from "@testing-library/react";
 
-import { BarChart } from '../../barChart';
-import { BarChartContext } from '../../context/barChartContext';
-import { CONTEXT } from '../fixture/barContextData';
+import { BarChart } from "../../barChart";
+import { BarChartContext } from "../../context/barChartContext";
+import { CONTEXT } from "../fixture/barContextData";
 
-describe('LineChartXAxis', () => {
-  it('renders correctly with context', () => {
+describe("LineChartXAxis", () => {
+  it("renders correctly with context", () => {
     const { getByTestId } = render(
       <BarChartContext.Provider value={CONTEXT}>
         <BarChart.XAxis tickLine={{}} tickText={{ fontSize: 12 }} />
-      </BarChartContext.Provider>
+      </BarChartContext.Provider>,
     );
 
-    const xAxis = getByTestId('testxAxis');
+    const xAxis = getByTestId("testxAxis");
     expect(xAxis).toBeInTheDocument();
   });
 
-  it('renders formatted tick labels', () => {
+  it("renders formatted tick labels", () => {
     const { getByText } = render(
       <BarChartContext.Provider value={CONTEXT}>
         <BarChart.XAxis
           tickLine={{}}
           tickText={{ fontSize: 12 }}
-          valueFormatter={value => `Label ${value}`}
+          valueFormatter={(value) => `Label ${value}`}
         />
-      </BarChartContext.Provider>
+      </BarChartContext.Provider>,
     );
 
-    expect(getByText('Label 1')).toBeInTheDocument();
-    expect(getByText('Label 2')).toBeInTheDocument();
-    expect(getByText('Label 3')).toBeInTheDocument();
+    expect(getByText("Label 1")).toBeInTheDocument();
+    expect(getByText("Label 2")).toBeInTheDocument();
+    expect(getByText("Label 3")).toBeInTheDocument();
   });
 });

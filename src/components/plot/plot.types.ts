@@ -1,4 +1,4 @@
-import type { FocusConfig } from '@/types/focusConfig.type';
+import type { FocusConfig } from "@/types/focusConfig.type";
 
 /**
  * Enum for plot types.
@@ -10,11 +10,11 @@ import type { FocusConfig } from '@/types/focusConfig.type';
  */
 export const PlotType = {
   /** Represents a circle plot point */
-  CIRCLE: 'CIRCLE',
+  CIRCLE: "CIRCLE",
   /** Represents a square plot point */
-  SQUARE: 'SQUARE',
+  SQUARE: "SQUARE",
   /** Represents a triangle plot point */
-  TRIANGLE: 'TRIANGLE',
+  TRIANGLE: "TRIANGLE",
 } as const;
 
 /**
@@ -27,15 +27,15 @@ export const PlotType = {
  */
 export const PlotSize = {
   /** Extra large plot point (40x40 pixels) */
-  EXTRA_LARGE: 'EXTRA_LARGE',
+  EXTRA_LARGE: "EXTRA_LARGE",
   /** Extra small plot point (8x8 pixels) */
-  EXTRA_SMALL: 'EXTRA_SMALL',
+  EXTRA_SMALL: "EXTRA_SMALL",
   /** Large plot point (32x32 pixels) */
-  LARGE: 'LARGE',
+  LARGE: "LARGE",
   /** Medium plot point (24x24 pixels) */
-  MEDIUM: 'MEDIUM',
+  MEDIUM: "MEDIUM",
   /** Small plot point (16x16 pixels) */
-  SMALL: 'SMALL',
+  SMALL: "SMALL",
 } as const;
 
 /**
@@ -182,7 +182,7 @@ export interface PlotProps<T = string> {
  * @interface
  * @template T - The type of the value represented by this plot point's data. Defaults to string.
  */
-export interface PlotShapeProps<T = string> extends Omit<PlotProps<T>, 'size'> {
+export interface PlotShapeProps<T = string> extends Omit<PlotProps<T>, "size"> {
   /** The size of the plot shape in pixels */
   size: number;
 }

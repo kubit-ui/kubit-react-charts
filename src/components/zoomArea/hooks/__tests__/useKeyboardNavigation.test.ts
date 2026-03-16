@@ -1,9 +1,9 @@
-import { renderHook } from '@testing-library/react';
+import { renderHook } from "@testing-library/react";
 
-import { ZoomAreaElements } from '../../zoomArea.type';
-import { useKeyboardNavigation } from '../useKeyboardNavigation';
+import { ZoomAreaElements } from "../../zoomArea.type";
+import { useKeyboardNavigation } from "../useKeyboardNavigation";
 
-describe('useKeyboardNavigation', () => {
+describe("useKeyboardNavigation", () => {
   const mockOnRangeChange = vi.fn();
   const mockInteractionConfig = {
     keyboardFastStep: 0.5,
@@ -22,12 +22,12 @@ describe('useKeyboardNavigation', () => {
     mockOnRangeChange.mockClear();
   });
 
-  it('should handle arrow key navigation for all elements and directions', () => {
+  it("should handle arrow key navigation for all elements and directions", () => {
     const { result } = renderHook(() => useKeyboardNavigation(defaultParams));
 
     // Test ArrowLeft/ArrowDown (decrease) on start handler
     const leftEvent = {
-      key: 'ArrowLeft',
+      key: "ArrowLeft",
       preventDefault: vi.fn(),
       shiftKey: false,
     } as unknown as React.KeyboardEvent;
@@ -43,7 +43,7 @@ describe('useKeyboardNavigation', () => {
 
     // Test ArrowRight/ArrowUp (increase) with shift (fast step) on end handler
     const rightEvent = {
-      key: 'ArrowRight',
+      key: "ArrowRight",
       preventDefault: vi.fn(),
       shiftKey: true,
     } as unknown as React.KeyboardEvent;
@@ -62,12 +62,12 @@ describe('useKeyboardNavigation', () => {
     expect(call.end - call.start).toBeCloseTo(5, 1); // Original width maintained
   });
 
-  it('should handle Home and End key navigation for all elements', () => {
+  it("should handle Home and End key navigation for all elements", () => {
     const { result } = renderHook(() => useKeyboardNavigation(defaultParams));
 
     // Test Home key on start handler - moves to beginning
     const homeEvent = {
-      key: 'Home',
+      key: "Home",
       preventDefault: vi.fn(),
       shiftKey: false,
     } as unknown as React.KeyboardEvent;
@@ -83,7 +83,7 @@ describe('useKeyboardNavigation', () => {
 
     // Test End key on end handler - moves to end of data
     const endEvent = {
-      key: 'End',
+      key: "End",
       preventDefault: vi.fn(),
       shiftKey: false,
     } as unknown as React.KeyboardEvent;
@@ -114,12 +114,12 @@ describe('useKeyboardNavigation', () => {
     });
   });
 
-  it('should support ArrowUp and ArrowDown for accessibility compliance', () => {
+  it("should support ArrowUp and ArrowDown for accessibility compliance", () => {
     const { result } = renderHook(() => useKeyboardNavigation(defaultParams));
 
     // Test ArrowUp (same as ArrowRight - increase)
     const arrowUpEvent = {
-      key: 'ArrowUp',
+      key: "ArrowUp",
       preventDefault: vi.fn(),
       shiftKey: false,
     } as unknown as React.KeyboardEvent;
@@ -135,7 +135,7 @@ describe('useKeyboardNavigation', () => {
 
     // Test ArrowDown (same as ArrowLeft - decrease)
     const arrowDownEvent = {
-      key: 'ArrowDown',
+      key: "ArrowDown",
       preventDefault: vi.fn(),
       shiftKey: false,
     } as unknown as React.KeyboardEvent;
@@ -148,11 +148,11 @@ describe('useKeyboardNavigation', () => {
     });
   });
 
-  it('should ignore non-navigation keys', () => {
+  it("should ignore non-navigation keys", () => {
     const { result } = renderHook(() => useKeyboardNavigation(defaultParams));
 
     const invalidEvent = {
-      key: 'Space',
+      key: "Space",
       preventDefault: vi.fn(),
       shiftKey: false,
     } as unknown as React.KeyboardEvent;

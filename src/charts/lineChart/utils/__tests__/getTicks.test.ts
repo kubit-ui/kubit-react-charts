@@ -1,6 +1,6 @@
-import { getXTicks, getYTicks } from '../getTicks';
+import { getXTicks, getYTicks } from "../getTicks";
 
-describe('getXTicks', () => {
+describe("getXTicks", () => {
   const baseProps = {
     maxSpaceAvailable: 400,
     xAxisLeftSpacing: 10,
@@ -9,9 +9,9 @@ describe('getXTicks', () => {
     yAxisRightSpacing: 15,
   };
 
-  describe('when calculating X-axis tick positions', () => {
-    it('should return correct positions for multiple tick values', () => {
-      const tickValues = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
+  describe("when calculating X-axis tick positions", () => {
+    it("should return correct positions for multiple tick values", () => {
+      const tickValues = ["Jan", "Feb", "Mar", "Apr", "May"];
 
       const result = getXTicks({
         ...baseProps,
@@ -21,28 +21,28 @@ describe('getXTicks', () => {
       expect(result).toHaveLength(5);
       expect(result[0]).toEqual({
         position: 20,
-        value: 'Jan',
+        value: "Jan",
       });
       expect(result[1]).toEqual({
         position: 111.25,
-        value: 'Feb',
+        value: "Feb",
       });
       expect(result[2]).toEqual({
         position: 202.5,
-        value: 'Mar',
+        value: "Mar",
       });
       expect(result[3]).toEqual({
         position: 293.75,
-        value: 'Apr',
+        value: "Apr",
       });
       expect(result[4]).toEqual({
         position: 385,
-        value: 'May',
+        value: "May",
       });
     });
 
-    it('should handle two tick values', () => {
-      const tickValues = ['Start', 'End'];
+    it("should handle two tick values", () => {
+      const tickValues = ["Start", "End"];
 
       const result = getXTicks({
         ...baseProps,
@@ -52,16 +52,16 @@ describe('getXTicks', () => {
       expect(result).toHaveLength(2);
       expect(result[0]).toEqual({
         position: 20,
-        value: 'Start',
+        value: "Start",
       });
       expect(result[1]).toEqual({
         position: 385,
-        value: 'End',
+        value: "End",
       });
     });
 
-    it('should handle single tick value', () => {
-      const tickValues = ['Single'];
+    it("should handle single tick value", () => {
+      const tickValues = ["Single"];
 
       const result = getXTicks({
         ...baseProps,
@@ -71,12 +71,12 @@ describe('getXTicks', () => {
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual({
         position: 20,
-        value: 'Single',
+        value: "Single",
       });
     });
 
-    it('should use yAxisLeftSpacing when greater than xAxisLeftSpacing', () => {
-      const tickValues = ['A', 'B'];
+    it("should use yAxisLeftSpacing when greater than xAxisLeftSpacing", () => {
+      const tickValues = ["A", "B"];
 
       const result = getXTicks({
         ...baseProps,
@@ -87,8 +87,8 @@ describe('getXTicks', () => {
       expect(result[0].position).toBe(30);
     });
 
-    it('should use xAxisLeftSpacing when greater than yAxisLeftSpacing', () => {
-      const tickValues = ['A', 'B'];
+    it("should use xAxisLeftSpacing when greater than yAxisLeftSpacing", () => {
+      const tickValues = ["A", "B"];
 
       const result = getXTicks({
         ...baseProps,
@@ -100,8 +100,8 @@ describe('getXTicks', () => {
       expect(result[0].position).toBe(25);
     });
 
-    it('should use yAxisRightSpacing when greater than xAxisRightSpacing', () => {
-      const tickValues = ['A', 'B'];
+    it("should use yAxisRightSpacing when greater than xAxisRightSpacing", () => {
+      const tickValues = ["A", "B"];
 
       const result = getXTicks({
         ...baseProps,
@@ -112,8 +112,8 @@ describe('getXTicks', () => {
       expect(result[1].position).toBe(375);
     });
 
-    it('should use xAxisRightSpacing when greater than yAxisRightSpacing', () => {
-      const tickValues = ['A', 'B'];
+    it("should use xAxisRightSpacing when greater than yAxisRightSpacing", () => {
+      const tickValues = ["A", "B"];
 
       const result = getXTicks({
         ...baseProps,
@@ -127,7 +127,7 @@ describe('getXTicks', () => {
   });
 });
 
-describe('getYTicks', () => {
+describe("getYTicks", () => {
   const baseProps = {
     maxSpaceAvailable: 200,
     xAxisTopSpacing: 10,
@@ -136,9 +136,9 @@ describe('getYTicks', () => {
     yAxisBottomSpacing: 20,
   };
 
-  describe('when calculating Y-axis tick positions', () => {
-    it('should return correct positions for multiple tick values', () => {
-      const tickValues = ['0', '25', '50', '75', '100'];
+  describe("when calculating Y-axis tick positions", () => {
+    it("should return correct positions for multiple tick values", () => {
+      const tickValues = ["0", "25", "50", "75", "100"];
 
       const result = getYTicks({
         ...baseProps,
@@ -148,28 +148,28 @@ describe('getYTicks', () => {
       expect(result).toHaveLength(5);
       expect(result[0]).toEqual({
         position: 180,
-        value: '0',
+        value: "0",
       });
       expect(result[1]).toEqual({
         position: 138.75,
-        value: '25',
+        value: "25",
       });
       expect(result[2]).toEqual({
         position: 97.5,
-        value: '50',
+        value: "50",
       });
       expect(result[3]).toEqual({
         position: 56.25,
-        value: '75',
+        value: "75",
       });
       expect(result[4]).toEqual({
         position: 15,
-        value: '100',
+        value: "100",
       });
     });
 
-    it('should handle two tick values', () => {
-      const tickValues = ['Min', 'Max'];
+    it("should handle two tick values", () => {
+      const tickValues = ["Min", "Max"];
 
       const result = getYTicks({
         ...baseProps,
@@ -179,16 +179,16 @@ describe('getYTicks', () => {
       expect(result).toHaveLength(2);
       expect(result[0]).toEqual({
         position: 180,
-        value: 'Min',
+        value: "Min",
       });
       expect(result[1]).toEqual({
         position: 15,
-        value: 'Max',
+        value: "Max",
       });
     });
 
-    it('should handle single tick value', () => {
-      const tickValues = ['Single'];
+    it("should handle single tick value", () => {
+      const tickValues = ["Single"];
 
       const result = getYTicks({
         ...baseProps,
@@ -198,12 +198,12 @@ describe('getYTicks', () => {
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual({
         position: 180,
-        value: 'Single',
+        value: "Single",
       });
     });
 
-    it('should use yAxisTopSpacing when greater than xAxisTopSpacing', () => {
-      const tickValues = ['A', 'B'];
+    it("should use yAxisTopSpacing when greater than xAxisTopSpacing", () => {
+      const tickValues = ["A", "B"];
 
       const result = getYTicks({
         ...baseProps,
@@ -214,8 +214,8 @@ describe('getYTicks', () => {
       expect(result[1].position).toBe(25);
     });
 
-    it('should use xAxisTopSpacing when greater than yAxisTopSpacing', () => {
-      const tickValues = ['A', 'B'];
+    it("should use xAxisTopSpacing when greater than yAxisTopSpacing", () => {
+      const tickValues = ["A", "B"];
 
       const result = getYTicks({
         ...baseProps,
@@ -227,8 +227,8 @@ describe('getYTicks', () => {
       expect(result[1].position).toBe(30);
     });
 
-    it('should use yAxisBottomSpacing when greater than xAxisBottomSpacing', () => {
-      const tickValues = ['A', 'B'];
+    it("should use yAxisBottomSpacing when greater than xAxisBottomSpacing", () => {
+      const tickValues = ["A", "B"];
 
       const result = getYTicks({
         ...baseProps,
@@ -239,8 +239,8 @@ describe('getYTicks', () => {
       expect(result[0].position).toBe(170);
     });
 
-    it('should use xAxisBottomSpacing when greater than yAxisBottomSpacing', () => {
-      const tickValues = ['A', 'B'];
+    it("should use xAxisBottomSpacing when greater than yAxisBottomSpacing", () => {
+      const tickValues = ["A", "B"];
 
       const result = getYTicks({
         ...baseProps,

@@ -1,16 +1,16 @@
-import { type FC, type ReactElement, useMemo } from 'react';
+import { type FC, type ReactElement, useMemo } from "react";
 
-import { SvgContainer } from '@/components/svgContainer/svgContainer';
-import { useId } from '@/hooks/useId/useId';
-import { useResponsiveCanvas } from '@/hooks/useResponsiveCanvas/useResponsiveCanvas';
-import { DefaultCanvasConfig } from '@/types/canvas.type';
-import type { ChartError, ErrorType } from '@/types/errors.type';
-import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
-import { getDataFingerprint } from '@/utils/getDataFingerprint/getDataFingerprint';
+import { SvgContainer } from "@/components/svgContainer/svgContainer";
+import { useId } from "@/hooks/useId/useId";
+import { useResponsiveCanvas } from "@/hooks/useResponsiveCanvas/useResponsiveCanvas";
+import { DefaultCanvasConfig } from "@/types/canvas.type";
+import type { ChartError, ErrorType } from "@/types/errors.type";
+import { createErrorAccumulator } from "@/utils/createErrorAccumulator";
+import { getDataFingerprint } from "@/utils/getDataFingerprint/getDataFingerprint";
 
-import { buildPieContextValue } from './context/buildPieContextValue';
-import { PieChartContext } from './context/pieChartContext';
-import type { PieChartProps } from './pieChart.type';
+import { buildPieContextValue } from "./context/buildPieContextValue";
+import { PieChartContext } from "./context/pieChartContext";
+import type { PieChartProps } from "./pieChart.type";
 
 /**
  * Renders a pie chart component.
@@ -50,18 +50,18 @@ export const PieChartStructure: FC<PieChartProps> = ({
   children,
   classNames,
   data,
-  dataTestId: dataTestIdProp = 'pie-chart',
+  dataTestId: dataTestIdProp = "pie-chart",
   halfChart,
-  height = '100%',
+  height = "100%",
   onErrors,
-  radius = '50%',
+  radius = "50%",
   role,
   tabIndex,
-  width = '100%',
+  width = "100%",
   ...props
 }): ReactElement => {
   const dataTestId = useId(dataTestIdProp);
-  
+
   // Use the responsive canvas hook for dimension management
   const { parsedCanvas, viewBox } = useResponsiveCanvas({
     canvasConfig,
@@ -83,7 +83,7 @@ export const PieChartStructure: FC<PieChartProps> = ({
     errorAccumulator.clearErrors();
 
     return buildPieContextValue({
-      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => {
+      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => {
         errorAccumulator.addError(errorType, error);
       },
       canvasHeight: parsedCanvasHeight,

@@ -1,12 +1,12 @@
-import { type ReactElement, useContext, useEffect, useMemo } from 'react';
+import { type ReactElement, useContext, useEffect, useMemo } from "react";
 
-import { Plot } from '@/components/plot/plot';
+import { Plot } from "@/components/plot/plot";
 
-import { CustomBackgroundChartContext } from '../context/customBackgroundChartContext';
-import type { CustomBackgroundChartPlotProps } from '../customBackgroundChart.type';
-import { buildAriaLabel, formatValue } from '../utils/accessibility';
+import { CustomBackgroundChartContext } from "../context/customBackgroundChartContext";
+import type { CustomBackgroundChartPlotProps } from "../customBackgroundChart.type";
+import { buildAriaLabel, formatValue } from "../utils/accessibility";
 
-export const CustomBackgroundChartPlot = <T = number,>({
+export const CustomBackgroundChartPlot = <T = number>({
   ariaLabel,
   dataKey,
   formatAriaValue,
@@ -25,7 +25,7 @@ export const CustomBackgroundChartPlot = <T = number,>({
   // Validate dataKey and coordinates
   useEffect(() => {
     if (!dataPoint) {
-      addError?.('CUSTOM_BACKGROUND_CHART_PLOT_ERROR', {
+      addError?.("CUSTOM_BACKGROUND_CHART_PLOT_ERROR", {
         error: new Error(`dataKey "${dataKey}" not found in data object.`),
       });
       return;
@@ -33,9 +33,9 @@ export const CustomBackgroundChartPlot = <T = number,>({
 
     const { x, y } = dataPoint;
     if (x < 0 || x > viewBox.width || y < 0 || y > viewBox.height) {
-      addError?.('CUSTOM_BACKGROUND_CHART_PLOT_ERROR', {
+      addError?.("CUSTOM_BACKGROUND_CHART_PLOT_ERROR", {
         error: new Error(
-          `Plot "${dataKey}" coordinates (${x}, ${y}) are outside viewBox bounds (0-${viewBox.width}, 0-${viewBox.height})`
+          `Plot "${dataKey}" coordinates (${x}, ${y}) are outside viewBox bounds (0-${viewBox.width}, 0-${viewBox.height})`,
         ),
       });
     }
@@ -65,7 +65,7 @@ export const CustomBackgroundChartPlot = <T = number,>({
 
   const position = useMemo(
     () => ({ x: dataPoint?.x ?? 0, y: dataPoint?.y ?? 0 }),
-    [dataPoint?.x, dataPoint?.y]
+    [dataPoint?.x, dataPoint?.y],
   );
 
   if (!dataPoint) {

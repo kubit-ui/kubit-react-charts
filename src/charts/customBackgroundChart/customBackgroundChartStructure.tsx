@@ -1,14 +1,14 @@
-import { type ReactElement, useEffect, useMemo } from 'react';
+import { type ReactElement, useEffect, useMemo } from "react";
 
-import { SvgContainer } from '@/components/svgContainer/svgContainer';
-import { useId } from '@/hooks/useId/useId';
-import type { ChartError, ErrorType } from '@/types/errors.type';
-import { createErrorAccumulator } from '@/utils/createErrorAccumulator';
+import { SvgContainer } from "@/components/svgContainer/svgContainer";
+import { useId } from "@/hooks/useId/useId";
+import type { ChartError, ErrorType } from "@/types/errors.type";
+import { createErrorAccumulator } from "@/utils/createErrorAccumulator";
 
-import { CustomBackgroundChartContext } from './context/customBackgroundChartContext';
-import type { CustomBackgroundChartProps } from './customBackgroundChart.type';
+import { CustomBackgroundChartContext } from "./context/customBackgroundChartContext";
+import type { CustomBackgroundChartProps } from "./customBackgroundChart.type";
 
-export const CustomBackgroundChartStructure = <T = number,>({
+export const CustomBackgroundChartStructure = <T = number>({
   ariaHidden,
   ariaLabel,
   backgroundUrl,
@@ -16,8 +16,8 @@ export const CustomBackgroundChartStructure = <T = number,>({
   children,
   className,
   data,
-  dataTestId: dataTestIdProp = 'custom-background-chart',
-  height = '100%',
+  dataTestId: dataTestIdProp = "custom-background-chart",
+  height = "100%",
   onBlur,
   onClick,
   onDoubleClick,
@@ -27,10 +27,10 @@ export const CustomBackgroundChartStructure = <T = number,>({
   onKeyUp,
   onMouseEnter,
   onMouseLeave,
-  role = 'img',
+  role = "img",
   tabIndex,
   viewBox,
-  width = '100%',
+  width = "100%",
   ...props
 }: CustomBackgroundChartProps<T>): ReactElement => {
   const dataTestId = useId(dataTestIdProp);
@@ -44,19 +44,19 @@ export const CustomBackgroundChartStructure = <T = number,>({
   // Validate props
   useEffect(() => {
     if (Object.keys(data).length === 0) {
-      errorAccumulator.addError('CUSTOM_BACKGROUND_CHART_CONTEXT_ERROR', {
-        error: new Error('Data object is empty. At least one data point is required.'),
+      errorAccumulator.addError("CUSTOM_BACKGROUND_CHART_CONTEXT_ERROR", {
+        error: new Error("Data object is empty. At least one data point is required."),
       });
     }
-    if (!backgroundUrl || backgroundUrl.trim() === '') {
-      errorAccumulator.addError('CUSTOM_BACKGROUND_CHART_CONTEXT_ERROR', {
-        error: new Error('backgroundUrl is required and cannot be empty.'),
+    if (!backgroundUrl || backgroundUrl.trim() === "") {
+      errorAccumulator.addError("CUSTOM_BACKGROUND_CHART_CONTEXT_ERROR", {
+        error: new Error("backgroundUrl is required and cannot be empty."),
       });
     }
     if (viewBox.width <= 0 || viewBox.height <= 0) {
-      errorAccumulator.addError('CUSTOM_BACKGROUND_CHART_CONTEXT_ERROR', {
+      errorAccumulator.addError("CUSTOM_BACKGROUND_CHART_CONTEXT_ERROR", {
         error: new Error(
-          `Invalid viewBox dimensions: width=${viewBox.width}, height=${viewBox.height} (both must be > 0)`
+          `Invalid viewBox dimensions: width=${viewBox.width}, height=${viewBox.height} (both must be > 0)`,
         ),
       });
     }
@@ -65,14 +65,14 @@ export const CustomBackgroundChartStructure = <T = number,>({
   // Context value
   const contextValue = useMemo(
     () => ({
-      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => {
+      addError: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => {
         errorAccumulator.addError(errorType, error);
       },
       data,
       dataTestId,
       viewBox,
     }),
-    [viewBox, data, dataTestId, errorAccumulator]
+    [viewBox, data, dataTestId, errorAccumulator],
   );
 
   return (

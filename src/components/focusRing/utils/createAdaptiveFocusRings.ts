@@ -1,6 +1,6 @@
-import type { FocusConfig } from '@/types/focusConfig.type';
+import type { FocusConfig } from "@/types/focusConfig.type";
 
-import type { FocusRingLayers } from './utils.types';
+import type { FocusRingLayers } from "./utils.types";
 
 /**
  * SVG geometric attributes that define shape position and dimensions.
@@ -9,26 +9,26 @@ import type { FocusRingLayers } from './utils.types';
  */
 export const SVG_GEOMETRIC_ATTRIBUTES = [
   // Circle attributes
-  'cx',
-  'cy',
-  'r',
+  "cx",
+  "cy",
+  "r",
   // Rectangle and general positioning attributes
-  'x',
-  'y',
-  'width',
-  'height',
+  "x",
+  "y",
+  "width",
+  "height",
   // Ellipse attributes (cx, cy already included)
-  'rx',
-  'ry',
+  "rx",
+  "ry",
   // Path attributes
-  'd',
+  "d",
   // Polygon and polyline attributes
-  'points',
+  "points",
   // Line attributes
-  'x1',
-  'y1',
-  'x2',
-  'y2',
+  "x1",
+  "y1",
+  "x2",
+  "y2",
 ];
 
 /**
@@ -36,19 +36,19 @@ export const SVG_GEOMETRIC_ATTRIBUTES = [
  * These are preserved for focus rings when they match the original element's style.
  */
 const SVG_STROKE_ATTRIBUTES = [
-  'stroke-dasharray',
-  'stroke-dashoffset',
-  'stroke-linecap',
-  'stroke-linejoin',
-  'stroke-miterlimit',
-  'stroke-opacity',
+  "stroke-dasharray",
+  "stroke-dashoffset",
+  "stroke-linecap",
+  "stroke-linejoin",
+  "stroke-miterlimit",
+  "stroke-opacity",
 ];
 
 /**
  * SVG element types that support adaptive focus rings.
  * These are geometric shapes that can be properly outlined with focus rings.
  */
-const SUPPORTED_SVG_TYPES = ['circle', 'rect', 'ellipse', 'path', 'polygon', 'polyline', 'line'];
+const SUPPORTED_SVG_TYPES = ["circle", "rect", "ellipse", "path", "polygon", "polyline", "line"];
 
 /**
  * Creates adaptive focus ring layers from a DOM SVGElement.
@@ -66,7 +66,7 @@ const SUPPORTED_SVG_TYPES = ['circle', 'rect', 'ellipse', 'path', 'polygon', 'po
  */
 export function createAdaptiveFocusRings(
   element: SVGGraphicsElement,
-  focusConfig: Required<FocusConfig>
+  focusConfig: Required<FocusConfig>,
 ): FocusRingLayers | undefined {
   const elementType = element.tagName.toLowerCase();
 
@@ -77,15 +77,15 @@ export function createAdaptiveFocusRings(
 
   // Read original stroke width from DOM
   const strokeWidthAttr =
-    element.getAttribute('stroke-width') || element.getAttribute('strokeWidth');
-  const originalStrokeWidth = parseFloat(strokeWidthAttr || '0');
+    element.getAttribute("stroke-width") || element.getAttribute("strokeWidth");
+  const originalStrokeWidth = parseFloat(strokeWidthAttr || "0");
 
   // Read fill attribute to detect open lines
-  const fillAttr = element.getAttribute('fill');
+  const fillAttr = element.getAttribute("fill");
   const isOpenLine =
-    elementType === 'line' ||
-    elementType === 'polyline' ||
-    (elementType === 'path' && fillAttr === 'none');
+    elementType === "line" ||
+    elementType === "polyline" ||
+    (elementType === "path" && fillAttr === "none");
 
   // Calculate stroke widths for focus rings
   // IMPORTANT: For ALL shapes, we need to account for the original stroke width
@@ -96,9 +96,9 @@ export function createAdaptiveFocusRings(
   const innerStrokeWidth = originalStrokeWidth + focusConfig.innerStrokeWidth * 2;
 
   // Read stroke line props for open lines
-  const strokeLinecap = isOpenLine ? element.getAttribute('stroke-linecap') || 'round' : undefined;
-  const strokeLinejoin = isOpenLine ? element.getAttribute('stroke-linejoin') || 'round' : 'miter';
-  const strokeMiterlimit = isOpenLine ? undefined : '10';
+  const strokeLinecap = isOpenLine ? element.getAttribute("stroke-linecap") || "round" : undefined;
+  const strokeLinejoin = isOpenLine ? element.getAttribute("stroke-linejoin") || "round" : "miter";
+  const strokeMiterlimit = isOpenLine ? undefined : "10";
 
   // Extract relevant attributes from the DOM element
   // This automatically preserves all geometric attributes (cx, cy, r, x, y, width, height, d, points, etc.)
@@ -109,8 +109,8 @@ export function createAdaptiveFocusRings(
     innerRing: {
       props: {
         ...allAttributes,
-        className: 'focus-ring-inner',
-        fill: 'none',
+        className: "focus-ring-inner",
+        fill: "none",
         stroke: focusConfig.innerColor,
         strokeLinecap,
         strokeLinejoin,
@@ -122,8 +122,8 @@ export function createAdaptiveFocusRings(
     outerRing: {
       props: {
         ...allAttributes,
-        className: 'focus-ring-outer',
-        fill: 'none',
+        className: "focus-ring-outer",
+        fill: "none",
         stroke: focusConfig.outlineColor,
         strokeLinecap,
         strokeLinejoin,

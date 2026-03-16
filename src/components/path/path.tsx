@@ -6,29 +6,29 @@ import {
   forwardRef,
   useImperativeHandle,
   useRef,
-} from 'react';
+} from "react";
 
-import { FocusRing } from '@/components/focusRing/focusRing';
-import { useFocus } from '@/hooks/useFocus/useFocus';
-import { useHover } from '@/hooks/useHover/useHover';
-import type { FocusConfig } from '@/types/focusConfig.type';
-import { adaptLegacyFocusConfig } from '@/utils/adaptLegacyFocusConfig/adaptLegacyFocusConfig';
-import { cssGradientToSVG } from '@/utils/cssGradientToSvg/cssGradientToSvg';
-import { pickCustomAttributes } from '@/utils/pickCustomAttributes/pickCustomAttributes';
-import { ShadowSvg } from '@/utils/shadowSvg/shadowSvg';
+import { FocusRing } from "@/components/focusRing/focusRing";
+import { useFocus } from "@/hooks/useFocus/useFocus";
+import { useHover } from "@/hooks/useHover/useHover";
+import type { FocusConfig } from "@/types/focusConfig.type";
+import { adaptLegacyFocusConfig } from "@/utils/adaptLegacyFocusConfig/adaptLegacyFocusConfig";
+import { cssGradientToSVG } from "@/utils/cssGradientToSvg/cssGradientToSvg";
+import { pickCustomAttributes } from "@/utils/pickCustomAttributes/pickCustomAttributes";
+import { ShadowSvg } from "@/utils/shadowSvg/shadowSvg";
 
-import { NodePath } from './components/nodePath/nodePath';
-import './path.css';
-import type { PathProps } from './path.types';
+import { NodePath } from "./components/nodePath/nodePath";
+import "./path.css";
+import type { PathProps } from "./path.types";
 
 const ENTER = {
-  code: 'Enter',
-  key: 'Enter',
+  code: "Enter",
+  key: "Enter",
   keyCode: 13,
   which: 13,
 };
 
-const SHADOW_FILTER_ID = 'shadow';
+const SHADOW_FILTER_ID = "shadow";
 
 /**
  * Represents a customizable SVG path component with FocusRing integration
@@ -65,24 +65,24 @@ const SHADOW_FILTER_ID = 'shadow';
 
 const PathComponent = (
   {
-    classNames = '',
-    fill = 'transparent',
-    stroke = '#0000FF',
+    classNames = "",
+    fill = "transparent",
+    stroke = "#0000FF",
     // NOTE: Default strokeWidth='1' affects FocusRing calculations in adaptive variant.
     // FocusRing adds originalStrokeWidth to focus ring widths. If using fill-only paths
     // (like Bar), pass strokeWidth="0" explicitly to avoid inflated focus rings.
-    strokeWidth = '1',
+    strokeWidth = "1",
     focusConfig,
     hoverConfig = {
-      stroke: '#0000FF',
-      strokeWidth: '0.5',
+      stroke: "#0000FF",
+      strokeWidth: "0.5",
     },
-    role = 'img',
+    role = "img",
     tabIndex = 0, // Default to 0 for keyboard accessibility
     ...props
   }: PathProps,
 
-  ref: ForwardedRef<unknown> | undefined | null
+  ref: ForwardedRef<unknown> | undefined | null,
 ): ReactElement => {
   const { handleBlur, handleFocus, isFocused } = useFocus(props.onFocus, props.onBlur);
 
@@ -97,7 +97,7 @@ const PathComponent = (
 
   const { handleMouseEnter, handleMouseLeave, isHovered } = useHover(
     props.onMouseEnter,
-    props.onMouseLeave
+    props.onMouseLeave,
   );
 
   const pathRef = useRef<SVGPathElement | null>(null);
@@ -143,8 +143,8 @@ const PathComponent = (
   const defaultProps = {
     ...props,
     classNames: `path ${classNames}`,
-    fill: gradientSvgElement ? 'url(#gradientePath)' : fill,
-    filter: 'url(#shadow)',
+    fill: gradientSvgElement ? "url(#gradientePath)" : fill,
+    filter: "url(#shadow)",
     role,
     stroke,
     strokeWidth,
@@ -195,7 +195,7 @@ const PathComponent = (
           ref={pathRef as React.Ref<SVGPathElement>}
           d={mergedProps.d}
           data-testid={mergedProps.dataTestId}
-          fill={mergedProps.dFill ? 'transparent' : mergedProps.fill}
+          fill={mergedProps.dFill ? "transparent" : mergedProps.fill}
           fillOpacity={mergedProps.fillOpacity}
           fillRule={mergedProps.fillRule}
           stroke={mergedProps.stroke}
@@ -232,7 +232,7 @@ const PathComponent = (
           return (
             <NodePath
               key={`${index.toString()}`}
-              ref={rf => {
+              ref={(rf) => {
                 if (rf) {
                   nodeRef.current[index] = rf;
                 }

@@ -1,6 +1,6 @@
-import { PieChartForeign } from './fragments/pieChartForeign';
-import { PieChartPath } from './fragments/pieChartPath';
-import { PieChartStructure } from './pieChartStructure';
+import { PieChartForeign } from "./fragments/pieChartForeign";
+import { PieChartPath } from "./fragments/pieChartPath";
+import { PieChartStructure } from "./pieChartStructure";
 
 const PieChart = Object.assign(PieChartStructure, {
   Foreign: PieChartForeign,
@@ -9,4 +9,4 @@ const PieChart = Object.assign(PieChartStructure, {
 
 export { PieChart };
 
-export * from './pieChart.type';
+export * from "./pieChart.type";

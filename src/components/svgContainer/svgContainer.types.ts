@@ -2,7 +2,7 @@
  * Type definition for the `height` property of the `SvgContainerProps`.
  * It restricts the value to either a `string` or `number`, but never 'auto' as a string value.
  */
-type Height = string extends 'auto' ? never : string | number;
+type Height = string extends "auto" ? never : string | number;
 
 /**
  * Defines the properties accepted by the `SvgContainer` component.

@@ -1,15 +1,15 @@
-import { BarOrientation } from '@/components/bar/bar.type';
-import { type ChartError, ErrorType } from '@/types/errors.type';
-import { Positions } from '@/types/position.enum';
+import { BarOrientation } from "@/components/bar/bar.type";
+import { type ChartError, ErrorType } from "@/types/errors.type";
+import { Positions } from "@/types/position.enum";
 import {
   BuildError,
   buildBarDistributionError,
   buildCanvasDimensionsError,
   buildError,
-} from '@/utils/buildErrors/buildErrors';
-import { getXCoordinates, getYCoordinates } from '@/utils/getCoordinates/getCoordinates';
-import { getPoints } from '@/utils/getPoints/getPoints';
-import { getXTicks, getYTicks } from '@/utils/getTicks/getTicks';
+} from "@/utils/buildErrors/buildErrors";
+import { getXCoordinates, getYCoordinates } from "@/utils/getCoordinates/getCoordinates";
+import { getPoints } from "@/utils/getPoints/getPoints";
+import { getXTicks, getYTicks } from "@/utils/getTicks/getTicks";
 
 import {
   AXIS_VALIDATION,
@@ -18,14 +18,14 @@ import {
   BREAK_AXIS_DEFAULTS,
   CHART_CANVAS_DEFAULTS,
   SHARED_FALLBACK_DATA,
-} from '../../constants/chartDefaults';
+} from "../../constants/chartDefaults";
 import type {
   BarChartChildrenType,
   BarChartContextType,
   BarChartIDataPoint,
-} from '../barChart.type';
-import { countBarChildren } from '../utils/countBarChildren';
-import { getAxisExtraSpacing } from '../utils/getAxisExtraSpacing';
+} from "../barChart.type";
+import { countBarChildren } from "../utils/countBarChildren";
+import { getAxisExtraSpacing } from "../utils/getAxisExtraSpacing";
 
 interface BuildContextValue {
   children: BarChartChildrenType;
@@ -38,21 +38,21 @@ interface BuildContextValue {
   gapBetweenBars: number;
   orientation: (typeof BarOrientation)[keyof typeof BarOrientation];
   viewBox: string;
-  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => void;
+  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => void;
 }
 
 type OmitProps =
-  | 'data'
-  | 'pKey'
-  | 'canvasHeight'
-  | 'canvasWidth'
-  | 'canvasExtraSpace'
-  | 'xBreakAxis'
-  | 'yBreakAxis'
-  | 'xCursor'
-  | 'yCursor'
-  | 'barChildrenCount'
-  | 'orientation';
+  | "data"
+  | "pKey"
+  | "canvasHeight"
+  | "canvasWidth"
+  | "canvasExtraSpace"
+  | "xBreakAxis"
+  | "yBreakAxis"
+  | "xCursor"
+  | "yCursor"
+  | "barChildrenCount"
+  | "orientation";
 
 /**
  * Builds the context value for the line chart.
@@ -73,14 +73,14 @@ export const buildBarContextValue = ({
   pKey,
   viewBox,
 }: BuildContextValue): Omit<BarChartContextType, OmitProps> => {
-  let error: Omit<ChartError, 'type'> | undefined = undefined;
+  let error: Omit<ChartError, "type"> | undefined = undefined;
 
   // 1. Validate data exists
   if (!data || data.length === 0) {
     const dataError = {
       error: buildError(BuildError.BAR_CHART_NO_DATA),
     };
-    addError?.('BAR_CHART_CONTEXT_ERROR', dataError);
+    addError?.("BAR_CHART_CONTEXT_ERROR", dataError);
     error = dataError;
   }
 
@@ -89,7 +89,7 @@ export const buildBarContextValue = ({
     const canvasError = {
       error: buildCanvasDimensionsError(canvasWidth, canvasHeight),
     };
-    addError?.('BAR_CHART_CONTEXT_ERROR', canvasError);
+    addError?.("BAR_CHART_CONTEXT_ERROR", canvasError);
     error = canvasError;
   }
 
@@ -103,11 +103,11 @@ export const buildBarContextValue = ({
   if (requiredSpace + totalGapSpace > availableSpace) {
     const distributionError = {
       error: buildBarDistributionError(
-        'all',
-        `Insufficient space: requires ${requiredSpace + totalGapSpace}px but only ${availableSpace}px available`
+        "all",
+        `Insufficient space: requires ${requiredSpace + totalGapSpace}px but only ${availableSpace}px available`,
       ),
     };
-    addError?.('BAR_CHART_CONTEXT_ERROR', distributionError);
+    addError?.("BAR_CHART_CONTEXT_ERROR", distributionError);
     error = distributionError;
   }
 
@@ -177,7 +177,7 @@ export const buildBarContextValue = ({
     const xTickError = {
       error: buildError(BuildError.INVALID_X_TICK),
     };
-    addError?.('BAR_CHART_CONTEXT_ERROR', xTickError);
+    addError?.("BAR_CHART_CONTEXT_ERROR", xTickError);
     error = xTickError;
   }
 
@@ -186,13 +186,13 @@ export const buildBarContextValue = ({
     const hasInsufficientTicks = xTickValue.length < AXIS_VALIDATION.MIN_TICK_COUNT;
     const hasIdenticalValues =
       xTickValue.length >= AXIS_VALIDATION.MIN_TICK_COUNT &&
-      new Set(xTickValue.map(tick => tick.value)).size === AXIS_VALIDATION.UNIQUE_VALUE_THRESHOLD;
+      new Set(xTickValue.map((tick) => tick.value)).size === AXIS_VALIDATION.UNIQUE_VALUE_THRESHOLD;
 
     if (hasInsufficientTicks) {
       const xAxisError = {
         error: buildError(BuildError.LINE_CHART_X_AXIS_INSUFFICIENT_TICKS),
       };
-      addError?.('BAR_CHART_X_AXIS_ERROR', xAxisError);
+      addError?.("BAR_CHART_X_AXIS_ERROR", xAxisError);
       if (!error) {
         error = xAxisError;
       }
@@ -202,7 +202,7 @@ export const buildBarContextValue = ({
       const xAxisError = {
         error: buildError(BuildError.LINE_CHART_X_AXIS_IDENTICAL_VALUES),
       };
-      addError?.('BAR_CHART_X_AXIS_ERROR', xAxisError);
+      addError?.("BAR_CHART_X_AXIS_ERROR", xAxisError);
       if (!error) {
         error = xAxisError;
       }
@@ -227,13 +227,13 @@ export const buildBarContextValue = ({
     const hasInsufficientTicks = yTickValue.length < AXIS_VALIDATION.MIN_TICK_COUNT;
     const hasIdenticalValues =
       yTickValue.length >= AXIS_VALIDATION.MIN_TICK_COUNT &&
-      new Set(yTickValue.map(tick => tick.value)).size === AXIS_VALIDATION.UNIQUE_VALUE_THRESHOLD;
+      new Set(yTickValue.map((tick) => tick.value)).size === AXIS_VALIDATION.UNIQUE_VALUE_THRESHOLD;
 
     if (hasInsufficientTicks) {
       const yAxisError = {
         error: buildError(BuildError.LINE_CHART_Y_AXIS_INSUFFICIENT_TICKS),
       };
-      addError?.('BAR_CHART_Y_AXIS_ERROR', yAxisError);
+      addError?.("BAR_CHART_Y_AXIS_ERROR", yAxisError);
       if (!error) {
         error = yAxisError;
       }
@@ -243,7 +243,7 @@ export const buildBarContextValue = ({
       const yAxisError = {
         error: buildError(BuildError.LINE_CHART_Y_AXIS_IDENTICAL_VALUES),
       };
-      addError?.('BAR_CHART_Y_AXIS_ERROR', yAxisError);
+      addError?.("BAR_CHART_Y_AXIS_ERROR", yAxisError);
       if (!error) {
         error = yAxisError;
       }
@@ -294,7 +294,7 @@ export const buildBarContextValue = ({
     const xAxisError = {
       error: buildError(BuildError.LINE_CHART_X_AXIS_ZERO_LENGTH),
     };
-    addError?.('BAR_CHART_X_AXIS_ERROR', xAxisError);
+    addError?.("BAR_CHART_X_AXIS_ERROR", xAxisError);
     if (!error) {
       error = xAxisError;
     }
@@ -304,7 +304,7 @@ export const buildBarContextValue = ({
     const yAxisError = {
       error: buildError(BuildError.LINE_CHART_Y_AXIS_ZERO_LENGTH),
     };
-    addError?.('BAR_CHART_Y_AXIS_ERROR', yAxisError);
+    addError?.("BAR_CHART_Y_AXIS_ERROR", yAxisError);
     if (!error) {
       error = yAxisError;
     }

@@ -1,2 +1,2 @@
-export { PieChartForeign } from './pieChartForeign';
-export { PieChartPath } from './pieChartPath';
+export { PieChartForeign } from "./pieChartForeign";
+export { PieChartPath } from "./pieChartPath";

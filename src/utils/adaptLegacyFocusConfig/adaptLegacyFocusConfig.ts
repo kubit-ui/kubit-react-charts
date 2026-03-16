@@ -1,5 +1,5 @@
-import type { StyleProps } from '@/components/path/path.types';
-import type { FocusConfig } from '@/types/focusConfig.type';
+import type { StyleProps } from "@/components/path/path.types";
+import type { FocusConfig } from "@/types/focusConfig.type";
 
 /**
  * Adapts legacy StyleProps focusConfig to the new FocusConfig format.
@@ -18,7 +18,9 @@ import type { FocusConfig } from '@/types/focusConfig.type';
  * @returns FocusConfig compatible object, or undefined if no legacy config provided
  */
 export const adaptLegacyFocusConfig = (legacy?: StyleProps): FocusConfig | undefined => {
-  if (!legacy) {return undefined;}
+  if (!legacy) {
+    return undefined;
+  }
 
   const strokeWidth = legacy.strokeWidth ? Number(legacy.strokeWidth) : undefined;
 

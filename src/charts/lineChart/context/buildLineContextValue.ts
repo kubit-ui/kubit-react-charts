@@ -1,17 +1,17 @@
-import { type ChartError, ErrorType } from '@/types/errors.type';
-import { Positions } from '@/types/position.enum';
-import { getPoints } from '@/utils/getPoints/getPoints';
+import { type ChartError, ErrorType } from "@/types/errors.type";
+import { Positions } from "@/types/position.enum";
+import { getPoints } from "@/utils/getPoints/getPoints";
 
 import {
   BREAK_AXIS_DEFAULTS,
   CHART_CANVAS_DEFAULTS,
   LINE_CHART_FALLBACK_DATA,
   SHARED_FALLBACK_DATA,
-} from '../../constants/chartDefaults';
-import type { ChildrenType, IDataPoint, LineChartContextType } from '../lineChart.type';
-import { getXCoordinates, getYCoordinates } from '../utils/getCoordinates';
-import { getExtraSpacing } from '../utils/getExtraSpacing';
-import { getXTicks, getYTicks } from '../utils/getTicks';
+} from "../../constants/chartDefaults";
+import type { ChildrenType, IDataPoint, LineChartContextType } from "../lineChart.type";
+import { getXCoordinates, getYCoordinates } from "../utils/getCoordinates";
+import { getExtraSpacing } from "../utils/getExtraSpacing";
+import { getXTicks, getYTicks } from "../utils/getTicks";
 import {
   validateCanvasDimensions,
   validateData,
@@ -19,7 +19,7 @@ import {
   validateXTickValues,
   validateYCoordinates,
   validateYTickValues,
-} from '../utils/validations';
+} from "../utils/validations";
 
 interface BuildContextValue {
   children: ChildrenType;
@@ -28,19 +28,19 @@ interface BuildContextValue {
   canvasHeight: number;
   canvasWidth: number;
   viewBox: string;
-  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, 'type'>) => void;
+  addError?: (errorType: keyof typeof ErrorType, error: Omit<ChartError, "type">) => void;
 }
 
 type OmitProps =
-  | 'data'
-  | 'xKey'
-  | 'canvasHeight'
-  | 'canvasWidth'
-  | 'canvasExtraSpace'
-  | 'xBreakAxis'
-  | 'yBreakAxis'
-  | 'xCursor'
-  | 'yCursor';
+  | "data"
+  | "xKey"
+  | "canvasHeight"
+  | "canvasWidth"
+  | "canvasExtraSpace"
+  | "xBreakAxis"
+  | "yBreakAxis"
+  | "xCursor"
+  | "yCursor";
 
 /**
  * Builds the context value for the line chart.
@@ -57,7 +57,7 @@ export const buildLineContextValue = ({
   viewBox,
   xKey,
 }: BuildContextValue): Omit<LineChartContextType, OmitProps> => {
-  let error: Omit<ChartError, 'type'> | undefined = undefined;
+  let error: Omit<ChartError, "type"> | undefined = undefined;
 
   const { error: dataError } = validateData({ data, addError });
   if (dataError) {

@@ -1,1 +1,1 @@
-export { CONTEXT } from './barContextData';
+export { CONTEXT } from "./barContextData";

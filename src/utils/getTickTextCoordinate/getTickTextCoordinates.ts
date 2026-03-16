@@ -1,4 +1,4 @@
-import { Positions } from '@/types/position.enum';
+import { Positions } from "@/types/position.enum";
 
 /**
  * Calculates the x-coordinate for the tick text based on the position, x-coordinate, and font size.
@@ -11,7 +11,7 @@ import { Positions } from '@/types/position.enum';
 export const getTickTextXCoordinate = (
   position: (typeof Positions)[keyof typeof Positions],
   x: number,
-  fontSize: number
+  fontSize: number,
 ): number => {
   if (position === Positions.RIGHT) {
     return x + fontSize;
@@ -32,7 +32,7 @@ export const getTickTextYCoordinate = (
   position: (typeof Positions)[keyof typeof Positions],
   y: number,
   fontSize: number,
-  securitySpace: number
+  securitySpace: number,
 ): number => {
   if (position === Positions.TOP) {
     return fontSize;

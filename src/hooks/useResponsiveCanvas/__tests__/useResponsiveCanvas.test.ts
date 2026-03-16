@@ -1,31 +1,31 @@
-import { renderHook } from '@testing-library/react';
+import { renderHook } from "@testing-library/react";
 
-import { beforeEach, describe, expect, vi } from 'vitest';
+import { beforeEach, describe, expect, vi } from "vitest";
 
-import { getCanvasDimensions } from '@/utils/getCanvasDimensions/getCanvasDimensions';
+import { getCanvasDimensions } from "@/utils/getCanvasDimensions/getCanvasDimensions";
 
-import { useResponsiveCanvas } from '../useResponsiveCanvas';
+import { useResponsiveCanvas } from "../useResponsiveCanvas";
 
-vi.mock('@/utils/getCanvasDimensions/getCanvasDimensions', () => ({
+vi.mock("@/utils/getCanvasDimensions/getCanvasDimensions", () => ({
   getCanvasDimensions: vi.fn(() => ({ parsedCanvasHeight: 300, parsedCanvasWidth: 400 })),
 }));
 
-vi.mock('@/utils/parseStringToNumberPx.ts/parseStringToNumberPx', () => ({
-  parseStringToNumberPx: vi.fn(value => {
-    if (typeof value === 'number') {
+vi.mock("@/utils/parseStringToNumberPx.ts/parseStringToNumberPx", () => ({
+  parseStringToNumberPx: vi.fn((value) => {
+    if (typeof value === "number") {
       return value;
     }
-    if (value === '100%') {
+    if (value === "100%") {
       return 400;
     }
-    if (value === '2.5rem') {
+    if (value === "2.5rem") {
       return 40;
     }
     return parseInt(value) || 0;
   }),
 }));
 
-vi.mock('@/components/svgContainer/utils/buildViewBox/buildViewBox', () => ({
+vi.mock("@/components/svgContainer/utils/buildViewBox/buildViewBox", () => ({
   buildViewBox: vi.fn((width, height) => `0 0 ${width} ${height}`),
 }));
 
@@ -44,7 +44,7 @@ global.document.querySelector = vi.fn(() => ({
   getBoundingClientRect: () => ({ height: 300, width: 400 }),
 }));
 
-describe('useResponsiveCanvas', () => {
+describe("useResponsiveCanvas", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(getCanvasDimensions).mockReturnValue({
@@ -53,21 +53,21 @@ describe('useResponsiveCanvas', () => {
     });
   });
 
-  it('should handle basic dimensions and viewBox generation', () => {
+  it("should handle basic dimensions and viewBox generation", () => {
     const { result } = renderHook(() =>
       useResponsiveCanvas({
-        dataTestId: 'test-chart',
+        dataTestId: "test-chart",
         height: 300,
         width: 400,
-      })
+      }),
     );
 
     expect(result.current.parsedCanvas).toEqual({ height: 300, width: 400 });
-    expect(result.current.viewBox).toBe('0 0 400 300');
+    expect(result.current.viewBox).toBe("0 0 400 300");
     expect(mockObserve).toHaveBeenCalled();
   });
 
-  it('should handle string dimensions and canvasConfig', () => {
+  it("should handle string dimensions and canvasConfig", () => {
     vi.mocked(getCanvasDimensions).mockReturnValue({
       parsedCanvasHeight: 40,
       parsedCanvasWidth: 600,
@@ -76,21 +76,21 @@ describe('useResponsiveCanvas', () => {
     const { result } = renderHook(() =>
       useResponsiveCanvas({
         canvasConfig: { extraSpace: 20, height: 300, width: 400 },
-        dataTestId: 'test-chart',
+        dataTestId: "test-chart",
         extraSpace: 10,
-        height: '2.5rem',
-        width: '100%',
-      })
+        height: "2.5rem",
+        width: "100%",
+      }),
     );
 
     expect(result.current.parsedCanvas).toEqual({ height: 40, width: 600 });
-    expect(result.current.viewBox).toBe('0 0 600 40');
+    expect(result.current.viewBox).toBe("0 0 600 40");
   });
 
-  it('should handle dimension updates and memoization', () => {
+  it("should handle dimension updates and memoization", () => {
     const { rerender, result } = renderHook(
-      ({ width }) => useResponsiveCanvas({ dataTestId: 'test-chart', height: 300, width }),
-      { initialProps: { width: 400 } }
+      ({ width }) => useResponsiveCanvas({ dataTestId: "test-chart", height: 300, width }),
+      { initialProps: { width: 400 } },
     );
 
     const firstCanvas = result.current.parsedCanvas;
@@ -106,13 +106,13 @@ describe('useResponsiveCanvas', () => {
     expect(result.current.parsedCanvas.width).toBe(800);
   });
 
-  it('should not trigger re-render when ResizeObserver fires with same dimensions', () => {
+  it("should not trigger re-render when ResizeObserver fires with same dimensions", () => {
     const { result } = renderHook(() =>
       useResponsiveCanvas({
-        dataTestId: 'test-chart',
+        dataTestId: "test-chart",
         height: 300,
         width: 400,
-      })
+      }),
     );
 
     const firstCanvas = result.current.parsedCanvas;
@@ -127,13 +127,13 @@ describe('useResponsiveCanvas', () => {
     expect(result.current.parsedCanvas).toBe(firstCanvas);
   });
 
-  it('should update parsedCanvas when ResizeObserver fires with different dimensions', async () => {
+  it("should update parsedCanvas when ResizeObserver fires with different dimensions", async () => {
     const { result } = renderHook(() =>
       useResponsiveCanvas({
-        dataTestId: 'test-chart',
+        dataTestId: "test-chart",
         height: 300,
         width: 400,
-      })
+      }),
     );
 
     const firstCanvas = result.current.parsedCanvas;
@@ -155,19 +155,19 @@ describe('useResponsiveCanvas', () => {
     });
   });
 
-  it('should handle edge cases and cleanup', () => {
+  it("should handle edge cases and cleanup", () => {
     // Test invalid dimensions
     const { result, unmount } = renderHook(() =>
       useResponsiveCanvas({
-        dataTestId: 'test-chart',
-        height: 'invalid',
-        width: 'invalid',
-      })
+        dataTestId: "test-chart",
+        height: "invalid",
+        width: "invalid",
+      }),
     );
 
     expect(result.current.parsedCanvas).toBeDefined();
-    expect(typeof result.current.parsedCanvas.width).toBe('number');
-    expect(typeof result.current.parsedCanvas.height).toBe('number');
+    expect(typeof result.current.parsedCanvas.width).toBe("number");
+    expect(typeof result.current.parsedCanvas.height).toBe("number");
 
     // Test cleanup
     unmount();
