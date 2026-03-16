@@ -1,5 +1,13 @@
 # @kubit-ui-web/react-charts
 
+## 1.11.5
+
+### Patch Changes
+
+- Add bar axis valueFormatter and fix halfChart path
+
+  PR: #25
+
 ## 1.11.4
 
 ### Patch Changes
