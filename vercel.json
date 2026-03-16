@@ -1,5 +1,5 @@
 {
-  "buildCommand": "yarn build-storybook",
-  "installCommand": "corepack enable && yarn install --immutable",
+  "buildCommand": "corepack yarn build-storybook",
+  "installCommand": "corepack yarn install",
   "outputDirectory": "storybook-static"
 }
