@@ -1,5 +1,13 @@
 # @kubit-ui-web/react-charts
 
+## 1.11.6
+
+### Patch Changes
+
+- Dependencies to yarn and oxc ecosystem
+
+  PR: #26
+
 ## 1.11.5
 
 ### Patch Changes
@@ -57,6 +65,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 #### Error Handling System
 
 - **PieChart Error Accumulator**: Implemented comprehensive error accumulation system for PieChart components
+
   - Added error validation for canvas dimensions (width and height must be > 0)
   - Added dataKey existence validation in dataset
   - Added validation for segment values (numeric, non-negative)
@@ -71,6 +80,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
   - Added PieChart-specific error messages and constants
 
 - **Interactive Error Handling Story**: Added comprehensive Storybook story demonstrating PieChart error handling
+
   - Real-time error detection visualization with error panel
   - Multiple error scenarios demonstration (missing dataKey, empty data, negative values, invalid values, missing names, zero totals)
   - Interactive UI showing error count and categorization by component type
@@ -172,6 +182,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 #### Chart Component Enhancements
 
 - **LineChart Error Integration**:
+
   - Modified `buildLineContextValue` to include error accumulator functions
   - Updated `LineChartContextType` with new error handling methods
   - Child components can now report errors via context
@@ -194,6 +205,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and
 #### Developer Experience
 
 - **Enhanced Testing**:
+
   - Added comprehensive test suites for `createErrorAccumulator` utility
   - Added test cases for LineChart and BarChart error integration
   - Updated existing error handling tests to cover new functionality
