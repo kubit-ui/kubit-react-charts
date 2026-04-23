@@ -104,7 +104,9 @@ jobs:
           echo "PR Title: $PR_TITLE"
 
           # Check conventional commits format
-          if [[ "$PR_TITLE" =~ ^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|break|breaking)(\([^)]+\))?!?:\ .+ ]]; then
+          # Regex stored in a variable because bash [[ =~ ]] cannot parse inline regex with nested parentheses
+          CC_REGEX='^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|break|breaking)(\([^)]+\))?!?: .+'
+          if [[ "$PR_TITLE" =~ $CC_REGEX ]]; then
             echo "✅ PR title follows conventional commits format"
             echo "title_valid=true" >> $GITHUB_OUTPUT
           else
@@ -143,12 +145,20 @@ jobs:
           echo "bump_type=$BUMP_TYPE" >> $GITHUB_OUTPUT
           echo "📊 Expected version bump: $BUMP_TYPE"
 
+      - name: Lint
+        id: lint
+        continue-on-error: true
+        run: |
+          echo "🎨 Running lint..."
+          yarn lint
+          echo "lint=true" >> $GITHUB_OUTPUT
+
       - name: TypeScript Check
         id: typecheck
         continue-on-error: true
         run: |
           echo "🔍 Running TypeScript check..."
-          yarn eslint
+          yarn typecheck
           echo "typecheck=true" >> $GITHUB_OUTPUT
 
       - name: Run Tests
@@ -156,7 +166,7 @@ jobs:
         continue-on-error: true
         run: |
           echo "🧪 Running tests..."
-          yarn test
+          yarn test:unit
           echo "test=true" >> $GITHUB_OUTPUT
 
       - name: Check for console.log
@@ -203,6 +213,7 @@ jobs:
             const branchValid = '${{ steps.branch-validation.outputs.branch_valid }}' === 'true';
             const titleValid = '${{ steps.pr-title-validation.outputs.title_valid }}' === 'true';
             const titleLengthValid = '${{ steps.pr-title-validation.outputs.title_length_valid }}' === 'true';
+            const lint = '${{ steps.lint.outputs.lint }}' === 'true';
             const typecheck = '${{ steps.typecheck.outputs.typecheck }}' === 'true';
             const test = '${{ steps.test.outputs.test }}' === 'true';
             const consoleCheck = '${{ steps.console-check.outputs.console_check }}' === 'true';
@@ -210,7 +221,7 @@ jobs:
 
             const bumpType = '${{ steps.version-detection.outputs.bump_type }}';
 
-            const allPassed = branchValid && titleValid && typecheck && test && consoleCheck && todoCheck;
+            const allPassed = branchValid && titleValid && lint && typecheck && test && consoleCheck && todoCheck;
 
             let comment = '## 🔍 PR Validation Report\n\n';
             comment += `**Status:** ${allPassed ? '✅ PASSED' : '❌ FAILED'}\n`;
@@ -223,6 +234,7 @@ jobs:
             comment += `| Branch Naming | ${branchValid ? '✅ Pass' : '❌ Fail'} | Must follow \`type/description\` |\n`;
             comment += `| PR Title | ${titleValid ? '✅ Pass' : '❌ Fail'} | Must follow conventional commits |\n`;
             comment += `| Title Length | ${titleLengthValid ? '✅ Pass' : '⚠️ Warning'} | Should be ≤72 characters |\n`;
+            comment += `| Lint | ${lint ? '✅ Pass' : '❌ Fail'} | Linting with oxlint |\n`;
             comment += `| TypeScript | ${typecheck ? '✅ Pass' : '❌ Fail'} | Type checking validation |\n`;
             comment += `| Tests | ${test ? '✅ Pass' : '❌ Fail'} | All tests must pass |\n`;
             comment += `| Code Quality | ${consoleCheck ? '✅ Pass' : '⚠️ Warning'} | No console.log in production |\n`;
