@@ -117,7 +117,6 @@ export const ZoomHandler: React.FC<ZoomHandlerProps> = ({
       {/* Circular handle with FocusRing */}
       <FocusRing dataTestId={dataTestId} focusConfig={focusConfig} isFocused={isFocused}>
         <circle
-          aria-label={screenReaderText}
           aria-valuemax={max}
           aria-valuemin={min}
           // Used valuetext instead of valuenow to provide understandable information

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from '@testing-library/react';
 
 import { describe, expect, it, vi } from "vitest";
 
@@ -52,8 +52,10 @@ describe("SelectionArea", () => {
 
     render(<SelectionArea {...mockProps} screenReaderText={screenReaderText} />);
 
+    // aria-label is intentionally not emitted to avoid duplicated NVDA announcements
+    // as aria-valuetext already provides the information to the screen reader
     const selectionArea = screen.getByTestId("test-selection-area");
-    expect(selectionArea).toHaveAttribute("aria-label", screenReaderText);
+    expect(selectionArea).not.toHaveAttribute("aria-label", screenReaderText);
     expect(selectionArea).toHaveAttribute("aria-valuemin", "0");
     expect(selectionArea).toHaveAttribute("aria-valuemax", "4");
     expect(selectionArea).toHaveAttribute("aria-valuetext", screenReaderText);
