@@ -1,12 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from '@testing-library/react';
 
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from 'vitest';
 
-import { ZoomAreaElements } from "../../zoomArea.type";
-import { ZoomHandler } from "../ZoomHandler";
+import { ZoomAreaElements } from '../../zoomArea.type';
+import { ZoomHandler } from '../ZoomHandler';
 
 const mockProps = {
-  dataTestId: "test-zoom-handler",
+  dataTestId: 'test-zoom-handler',
   focusConfig: {},
   height: 100,
   isFocused: false,
@@ -22,59 +22,61 @@ const mockProps = {
   x: 50,
 };
 
-describe("ZoomHandler", () => {
-  it("should render with basic props and positioning", () => {
+describe('ZoomHandler', () => {
+  it('should render with basic props and positioning', () => {
     render(<ZoomHandler {...mockProps} />);
 
-    const handler = screen.getByTestId("test-zoom-handler");
+    const handler = screen.getByTestId('test-zoom-handler');
     expect(handler).toBeInTheDocument();
-    expect(handler).toHaveAttribute("role", "slider");
-    expect(handler).toHaveAttribute("tabIndex", "0");
+    expect(handler).toHaveAttribute('role', 'slider');
+    expect(handler).toHaveAttribute('tabIndex', '0');
   });
 
-  it("should apply custom handler configuration", () => {
+  it('should apply custom handler configuration', () => {
     const customConfig = {
-      fill: "#custom-fill",
+      fill: '#custom-fill',
       radius: 20,
-      stroke: "#custom-stroke",
+      stroke: '#custom-stroke',
       strokeWidth: 3,
     };
 
     render(<ZoomHandler {...mockProps} handlerConfig={customConfig} />);
 
-    const handlerGroup = screen.getByTestId("test-zoom-handler-group");
+    const handlerGroup = screen.getByTestId('test-zoom-handler-group');
     expect(handlerGroup).toBeInTheDocument();
 
     // The custom config should be applied to the handler circle
-    const handlerCircle = screen.getByTestId("test-zoom-handler");
-    expect(handlerCircle).toHaveAttribute("fill", "#custom-fill");
-    expect(handlerCircle).toHaveAttribute("stroke", "#custom-stroke");
-    expect(handlerCircle).toHaveAttribute("stroke-width", "3");
-    expect(handlerCircle).toHaveAttribute("r", "20");
+    const handlerCircle = screen.getByTestId('test-zoom-handler');
+    expect(handlerCircle).toHaveAttribute('fill', '#custom-fill');
+    expect(handlerCircle).toHaveAttribute('stroke', '#custom-stroke');
+    expect(handlerCircle).toHaveAttribute('stroke-width', '3');
+    expect(handlerCircle).toHaveAttribute('r', '20');
   });
 
-  it("should handle accessibility attributes correctly", () => {
-    const screenReaderText = "Start handler at position 2";
+  it('should handle accessibility attributes correctly', () => {
+    const screenReaderText = 'Start handler at position 2';
 
     render(<ZoomHandler {...mockProps} screenReaderText={screenReaderText} />);
 
-    const handler = screen.getByTestId("test-zoom-handler");
-    expect(handler).toHaveAttribute("aria-label", screenReaderText);
-    expect(handler).toHaveAttribute("aria-valuemin", "0");
-    expect(handler).toHaveAttribute("aria-valuemax", "4");
-    expect(handler).toHaveAttribute("aria-valuetext", screenReaderText);
+    const handler = screen.getByTestId('test-zoom-handler');
+    // aria-label is intentionally not emitted to avoid duplicated NVDA announcements
+    // as aria-valuetext already provides the information to the screen reader
+    expect(handler).not.toHaveAttribute('aria-label');
+    expect(handler).toHaveAttribute('aria-valuemin', '0');
+    expect(handler).toHaveAttribute('aria-valuemax', '4');
+    expect(handler).toHaveAttribute('aria-valuetext', screenReaderText);
   });
 
-  it("should handle different handler types", () => {
+  it('should handle different handler types', () => {
     render(<ZoomHandler {...mockProps} type={ZoomAreaElements.END_HANDLER} />);
 
-    const handlerGroup = screen.getByTestId("test-zoom-handler-group");
+    const handlerGroup = screen.getByTestId('test-zoom-handler-group');
     expect(handlerGroup).toBeInTheDocument();
 
-    const handler = screen.getByTestId("test-zoom-handler");
+    const handler = screen.getByTestId('test-zoom-handler');
     expect(handler).toBeInTheDocument();
 
     // Should render appropriate handler type icon
-    expect(handlerGroup.querySelector("path")).toBeInTheDocument();
+    expect(handlerGroup.querySelector('path')).toBeInTheDocument();
   });
 });

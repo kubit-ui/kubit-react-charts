@@ -65,7 +65,6 @@ export const SelectionArea = forwardRef<SVGRectElement, SelectionAreaProps>(
         {/* Selection area overlay - conditionally rendered */}
         <rect
           ref={ref}
-          aria-label={screenReaderText}
           aria-valuemax={dataLength - 1}
           aria-valuemin={0}
           // Used valuetext instead of valuenow to provide understandable information
